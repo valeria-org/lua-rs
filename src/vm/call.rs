@@ -221,7 +221,7 @@ impl Vm {
     pub(crate) fn call_native(&mut self, th: Gc<Thread>) -> LuaResult<Flow> {
         let fr = th.current_frame().expect("native frame");
         let Function::Native { f, .. } = &*fr.func else { unreachable!("native frame") };
-        super::hook::set_vmstate(super::hook::VMSTATE_C);
+        super::hook::set_vmstate(super::hook::native_vmstate(fr.func.ffid()));
         let r = match *f {
             NativeImpl::Rust(nf) => nf(self),
             NativeImpl::C(cf) => match self.rt.c_call {

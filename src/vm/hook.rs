@@ -47,6 +47,29 @@ pub(crate) fn set_vmstate(st: u8) -> u8 {
     VMSTATE.swap(st, Ordering::Relaxed)
 }
 
+/// Builtin ids of upstream's assembler fast functions (`LJLIB_ASM`/`LJLIB_ASM_` in lib_*.c):
+/// the VM state stays "interpreter" while they run; all other natives run in state "C".
+const ASM_FFIDS: [u8; 57] = [
+    2, 3, 4, 5, 6, 7, 8, 9, 12, 17, 18, 20, 21, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,
+    54, 55, 56, 57, 58, 59, 60, 61, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 76, 77, 78, 80, 81, 82,
+];
+
+const ASM_FFID_MAP: [bool; 256] = {
+    let mut m = [false; 256];
+    let mut i = 0;
+    while i < ASM_FFIDS.len() {
+        m[ASM_FFIDS[i] as usize] = true;
+        i += 1;
+    }
+    m
+};
+
+/// VM state while running the native with builtin id `ffid`.
+#[inline]
+pub(crate) fn native_vmstate(ffid: u8) -> u8 {
+    if ASM_FFID_MAP[ffid as usize] { VMSTATE_INTERP } else { VMSTATE_C }
+}
+
 /// Profile handler (`lj_profile_interpreter`), called before an instruction once a sample
 /// is pending, with the profiled frame on top of the current thread.
 pub type ProfileHandler = fn(&mut Vm) -> LuaResult<()>;
