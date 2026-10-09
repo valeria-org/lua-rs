@@ -177,6 +177,8 @@ pub struct CApiGlobal {
     pub(crate) yield_pending: bool,
     /// The `Vm` was allocated by `lua_newstate` (freed by `lua_close`).
     pub(crate) owned: bool,
+    /// Result buffer of `luaJIT_profile_dumpstack` (valid until the next call).
+    pub(crate) dumpbuf: Vec<u8>,
 }
 
 impl Default for CApiGlobal {
@@ -192,6 +194,7 @@ impl Default for CApiGlobal {
             wrap_on: false,
             yield_pending: false,
             owned: false,
+            dumpbuf: Vec::new(),
         }
     }
 }

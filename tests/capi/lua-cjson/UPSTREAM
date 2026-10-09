@@ -1,0 +1,3 @@
+Vendored from https://github.com/mpx/lua-cjson at commit 718f27293a981fb5e9e662e9aec0b7cf78317da6 (MIT, see LICENSE):
+lua_cjson.c strbuf.c strbuf.h fpconv.c fpconv.h. Unmodified. The test harness renames the
+5.1-compat static luaL_setfuncs in a build copy, since LuaJIT 2.1's lauxlib.h declares it.

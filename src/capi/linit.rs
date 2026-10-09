@@ -1,7 +1,7 @@
 //! `luaopen_*` and `luaL_openlibs` (port of lib_init.c and the `luaopen_*` entry points of the
 //! lib_*.c files), `luaJIT_setmode` and the version symbol (lj_dispatch.c).
 
-use std::ffi::c_int;
+use std::ffi::{c_char, c_int, c_void};
 
 use crate::func::FF_C;
 use crate::state::Vm;
@@ -143,3 +143,55 @@ pub unsafe extern "C-unwind" fn luaJIT_setmode(L: *mut lua_State, idx: c_int, mo
 /// version check.
 #[unsafe(no_mangle)]
 pub extern "C-unwind" fn luaJIT_version_2_1_1788856981() {}
+
+/// `luaJIT_profile_callback`.
+pub type luaJIT_profile_callback = unsafe extern "C-unwind" fn(*mut c_void, *mut lua_State, c_int, c_int);
+
+/// `luaJIT_profile_start` (lj_profile.c): sample with the given mode (`i<ms>` interval) and
+/// call `cb(data, L, samples, vmstate)` from the interpreter, with `L` the profiled thread.
+/// A Lua error raised by the callback is discarded (the callback runs with hooks disabled, at a
+/// point where the profiled code cannot be unwound).
+#[unsafe(no_mangle)]
+pub unsafe extern "C-unwind" fn luaJIT_profile_start(L: *mut lua_State, mode: *const c_char, cb: luaJIT_profile_callback, data: *mut c_void) {
+    // SAFETY: `L` is a live state; `mode` is a C string.
+    unsafe {
+        let mode = cstr(mode);
+        api(L, |vm, _| {
+            let cb: crate::stdlib::jit::ProfileCallback = Box::new(move |vm: &mut Vm, samples: i32, vmstate: u8| {
+                let th = vm.cur_thread;
+                let L = state_of(vm, th);
+                let _ = protect(vm, || cb(data, L, samples, vmstate as c_int));
+            });
+            crate::stdlib::jit::profile_start(vm, mode, cb);
+            Ok(())
+        })
+    }
+}
+
+/// `luaJIT_profile_stop`.
+#[unsafe(no_mangle)]
+pub unsafe extern "C-unwind" fn luaJIT_profile_stop(L: *mut lua_State) {
+    // SAFETY: `L` is a live state.
+    unsafe {
+        api(L, |vm, _| {
+            crate::stdlib::jit::profile_stop(vm);
+            Ok(())
+        })
+    }
+}
+
+/// `luaJIT_profile_dumpstack`: compact stack dump of `L` (`lj_debug_dumpstack`). The result
+/// stays valid until the next call.
+#[unsafe(no_mangle)]
+pub unsafe extern "C-unwind" fn luaJIT_profile_dumpstack(L: *mut lua_State, fmt: *const c_char, depth: c_int, len: *mut usize) -> *const c_char {
+    // SAFETY: `L` is a live state; `fmt` is a C string; `len` is valid.
+    unsafe {
+        let fmt = cstr(fmt);
+        api(L, |vm, th| {
+            let s = crate::stdlib::jit::profile_dumpstack(vm, th, fmt, depth);
+            vm.rt.capi.dumpbuf = s;
+            *len = vm.rt.capi.dumpbuf.len();
+            Ok(vm.rt.capi.dumpbuf.as_ptr().cast())
+        })
+    }
+}
