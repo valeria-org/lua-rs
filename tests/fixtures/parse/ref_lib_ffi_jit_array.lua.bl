@@ -1,0 +1,638 @@
+-- BYTECODE -- ref_lib_ffi_jit_array.lua:0-105
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "ffi"
+0003    CALL     0   2   2
+0004    TDUP     1   2
+0005    GGET     2   3      ; "ipairs"
+0006    MOV      4   1
+0007    CALL     2   4   2
+0008    JMP      5 => 0097
+0009 => TGETS    7   0   4  ; "new"
+0010    MOV      9   6
+0011    KSTR    10   5      ; "[?]"
+0012    CAT      9   9  10
+0013    KSHORT  10 301
+0014    CALL     7   2   3
+0015    KSHORT   8   1
+0016    KSHORT   9 300
+0017    KSHORT  10   1
+0018    FORI     8 => 0022
+0019 => KSHORT  12   1
+0020    TSETV   12   7  11
+0021    FORL     8 => 0019
+0022 => KSHORT   8   1
+0023    KSHORT   9 300
+0024    KSHORT  10   1
+0025    FORI     8 => 0035
+0026 => GGET    12   6      ; "assert"
+0027    TGETV   14   7  11
+0028    ISEQN   14   0      ; 1
+0029    JMP     14 => 0032
+0030    KPRI    14   1
+0031    JMP     15 => 0033
+0032 => KPRI    14   2
+0033 => CALL    12   1   2
+0034    FORL     8 => 0026
+0035 => KSHORT   8   1
+0036    KSHORT   9 300
+0037    KSHORT  10   1
+0038    FORI     8 => 0043
+0039 => SUBVN   12  11   0  ; 1
+0040    TGETV   12   7  12
+0041    TSETV   12   7  11
+0042    FORL     8 => 0039
+0043 => KSHORT   8   1
+0044    KSHORT   9 300
+0045    KSHORT  10   1
+0046    FORI     8 => 0056
+0047 => GGET    12   6      ; "assert"
+0048    TGETV   14   7  11
+0049    ISEQN   14   1      ; 0
+0050    JMP     14 => 0053
+0051    KPRI    14   1
+0052    JMP     15 => 0054
+0053 => KPRI    14   2
+0054 => CALL    12   1   2
+0055    FORL     8 => 0047
+0056 => KSHORT   8   1
+0057    KSHORT   9 300
+0058    KSHORT  10   1
+0059    FORI     8 => 0062
+0060 => TSETV   11   7  11
+0061    FORL     8 => 0060
+0062 => KSHORT   8   0
+0063    KSHORT   9   1
+0064    KSHORT  10 300
+0065    KSHORT  11   1
+0066    FORI     9 => 0070
+0067 => TGETV   13   7  12
+0068    ADDVV    8   8  13
+0069    FORL     9 => 0067
+0070 => ISNES    6   7      ; "int8_t"
+0071    JMP      9 => 0080
+0072    GGET     9   6      ; "assert"
+0073    ISEQN    8   2      ; 862
+0074    JMP     11 => 0077
+0075    KPRI    11   1
+0076    JMP     12 => 0078
+0077 => KPRI    11   2
+0078 => CALL     9   1   2
+0079    JMP      9 => 0097
+0080 => ISNES    6   8      ; "uint8_t"
+0081    JMP      9 => 0090
+0082    GGET     9   6      ; "assert"
+0083    ISEQN    8   3      ; 33630
+0084    JMP     11 => 0087
+0085    KPRI    11   1
+0086    JMP     12 => 0088
+0087 => KPRI    11   2
+0088 => CALL     9   1   2
+0089    JMP      9 => 0097
+0090 => GGET     9   6      ; "assert"
+0091    ISEQN    8   4      ; 45150
+0092    JMP     11 => 0095
+0093    KPRI    11   1
+0094    JMP     12 => 0096
+0095 => KPRI    11   2
+0096 => CALL     9   1   2
+0097 => ITERC    5   3   3
+0098    ITERL    5 => 0009
+0099    TGETS    1   0   4  ; "new"
+0100    KSTR     3   9      ; "int[?]"
+0101    KSHORT   4 101
+0102    CALL     1   2   3
+0103    ADDVN    2   1   0  ; 1
+0104    KSHORT   3   1
+0105    KSHORT   4 100
+0106    KSHORT   5   1
+0107    FORI     3 => 0119
+0108 => TSETB    6   2   0
+0109    GGET     7   6      ; "assert"
+0110    SUBVV    9   2   1
+0111    ISEQV    9   6
+0112    JMP      9 => 0115
+0113    KPRI     9   1
+0114    JMP     10 => 0116
+0115 => KPRI     9   2
+0116 => CALL     7   1   2
+0117    ADDVN    2   2   0  ; 1
+0118    FORL     3 => 0108
+0119 => KSHORT   3   1
+0120    KSHORT   4 100
+0121    KSHORT   5   1
+0122    FORI     3 => 0132
+0123 => GGET     7   6      ; "assert"
+0124    TGETV    9   1   6
+0125    ISEQV    9   6
+0126    JMP      9 => 0129
+0127    KPRI     9   1
+0128    JMP     10 => 0130
+0129 => KPRI     9   2
+0130 => CALL     7   1   2
+0131    FORL     3 => 0123
+0132 => KSHORT   3   1
+0133    KSHORT   4 100
+0134    KSHORT   5   1
+0135    FORI     3 => 0146
+0136 => GGET     7   6      ; "assert"
+0137    ADDVV    9   1   6
+0138    TGETB    9   9   0
+0139    ISEQV    9   6
+0140    JMP      9 => 0143
+0141    KPRI     9   1
+0142    JMP     10 => 0144
+0143 => KPRI     9   2
+0144 => CALL     7   1   2
+0145    FORL     3 => 0136
+0146 => KSHORT   3   1
+0147    KSHORT   4 100
+0148    KSHORT   5   1
+0149    FORI     3 => 0160
+0150 => GGET     7   6      ; "assert"
+0151    ADDVV    9   6   1
+0152    TGETB    9   9   0
+0153    ISEQV    9   6
+0154    JMP      9 => 0157
+0155    KPRI     9   1
+0156    JMP     10 => 0158
+0157 => KPRI     9   2
+0158 => CALL     7   1   2
+0159    FORL     3 => 0150
+0160 => TGETS    1   0   4  ; "new"
+0161    KSTR     3  10      ; "double[?]"
+0162    KSHORT   4 101
+0163    CALL     1   2   3
+0164    ADDVN    2   1   0  ; 1
+0165    KSHORT   3   1
+0166    KSHORT   4 100
+0167    KSHORT   5   1
+0168    FORI     3 => 0172
+0169 => TSETB    6   2   0
+0170    ADDVN    2   2   0  ; 1
+0171    FORL     3 => 0169
+0172 => KSHORT   3   1
+0173    KSHORT   4 100
+0174    KSHORT   5   1
+0175    FORI     3 => 0185
+0176 => GGET     7   6      ; "assert"
+0177    TGETV    9   1   6
+0178    ISEQV    9   6
+0179    JMP      9 => 0182
+0180    KPRI     9   1
+0181    JMP     10 => 0183
+0182 => KPRI     9   2
+0183 => CALL     7   1   2
+0184    FORL     3 => 0176
+0185 => KSHORT   3   1
+0186    KSHORT   4 100
+0187    KSHORT   5   1
+0188    FORI     3 => 0199
+0189 => GGET     7   6      ; "assert"
+0190    ADDVV    9   1   6
+0191    TGETB    9   9   0
+0192    ISEQV    9   6
+0193    JMP      9 => 0196
+0194    KPRI     9   1
+0195    JMP     10 => 0197
+0196 => KPRI     9   2
+0197 => CALL     7   1   2
+0198    FORL     3 => 0189
+0199 => TGETS    1   0   4  ; "new"
+0200    KSTR     3  10      ; "double[?]"
+0201    KSHORT   4 201
+0202    CALL     1   2   3
+0203    ADDVN    2   1   5  ; 3
+0204    KSHORT   3   1
+0205    KSHORT   4 200
+0206    KSHORT   5   1
+0207    FORI     3 => 0232
+0208 => GGET     7  11      ; "bit"
+0209    TGETS    7   7  12  ; "band"
+0210    MOV      9   6
+0211    KSHORT  10   7
+0212    CALL     7   2   3
+0213    GGET     8   6      ; "assert"
+0214    ADDVV   10   1   7
+0215    ISEQV   10   2
+0216    JMP     10 => 0219
+0217    KPRI    10   1
+0218    JMP     11 => 0220
+0219 => KPRI    10   2
+0220 => ISEQN    7   5      ; 3
+0221    JMP     11 => 0224
+0222    KPRI    11   1
+0223    JMP     12 => 0225
+0224 => KPRI    11   2
+0225 => ISEQV   10  11
+0226    JMP     10 => 0229
+0227    KPRI    10   1
+0228    JMP     11 => 0230
+0229 => KPRI    10   2
+0230 => CALL     8   1   2
+0231    FORL     3 => 0208
+0232 => ADDVN    2   1   6  ; 100
+0233    KSHORT   3   1
+0234    KSHORT   4 200
+0235    KSHORT   5   1
+0236    FORI     3 => 0257
+0237 => GGET     7   6      ; "assert"
+0238    ADDVV    9   1   6
+0239    ISLT     9   2
+0240    JMP      9 => 0243
+0241    KPRI     9   1
+0242    JMP     10 => 0244
+0243 => KPRI     9   2
+0244 => KSHORT  10 100
+0245    ISLT     6  10
+0246    JMP     10 => 0249
+0247    KPRI    10   1
+0248    JMP     11 => 0250
+0249 => KPRI    10   2
+0250 => ISEQV    9  10
+0251    JMP      9 => 0254
+0252    KPRI     9   1
+0253    JMP     10 => 0255
+0254 => KPRI     9   2
+0255 => CALL     7   1   2
+0256    FORL     3 => 0237
+0257 => KSHORT   3   1
+0258    KSHORT   4 200
+0259    KSHORT   5   1
+0260    FORI     3 => 0281
+0261 => GGET     7   6      ; "assert"
+0262    ADDVV    9   1   6
+0263    ISLE     9   2
+0264    JMP      9 => 0267
+0265    KPRI     9   1
+0266    JMP     10 => 0268
+0267 => KPRI     9   2
+0268 => KSHORT  10 100
+0269    ISLE     6  10
+0270    JMP     10 => 0273
+0271    KPRI    10   1
+0272    JMP     11 => 0274
+0273 => KPRI    10   2
+0274 => ISEQV    9  10
+0275    JMP      9 => 0278
+0276    KPRI     9   1
+0277    JMP     10 => 0279
+0278 => KPRI     9   2
+0279 => CALL     7   1   2
+0280    FORL     3 => 0261
+0281 => TGETS    1   0   4  ; "new"
+0282    KSTR     3  10      ; "double[?]"
+0283    KSHORT   4 100
+0284    CALL     1   2   3
+0285    KSHORT   2   1
+0286    KSHORT   3 100
+0287    KSHORT   4   1
+0288    FORI     2 => 0293
+0289 => KCDATA   6  13
+0290    SUBVV    6   5   6
+0291    TSETV    5   1   6
+0292    FORL     2 => 0289
+0293 => KSHORT   2   1
+0294    KSHORT   3 100
+0295    KSHORT   4   1
+0296    FORI     2 => 0309
+0297 => GGET     6   6      ; "assert"
+0298    KCDATA   8  14
+0299    SUBVV    8   8   5
+0300    TGETV    8   1   8
+0301    SUBNV    9   5   7  ; 101
+0302    ISEQV    8   9
+0303    JMP      8 => 0306
+0304    KPRI     8   1
+0305    JMP      9 => 0307
+0306 => KPRI     8   2
+0307 => CALL     6   1   2
+0308    FORL     2 => 0297
+0309 => TGETS    1   0   4  ; "new"
+0310    KSTR     3  15      ; "int[10]"
+0311    CALL     1   2   2
+0312    ADDVN    2   1   0  ; 1
+0313    TGETS    3   0   4  ; "new"
+0314    KSTR     5  16      ; "int"
+0315    KSHORT   6  -1
+0316    CALL     3   2   3
+0317    KSHORT   4  42
+0318    TSETB    4   1   0
+0319    KSHORT   4   1
+0320    KSHORT   5 100
+0321    KSHORT   6   1
+0322    FORI     4 => 0341
+0323 => GGET     8   6      ; "assert"
+0324    KSHORT  10  -1
+0325    TGETV   10   2  10
+0326    ISEQN   10   8      ; 42
+0327    JMP     10 => 0330
+0328    KPRI    10   1
+0329    JMP     11 => 0331
+0330 => KPRI    10   2
+0331 => CALL     8   1   2
+0332    GGET     8   6      ; "assert"
+0333    TGETV   10   2   3
+0334    ISEQN   10   8      ; 42
+0335    JMP     10 => 0338
+0336    KPRI    10   1
+0337    JMP     11 => 0339
+0338 => KPRI    10   2
+0339 => CALL     8   1   2
+0340    FORL     4 => 0323
+0341 => TGETS    1   0   4  ; "new"
+0342    KSTR     3  17      ; "uint8_t[?]"
+0343    KSHORT   4 256
+0344    CALL     1   2   3
+0345    KSHORT   2   0
+0346    KSHORT   3 255
+0347    KSHORT   4   1
+0348    FORI     2 => 0351
+0349 => TSETV    5   1   5
+0350    FORL     2 => 0349
+0351 => KSHORT   2   1
+0352    KSHORT   3 255
+0353    KSHORT   4   1
+0354    FORI     2 => 0365
+0355 => GGET     6   6      ; "assert"
+0356    TGETV    8   1   5
+0357    KSHORT   9   1
+0358    ISLE     9   8
+0359    JMP      8 => 0362
+0360    KPRI     8   1
+0361    JMP      9 => 0363
+0362 => KPRI     8   2
+0363 => CALL     6   1   2
+0364    FORL     2 => 0355
+0365 => KSHORT   2   0
+0366    KSHORT   3 254
+0367    KSHORT   4   1
+0368    FORI     2 => 0379
+0369 => GGET     6   6      ; "assert"
+0370    TGETV    8   1   5
+0371    KSHORT   9 254
+0372    ISLE     8   9
+0373    JMP      8 => 0376
+0374    KPRI     8   1
+0375    JMP      9 => 0377
+0376 => KPRI     8   2
+0377 => CALL     6   1   2
+0378    FORL     2 => 0369
+0379 => TGETS    1   0   4  ; "new"
+0380    KSTR     3  18      ; "int32_t[?]"
+0381    KSHORT   4 256
+0382    CALL     1   2   3
+0383    GGET     2  11      ; "bit"
+0384    TGETS    2   2  19  ; "tobit"
+0385    GGET     3  11      ; "bit"
+0386    TGETS    3   3  20  ; "bswap"
+0387    GGET     4  11      ; "bit"
+0388    TGETS    4   4  21  ; "lshift"
+0389    KSHORT   5   0
+0390    KSHORT   6 255
+0391    KSHORT   7   1
+0392    FORI     5 => 0398
+0393 => MOV      9   3
+0394    ADDVN   11   8   9  ; 305419776
+0395    CALL     9   2   2
+0396    TSETV    9   1   8
+0397    FORL     5 => 0393
+0398 => KSHORT   5   0
+0399    KSHORT   6 255
+0400    KSHORT   7   1
+0401    FORI     5 => 0418
+0402 => GGET     9   6      ; "assert"
+0403    TGETV   11   1   8
+0404    MOV     12   2
+0405    MOV     14   4
+0406    MOV     16   8
+0407    KSHORT  17  24
+0408    CALL    14   2   3
+0409    ADDVN   14  14  10  ; 5649426
+0410    CALL    12   2   2
+0411    ISEQV   11  12
+0412    JMP     11 => 0415
+0413    KPRI    11   1
+0414    JMP     12 => 0416
+0415 => KPRI    11   2
+0416 => CALL     9   1   2
+0417    FORL     5 => 0402
+0418 => KSHORT   5   0
+0419    KSHORT   6 255
+0420    KSHORT   7   1
+0421    FORI     5 => 0436
+0422 => GGET     9   6      ; "assert"
+0423    MOV     11   3
+0424    TGETV   13   1   8
+0425    CALL    11   2   2
+0426    MOV     12   2
+0427    ADDVN   14   8   9  ; 305419776
+0428    CALL    12   2   2
+0429    ISEQV   11  12
+0430    JMP     11 => 0433
+0431    KPRI    11   1
+0432    JMP     12 => 0434
+0433 => KPRI    11   2
+0434 => CALL     9   1   2
+0435    FORL     5 => 0422
+0436 => TGETS    1   0   4  ; "new"
+0437    KSTR     3  18      ; "int32_t[?]"
+0438    KSHORT   4 256
+0439    CALL     1   2   3
+0440    GGET     2  11      ; "bit"
+0441    TGETS    2   2  21  ; "lshift"
+0442    GGET     3  11      ; "bit"
+0443    TGETS    3   3  22  ; "rshift"
+0444    GGET     4  11      ; "bit"
+0445    TGETS    4   4  23  ; "rol"
+0446    GGET     5  11      ; "bit"
+0447    TGETS    5   5  12  ; "band"
+0448    KSHORT   6   0
+0449    KSHORT   7 255
+0450    KSHORT   8   1
+0451    FORI     6 => 0464
+0452 => MOV     10   2
+0453    MOV     12   9
+0454    KSHORT  13   8
+0455    CALL    10   2   3
+0456    ADDVV   10   9  10
+0457    MOV     11   2
+0458    MOV     13   9
+0459    KSHORT  14  16
+0460    CALL    11   2   3
+0461    ADDVV   10  10  11
+0462    TSETV   10   1   9
+0463    FORL     6 => 0452
+0464 => KSHORT   6   0
+0465    KSHORT   7 255
+0466    KSHORT   8   1
+0467    FORI     6 => 0487
+0468 => GGET    10   6      ; "assert"
+0469    MOV     12   2
+0470    MOV     14   5
+0471    TGETV   16   1   9
+0472    KSHORT  17 255
+0473    CALL    14   2   3
+0474    KSHORT  15   8
+0475    CALL    12   2   3
+0476    MOV     13   2
+0477    MOV     15   9
+0478    KSHORT  16   8
+0479    CALL    13   2   3
+0480    ISEQV   12  13
+0481    JMP     12 => 0484
+0482    KPRI    12   1
+0483    JMP     13 => 0485
+0484 => KPRI    12   2
+0485 => CALL    10   1   2
+0486    FORL     6 => 0468
+0487 => KSHORT   6   0
+0488    KSHORT   7 255
+0489    KSHORT   8   1
+0490    FORI     6 => 0510
+0491 => GGET    10   6      ; "assert"
+0492    MOV     12   5
+0493    MOV     14   2
+0494    TGETV   16   1   9
+0495    KSHORT  17   8
+0496    CALL    14   2   3
+0497    KNUM    15  11      ; 65280
+0498    CALL    12   2   3
+0499    MOV     13   2
+0500    MOV     15   9
+0501    KSHORT  16   8
+0502    CALL    13   2   3
+0503    ISEQV   12  13
+0504    JMP     12 => 0507
+0505    KPRI    12   1
+0506    JMP     13 => 0508
+0507 => KPRI    12   2
+0508 => CALL    10   1   2
+0509    FORL     6 => 0491
+0510 => KSHORT   6   0
+0511    KSHORT   7 255
+0512    KSHORT   8   1
+0513    FORI     6 => 0529
+0514 => GGET    10   6      ; "assert"
+0515    MOV     12   3
+0516    MOV     14   5
+0517    TGETV   16   1   9
+0518    KNUM    17  11      ; 65280
+0519    CALL    14   2   3
+0520    KSHORT  15   8
+0521    CALL    12   2   3
+0522    ISEQV   12   9
+0523    JMP     12 => 0526
+0524    KPRI    12   1
+0525    JMP     13 => 0527
+0526 => KPRI    12   2
+0527 => CALL    10   1   2
+0528    FORL     6 => 0514
+0529 => KSHORT   6   0
+0530    KSHORT   7 255
+0531    KSHORT   8   1
+0532    FORI     6 => 0548
+0533 => GGET    10   6      ; "assert"
+0534    MOV     12   5
+0535    MOV     14   3
+0536    TGETV   16   1   9
+0537    KSHORT  17   8
+0538    CALL    14   2   3
+0539    KSHORT  15 255
+0540    CALL    12   2   3
+0541    ISEQV   12   9
+0542    JMP     12 => 0545
+0543    KPRI    12   1
+0544    JMP     13 => 0546
+0545 => KPRI    12   2
+0546 => CALL    10   1   2
+0547    FORL     6 => 0533
+0548 => KSHORT   6   0
+0549    KSHORT   7 255
+0550    KSHORT   8   1
+0551    FORI     6 => 0571
+0552 => GGET    10   6      ; "assert"
+0553    MOV     12   4
+0554    MOV     14   5
+0555    TGETV   16   1   9
+0556    KSHORT  17 255
+0557    CALL    14   2   3
+0558    KSHORT  15   8
+0559    CALL    12   2   3
+0560    MOV     13   2
+0561    MOV     15   9
+0562    KSHORT  16   8
+0563    CALL    13   2   3
+0564    ISEQV   12  13
+0565    JMP     12 => 0568
+0566    KPRI    12   1
+0567    JMP     13 => 0569
+0568 => KPRI    12   2
+0569 => CALL    10   1   2
+0570    FORL     6 => 0552
+0571 => KSHORT   6   0
+0572    KSHORT   7 255
+0573    KSHORT   8   1
+0574    FORI     6 => 0594
+0575 => GGET    10   6      ; "assert"
+0576    MOV     12   5
+0577    MOV     14   4
+0578    TGETV   16   1   9
+0579    KSHORT  17   8
+0580    CALL    14   2   3
+0581    KNUM    15  11      ; 65280
+0582    CALL    12   2   3
+0583    MOV     13   2
+0584    MOV     15   9
+0585    KSHORT  16   8
+0586    CALL    13   2   3
+0587    ISEQV   12  13
+0588    JMP     12 => 0591
+0589    KPRI    12   1
+0590    JMP     13 => 0592
+0591 => KPRI    12   2
+0592 => CALL    10   1   2
+0593    FORL     6 => 0575
+0594 => KSHORT   6   0
+0595    KSHORT   7 255
+0596    KSHORT   8   1
+0597    FORI     6 => 0617
+0598 => GGET    10   6      ; "assert"
+0599    MOV     12   2
+0600    MOV     14   5
+0601    TGETV   16   1   9
+0602    KSHORT  17 255
+0603    CALL    14   2   3
+0604    KSHORT  15  24
+0605    CALL    12   2   3
+0606    MOV     13   2
+0607    MOV     15   9
+0608    KSHORT  16  24
+0609    CALL    13   2   3
+0610    ISEQV   12  13
+0611    JMP     12 => 0614
+0612    KPRI    12   1
+0613    JMP     13 => 0615
+0614 => KPRI    12   2
+0615 => CALL    10   1   2
+0616    FORL     6 => 0598
+0617 => KSHORT   6   0
+0618    KSHORT   7 255
+0619    KSHORT   8   1
+0620    FORI     6 => 0636
+0621 => GGET    10   6      ; "assert"
+0622    MOV     12   3
+0623    MOV     14   5
+0624    TGETV   16   1   9
+0625    KNUM    17  12      ; 4294901760
+0626    CALL    14   2   3
+0627    KSHORT  15  16
+0628    CALL    12   2   3
+0629    ISEQV   12   9
+0630    JMP     12 => 0633
+0631    KPRI    12   1
+0632    JMP     13 => 0634
+0633 => KPRI    12   2
+0634 => CALL    10   1   2
+0635    FORL     6 => 0621
+0636 => RET0     0   1
+

@@ -1,0 +1,132 @@
+-- BYTECODE -- ref_lib_string_multiple_functions.lua:0-17
+0001    TNEW     0   0
+0002    TNEW     1   0
+0003    KSHORT   2   1
+0004    KSHORT   3 100
+0005    KSHORT   4   1
+0006    FORI     2 => 0015
+0007 => GGET     6   0      ; "string"
+0008    TGETS    6   6   1  ; "char"
+0009    MOV      8   5
+0010    ADDNV    9   5   0  ; 16
+0011    ADDNV   10   5   1  ; 32
+0012    CALL     6   2   4
+0013    TSETV    6   0   5
+0014    FORL     2 => 0007
+0015 => KSHORT   2   1
+0016    KSHORT   3 100
+0017    KSHORT   4   1
+0018    FORI     2 => 0025
+0019 => GGET     6   0      ; "string"
+0020    TGETS    6   6   2  ; "reverse"
+0021    TGETV    8   0   5
+0022    CALL     6   2   2
+0023    TSETV    6   0   5
+0024    FORL     2 => 0019
+0025 => GGET     2   3      ; "assert"
+0026    TGETB    4   0 100
+0027    ISEQS    4   4      ; "„td"
+0028    JMP      4 => 0031
+0029    KPRI     4   1
+0030    JMP      5 => 0032
+0031 => KPRI     4   2
+0032 => CALL     2   1   2
+0033    KSHORT   2   1
+0034    KSHORT   3 100
+0035    KSHORT   4   1
+0036    FORI     2 => 0043
+0037 => GGET     6   0      ; "string"
+0038    TGETS    6   6   2  ; "reverse"
+0039    TGETV    8   0   5
+0040    CALL     6   2   2
+0041    TSETV    6   0   5
+0042    FORL     2 => 0037
+0043 => KSHORT   2   1
+0044    KSHORT   3 100
+0045    KSHORT   4   1
+0046    FORI     2 => 0062
+0047 => GGET     6   3      ; "assert"
+0048    TGETV    8   0   5
+0049    GGET     9   0      ; "string"
+0050    TGETS    9   9   1  ; "char"
+0051    MOV     11   5
+0052    ADDNV   12   5   0  ; 16
+0053    ADDNV   13   5   1  ; 32
+0054    CALL     9   2   4
+0055    ISEQV    8   9
+0056    JMP      8 => 0059
+0057    KPRI     8   1
+0058    JMP      9 => 0060
+0059 => KPRI     8   2
+0060 => CALL     6   1   2
+0061    FORL     2 => 0047
+0062 => KSHORT   2   1
+0063    KSHORT   3 100
+0064    KSHORT   4   1
+0065    FORI     2 => 0072
+0066 => GGET     6   0      ; "string"
+0067    TGETS    6   6   5  ; "upper"
+0068    TGETV    8   0   5
+0069    CALL     6   2   2
+0070    TSETV    6   1   5
+0071    FORL     2 => 0066
+0072 => GGET     2   3      ; "assert"
+0073    TGETB    4   1  65
+0074    ISEQS    4   6      ; "AQA"
+0075    JMP      4 => 0078
+0076    KPRI     4   1
+0077    JMP      5 => 0079
+0078 => KPRI     4   2
+0079 => CALL     2   1   2
+0080    GGET     2   3      ; "assert"
+0081    TGETB    4   1  97
+0082    ISEQS    4   7      ; "AQ"
+0083    JMP      4 => 0086
+0084    KPRI     4   1
+0085    JMP      5 => 0087
+0086 => KPRI     4   2
+0087 => CALL     2   1   2
+0088    GGET     2   3      ; "assert"
+0089    TGETB    4   1 100
+0090    ISEQS    4   8      ; "DT„"
+0091    JMP      4 => 0094
+0092    KPRI     4   1
+0093    JMP      5 => 0095
+0094 => KPRI     4   2
+0095 => CALL     2   1   2
+0096    KSHORT   2   1
+0097    KSHORT   3 100
+0098    KSHORT   4   1
+0099    FORI     2 => 0106
+0100 => GGET     6   0      ; "string"
+0101    TGETS    6   6   9  ; "lower"
+0102    TGETV    8   0   5
+0103    CALL     6   2   2
+0104    TSETV    6   1   5
+0105    FORL     2 => 0100
+0106 => GGET     2   3      ; "assert"
+0107    TGETB    4   1  65
+0108    ISEQS    4  10      ; "aqa"
+0109    JMP      4 => 0112
+0110    KPRI     4   1
+0111    JMP      5 => 0113
+0112 => KPRI     4   2
+0113 => CALL     2   1   2
+0114    GGET     2   3      ; "assert"
+0115    TGETB    4   1  97
+0116    ISEQS    4  11      ; "aq"
+0117    JMP      4 => 0120
+0118    KPRI     4   1
+0119    JMP      5 => 0121
+0120 => KPRI     4   2
+0121 => CALL     2   1   2
+0122    GGET     2   3      ; "assert"
+0123    TGETB    4   1 100
+0124    ISEQS    4  12      ; "dt„"
+0125    JMP      4 => 0128
+0126    KPRI     4   1
+0127    JMP      5 => 0129
+0128 => KPRI     4   2
+0129 => CALL     2   1   2
+0130    RET0     0   1
+

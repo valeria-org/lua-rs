@@ -1,0 +1,15 @@
+-- BYTECODE -- eol_lfcr.lua:0-17
+0001    KSHORT   0   1
+0002    KSTR     1   0      ; "line1\nline2\nline3"
+0003    KSTR     2   1      ; "x\ny"
+0004    ADDVN    3   0   0  ; 2
+0005    KSTR     4   2      ; "ab"
+0006    GGET     5   3      ; "f"
+0007    MOV      7   0
+0008    MOV      8   3
+0009    CALL     5   1   3
+0010    MOV      5   0
+0011    MOV      6   3
+0012    MOV      7   1
+0013    RET      5   4
+

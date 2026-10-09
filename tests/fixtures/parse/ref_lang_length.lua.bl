@@ -1,0 +1,85 @@
+-- BYTECODE -- ref_lang_length.lua:0-24
+0001    TNEW     0   0
+0002    KSHORT   1   1
+0003    KSHORT   2 100
+0004    KSHORT   3   1
+0005    FORI     1 => 0010
+0006 => LEN      5   0
+0007    ADDVN    5   5   0  ; 1
+0008    TSETV    4   0   5
+0009    FORL     1 => 0006
+0010 => GGET     1   0      ; "assert"
+0011    LEN      3   0
+0012    ISEQN    3   1      ; 100
+0013    JMP      3 => 0016
+0014    KPRI     3   1
+0015    JMP      4 => 0017
+0016 => KPRI     3   2
+0017 => CALL     1   1   2
+0018    KSHORT   1   1
+0019    KSHORT   2 100
+0020    KSHORT   3   1
+0021    FORI     1 => 0026
+0022 => LEN      5   0
+0023    KPRI     6   0
+0024    TSETV    6   0   5
+0025    FORL     1 => 0022
+0026 => GGET     1   0      ; "assert"
+0027    LEN      3   0
+0028    ISEQN    3   2      ; 0
+0029    JMP      3 => 0032
+0030    KPRI     3   1
+0031    JMP      4 => 0033
+0032 => KPRI     3   2
+0033 => CALL     1   1   2
+0034    TNEW     0   0
+0035    KSHORT   1 999
+0036    TSETB    1   0  90
+0037    KSHORT   1   1
+0038    KSHORT   2 100
+0039    KSHORT   3   1
+0040    FORI     1 => 0045
+0041 => LEN      5   0
+0042    ADDVN    5   5   0  ; 1
+0043    TSETV    4   0   5
+0044    FORL     1 => 0041
+0045 => GGET     1   0      ; "assert"
+0046    LEN      3   0
+0047    KSHORT   4 100
+0048    ISGE     4   3
+0049    JMP      3 => 0054
+0050    LEN      3   0
+0051    TGETV    3   0   3
+0052    ISEQN    3   1      ; 100
+0053    JMP      3 => 0056
+0054 => KPRI     3   1
+0055    JMP      4 => 0057
+0056 => KPRI     3   2
+0057 => CALL     1   1   2
+0058    TNEW     0   0
+0059    KSHORT   1   1
+0060    KSHORT   2 100
+0061    KSHORT   3   1
+0062    FORI     1 => 0065
+0063 => TSETV    4   0   4
+0064    FORL     1 => 0063
+0065 => KPRI     1   0
+0066    TSETB    1   0  10
+0067    KSHORT   1   1
+0068    KSHORT   2  99
+0069    KSHORT   3   1
+0070    FORI     1 => 0075
+0071 => LEN      5   0
+0072    KPRI     6   0
+0073    TSETV    6   0   5
+0074    FORL     1 => 0071
+0075 => GGET     1   0      ; "assert"
+0076    LEN      3   0
+0077    ISEQN    3   2      ; 0
+0078    JMP      3 => 0081
+0079    KPRI     3   1
+0080    JMP      4 => 0082
+0081 => KPRI     3   2
+0082 => CALL     1   1   2
+0083    RET0     0   1
+

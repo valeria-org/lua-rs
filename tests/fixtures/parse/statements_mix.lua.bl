@@ -1,0 +1,42 @@
+-- BYTECODE -- statements_mix.lua:3-3
+0001    UGET     0   0      ; x
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; x
+0004    UGET     0   0      ; x
+0005    RET1     0   2
+
+-- BYTECODE -- statements_mix.lua:0-22
+0001    KSHORT   0   0
+0002    FNEW     1   0      ; statements_mix.lua:3
+0003 => MOV      2   1
+0004    CALL     2   2   1
+0005    KSHORT   3   5
+0006    ISGE     2   3
+0007    JMP      2 => 0032
+0008    LOOP     2 => 0032
+0009    ISNEN    0   0      ; 2
+0010    JMP      2 => 0023
+0011    KSHORT   2   1
+0012    KSHORT   3   3
+0013    KSHORT   4   1
+0014    FORI     2 => 0022
+0015 => LOOP     6 => 0021
+0016    MOV      6   5
+0017    KSHORT   7   1
+0018    ISGE     7   6
+0019    JMP      7 => 0021
+0020    JMP      6 => 0021
+0021 => FORL     2 => 0015
+0022 => JMP      2 => 0003
+0023 => ISNEN    0   1      ; 3
+0024    JMP      2 => 0028
+0025    MOV      2   0
+0026    JMP      2 => 0003
+0027    JMP      2 => 0003
+0028 => GGET     2   1      ; "print"
+0029    MOV      4   0
+0030    CALL     2   1   2
+0031    JMP      2 => 0003
+0032 => UCLO     0 => 0033
+0033 => RET0     0   1
+

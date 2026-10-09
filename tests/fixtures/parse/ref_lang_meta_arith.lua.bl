@@ -1,0 +1,664 @@
+-- BYTECODE -- ref_lang_meta_arith.lua:3-3
+0001    UGET     2   0      ; arith
+0002    KSTR     4   0      ; "add"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_arith.lua:4-4
+0001    UGET     2   0      ; arith
+0002    KSTR     4   0      ; "sub"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_arith.lua:5-5
+0001    UGET     2   0      ; arith
+0002    KSTR     4   0      ; "mul"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_arith.lua:6-6
+0001    UGET     2   0      ; arith
+0002    KSTR     4   0      ; "div"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_arith.lua:7-7
+0001    UGET     2   0      ; arith
+0002    KSTR     4   0      ; "mod"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_arith.lua:8-8
+0001    UGET     2   0      ; arith
+0002    KSTR     4   0      ; "pow"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_arith.lua:9-9
+0001    UGET     2   0      ; arith
+0002    KSTR     4   0      ; "unm"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_arith.lua:1-12
+0001    TDUP     3   1
+0002    FNEW     4   0      ; ref_lang_meta_arith.lua:3
+0003    TSETS    4   3   2  ; "__add"
+0004    FNEW     4   3      ; ref_lang_meta_arith.lua:4
+0005    TSETS    4   3   4  ; "__sub"
+0006    FNEW     4   5      ; ref_lang_meta_arith.lua:5
+0007    TSETS    4   3   6  ; "__mul"
+0008    FNEW     4   7      ; ref_lang_meta_arith.lua:6
+0009    TSETS    4   3   8  ; "__div"
+0010    FNEW     4   9      ; ref_lang_meta_arith.lua:7
+0011    TSETS    4   3  10  ; "__mod"
+0012    FNEW     4  11      ; ref_lang_meta_arith.lua:8
+0013    TSETS    4   3  12  ; "__pow"
+0014    FNEW     4  13      ; ref_lang_meta_arith.lua:9
+0015    TSETS    4   3  14  ; "__unm"
+0016    GGET     4  15      ; "setmetatable"
+0017    TNEW     6   3
+0018    TSETB    1   6   1
+0019    MOV      7   3
+0020    CALL     4   2   3
+0021    GGET     5  15      ; "setmetatable"
+0022    TNEW     7   3
+0023    TSETB    2   7   1
+0024    MOV      8   3
+0025    CALL     5   0   3
+0026    UCLO     0 => 0027
+0027 => RETM     4   1
+
+-- BYTECODE -- ref_lang_meta_arith.lua:15-15
+0001    RET1     0   2
+
+-- BYTECODE -- ref_lang_meta_arith.lua:26-26
+0001    TGETB    3   1   1
+0002    RET1     3   2
+
+-- BYTECODE -- ref_lang_meta_arith.lua:37-37
+0001    TGETB    3   2   1
+0002    RET1     3   2
+
+-- BYTECODE -- ref_lang_meta_arith.lua:48-48
+0001    TGETB    3   1   1
+0002    ADDVV    3   3   2
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lang_meta_arith.lua:58-58
+0001    TGETB    3   2   1
+0002    ADDVV    3   1   3
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lang_meta_arith.lua:0-119
+0001    FNEW     0   0      ; ref_lang_meta_arith.lua:1
+0002    MOV      1   0
+0003    FNEW     3   1      ; ref_lang_meta_arith.lua:15
+0004    CALL     1   3   2
+0005    GGET     3   2      ; "assert"
+0006    ADDVV    5   1   2
+0007    ISEQS    5   3      ; "add"
+0008    JMP      5 => 0011
+0009    KPRI     5   1
+0010    JMP      6 => 0012
+0011 => KPRI     5   2
+0012 => CALL     3   1   2
+0013    GGET     3   2      ; "assert"
+0014    SUBVV    5   1   2
+0015    ISEQS    5   4      ; "sub"
+0016    JMP      5 => 0019
+0017    KPRI     5   1
+0018    JMP      6 => 0020
+0019 => KPRI     5   2
+0020 => CALL     3   1   2
+0021    GGET     3   2      ; "assert"
+0022    MULVV    5   1   2
+0023    ISEQS    5   5      ; "mul"
+0024    JMP      5 => 0027
+0025    KPRI     5   1
+0026    JMP      6 => 0028
+0027 => KPRI     5   2
+0028 => CALL     3   1   2
+0029    GGET     3   2      ; "assert"
+0030    DIVVV    5   1   2
+0031    ISEQS    5   6      ; "div"
+0032    JMP      5 => 0035
+0033    KPRI     5   1
+0034    JMP      6 => 0036
+0035 => KPRI     5   2
+0036 => CALL     3   1   2
+0037    GGET     3   2      ; "assert"
+0038    MODVV    5   1   2
+0039    ISEQS    5   7      ; "mod"
+0040    JMP      5 => 0043
+0041    KPRI     5   1
+0042    JMP      6 => 0044
+0043 => KPRI     5   2
+0044 => CALL     3   1   2
+0045    GGET     3   2      ; "assert"
+0046    POW      5   1   2
+0047    ISEQS    5   8      ; "pow"
+0048    JMP      5 => 0051
+0049    KPRI     5   1
+0050    JMP      6 => 0052
+0051 => KPRI     5   2
+0052 => CALL     3   1   2
+0053    GGET     3   2      ; "assert"
+0054    UNM      5   1
+0055    ISEQS    5   9      ; "unm"
+0056    JMP      5 => 0059
+0057    KPRI     5   1
+0058    JMP      6 => 0060
+0059 => KPRI     5   2
+0060 => CALL     3   1   2
+0061    MOV      1   0
+0062    FNEW     3  10      ; ref_lang_meta_arith.lua:26
+0063    KSTR     4  11      ; "foo"
+0064    KSHORT   5  42
+0065    CALL     1   3   4
+0066    GGET     3   2      ; "assert"
+0067    ADDVV    5   1   2
+0068    ISEQS    5  11      ; "foo"
+0069    JMP      5 => 0072
+0070    KPRI     5   1
+0071    JMP      6 => 0073
+0072 => KPRI     5   2
+0073 => CALL     3   1   2
+0074    GGET     3   2      ; "assert"
+0075    SUBVV    5   1   2
+0076    ISEQS    5  11      ; "foo"
+0077    JMP      5 => 0080
+0078    KPRI     5   1
+0079    JMP      6 => 0081
+0080 => KPRI     5   2
+0081 => CALL     3   1   2
+0082    GGET     3   2      ; "assert"
+0083    MULVV    5   1   2
+0084    ISEQS    5  11      ; "foo"
+0085    JMP      5 => 0088
+0086    KPRI     5   1
+0087    JMP      6 => 0089
+0088 => KPRI     5   2
+0089 => CALL     3   1   2
+0090    GGET     3   2      ; "assert"
+0091    DIVVV    5   1   2
+0092    ISEQS    5  11      ; "foo"
+0093    JMP      5 => 0096
+0094    KPRI     5   1
+0095    JMP      6 => 0097
+0096 => KPRI     5   2
+0097 => CALL     3   1   2
+0098    GGET     3   2      ; "assert"
+0099    MODVV    5   1   2
+0100    ISEQS    5  11      ; "foo"
+0101    JMP      5 => 0104
+0102    KPRI     5   1
+0103    JMP      6 => 0105
+0104 => KPRI     5   2
+0105 => CALL     3   1   2
+0106    GGET     3   2      ; "assert"
+0107    POW      5   1   2
+0108    ISEQS    5  11      ; "foo"
+0109    JMP      5 => 0112
+0110    KPRI     5   1
+0111    JMP      6 => 0113
+0112 => KPRI     5   2
+0113 => CALL     3   1   2
+0114    GGET     3   2      ; "assert"
+0115    UNM      5   1
+0116    ISEQS    5  11      ; "foo"
+0117    JMP      5 => 0120
+0118    KPRI     5   1
+0119    JMP      6 => 0121
+0120 => KPRI     5   2
+0121 => CALL     3   1   2
+0122    MOV      1   0
+0123    FNEW     3  12      ; ref_lang_meta_arith.lua:37
+0124    KSHORT   4  42
+0125    KSTR     5  11      ; "foo"
+0126    CALL     1   3   4
+0127    GGET     3   2      ; "assert"
+0128    ADDVV    5   1   2
+0129    ISEQS    5  11      ; "foo"
+0130    JMP      5 => 0133
+0131    KPRI     5   1
+0132    JMP      6 => 0134
+0133 => KPRI     5   2
+0134 => CALL     3   1   2
+0135    GGET     3   2      ; "assert"
+0136    SUBVV    5   1   2
+0137    ISEQS    5  11      ; "foo"
+0138    JMP      5 => 0141
+0139    KPRI     5   1
+0140    JMP      6 => 0142
+0141 => KPRI     5   2
+0142 => CALL     3   1   2
+0143    GGET     3   2      ; "assert"
+0144    MULVV    5   1   2
+0145    ISEQS    5  11      ; "foo"
+0146    JMP      5 => 0149
+0147    KPRI     5   1
+0148    JMP      6 => 0150
+0149 => KPRI     5   2
+0150 => CALL     3   1   2
+0151    GGET     3   2      ; "assert"
+0152    DIVVV    5   1   2
+0153    ISEQS    5  11      ; "foo"
+0154    JMP      5 => 0157
+0155    KPRI     5   1
+0156    JMP      6 => 0158
+0157 => KPRI     5   2
+0158 => CALL     3   1   2
+0159    GGET     3   2      ; "assert"
+0160    MODVV    5   1   2
+0161    ISEQS    5  11      ; "foo"
+0162    JMP      5 => 0165
+0163    KPRI     5   1
+0164    JMP      6 => 0166
+0165 => KPRI     5   2
+0166 => CALL     3   1   2
+0167    GGET     3   2      ; "assert"
+0168    POW      5   1   2
+0169    ISEQS    5  11      ; "foo"
+0170    JMP      5 => 0173
+0171    KPRI     5   1
+0172    JMP      6 => 0174
+0173 => KPRI     5   2
+0174 => CALL     3   1   2
+0175    GGET     3   2      ; "assert"
+0176    UNM      5   1
+0177    ISEQN    5   0      ; 42
+0178    JMP      5 => 0181
+0179    KPRI     5   1
+0180    JMP      6 => 0182
+0181 => KPRI     5   2
+0182 => CALL     3   1   2
+0183    MOV      1   0
+0184    FNEW     3  13      ; ref_lang_meta_arith.lua:48
+0185    KSHORT   4  39
+0186    CALL     1   2   3
+0187    KSHORT   2   3
+0188    GGET     3   2      ; "assert"
+0189    ADDVV    5   1   2
+0190    ISEQN    5   0      ; 42
+0191    JMP      5 => 0194
+0192    KPRI     5   1
+0193    JMP      6 => 0195
+0194 => KPRI     5   2
+0195 => CALL     3   1   2
+0196    GGET     3   2      ; "assert"
+0197    SUBVV    5   1   2
+0198    ISEQN    5   0      ; 42
+0199    JMP      5 => 0202
+0200    KPRI     5   1
+0201    JMP      6 => 0203
+0202 => KPRI     5   2
+0203 => CALL     3   1   2
+0204    GGET     3   2      ; "assert"
+0205    MULVV    5   1   2
+0206    ISEQN    5   0      ; 42
+0207    JMP      5 => 0210
+0208    KPRI     5   1
+0209    JMP      6 => 0211
+0210 => KPRI     5   2
+0211 => CALL     3   1   2
+0212    GGET     3   2      ; "assert"
+0213    DIVVV    5   1   2
+0214    ISEQN    5   0      ; 42
+0215    JMP      5 => 0218
+0216    KPRI     5   1
+0217    JMP      6 => 0219
+0218 => KPRI     5   2
+0219 => CALL     3   1   2
+0220    GGET     3   2      ; "assert"
+0221    MODVV    5   1   2
+0222    ISEQN    5   0      ; 42
+0223    JMP      5 => 0226
+0224    KPRI     5   1
+0225    JMP      6 => 0227
+0226 => KPRI     5   2
+0227 => CALL     3   1   2
+0228    GGET     3   2      ; "assert"
+0229    POW      5   1   2
+0230    ISEQN    5   0      ; 42
+0231    JMP      5 => 0234
+0232    KPRI     5   1
+0233    JMP      6 => 0235
+0234 => KPRI     5   2
+0235 => CALL     3   1   2
+0236    KSHORT   1  39
+0237    MOV      2   0
+0238    FNEW     4  14      ; ref_lang_meta_arith.lua:58
+0239    KSHORT   5   3
+0240    CALL     2   2   3
+0241    GGET     3   2      ; "assert"
+0242    ADDVV    5   1   2
+0243    ISEQN    5   0      ; 42
+0244    JMP      5 => 0247
+0245    KPRI     5   1
+0246    JMP      6 => 0248
+0247 => KPRI     5   2
+0248 => CALL     3   1   2
+0249    GGET     3   2      ; "assert"
+0250    SUBVV    5   1   2
+0251    ISEQN    5   0      ; 42
+0252    JMP      5 => 0255
+0253    KPRI     5   1
+0254    JMP      6 => 0256
+0255 => KPRI     5   2
+0256 => CALL     3   1   2
+0257    GGET     3   2      ; "assert"
+0258    MULVV    5   1   2
+0259    ISEQN    5   0      ; 42
+0260    JMP      5 => 0263
+0261    KPRI     5   1
+0262    JMP      6 => 0264
+0263 => KPRI     5   2
+0264 => CALL     3   1   2
+0265    GGET     3   2      ; "assert"
+0266    DIVVV    5   1   2
+0267    ISEQN    5   0      ; 42
+0268    JMP      5 => 0271
+0269    KPRI     5   1
+0270    JMP      6 => 0272
+0271 => KPRI     5   2
+0272 => CALL     3   1   2
+0273    GGET     3   2      ; "assert"
+0274    MODVV    5   1   2
+0275    ISEQN    5   0      ; 42
+0276    JMP      5 => 0279
+0277    KPRI     5   1
+0278    JMP      6 => 0280
+0279 => KPRI     5   2
+0280 => CALL     3   1   2
+0281    GGET     3   2      ; "assert"
+0282    POW      5   1   2
+0283    ISEQN    5   0      ; 42
+0284    JMP      5 => 0287
+0285    KPRI     5   1
+0286    JMP      6 => 0288
+0287 => KPRI     5   2
+0288 => CALL     3   1   2
+0289    KSTR     1  15      ; "39"
+0290    KSHORT   2   3
+0291    GGET     3   2      ; "assert"
+0292    ADDVV    5   1   2
+0293    ISEQN    5   0      ; 42
+0294    JMP      5 => 0297
+0295    KPRI     5   1
+0296    JMP      6 => 0298
+0297 => KPRI     5   2
+0298 => CALL     3   1   2
+0299    GGET     3   2      ; "assert"
+0300    SUBVV    5   1   2
+0301    ISEQN    5   1      ; 36
+0302    JMP      5 => 0305
+0303    KPRI     5   1
+0304    JMP      6 => 0306
+0305 => KPRI     5   2
+0306 => CALL     3   1   2
+0307    GGET     3   2      ; "assert"
+0308    MULVV    5   1   2
+0309    ISEQN    5   2      ; 117
+0310    JMP      5 => 0313
+0311    KPRI     5   1
+0312    JMP      6 => 0314
+0313 => KPRI     5   2
+0314 => CALL     3   1   2
+0315    GGET     3   2      ; "assert"
+0316    DIVVV    5   1   2
+0317    ISEQN    5   3      ; 13
+0318    JMP      5 => 0321
+0319    KPRI     5   1
+0320    JMP      6 => 0322
+0321 => KPRI     5   2
+0322 => CALL     3   1   2
+0323    GGET     3   2      ; "assert"
+0324    MODVV    5   1   2
+0325    ISEQN    5   4      ; 0
+0326    JMP      5 => 0329
+0327    KPRI     5   1
+0328    JMP      6 => 0330
+0329 => KPRI     5   2
+0330 => CALL     3   1   2
+0331    GGET     3   2      ; "assert"
+0332    POW      5   1   2
+0333    ISEQN    5   5      ; 59319
+0334    JMP      5 => 0337
+0335    KPRI     5   1
+0336    JMP      6 => 0338
+0337 => KPRI     5   2
+0338 => CALL     3   1   2
+0339    GGET     3   2      ; "assert"
+0340    UNM      5   1
+0341    ISEQN    5   6      ; -39
+0342    JMP      5 => 0345
+0343    KPRI     5   1
+0344    JMP      6 => 0346
+0345 => KPRI     5   2
+0346 => CALL     3   1   2
+0347    KSHORT   1  39
+0348    KSTR     2  16      ; "3"
+0349    GGET     3   2      ; "assert"
+0350    ADDVV    5   1   2
+0351    ISEQN    5   0      ; 42
+0352    JMP      5 => 0355
+0353    KPRI     5   1
+0354    JMP      6 => 0356
+0355 => KPRI     5   2
+0356 => CALL     3   1   2
+0357    GGET     3   2      ; "assert"
+0358    SUBVV    5   1   2
+0359    ISEQN    5   1      ; 36
+0360    JMP      5 => 0363
+0361    KPRI     5   1
+0362    JMP      6 => 0364
+0363 => KPRI     5   2
+0364 => CALL     3   1   2
+0365    GGET     3   2      ; "assert"
+0366    MULVV    5   1   2
+0367    ISEQN    5   2      ; 117
+0368    JMP      5 => 0371
+0369    KPRI     5   1
+0370    JMP      6 => 0372
+0371 => KPRI     5   2
+0372 => CALL     3   1   2
+0373    GGET     3   2      ; "assert"
+0374    DIVVV    5   1   2
+0375    ISEQN    5   3      ; 13
+0376    JMP      5 => 0379
+0377    KPRI     5   1
+0378    JMP      6 => 0380
+0379 => KPRI     5   2
+0380 => CALL     3   1   2
+0381    GGET     3   2      ; "assert"
+0382    MODVV    5   1   2
+0383    ISEQN    5   4      ; 0
+0384    JMP      5 => 0387
+0385    KPRI     5   1
+0386    JMP      6 => 0388
+0387 => KPRI     5   2
+0388 => CALL     3   1   2
+0389    GGET     3   2      ; "assert"
+0390    POW      5   1   2
+0391    ISEQN    5   5      ; 59319
+0392    JMP      5 => 0395
+0393    KPRI     5   1
+0394    JMP      6 => 0396
+0395 => KPRI     5   2
+0396 => CALL     3   1   2
+0397    GGET     3   2      ; "assert"
+0398    UNM      5   1
+0399    ISEQN    5   6      ; -39
+0400    JMP      5 => 0403
+0401    KPRI     5   1
+0402    JMP      6 => 0404
+0403 => KPRI     5   2
+0404 => CALL     3   1   2
+0405    KSTR     1  15      ; "39"
+0406    KSTR     2  16      ; "3"
+0407    GGET     3   2      ; "assert"
+0408    ADDVV    5   1   2
+0409    ISEQN    5   0      ; 42
+0410    JMP      5 => 0413
+0411    KPRI     5   1
+0412    JMP      6 => 0414
+0413 => KPRI     5   2
+0414 => CALL     3   1   2
+0415    GGET     3   2      ; "assert"
+0416    SUBVV    5   1   2
+0417    ISEQN    5   1      ; 36
+0418    JMP      5 => 0421
+0419    KPRI     5   1
+0420    JMP      6 => 0422
+0421 => KPRI     5   2
+0422 => CALL     3   1   2
+0423    GGET     3   2      ; "assert"
+0424    MULVV    5   1   2
+0425    ISEQN    5   2      ; 117
+0426    JMP      5 => 0429
+0427    KPRI     5   1
+0428    JMP      6 => 0430
+0429 => KPRI     5   2
+0430 => CALL     3   1   2
+0431    GGET     3   2      ; "assert"
+0432    DIVVV    5   1   2
+0433    ISEQN    5   3      ; 13
+0434    JMP      5 => 0437
+0435    KPRI     5   1
+0436    JMP      6 => 0438
+0437 => KPRI     5   2
+0438 => CALL     3   1   2
+0439    GGET     3   2      ; "assert"
+0440    MODVV    5   1   2
+0441    ISEQN    5   4      ; 0
+0442    JMP      5 => 0445
+0443    KPRI     5   1
+0444    JMP      6 => 0446
+0445 => KPRI     5   2
+0446 => CALL     3   1   2
+0447    GGET     3   2      ; "assert"
+0448    POW      5   1   2
+0449    ISEQN    5   5      ; 59319
+0450    JMP      5 => 0453
+0451    KPRI     5   1
+0452    JMP      6 => 0454
+0453 => KPRI     5   2
+0454 => CALL     3   1   2
+0455    GGET     3   2      ; "assert"
+0456    UNM      5   1
+0457    ISEQN    5   6      ; -39
+0458    JMP      5 => 0461
+0459    KPRI     5   1
+0460    JMP      6 => 0462
+0461 => KPRI     5   2
+0462 => CALL     3   1   2
+0463    KSTR     1  15      ; "39"
+0464    GGET     2   2      ; "assert"
+0465    ADDVN    4   1   7  ; 3
+0466    ISEQN    4   0      ; 42
+0467    JMP      4 => 0470
+0468    KPRI     4   1
+0469    JMP      5 => 0471
+0470 => KPRI     4   2
+0471 => CALL     2   1   2
+0472    GGET     2   2      ; "assert"
+0473    SUBVN    4   1   7  ; 3
+0474    ISEQN    4   1      ; 36
+0475    JMP      4 => 0478
+0476    KPRI     4   1
+0477    JMP      5 => 0479
+0478 => KPRI     4   2
+0479 => CALL     2   1   2
+0480    GGET     2   2      ; "assert"
+0481    MULVN    4   1   7  ; 3
+0482    ISEQN    4   2      ; 117
+0483    JMP      4 => 0486
+0484    KPRI     4   1
+0485    JMP      5 => 0487
+0486 => KPRI     4   2
+0487 => CALL     2   1   2
+0488    GGET     2   2      ; "assert"
+0489    DIVVN    4   1   7  ; 3
+0490    ISEQN    4   3      ; 13
+0491    JMP      4 => 0494
+0492    KPRI     4   1
+0493    JMP      5 => 0495
+0494 => KPRI     4   2
+0495 => CALL     2   1   2
+0496    GGET     2   2      ; "assert"
+0497    MODVN    4   1   7  ; 3
+0498    ISEQN    4   4      ; 0
+0499    JMP      4 => 0502
+0500    KPRI     4   1
+0501    JMP      5 => 0503
+0502 => KPRI     4   2
+0503 => CALL     2   1   2
+0504    GGET     2   2      ; "assert"
+0505    KSHORT   4   3
+0506    POW      4   1   4
+0507    ISEQN    4   5      ; 59319
+0508    JMP      4 => 0511
+0509    KPRI     4   1
+0510    JMP      5 => 0512
+0511 => KPRI     4   2
+0512 => CALL     2   1   2
+0513    KSTR     1  16      ; "3"
+0514    GGET     2   2      ; "assert"
+0515    ADDNV    4   1   8  ; 39
+0516    ISEQN    4   0      ; 42
+0517    JMP      4 => 0520
+0518    KPRI     4   1
+0519    JMP      5 => 0521
+0520 => KPRI     4   2
+0521 => CALL     2   1   2
+0522    GGET     2   2      ; "assert"
+0523    SUBNV    4   1   8  ; 39
+0524    ISEQN    4   1      ; 36
+0525    JMP      4 => 0528
+0526    KPRI     4   1
+0527    JMP      5 => 0529
+0528 => KPRI     4   2
+0529 => CALL     2   1   2
+0530    GGET     2   2      ; "assert"
+0531    MULNV    4   1   8  ; 39
+0532    ISEQN    4   2      ; 117
+0533    JMP      4 => 0536
+0534    KPRI     4   1
+0535    JMP      5 => 0537
+0536 => KPRI     4   2
+0537 => CALL     2   1   2
+0538    GGET     2   2      ; "assert"
+0539    DIVNV    4   1   8  ; 39
+0540    ISEQN    4   3      ; 13
+0541    JMP      4 => 0544
+0542    KPRI     4   1
+0543    JMP      5 => 0545
+0544 => KPRI     4   2
+0545 => CALL     2   1   2
+0546    GGET     2   2      ; "assert"
+0547    MODNV    4   1   8  ; 39
+0548    ISEQN    4   4      ; 0
+0549    JMP      4 => 0552
+0550    KPRI     4   1
+0551    JMP      5 => 0553
+0552 => KPRI     4   2
+0553 => CALL     2   1   2
+0554    GGET     2   2      ; "assert"
+0555    KSHORT   4  39
+0556    POW      4   4   1
+0557    ISEQN    4   5      ; 59319
+0558    JMP      4 => 0561
+0559    KPRI     4   1
+0560    JMP      5 => 0562
+0561 => KPRI     4   2
+0562 => CALL     2   1   2
+0563    RET0     0   1
+

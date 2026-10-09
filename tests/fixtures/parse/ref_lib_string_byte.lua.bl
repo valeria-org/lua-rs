@@ -1,0 +1,504 @@
+-- BYTECODE -- ref_lib_string_byte.lua:0-93
+0001    GGET     0   0      ; "bit"
+0002    ISF          0
+0003    JMP      1 => 0006
+0004    GGET     0   0      ; "bit"
+0005    TGETS    0   0   1  ; "band"
+0006 => GGET     1   0      ; "bit"
+0007    ISF          1
+0008    JMP      2 => 0011
+0009    GGET     1   0      ; "bit"
+0010    TGETS    1   1   2  ; "bor"
+0011 => GGET     2   3      ; "string"
+0012    TGETS    2   2   4  ; "byte"
+0013    KSTR     3   5      ; "foo"
+0014    MOV      5   3
+0015    TGETS    3   3   4  ; "byte"
+0016    KSHORT   6   1
+0017    CALL     3   3   3
+0018    GGET     5   6      ; "assert"
+0019    GGET     7   7      ; "type"
+0020    MOV      9   3
+0021    CALL     7   2   2
+0022    ISEQS    7   8      ; "number"
+0023    JMP      7 => 0026
+0024    KPRI     7   1
+0025    JMP      8 => 0027
+0026 => KPRI     7   2
+0027 => CALL     5   1   2
+0028    GGET     5   6      ; "assert"
+0029    ISEQP    4   0
+0030    JMP      7 => 0033
+0031    KPRI     7   1
+0032    JMP      8 => 0034
+0033 => KPRI     7   2
+0034 => CALL     5   1   2
+0035    KSTR     5   5      ; "foo"
+0036    MOV      7   5
+0037    TGETS    5   5   4  ; "byte"
+0038    KSHORT   8   2
+0039    KSHORT   9   3
+0040    CALL     5   3   4
+0041    GGET     7   6      ; "assert"
+0042    GGET     9   7      ; "type"
+0043    MOV     11   5
+0044    CALL     9   2   2
+0045    ISEQS    9   8      ; "number"
+0046    JMP      9 => 0049
+0047    KPRI     9   1
+0048    JMP     10 => 0050
+0049 => KPRI     9   2
+0050 => CALL     7   1   2
+0051    GGET     7   6      ; "assert"
+0052    ISEQV    5   6
+0053    JMP      9 => 0056
+0054    KPRI     9   1
+0055    JMP     10 => 0057
+0056 => KPRI     9   2
+0057 => CALL     7   1   2
+0058    GGET     7   6      ; "assert"
+0059    ISNEV    5   3
+0060    JMP      9 => 0063
+0061    KPRI     9   1
+0062    JMP     10 => 0064
+0063 => KPRI     9   2
+0064 => CALL     7   1   2
+0065    KSTR     3   9      ; "abcdefg"
+0066    KNIL     4   6
+0067    KSHORT   7 100
+0068    KSHORT   8 107
+0069    KSHORT   9   1
+0070    FORI     7 => 0113
+0071 => KSHORT  11   1
+0072    MOV     12  10
+0073    KSHORT  13   1
+0074    FORI    11 => 0090
+0075 => MOV     15   2
+0076    KSTR    17   9      ; "abcdefg"
+0077    MOV     18   0
+0078    MOV     20  14
+0079    KSHORT  21   7
+0080    CALL    18   2   3
+0081    MOV     19   0
+0082    ADDVN   21  14   0  ; 2
+0083    KSHORT  22   7
+0084    CALL    19   0   3
+0085    CALLM   15   4   2
+0086    MOV      6  17
+0087    MOV      5  16
+0088    MOV      4  15
+0089    FORL    11 => 0075
+0090 => MOV     11   2
+0091    KSTR    13   9      ; "abcdefg"
+0092    MOV     14   0
+0093    MOV     16  10
+0094    KSHORT  17   7
+0095    CALL    14   2   3
+0096    MOV     15   0
+0097    ADDVN   17  10   0  ; 2
+0098    KSHORT  18   7
+0099    CALL    15   0   3
+0100    CALLM   11   4   2
+0101    GGET    14   6      ; "assert"
+0102    ISNEV    4  11
+0103    JMP     16 => 0108
+0104    ISNEV    5  12
+0105    JMP     16 => 0108
+0106    ISEQV    6  13
+0107    JMP     16 => 0110
+0108 => KPRI    16   1
+0109    JMP     17 => 0111
+0110 => KPRI    16   2
+0111 => CALL    14   1   2
+0112    FORL     7 => 0071
+0113 => KSHORT   7 100
+0114    KSHORT   8 107
+0115    KSHORT   9   1
+0116    FORI     7 => 0159
+0117 => KSHORT  11   1
+0118    MOV     12  10
+0119    KSHORT  13   1
+0120    FORI    11 => 0136
+0121 => MOV     15   2
+0122    MOV     17   3
+0123    MOV     18   0
+0124    MOV     20  14
+0125    KSHORT  21   7
+0126    CALL    18   2   3
+0127    MOV     19   0
+0128    ADDVN   21  14   0  ; 2
+0129    KSHORT  22   7
+0130    CALL    19   0   3
+0131    CALLM   15   4   2
+0132    MOV      6  17
+0133    MOV      5  16
+0134    MOV      4  15
+0135    FORL    11 => 0121
+0136 => MOV     11   2
+0137    MOV     13   3
+0138    MOV     14   0
+0139    MOV     16  10
+0140    KSHORT  17   7
+0141    CALL    14   2   3
+0142    MOV     15   0
+0143    ADDVN   17  10   0  ; 2
+0144    KSHORT  18   7
+0145    CALL    15   0   3
+0146    CALLM   11   4   2
+0147    GGET    14   6      ; "assert"
+0148    ISNEV    4  11
+0149    JMP     16 => 0154
+0150    ISNEV    5  12
+0151    JMP     16 => 0154
+0152    ISEQV    6  13
+0153    JMP     16 => 0156
+0154 => KPRI    16   1
+0155    JMP     17 => 0157
+0156 => KPRI    16   2
+0157 => CALL    14   1   2
+0158    FORL     7 => 0117
+0159 => KSTR     3  10      ; "abc"
+0160    KNIL     4   6
+0161    KSHORT   7 100
+0162    KSHORT   8 107
+0163    KSHORT   9   1
+0164    FORI     7 => 0201
+0165 => KSHORT  11   1
+0166    MOV     12  10
+0167    KSHORT  13   1
+0168    FORI    11 => 0181
+0169 => MOV     15   2
+0170    KSTR    17  10      ; "abc"
+0171    MOV     18   0
+0172    MOV     20  14
+0173    KSHORT  21   7
+0174    CALL    18   2   3
+0175    KSHORT  19  -1
+0176    CALL    15   4   4
+0177    MOV      6  17
+0178    MOV      5  16
+0179    MOV      4  15
+0180    FORL    11 => 0169
+0181 => MOV     11   2
+0182    KSTR    13  10      ; "abc"
+0183    MOV     14   0
+0184    MOV     16  10
+0185    KSHORT  17   7
+0186    CALL    14   2   3
+0187    KSHORT  15  -1
+0188    CALL    11   4   4
+0189    GGET    14   6      ; "assert"
+0190    ISNEV    4  11
+0191    JMP     16 => 0196
+0192    ISNEV    5  12
+0193    JMP     16 => 0196
+0194    ISEQV    6  13
+0195    JMP     16 => 0198
+0196 => KPRI    16   1
+0197    JMP     17 => 0199
+0198 => KPRI    16   2
+0199 => CALL    14   1   2
+0200    FORL     7 => 0165
+0201 => KSHORT   7 100
+0202    KSHORT   8 107
+0203    KSHORT   9   1
+0204    FORI     7 => 0241
+0205 => KSHORT  11   1
+0206    MOV     12  10
+0207    KSHORT  13   1
+0208    FORI    11 => 0221
+0209 => MOV     15   2
+0210    MOV     17   3
+0211    MOV     18   0
+0212    MOV     20  14
+0213    KSHORT  21   7
+0214    CALL    18   2   3
+0215    KSHORT  19  -1
+0216    CALL    15   4   4
+0217    MOV      6  17
+0218    MOV      5  16
+0219    MOV      4  15
+0220    FORL    11 => 0209
+0221 => MOV     11   2
+0222    MOV     13   3
+0223    MOV     14   0
+0224    MOV     16  10
+0225    KSHORT  17   7
+0226    CALL    14   2   3
+0227    KSHORT  15  -1
+0228    CALL    11   4   4
+0229    GGET    14   6      ; "assert"
+0230    ISNEV    4  11
+0231    JMP     16 => 0236
+0232    ISNEV    5  12
+0233    JMP     16 => 0236
+0234    ISEQV    6  13
+0235    JMP     16 => 0238
+0236 => KPRI    16   1
+0237    JMP     17 => 0239
+0238 => KPRI    16   2
+0239 => CALL    14   1   2
+0240    FORL     7 => 0205
+0241 => KSTR     3  10      ; "abc"
+0242    KNIL     4   6
+0243    KSHORT   7 -100
+0244    KSHORT   8 -107
+0245    KSHORT   9  -1
+0246    FORI     7 => 0283
+0247 => KSHORT  11  -1
+0248    MOV     12  10
+0249    KSHORT  13  -1
+0250    FORI    11 => 0263
+0251 => MOV     15   2
+0252    KSTR    17  10      ; "abc"
+0253    MOV     18   1
+0254    MOV     20  14
+0255    KSHORT  21  -8
+0256    CALL    18   2   3
+0257    KSHORT  19  -1
+0258    CALL    15   4   4
+0259    MOV      6  17
+0260    MOV      5  16
+0261    MOV      4  15
+0262    FORL    11 => 0251
+0263 => MOV     11   2
+0264    KSTR    13  10      ; "abc"
+0265    MOV     14   1
+0266    MOV     16  10
+0267    KSHORT  17  -8
+0268    CALL    14   2   3
+0269    KSHORT  15  -1
+0270    CALL    11   4   4
+0271    GGET    14   6      ; "assert"
+0272    ISNEV    4  11
+0273    JMP     16 => 0278
+0274    ISNEV    5  12
+0275    JMP     16 => 0278
+0276    ISEQV    6  13
+0277    JMP     16 => 0280
+0278 => KPRI    16   1
+0279    JMP     17 => 0281
+0280 => KPRI    16   2
+0281 => CALL    14   1   2
+0282    FORL     7 => 0247
+0283 => KSHORT   7 -100
+0284    KSHORT   8 -107
+0285    KSHORT   9  -1
+0286    FORI     7 => 0323
+0287 => KSHORT  11  -1
+0288    MOV     12  10
+0289    KSHORT  13  -1
+0290    FORI    11 => 0303
+0291 => MOV     15   2
+0292    MOV     17   3
+0293    MOV     18   1
+0294    MOV     20  14
+0295    KSHORT  21  -8
+0296    CALL    18   2   3
+0297    KSHORT  19  -1
+0298    CALL    15   4   4
+0299    MOV      6  17
+0300    MOV      5  16
+0301    MOV      4  15
+0302    FORL    11 => 0291
+0303 => MOV     11   2
+0304    MOV     13   3
+0305    MOV     14   1
+0306    MOV     16  10
+0307    KSHORT  17  -8
+0308    CALL    14   2   3
+0309    KSHORT  15  -1
+0310    CALL    11   4   4
+0311    GGET    14   6      ; "assert"
+0312    ISNEV    4  11
+0313    JMP     16 => 0318
+0314    ISNEV    5  12
+0315    JMP     16 => 0318
+0316    ISEQV    6  13
+0317    JMP     16 => 0320
+0318 => KPRI    16   1
+0319    JMP     17 => 0321
+0320 => KPRI    16   2
+0321 => CALL    14   1   2
+0322    FORL     7 => 0287
+0323 => KSTR     3  10      ; "abc"
+0324    KNIL     4   6
+0325    KSHORT   7 100
+0326    KSHORT   8 107
+0327    KSHORT   9   1
+0328    FORI     7 => 0365
+0329 => KSHORT  11   1
+0330    MOV     12  10
+0331    KSHORT  13   1
+0332    FORI    11 => 0345
+0333 => MOV     15   2
+0334    KSTR    17  10      ; "abc"
+0335    KSHORT  18   1
+0336    MOV     19   0
+0337    MOV     21  14
+0338    KSHORT  22   7
+0339    CALL    19   0   3
+0340    CALLM   15   4   2
+0341    MOV      6  17
+0342    MOV      5  16
+0343    MOV      4  15
+0344    FORL    11 => 0333
+0345 => MOV     11   2
+0346    KSTR    13  10      ; "abc"
+0347    KSHORT  14   1
+0348    MOV     15   0
+0349    MOV     17  10
+0350    KSHORT  18   7
+0351    CALL    15   0   3
+0352    CALLM   11   4   2
+0353    GGET    14   6      ; "assert"
+0354    ISNEV    4  11
+0355    JMP     16 => 0360
+0356    ISNEV    5  12
+0357    JMP     16 => 0360
+0358    ISEQV    6  13
+0359    JMP     16 => 0362
+0360 => KPRI    16   1
+0361    JMP     17 => 0363
+0362 => KPRI    16   2
+0363 => CALL    14   1   2
+0364    FORL     7 => 0329
+0365 => KSHORT   7 100
+0366    KSHORT   8 107
+0367    KSHORT   9   1
+0368    FORI     7 => 0405
+0369 => KSHORT  11   1
+0370    MOV     12  10
+0371    KSHORT  13   1
+0372    FORI    11 => 0385
+0373 => MOV     15   2
+0374    MOV     17   3
+0375    KSHORT  18   1
+0376    MOV     19   0
+0377    MOV     21  14
+0378    KSHORT  22   7
+0379    CALL    19   0   3
+0380    CALLM   15   4   2
+0381    MOV      6  17
+0382    MOV      5  16
+0383    MOV      4  15
+0384    FORL    11 => 0373
+0385 => MOV     11   2
+0386    MOV     13   3
+0387    KSHORT  14   1
+0388    MOV     15   0
+0389    MOV     17  10
+0390    KSHORT  18   7
+0391    CALL    15   0   3
+0392    CALLM   11   4   2
+0393    GGET    14   6      ; "assert"
+0394    ISNEV    4  11
+0395    JMP     16 => 0400
+0396    ISNEV    5  12
+0397    JMP     16 => 0400
+0398    ISEQV    6  13
+0399    JMP     16 => 0402
+0400 => KPRI    16   1
+0401    JMP     17 => 0403
+0402 => KPRI    16   2
+0403 => CALL    14   1   2
+0404    FORL     7 => 0369
+0405 => KSTR     3  10      ; "abc"
+0406    KNIL     4   6
+0407    KSHORT   7 -100
+0408    KSHORT   8 -107
+0409    KSHORT   9  -1
+0410    FORI     7 => 0447
+0411 => KSHORT  11  -1
+0412    MOV     12  10
+0413    KSHORT  13  -1
+0414    FORI    11 => 0427
+0415 => MOV     15   2
+0416    KSTR    17  10      ; "abc"
+0417    KSHORT  18   1
+0418    MOV     19   1
+0419    MOV     21  14
+0420    KSHORT  22  -8
+0421    CALL    19   0   3
+0422    CALLM   15   4   2
+0423    MOV      6  17
+0424    MOV      5  16
+0425    MOV      4  15
+0426    FORL    11 => 0415
+0427 => MOV     11   2
+0428    KSTR    13  10      ; "abc"
+0429    KSHORT  14   1
+0430    MOV     15   1
+0431    MOV     17  10
+0432    KSHORT  18  -8
+0433    CALL    15   0   3
+0434    CALLM   11   4   2
+0435    GGET    14   6      ; "assert"
+0436    ISNEV    4  11
+0437    JMP     16 => 0442
+0438    ISNEV    5  12
+0439    JMP     16 => 0442
+0440    ISEQV    6  13
+0441    JMP     16 => 0444
+0442 => KPRI    16   1
+0443    JMP     17 => 0445
+0444 => KPRI    16   2
+0445 => CALL    14   1   2
+0446    FORL     7 => 0411
+0447 => KSHORT   7 -100
+0448    KSHORT   8 -107
+0449    KSHORT   9  -1
+0450    FORI     7 => 0487
+0451 => KSHORT  11  -1
+0452    MOV     12  10
+0453    KSHORT  13  -1
+0454    FORI    11 => 0467
+0455 => MOV     15   2
+0456    MOV     17   3
+0457    KSHORT  18   1
+0458    MOV     19   1
+0459    MOV     21  14
+0460    KSHORT  22  -8
+0461    CALL    19   0   3
+0462    CALLM   15   4   2
+0463    MOV      6  17
+0464    MOV      5  16
+0465    MOV      4  15
+0466    FORL    11 => 0455
+0467 => MOV     11   2
+0468    MOV     13   3
+0469    KSHORT  14   1
+0470    MOV     15   1
+0471    MOV     17  10
+0472    KSHORT  18  -8
+0473    CALL    15   0   3
+0474    CALLM   11   4   2
+0475    GGET    14   6      ; "assert"
+0476    ISNEV    4  11
+0477    JMP     16 => 0482
+0478    ISNEV    5  12
+0479    JMP     16 => 0482
+0480    ISEQV    6  13
+0481    JMP     16 => 0484
+0482 => KPRI    16   1
+0483    JMP     17 => 0485
+0484 => KPRI    16   2
+0485 => CALL    14   1   2
+0486    FORL     7 => 0451
+0487 => GGET     3   3      ; "string"
+0488    TGETS    3   3  11  ; "rep"
+0489    KSTR     5  12      ; "x"
+0490    KSHORT   6 500
+0491    CALL     3   2   3
+0492    KSHORT   4   1
+0493    KSHORT   5 100
+0494    KSHORT   6   1
+0495    FORI     4 => 0502
+0496 => MOV      8   2
+0497    MOV     10   3
+0498    KSHORT  11   1
+0499    KSHORT  12 500
+0500    CALL     8   1   4
+0501    FORL     4 => 0496
+0502 => RET0     0   1
+

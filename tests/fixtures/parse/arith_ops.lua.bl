@@ -1,0 +1,90 @@
+-- BYTECODE -- arith_ops.lua:27-27
+0001    UGET     0   0      ; u
+0002    UGET     1   1      ; a
+0003    ADDVV    0   0   1
+0004    RET1     0   2
+
+-- BYTECODE -- arith_ops.lua:0-28
+0001    VARG     0   3   0
+0002    KPRI     2   0
+0003    ADDVV    2   0   1
+0004    SUBVV    2   0   1
+0005    MULVV    2   0   1
+0006    DIVVV    2   0   1
+0007    MODVV    2   0   1
+0008    POW      2   0   1
+0009    ADDVN    2   0   0  ; 1
+0010    SUBVN    2   0   0  ; 1
+0011    MULVN    2   0   1  ; 2
+0012    DIVVN    2   0   1  ; 2
+0013    MODVN    2   0   1  ; 2
+0014    KSHORT   3   2
+0015    POW      2   0   3
+0016    ADDNV    2   0   0  ; 1
+0017    SUBNV    2   0   0  ; 1
+0018    MULNV    2   0   1  ; 2
+0019    DIVNV    2   0   1  ; 2
+0020    MODNV    2   0   1  ; 2
+0021    KSHORT   3   2
+0022    POW      2   3   0
+0023    ADDVN    2   0   2  ; 1.5
+0024    MULNV    2   0   2  ; 1.5
+0025    SUBVN    2   0   3  ; -1
+0026    UNM      2   0
+0027    UNM      3   0
+0028    UNM      2   3
+0029    LEN      2   0
+0030    NOT      2   0
+0031    NOT      3   0
+0032    NOT      2   3
+0033    MULVN    3   1   1  ; 2
+0034    ADDVV    3   0   3
+0035    DIVVV    4   0   1
+0036    KSHORT   5   2
+0037    POW      4   4   5
+0038    MODVN    4   4   4  ; 3
+0039    SUBVV    2   3   4
+0040    KSHORT   2 512
+0041    KSHORT   3   2
+0042    POW      3   0   3
+0043    UNM      2   3
+0044    KSHORT   2  -4
+0045    ADDVV    3   0   1
+0046    SUBVV    4   0   1
+0047    MULVV    2   3   4
+0048    ADDVN    3   1   0  ; 1
+0049    ADDVV    3   0   3
+0050    ADDVV    3   1   3
+0051    ADDVV    2   0   3
+0052    TGETS    3   0   0  ; "x"
+0053    TGETS    4   1   1  ; "y"
+0054    ADDVV    2   3   4
+0055    TGETB    3   0   1
+0056    TGETB    4   1   2
+0057    MULVV    2   3   4
+0058    GGET     3   2      ; "f"
+0059    CALL     3   2   1
+0060    GGET     4   3      ; "g"
+0061    CALL     4   2   1
+0062    ADDVV    2   3   4
+0063    KSTR     3   4      ; "10"
+0064    ADDVV    2   0   3
+0065    KSTR     3   4      ; "10"
+0066    ADDVN    2   3   0  ; 1
+0067    MOV      3   0
+0068    MOV      4   1
+0069    CAT      2   3   4
+0070    ADDVV    3   0   1
+0071    ADDVN    3   3   0  ; 1
+0072    ADDVN    2   3   1  ; 2
+0073    ADDNV    2   0   4  ; 3
+0074    MULVN    2   0   5  ; 1e+300
+0075    ADDVN    2   0   6  ; 65536
+0076    GGET     3   5      ; "gx"
+0077    GGET     4   6      ; "gy"
+0078    ADDVV    3   3   4
+0079    KSHORT   4   1
+0080    FNEW     5   7      ; arith_ops.lua:27
+0081    UCLO     0 => 0082
+0082 => RET0     0   1
+

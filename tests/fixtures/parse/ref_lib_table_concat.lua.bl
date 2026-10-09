@@ -1,0 +1,194 @@
+-- BYTECODE -- ref_lib_table_concat.lua:0-56
+0001    GGET     0   0      ; "table"
+0002    TGETS    0   0   1  ; "concat"
+0003    GGET     1   2      ; "assert"
+0004    GGET     2   3      ; "pcall"
+0005    TDUP     3   4
+0006    KSHORT   4   4
+0007    TSETB    4   3   1
+0008    KSHORT   4   6
+0009    TSETB    4   3   3
+0010    MOV      4   2
+0011    MOV      6   0
+0012    MOV      7   3
+0013    KSTR     8   5      ; ""
+0014    KSHORT   9   1
+0015    KSHORT  10   3
+0016    CALL     4   3   6
+0017    MOV      6   1
+0018    IST          4
+0019    JMP      8 => 0025
+0020    MOV     10   5
+0021    TGETS    8   5   6  ; "match"
+0022    KSTR    11   7      ; "index 2 "
+0023    CALL     8   2   3
+0024    JMP      9 => 0028
+0025 => KPRI     8   1
+0026    JMP      9 => 0028
+0027    KPRI     8   2
+0028 => CALL     6   1   2
+0029    TNEW     6   0
+0030    KSHORT   7   1
+0031    KSHORT   8 100
+0032    KSHORT   9   1
+0033    FORI     7 => 0037
+0034 => TDUP    11   8
+0035    TSETV   11   6  10
+0036    FORL     7 => 0034
+0037 => TSETB    3   6  90
+0038    KSHORT   7   1
+0039    KSHORT   8 100
+0040    KSHORT   9   1
+0041    FORI     7 => 0062
+0042 => MOV     11   1
+0043    MOV     13   2
+0044    MOV     15   0
+0045    TGETV   16   6  10
+0046    KSTR    17   5      ; ""
+0047    KSHORT  18   1
+0048    KSHORT  19   3
+0049    CALL    13   2   6
+0050    ISNEN   10   0      ; 90
+0051    JMP     14 => 0054
+0052    KPRI    14   1
+0053    JMP     15 => 0055
+0054 => KPRI    14   2
+0055 => ISEQV   13  14
+0056    JMP     13 => 0059
+0057    KPRI    13   1
+0058    JMP     14 => 0060
+0059 => KPRI    13   2
+0060 => CALL    11   1   2
+0061    FORL     7 => 0042
+0062 => KSHORT   7   5
+0063    TSETB    7   3   2
+0064    TNEW     7   0
+0065    TSETB    7   6  91
+0066    TDUP     7   9
+0067    TSETB    7   6  92
+0068    KSHORT   7   1
+0069    KSHORT   8 100
+0070    KSHORT   9   1
+0071    FORI     7 => 0078
+0072 => MOV     11   0
+0073    TGETV   13   6  10
+0074    KSTR    14  10      ; "x"
+0075    CALL    11   2   3
+0076    TSETV   11   6  10
+0077    FORL     7 => 0072
+0078 => MOV      7   1
+0079    TGETB    9   6  90
+0080    ISEQS    9  11      ; "4x5x6"
+0081    JMP      9 => 0084
+0082    KPRI     9   1
+0083    JMP     10 => 0085
+0084 => KPRI     9   2
+0085 => CALL     7   1   2
+0086    MOV      7   1
+0087    TGETB    9   6  91
+0088    ISEQS    9   5      ; ""
+0089    JMP      9 => 0092
+0090    KPRI     9   1
+0091    JMP     10 => 0093
+0092 => KPRI     9   2
+0093 => CALL     7   1   2
+0094    MOV      7   1
+0095    TGETB    9   6  92
+0096    ISEQS    9  12      ; "9"
+0097    JMP      9 => 0100
+0098    KPRI     9   1
+0099    JMP     10 => 0101
+0100 => KPRI     9   2
+0101 => CALL     7   1   2
+0102    MOV      7   1
+0103    TGETB    9   6  93
+0104    ISEQS    9  13      ; "9x8x7"
+0105    JMP      9 => 0108
+0106    KPRI     9   1
+0107    JMP     10 => 0109
+0108 => KPRI     9   2
+0109 => CALL     7   1   2
+0110    TDUP     3  14
+0111    KNIL     4   5
+0112    KSHORT   6   1
+0113    KSHORT   7 100
+0114    KSHORT   8   1
+0115    FORI     6 => 0132
+0116 => MOV     10   0
+0117    MOV     12   3
+0118    KSTR    13  10      ; "x"
+0119    KSHORT  14   1
+0120    KSHORT  15   3
+0121    CALL    10   2   5
+0122    MOV      4  10
+0123    TSETB    9   3   2
+0124    MOV     10   0
+0125    MOV     12   3
+0126    KSTR    13  10      ; "x"
+0127    KSHORT  14   1
+0128    KSHORT  15   3
+0129    CALL    10   2   5
+0130    MOV      5  10
+0131    FORL     6 => 0116
+0132 => MOV      6   1
+0133    ISEQS    4  15      ; "1x99x3"
+0134    JMP      8 => 0137
+0135    KPRI     8   1
+0136    JMP      9 => 0138
+0137 => KPRI     8   2
+0138 => CALL     6   1   2
+0139    MOV      6   1
+0140    ISEQS    5  16      ; "1x100x3"
+0141    JMP      8 => 0144
+0142    KPRI     8   1
+0143    JMP      9 => 0145
+0144 => KPRI     8   2
+0145 => CALL     6   1   2
+0146    KPRI     3   0
+0147    KSHORT   4   1
+0148    KSHORT   5 100
+0149    KSHORT   6   1
+0150    FORI     4 => 0162
+0151 => TDUP     8  17
+0152    KSHORT   9   4
+0153    TSETB    9   8   2
+0154    MOV      9   0
+0155    MOV     11   8
+0156    KSTR    12  10      ; "x"
+0157    CALL     9   2   3
+0158    MOV      3   9
+0159    KSHORT   9   9
+0160    TSETB    9   8   2
+0161    FORL     4 => 0151
+0162 => MOV      4   1
+0163    ISEQS    3  18      ; "1x4x3"
+0164    JMP      6 => 0167
+0165    KPRI     6   1
+0166    JMP      7 => 0168
+0167 => KPRI     6   2
+0168 => CALL     4   1   2
+0169    TNEW     3   4
+0170    TNEW     4   0
+0171    TSETB    4   3   0
+0172    TNEW     4   0
+0173    TSETB    4   3   1
+0174    TNEW     4   0
+0175    TSETB    4   3   2
+0176    TNEW     4   0
+0177    TSETB    4   3   3
+0178    KSHORT   4   1
+0179    KSHORT   5  30
+0180    KSHORT   6   1
+0181    FORI     4 => 0192
+0182 => KSHORT   8   3
+0183    KSHORT   9   0
+0184    KSHORT  10  -1
+0185    FORI     8 => 0191
+0186 => TGETV   12   3  11
+0187    SUBVN   13  11   1  ; 1
+0188    TGETV   13   3  13
+0189    TSETS   13  12  10  ; "x"
+0190    FORL     8 => 0186
+0191 => FORL     4 => 0182
+0192 => RET0     0   1
+

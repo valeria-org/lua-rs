@@ -1,0 +1,77 @@
+-- BYTECODE -- ref_lang_gc.lua:33-36
+0001    GGET     0   0      ; "collectgarbage"
+0002    CALL     0   1   1
+0003    KSTR     0   1      ; "a"
+0004    KSTR     1   2      ; "b"
+0005    RET      0   3
+
+-- BYTECODE -- ref_lang_gc.lua:0-43
+0001    KPRI     0   0
+0002    GGET     1   0      ; "collectgarbage"
+0003    CALL     1   1   1
+0004    TNEW     1   0
+0005    KSHORT   2   1
+0006    TSETS    2   1   1  ; "ac"
+0007    KSHORT   2   1
+0008    TSETS    2   1   2  ; "nn"
+0009    KSHORT   2   1
+0010    TSETS    2   1   3  ; "mm"
+0011    KPRI     2   0
+0012    TSETS    2   1   2  ; "nn"
+0013    KPRI     2   0
+0014    TSETS    2   1   3  ; "mm"
+0015    KSTR     2   4      ; "a"
+0016    KSTR     3   5      ; "i"
+0017    CAT      0   2   3
+0018    KSHORT   2   2
+0019    TSETV    2   1   0
+0020    KSHORT   2   3
+0021    TSETS    2   1   6  ; "ad"
+0022    KPRI     2   0
+0023    TSETV    2   1   0
+0024    KPRI     0   0
+0025    GGET     2   0      ; "collectgarbage"
+0026    CALL     2   1   1
+0027    KSTR     2   4      ; "a"
+0028    KSTR     3   7      ; "f"
+0029    CAT      0   2   3
+0030    KSHORT   2   4
+0031    TSETV    2   1   0
+0032    KSHORT   2   5
+0033    TSETS    2   1   8  ; "ak"
+0034    GGET     2   9      ; "assert"
+0035    TGETV    4   1   0
+0036    ISEQN    4   0      ; 4
+0037    JMP      4 => 0040
+0038    KPRI     4   1
+0039    JMP      5 => 0041
+0040 => KPRI     4   2
+0041 => CALL     2   1   2
+0042    FNEW     0  10      ; ref_lang_gc.lua:33
+0043    KSHORT   1   1
+0044    KSHORT   2  10
+0045    KSHORT   3   1
+0046    FORI     1 => 0068
+0047 => TNEW     5   3
+0048    MOV      6   0
+0049    CALL     6   0   1
+0050    TSETM    6   1      ; 1
+0051    GGET     6   9      ; "assert"
+0052    TGETB    8   5   1
+0053    ISEQS    8   4      ; "a"
+0054    JMP      8 => 0057
+0055    KPRI     8   1
+0056    JMP      9 => 0058
+0057 => KPRI     8   2
+0058 => CALL     6   1   2
+0059    GGET     6   9      ; "assert"
+0060    TGETB    8   5   2
+0061    ISEQS    8  11      ; "b"
+0062    JMP      8 => 0065
+0063    KPRI     8   1
+0064    JMP      9 => 0066
+0065 => KPRI     8   2
+0066 => CALL     6   1   2
+0067    FORL     1 => 0047
+0068 => RET0     0   1
+

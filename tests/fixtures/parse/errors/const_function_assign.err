@@ -1,0 +1,1 @@
+[string "const function f() end..."]:2: attempt to assign to const variable 'f'

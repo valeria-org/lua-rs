@@ -1,0 +1,52 @@
+-- BYTECODE -- paren_exprs.lua:15-15
+0001    RET0     0   1
+
+-- BYTECODE -- paren_exprs.lua:0-23
+0001    VARG     0   3   0
+0002    KPRI     2   0
+0003    MOV      2   0
+0004    MOV      2   0
+0005    TGETS    2   0   0  ; "b"
+0006    TGETB    2   0   1
+0007    MOV      3   0
+0008    CALL     3   2   1
+0009    MOV      2   3
+0010    MOV      5   0
+0011    TGETS    3   0   1  ; "m"
+0012    CALL     3   2   2
+0013    MOV      2   3
+0014    GGET     3   2      ; "f"
+0015    CALL     3   2   1
+0016    MOV      2   3
+0017    VARG     3   2   0
+0018    MOV      2   3
+0019    ADDVV    2   0   1
+0020    KSTR     3   3      ; "s"
+0021    MOV      5   3
+0022    TGETS    3   3   4  ; "upper"
+0023    CALL     3   2   2
+0024    MOV      2   3
+0025    TDUP     3   5
+0026    TGETB    2   3   1
+0027    FNEW     3   6      ; paren_exprs.lua:15
+0028    CALL     3   2   1
+0029    MOV      2   3
+0030    KSHORT   2   1
+0031    KPRI     2   0
+0032    KPRI     2   2
+0033    ISEQV    0   1
+0034    JMP      3 => 0037
+0035    KPRI     2   1
+0036    JMP      3 => 0038
+0037 => KPRI     2   2
+0038 => ISFC     2   0
+0039    JMP      3 => 0041
+0040    MOV      2   1
+0041 => MOV      2   0
+0042    GGET     3   2      ; "f"
+0043    CALL     3   2   1
+0044    KPRI     4   0
+0045    MOV      0   4
+0046    MOV      2   3
+0047    RET0     0   1
+

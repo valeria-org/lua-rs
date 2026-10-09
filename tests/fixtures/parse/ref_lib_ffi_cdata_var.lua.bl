@@ -1,0 +1,214 @@
+-- BYTECODE -- ref_lib_ffi_cdata_var.lua:0-48
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "ffi"
+0003    CALL     0   2   2
+0004    TGETS    1   0   2  ; "typeof"
+0005    KSTR     3   3      ; "uint8_t[?]"
+0006    CALL     1   2   2
+0007    KSHORT   2   4
+0008    KSHORT   3  24
+0009    KSHORT   4   1
+0010    FORI     2 => 0128
+0011 => KSHORT   6  -5
+0012    KSHORT   7   5
+0013    KSHORT   8   1
+0014    FORI     6 => 0127
+0015 => KSHORT  10   2
+0016    POW     10  10   5
+0017    ADDVV   10  10   9
+0018    GGET    11   4      ; "assert"
+0019    TGETS   13   0   5  ; "sizeof"
+0020    MOV     15   1
+0021    MOV     16  10
+0022    CALL    13   2   3
+0023    ISEQV   13  10
+0024    JMP     13 => 0027
+0025    KPRI    13   1
+0026    JMP     14 => 0028
+0027 => KPRI    13   2
+0028 => CALL    11   1   2
+0029    TGETS   11   0   6  ; "new"
+0030    MOV     13   1
+0031    MOV     14  10
+0032    CALL    11   2   3
+0033    GGET    12   4      ; "assert"
+0034    TGETS   14   0   5  ; "sizeof"
+0035    MOV     16  11
+0036    CALL    14   2   2
+0037    ISEQV   14  10
+0038    JMP     14 => 0041
+0039    KPRI    14   1
+0040    JMP     15 => 0042
+0041 => KPRI    14   2
+0042 => CALL    12   1   2
+0043    KSHORT  12  33
+0044    TSETB   12  11   0
+0045    KSHORT  12  50
+0046    TSETB   12  11   1
+0047    KSHORT  12  67
+0048    TSETB   12  11   2
+0049    SUBVN   12  10   0  ; 3
+0050    KSHORT  13  84
+0051    TSETV   13  11  12
+0052    SUBVN   12  10   1  ; 2
+0053    KSHORT  13 101
+0054    TSETV   13  11  12
+0055    SUBVN   12  10   2  ; 1
+0056    KSHORT  13 118
+0057    TSETV   13  11  12
+0058    GGET    12   4      ; "assert"
+0059    TGETB   14  11   0
+0060    ISEQN   14   3      ; 33
+0061    JMP     14 => 0064
+0062    KPRI    14   1
+0063    JMP     15 => 0065
+0064 => KPRI    14   2
+0065 => CALL    12   1   2
+0066    GGET    12   4      ; "assert"
+0067    TGETB   14  11   1
+0068    ISEQN   14   4      ; 50
+0069    JMP     14 => 0072
+0070    KPRI    14   1
+0071    JMP     15 => 0073
+0072 => KPRI    14   2
+0073 => CALL    12   1   2
+0074    GGET    12   4      ; "assert"
+0075    TGETB   14  11   2
+0076    ISEQN   14   5      ; 67
+0077    JMP     14 => 0080
+0078    KPRI    14   1
+0079    JMP     15 => 0081
+0080 => KPRI    14   2
+0081 => CALL    12   1   2
+0082    GGET    12   4      ; "assert"
+0083    TGETB   14  11   3
+0084    ISEQN   14   6      ; 0
+0085    JMP     14 => 0088
+0086    KPRI    14   1
+0087    JMP     15 => 0089
+0088 => KPRI    14   2
+0089 => CALL    12   1   2
+0090    GGET    12   4      ; "assert"
+0091    SUBVN   14  10   7  ; 4
+0092    TGETV   14  11  14
+0093    ISEQN   14   6      ; 0
+0094    JMP     14 => 0097
+0095    KPRI    14   1
+0096    JMP     15 => 0098
+0097 => KPRI    14   2
+0098 => CALL    12   1   2
+0099    GGET    12   4      ; "assert"
+0100    SUBVN   14  10   0  ; 3
+0101    TGETV   14  11  14
+0102    ISEQN   14   8      ; 84
+0103    JMP     14 => 0106
+0104    KPRI    14   1
+0105    JMP     15 => 0107
+0106 => KPRI    14   2
+0107 => CALL    12   1   2
+0108    GGET    12   4      ; "assert"
+0109    SUBVN   14  10   1  ; 2
+0110    TGETV   14  11  14
+0111    ISEQN   14   9      ; 101
+0112    JMP     14 => 0115
+0113    KPRI    14   1
+0114    JMP     15 => 0116
+0115 => KPRI    14   2
+0116 => CALL    12   1   2
+0117    GGET    12   4      ; "assert"
+0118    SUBVN   14  10   2  ; 1
+0119    TGETV   14  11  14
+0120    ISEQN   14  10      ; 118
+0121    JMP     14 => 0124
+0122    KPRI    14   1
+0123    JMP     15 => 0125
+0124 => KPRI    14   2
+0125 => CALL    12   1   2
+0126    FORL     6 => 0015
+0127 => FORL     2 => 0011
+0128 => TGETS    1   0   2  ; "typeof"
+0129    KSTR     3   7      ; "int32_t[?]"
+0130    CALL     1   2   2
+0131    KSHORT   2   2
+0132    KSHORT   3  17
+0133    KSHORT   4   1
+0134    FORI     2 => 0212
+0135 => KSHORT   6  -2
+0136    KSHORT   7   2
+0137    KSHORT   8   1
+0138    FORI     6 => 0211
+0139 => KSHORT  10   2
+0140    POW     10  10   5
+0141    ADDVV   10  10   9
+0142    GGET    11   4      ; "assert"
+0143    TGETS   13   0   5  ; "sizeof"
+0144    MOV     15   1
+0145    MOV     16  10
+0146    CALL    13   2   3
+0147    MULVN   14  10   7  ; 4
+0148    ISEQV   13  14
+0149    JMP     13 => 0152
+0150    KPRI    13   1
+0151    JMP     14 => 0153
+0152 => KPRI    13   2
+0153 => CALL    11   1   2
+0154    TGETS   11   0   6  ; "new"
+0155    MOV     13   1
+0156    MOV     14  10
+0157    CALL    11   2   3
+0158    GGET    12   4      ; "assert"
+0159    TGETS   14   0   5  ; "sizeof"
+0160    MOV     16  11
+0161    CALL    14   2   2
+0162    MULVN   15  10   7  ; 4
+0163    ISEQV   14  15
+0164    JMP     14 => 0167
+0165    KPRI    14   1
+0166    JMP     15 => 0168
+0167 => KPRI    14   2
+0168 => CALL    12   1   2
+0169    KSHORT  12  -3
+0170    TSETB   12  11   0
+0171    SUBVN   12  10   2  ; 1
+0172    KSHORT  13  -4
+0173    TSETV   13  11  12
+0174    GGET    12   4      ; "assert"
+0175    TGETB   14  11   0
+0176    ISEQN   14  11      ; -3
+0177    JMP     14 => 0180
+0178    KPRI    14   1
+0179    JMP     15 => 0181
+0180 => KPRI    14   2
+0181 => CALL    12   1   2
+0182    ISEQN   10   1      ; 2
+0183    JMP     12 => 0201
+0184    GGET    12   4      ; "assert"
+0185    TGETB   14  11   1
+0186    ISEQN   14   6      ; 0
+0187    JMP     14 => 0190
+0188    KPRI    14   1
+0189    JMP     15 => 0191
+0190 => KPRI    14   2
+0191 => CALL    12   1   2
+0192    GGET    12   4      ; "assert"
+0193    SUBVN   14  10   1  ; 2
+0194    TGETV   14  11  14
+0195    ISEQN   14   6      ; 0
+0196    JMP     14 => 0199
+0197    KPRI    14   1
+0198    JMP     15 => 0200
+0199 => KPRI    14   2
+0200 => CALL    12   1   2
+0201 => GGET    12   4      ; "assert"
+0202    SUBVN   14  10   2  ; 1
+0203    TGETV   14  11  14
+0204    ISEQN   14  12      ; -4
+0205    JMP     14 => 0208
+0206    KPRI    14   1
+0207    JMP     15 => 0209
+0208 => KPRI    14   2
+0209 => CALL    12   1   2
+0210    FORL     6 => 0139
+0211 => FORL     2 => 0135
+0212 => RET0     0   1
+

@@ -1,0 +1,1 @@
+[string "local u0 = 0..."]:68: function at line 67 has more than 60 upvalues

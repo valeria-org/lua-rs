@@ -1,0 +1,4 @@
+-- BYTECODE -- bom.lua:0-3
+0001    KSTR     0   0      ; "bom"
+0002    RET1     0   2
+

@@ -1,0 +1,78 @@
+-- BYTECODE -- ext_safe_nav_odd.lua:0-10
+0001    VARG     0   3   0
+0002    ISEQP    0   0
+0003    JMP      2 => 0008
+0004    MOV      4   0
+0005    TGETS    2   0   0  ; "m"
+0006    CALL     2   2   2
+0007    JMP      3 => 0009
+0008 => KPRI     2   0
+0009 => ISEQP    0   0
+0010    JMP      3 => 0019
+0011    MOV      5   0
+0012    TGETS    3   0   0  ; "m"
+0013    KSHORT   6   1
+0014    CALL     3   2   3
+0015    ISEQP    3   0
+0016    JMP      4 => 0019
+0017    TGETS    3   3   1  ; "x"
+0018    JMP      4 => 0020
+0019 => KPRI     3   0
+0020 => MOV      2   3
+0021    ISEQP    0   0
+0022    JMP      3 => 0028
+0023    TGETV    3   0   1
+0024    ISEQP    3   0
+0025    JMP      4 => 0028
+0026    TGETB    3   3   1
+0027    JMP      4 => 0029
+0028 => KPRI     3   0
+0029 => MOV      2   3
+0030    ISEQP    0   0
+0031    JMP      3 => 0035
+0032    MOV      5   0
+0033    TGETS    3   0   0  ; "m"
+0034    CALL     3   1   2
+0035 => ISEQP    0   0
+0036    JMP      3 => 0045
+0037    MOV      3   0
+0038    KSHORT   5   1
+0039    CALL     3   2   2
+0040    ISEQP    3   0
+0041    JMP      4 => 0045
+0042    KSHORT   5   2
+0043    CALL     3   2   2
+0044    JMP      4 => 0046
+0045 => KPRI     3   0
+0046 => MOV      2   3
+0047    ISEQP    0   0
+0048    JMP      3 => 0060
+0049    TGETS    3   0   2  ; "b"
+0050    ISEQP    3   0
+0051    JMP      4 => 0060
+0052    TGETS    3   3   3  ; "c"
+0053    ISEQP    3   0
+0054    JMP      4 => 0060
+0055    TGETS    3   3   4  ; "d"
+0056    ISEQP    3   0
+0057    JMP      4 => 0060
+0058    TGETS    3   3   5  ; "e"
+0059    JMP      4 => 0061
+0060 => KPRI     3   0
+0061 => MOV      2   3
+0062    KSTR     3   6      ; "s"
+0063    ISEQP    3   0
+0064    JMP      4 => 0067
+0065    TGETS    3   3   7  ; "len"
+0066    JMP      4 => 0068
+0067 => KPRI     3   0
+0068 => MOV      2   3
+0069    ISEQP    0   0
+0070    JMP      3 => 0075
+0071    MOV      5   0
+0072    TGETS    3   0   0  ; "m"
+0073    CALL     3   2   2
+0074    JMP      4 => 0076
+0075 => KPRI     3   0
+0076 => RET1     3   2
+

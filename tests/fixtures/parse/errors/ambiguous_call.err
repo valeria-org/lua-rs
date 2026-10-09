@@ -1,0 +1,1 @@
+[string "local x = f..."]:2: ambiguous syntax (function call x new statement) near '('

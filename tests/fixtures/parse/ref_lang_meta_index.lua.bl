@@ -1,0 +1,191 @@
+-- BYTECODE -- ref_lang_meta_index.lua:2-4
+0001    SUBNV    2   1   0  ; 100
+0002    RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_index.lua:17-19
+0001    USETV    0   1      ; x
+0002    RET0     0   1
+
+-- BYTECODE -- ref_lang_meta_index.lua:0-61
+0001    GGET     0   0      ; "setmetatable"
+0002    TNEW     2   0
+0003    TDUP     3   2
+0004    FNEW     4   1      ; ref_lang_meta_index.lua:2
+0005    TSETS    4   3   3  ; "__index"
+0006    CALL     0   2   3
+0007    KSHORT   1   1
+0008    KSHORT   2 100
+0009    KSHORT   3   1
+0010    FORI     1 => 0021
+0011 => GGET     5   4      ; "assert"
+0012    TGETV    7   0   4
+0013    SUBNV    8   4   0  ; 100
+0014    ISEQV    7   8
+0015    JMP      7 => 0018
+0016    KPRI     7   1
+0017    JMP      8 => 0019
+0018 => KPRI     7   2
+0019 => CALL     5   1   2
+0020    FORL     1 => 0011
+0021 => KSHORT   1   1
+0022    KSHORT   2 100
+0023    KSHORT   3   1
+0024    FORI     1 => 0027
+0025 => TSETV    4   0   4
+0026    FORL     1 => 0025
+0027 => KSHORT   1   1
+0028    KSHORT   2 100
+0029    KSHORT   3   1
+0030    FORI     1 => 0040
+0031 => GGET     5   4      ; "assert"
+0032    TGETV    7   0   4
+0033    ISEQV    7   4
+0034    JMP      7 => 0037
+0035    KPRI     7   1
+0036    JMP      8 => 0038
+0037 => KPRI     7   2
+0038 => CALL     5   1   2
+0039    FORL     1 => 0031
+0040 => KSHORT   1   1
+0041    KSHORT   2 100
+0042    KSHORT   3   1
+0043    FORI     1 => 0047
+0044 => KPRI     5   0
+0045    TSETV    5   0   4
+0046    FORL     1 => 0044
+0047 => KSHORT   1   1
+0048    KSHORT   2 100
+0049    KSHORT   3   1
+0050    FORI     1 => 0061
+0051 => GGET     5   4      ; "assert"
+0052    TGETV    7   0   4
+0053    SUBNV    8   4   0  ; 100
+0054    ISEQV    7   8
+0055    JMP      7 => 0058
+0056    KPRI     7   1
+0057    JMP      8 => 0059
+0058 => KPRI     7   2
+0059 => CALL     5   1   2
+0060    FORL     1 => 0051
+0061 => KPRI     0   0
+0062    GGET     1   0      ; "setmetatable"
+0063    TNEW     3   0
+0064    TDUP     4   6
+0065    FNEW     5   5      ; ref_lang_meta_index.lua:17
+0066    TSETS    5   4   3  ; "__index"
+0067    CALL     1   2   3
+0068    GGET     2   4      ; "assert"
+0069    TGETB    4   1   1
+0070    ISEQP    4   0
+0071    JMP      4 => 0074
+0072    KPRI     4   1
+0073    JMP      5 => 0075
+0074 => KPRI     4   2
+0075 => CALL     2   1   2
+0076    GGET     2   4      ; "assert"
+0077    ISEQN    0   1      ; 1
+0078    JMP      4 => 0081
+0079    KPRI     4   1
+0080    JMP      5 => 0082
+0081 => KPRI     4   2
+0082 => CALL     2   1   2
+0083    GGET     2   4      ; "assert"
+0084    TGETS    4   1   7  ; "foo"
+0085    ISEQP    4   0
+0086    JMP      4 => 0089
+0087    KPRI     4   1
+0088    JMP      5 => 0090
+0089 => KPRI     4   2
+0090 => CALL     2   1   2
+0091    GGET     2   4      ; "assert"
+0092    ISEQS    0   7      ; "foo"
+0093    JMP      4 => 0096
+0094    KPRI     4   1
+0095    JMP      5 => 0097
+0096 => KPRI     4   2
+0097 => CALL     2   1   2
+0098    UCLO     0 => 0099
+0099 => GGET     0   8      ; "newproxy"
+0100    KPRI     2   2
+0101    CALL     0   2   2
+0102    GGET     1   9      ; "getmetatable"
+0103    MOV      3   0
+0104    CALL     1   2   2
+0105    TDUP     2  10
+0106    TSETS    0   2   7  ; "foo"
+0107    TSETS    2   1   3  ; "__index"
+0108    KSHORT   1   0
+0109    KSHORT   2   1
+0110    KSHORT   3 100
+0111    KSHORT   4   1
+0112    FORI     2 => 0117
+0113 => TGETS    6   0  11  ; "bar"
+0114    ADDVV    1   1   6
+0115    TGETS    0   0   7  ; "foo"
+0116    FORL     2 => 0113
+0117 => GGET     2   4      ; "assert"
+0118    ISEQN    1   2      ; 4200
+0119    JMP      4 => 0122
+0120    KPRI     4   1
+0121    JMP      5 => 0123
+0122 => KPRI     4   2
+0123 => CALL     2   1   2
+0124    KSHORT   1   0
+0125    KSHORT   2   1
+0126    KSHORT   3 100
+0127    KSHORT   4   1
+0128    FORI     2 => 0133
+0129 => TGETS    0   0   7  ; "foo"
+0130    TGETS    6   0  11  ; "bar"
+0131    ADDVV    1   1   6
+0132    FORL     2 => 0129
+0133 => GGET     2   4      ; "assert"
+0134    ISEQN    1   2      ; 4200
+0135    JMP      4 => 0138
+0136    KPRI     4   1
+0137    JMP      5 => 0139
+0138 => KPRI     4   2
+0139 => CALL     2   1   2
+0140    KSTR     0   7      ; "foo"
+0141    GGET     1  12      ; "debug"
+0142    TGETS    1   1   9  ; "getmetatable"
+0143    MOV      3   0
+0144    CALL     1   2   2
+0145    GGET     2  12      ; "debug"
+0146    TGETS    2   2   0  ; "setmetatable"
+0147    MOV      4   0
+0148    TDUP     5  17
+0149    TDUP     6  13
+0150    TSETS    0   6  14  ; "s"
+0151    GGET     7  15      ; "string"
+0152    TGETS    7   7  16  ; "len"
+0153    TSETS    7   6  16  ; "len"
+0154    TSETS    6   5   3  ; "__index"
+0155    CALL     2   1   3
+0156    KSHORT   2   0
+0157    TNEW     3   0
+0158    KSHORT   4   1
+0159    KSHORT   5 100
+0160    KSHORT   6   1
+0161    FORI     4 => 0169
+0162 => MOV     10   0
+0163    TGETS    8   0  16  ; "len"
+0164    CALL     8   2   2
+0165    ADDVV    2   2   8
+0166    TGETS    0   0  14  ; "s"
+0167    TSETV    3   3   0
+0168    FORL     4 => 0162
+0169 => GGET     4  12      ; "debug"
+0170    TGETS    4   4   0  ; "setmetatable"
+0171    MOV      6   0
+0172    MOV      7   1
+0173    CALL     4   1   3
+0174    GGET     4   4      ; "assert"
+0175    ISEQN    2   3      ; 300
+0176    JMP      6 => 0179
+0177    KPRI     6   1
+0178    JMP      7 => 0180
+0179 => KPRI     6   2
+0180 => CALL     4   1   2
+0181    RET0     0   1
+

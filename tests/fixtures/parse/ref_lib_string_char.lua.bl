@@ -1,0 +1,121 @@
+-- BYTECODE -- ref_lib_string_char.lua:19-21
+0001    KSHORT   0   1
+0002    KSHORT   1 200
+0003    KSHORT   2   1
+0004    FORI     0 => 0010
+0005 => UGET     4   1      ; char
+0006    ADDNV    6   3   0  ; 100
+0007    CALL     4   2   2
+0008    USETV    0   4      ; y
+0009    FORL     0 => 0005
+0010 => RET0     0   1
+
+-- BYTECODE -- ref_lib_string_char.lua:0-30
+0001    GGET     0   0      ; "string"
+0002    TGETS    0   0   1  ; "char"
+0003    KPRI     1   0
+0004    KSHORT   2   1
+0005    KSHORT   3 100
+0006    KSHORT   4   1
+0007    FORI     2 => 0013
+0008 => MOV      6   0
+0009    KSHORT   8  65
+0010    CALL     6   2   2
+0011    MOV      1   6
+0012    FORL     2 => 0008
+0013 => GGET     2   2      ; "assert"
+0014    ISEQS    1   3      ; "A"
+0015    JMP      4 => 0018
+0016    KPRI     4   1
+0017    JMP      5 => 0019
+0018 => KPRI     4   2
+0019 => CALL     2   1   2
+0020    KSHORT   2  97
+0021    KSHORT   3   1
+0022    KSHORT   4 100
+0023    KSHORT   5   1
+0024    FORI     3 => 0030
+0025 => MOV      7   0
+0026    MOV      9   2
+0027    CALL     7   2   2
+0028    MOV      1   7
+0029    FORL     3 => 0025
+0030 => GGET     3   2      ; "assert"
+0031    ISEQS    1   4      ; "a"
+0032    JMP      5 => 0035
+0033    KPRI     5   1
+0034    JMP      6 => 0036
+0035 => KPRI     5   2
+0036 => CALL     3   1   2
+0037    KSTR     2   5      ; "98"
+0038    KSHORT   3   1
+0039    KSHORT   4 100
+0040    KSHORT   5   1
+0041    FORI     3 => 0047
+0042 => MOV      7   0
+0043    MOV      9   2
+0044    CALL     7   2   2
+0045    MOV      1   7
+0046    FORL     3 => 0042
+0047 => GGET     3   2      ; "assert"
+0048    ISEQS    1   6      ; "b"
+0049    JMP      5 => 0052
+0050    KPRI     5   1
+0051    JMP      6 => 0053
+0052 => KPRI     5   2
+0053 => CALL     3   1   2
+0054    KSHORT   3   1
+0055    KSHORT   4 100
+0056    KSHORT   5   1
+0057    FORI     3 => 0063
+0058 => MOV      7   0
+0059    ADDNV    9   6   0  ; 32
+0060    CALL     7   2   2
+0061    MOV      1   7
+0062    FORL     3 => 0058
+0063 => GGET     3   2      ; "assert"
+0064    ISEQS    1   7      ; "„"
+0065    JMP      5 => 0068
+0066    KPRI     5   1
+0067    JMP      6 => 0069
+0068 => KPRI     5   2
+0069 => CALL     3   1   2
+0070    KPRI     1   0
+0071    GGET     2   2      ; "assert"
+0072    GGET     4   8      ; "pcall"
+0073    FNEW     6   9      ; ref_lib_string_char.lua:19
+0074    CALL     4   2   2
+0075    NOT      4   4
+0076    CALL     2   1   2
+0077    GGET     2   2      ; "assert"
+0078    ISEQS    1  10      ; "ÿ"
+0079    JMP      4 => 0082
+0080    KPRI     4   1
+0081    JMP      5 => 0083
+0082 => KPRI     4   2
+0083 => CALL     2   1   2
+0084    UCLO     1 => 0085
+0085 => KPRI     1   0
+0086    KSHORT   2   1
+0087    KSHORT   3 100
+0088    KSHORT   4   1
+0089    FORI     2 => 0099
+0090 => MOV      6   0
+0091    KSHORT   8  65
+0092    KSHORT   9  66
+0093    MOV     10   5
+0094    KSHORT  11  67
+0095    KSHORT  12  68
+0096    CALL     6   2   6
+0097    MOV      1   6
+0098    FORL     2 => 0090
+0099 => GGET     2   2      ; "assert"
+0100    ISEQS    1  11      ; "ABdCD"
+0101    JMP      4 => 0104
+0102    KPRI     4   1
+0103    JMP      5 => 0105
+0104 => KPRI     4   2
+0105 => CALL     2   1   2
+0106    UCLO     0 => 0107
+0107 => RET0     0   1
+

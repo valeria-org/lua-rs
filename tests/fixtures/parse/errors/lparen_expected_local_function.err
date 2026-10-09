@@ -1,0 +1,1 @@
+[string "local function f return end"]:1: '(' expected near 'return'

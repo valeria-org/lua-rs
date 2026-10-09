@@ -1,0 +1,75 @@
+-- BYTECODE -- callm_varg.lua:2-14
+0001    GGET     0   0      ; "g"
+0002    VARG     2   0   0
+0003    CALLM    0   1   0
+0004    GGET     0   0      ; "g"
+0005    KSHORT   2   1
+0006    VARG     3   0   0
+0007    CALLM    0   1   1
+0008    GGET     0   0      ; "g"
+0009    KSHORT   2   1
+0010    KSHORT   3   2
+0011    VARG     4   0   0
+0012    CALLM    0   1   2
+0013    GGET     0   0      ; "g"
+0014    GGET     2   1      ; "h"
+0015    VARG     4   0   0
+0016    CALLM    2   0   0
+0017    CALLM    0   1   0
+0018    GGET     0   0      ; "g"
+0019    KSHORT   2   1
+0020    GGET     3   1      ; "h"
+0021    VARG     5   0   0
+0022    CALLM    3   0   0
+0023    CALLM    0   1   1
+0024    TNEW     0   3
+0025    VARG     1   0   0
+0026    TSETM    1   0      ; 1
+0027    TDUP     1   2
+0028    VARG     2   0   0
+0029    TSETM    2   1      ; 2
+0030    TNEW     2   3
+0031    GGET     3   1      ; "h"
+0032    VARG     5   0   0
+0033    CALLM    3   0   0
+0034    TSETM    3   0      ; 1
+0035    GGET     3   3      ; "o"
+0036    MOV      5   3
+0037    TGETS    3   3   4  ; "m"
+0038    VARG     6   0   0
+0039    CALLM    3   1   1
+0040    GGET     3   3      ; "o"
+0041    MOV      5   3
+0042    TGETS    3   3   4  ; "m"
+0043    KSHORT   6   1
+0044    VARG     7   0   0
+0045    CALLM    3   1   2
+0046    GGET     3   0      ; "g"
+0047    VARG     5   0   0
+0048    CALLMT   3   0
+
+-- BYTECODE -- callm_varg.lua:15-17
+0001    GGET     0   0      ; "o"
+0002    MOV      2   0
+0003    TGETS    0   0   1  ; "m"
+0004    VARG     3   0   0
+0005    CALLMT   0   1
+
+-- BYTECODE -- callm_varg.lua:18-20
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    GGET     2   0      ; "g"
+0004    VARG     4   0   0
+0005    CALLM    2   0   0
+0006    RETM     0   2
+
+-- BYTECODE -- callm_varg.lua:0-22
+0001    FNEW     0   0      ; callm_varg.lua:2
+0002    FNEW     1   1      ; callm_varg.lua:15
+0003    FNEW     2   2      ; callm_varg.lua:18
+0004    MOV      3   0
+0005    MOV      4   1
+0006    MOV      5   2
+0007    UCLO     0 => 0008
+0008 => RET      3   4
+

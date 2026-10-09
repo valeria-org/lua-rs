@@ -1,0 +1,597 @@
+-- BYTECODE -- deep_nesting.lua:0-9
+0001    KSHORT   0   1
+0002    TNEW     1   3
+0003    TNEW     2   3
+0004    TNEW     3   3
+0005    TNEW     4   3
+0006    TNEW     5   3
+0007    TNEW     6   3
+0008    TNEW     7   3
+0009    TNEW     8   3
+0010    TNEW     9   3
+0011    TNEW    10   3
+0012    TNEW    11   3
+0013    TNEW    12   3
+0014    TNEW    13   3
+0015    TNEW    14   3
+0016    TNEW    15   3
+0017    TNEW    16   3
+0018    TNEW    17   3
+0019    TNEW    18   3
+0020    TNEW    19   3
+0021    TNEW    20   3
+0022    TNEW    21   3
+0023    TNEW    22   3
+0024    TNEW    23   3
+0025    TNEW    24   3
+0026    TNEW    25   3
+0027    TNEW    26   3
+0028    TNEW    27   3
+0029    TNEW    28   3
+0030    TNEW    29   3
+0031    TNEW    30   3
+0032    TNEW    31   3
+0033    TNEW    32   3
+0034    TNEW    33   3
+0035    TNEW    34   3
+0036    TNEW    35   3
+0037    TNEW    36   3
+0038    TNEW    37   3
+0039    TNEW    38   3
+0040    TNEW    39   3
+0041    TNEW    40   3
+0042    TNEW    41   3
+0043    TNEW    42   3
+0044    TNEW    43   3
+0045    TNEW    44   3
+0046    TNEW    45   3
+0047    TNEW    46   3
+0048    TNEW    47   3
+0049    TNEW    48   3
+0050    TNEW    49   3
+0051    TNEW    50   3
+0052    TNEW    51   3
+0053    TNEW    52   3
+0054    TNEW    53   3
+0055    TNEW    54   3
+0056    TNEW    55   3
+0057    TNEW    56   3
+0058    TNEW    57   3
+0059    TNEW    58   3
+0060    TNEW    59   3
+0061    TNEW    60   3
+0062    TNEW    61   3
+0063    TNEW    62   3
+0064    TNEW    63   3
+0065    TNEW    64   3
+0066    TNEW    65   3
+0067    TNEW    66   3
+0068    TNEW    67   3
+0069    TNEW    68   3
+0070    TNEW    69   3
+0071    TNEW    70   3
+0072    TNEW    71   3
+0073    TNEW    72   3
+0074    TNEW    73   3
+0075    TNEW    74   3
+0076    TNEW    75   3
+0077    TNEW    76   3
+0078    TNEW    77   3
+0079    TNEW    78   3
+0080    TNEW    79   3
+0081    TDUP    80   0
+0082    TSETB   80  79   1
+0083    TSETB   79  78   1
+0084    TSETB   78  77   1
+0085    TSETB   77  76   1
+0086    TSETB   76  75   1
+0087    TSETB   75  74   1
+0088    TSETB   74  73   1
+0089    TSETB   73  72   1
+0090    TSETB   72  71   1
+0091    TSETB   71  70   1
+0092    TSETB   70  69   1
+0093    TSETB   69  68   1
+0094    TSETB   68  67   1
+0095    TSETB   67  66   1
+0096    TSETB   66  65   1
+0097    TSETB   65  64   1
+0098    TSETB   64  63   1
+0099    TSETB   63  62   1
+0100    TSETB   62  61   1
+0101    TSETB   61  60   1
+0102    TSETB   60  59   1
+0103    TSETB   59  58   1
+0104    TSETB   58  57   1
+0105    TSETB   57  56   1
+0106    TSETB   56  55   1
+0107    TSETB   55  54   1
+0108    TSETB   54  53   1
+0109    TSETB   53  52   1
+0110    TSETB   52  51   1
+0111    TSETB   51  50   1
+0112    TSETB   50  49   1
+0113    TSETB   49  48   1
+0114    TSETB   48  47   1
+0115    TSETB   47  46   1
+0116    TSETB   46  45   1
+0117    TSETB   45  44   1
+0118    TSETB   44  43   1
+0119    TSETB   43  42   1
+0120    TSETB   42  41   1
+0121    TSETB   41  40   1
+0122    TSETB   40  39   1
+0123    TSETB   39  38   1
+0124    TSETB   38  37   1
+0125    TSETB   37  36   1
+0126    TSETB   36  35   1
+0127    TSETB   35  34   1
+0128    TSETB   34  33   1
+0129    TSETB   33  32   1
+0130    TSETB   32  31   1
+0131    TSETB   31  30   1
+0132    TSETB   30  29   1
+0133    TSETB   29  28   1
+0134    TSETB   28  27   1
+0135    TSETB   27  26   1
+0136    TSETB   26  25   1
+0137    TSETB   25  24   1
+0138    TSETB   24  23   1
+0139    TSETB   23  22   1
+0140    TSETB   22  21   1
+0141    TSETB   21  20   1
+0142    TSETB   20  19   1
+0143    TSETB   19  18   1
+0144    TSETB   18  17   1
+0145    TSETB   17  16   1
+0146    TSETB   16  15   1
+0147    TSETB   15  14   1
+0148    TSETB   14  13   1
+0149    TSETB   13  12   1
+0150    TSETB   12  11   1
+0151    TSETB   11  10   1
+0152    TSETB   10   9   1
+0153    TSETB    9   8   1
+0154    TSETB    8   7   1
+0155    TSETB    7   6   1
+0156    TSETB    6   5   1
+0157    TSETB    5   4   1
+0158    TSETB    4   3   1
+0159    TSETB    3   2   1
+0160    TSETB    2   1   1
+0161    GGET     2   1      ; "f"
+0162    GGET     4   1      ; "f"
+0163    GGET     6   1      ; "f"
+0164    GGET     8   1      ; "f"
+0165    GGET    10   1      ; "f"
+0166    GGET    12   1      ; "f"
+0167    GGET    14   1      ; "f"
+0168    GGET    16   1      ; "f"
+0169    GGET    18   1      ; "f"
+0170    GGET    20   1      ; "f"
+0171    GGET    22   1      ; "f"
+0172    GGET    24   1      ; "f"
+0173    GGET    26   1      ; "f"
+0174    GGET    28   1      ; "f"
+0175    GGET    30   1      ; "f"
+0176    GGET    32   1      ; "f"
+0177    GGET    34   1      ; "f"
+0178    GGET    36   1      ; "f"
+0179    GGET    38   1      ; "f"
+0180    GGET    40   1      ; "f"
+0181    GGET    42   1      ; "f"
+0182    GGET    44   1      ; "f"
+0183    GGET    46   1      ; "f"
+0184    GGET    48   1      ; "f"
+0185    GGET    50   1      ; "f"
+0186    GGET    52   1      ; "f"
+0187    GGET    54   1      ; "f"
+0188    GGET    56   1      ; "f"
+0189    GGET    58   1      ; "f"
+0190    GGET    60   1      ; "f"
+0191    GGET    62   1      ; "f"
+0192    GGET    64   1      ; "f"
+0193    GGET    66   1      ; "f"
+0194    GGET    68   1      ; "f"
+0195    GGET    70   1      ; "f"
+0196    GGET    72   1      ; "f"
+0197    GGET    74   1      ; "f"
+0198    GGET    76   1      ; "f"
+0199    GGET    78   1      ; "f"
+0200    GGET    80   1      ; "f"
+0201    GGET    82   1      ; "f"
+0202    GGET    84   1      ; "f"
+0203    GGET    86   1      ; "f"
+0204    GGET    88   1      ; "f"
+0205    GGET    90   1      ; "f"
+0206    GGET    92   1      ; "f"
+0207    GGET    94   1      ; "f"
+0208    GGET    96   1      ; "f"
+0209    GGET    98   1      ; "f"
+0210    GGET   100   1      ; "f"
+0211    GGET   102   1      ; "f"
+0212    GGET   104   1      ; "f"
+0213    GGET   106   1      ; "f"
+0214    GGET   108   1      ; "f"
+0215    GGET   110   1      ; "f"
+0216    GGET   112   1      ; "f"
+0217    GGET   114   1      ; "f"
+0218    GGET   116   1      ; "f"
+0219    GGET   118   1      ; "f"
+0220    GGET   120   1      ; "f"
+0221    MOV    122   0
+0222    CALL   120   0   2
+0223    CALLM  118   0   0
+0224    CALLM  116   0   0
+0225    CALLM  114   0   0
+0226    CALLM  112   0   0
+0227    CALLM  110   0   0
+0228    CALLM  108   0   0
+0229    CALLM  106   0   0
+0230    CALLM  104   0   0
+0231    CALLM  102   0   0
+0232    CALLM  100   0   0
+0233    CALLM   98   0   0
+0234    CALLM   96   0   0
+0235    CALLM   94   0   0
+0236    CALLM   92   0   0
+0237    CALLM   90   0   0
+0238    CALLM   88   0   0
+0239    CALLM   86   0   0
+0240    CALLM   84   0   0
+0241    CALLM   82   0   0
+0242    CALLM   80   0   0
+0243    CALLM   78   0   0
+0244    CALLM   76   0   0
+0245    CALLM   74   0   0
+0246    CALLM   72   0   0
+0247    CALLM   70   0   0
+0248    CALLM   68   0   0
+0249    CALLM   66   0   0
+0250    CALLM   64   0   0
+0251    CALLM   62   0   0
+0252    CALLM   60   0   0
+0253    CALLM   58   0   0
+0254    CALLM   56   0   0
+0255    CALLM   54   0   0
+0256    CALLM   52   0   0
+0257    CALLM   50   0   0
+0258    CALLM   48   0   0
+0259    CALLM   46   0   0
+0260    CALLM   44   0   0
+0261    CALLM   42   0   0
+0262    CALLM   40   0   0
+0263    CALLM   38   0   0
+0264    CALLM   36   0   0
+0265    CALLM   34   0   0
+0266    CALLM   32   0   0
+0267    CALLM   30   0   0
+0268    CALLM   28   0   0
+0269    CALLM   26   0   0
+0270    CALLM   24   0   0
+0271    CALLM   22   0   0
+0272    CALLM   20   0   0
+0273    CALLM   18   0   0
+0274    CALLM   16   0   0
+0275    CALLM   14   0   0
+0276    CALLM   12   0   0
+0277    CALLM   10   0   0
+0278    CALLM    8   0   0
+0279    CALLM    6   0   0
+0280    CALLM    4   0   0
+0281    CALLM    2   2   0
+0282    KSHORT   3   1
+0283    ADDVV    3   0   0
+0284    ADDVV    3   3   0
+0285    ADDVV    3   3   0
+0286    ADDVV    3   3   0
+0287    ADDVV    3   3   0
+0288    ADDVV    3   3   0
+0289    ADDVV    3   3   0
+0290    ADDVV    3   3   0
+0291    ADDVV    3   3   0
+0292    ADDVV    3   3   0
+0293    ADDVV    3   3   0
+0294    ADDVV    3   3   0
+0295    ADDVV    3   3   0
+0296    ADDVV    3   3   0
+0297    ADDVV    3   3   0
+0298    ADDVV    3   3   0
+0299    ADDVV    3   3   0
+0300    ADDVV    3   3   0
+0301    ADDVV    3   3   0
+0302    ADDVV    3   3   0
+0303    ADDVV    3   3   0
+0304    ADDVV    3   3   0
+0305    ADDVV    3   3   0
+0306    ADDVV    3   3   0
+0307    ADDVV    3   3   0
+0308    ADDVV    3   3   0
+0309    ADDVV    3   3   0
+0310    ADDVV    3   3   0
+0311    ADDVV    3   3   0
+0312    ADDVV    3   3   0
+0313    ADDVV    3   3   0
+0314    ADDVV    3   3   0
+0315    ADDVV    3   3   0
+0316    ADDVV    3   3   0
+0317    ADDVV    3   3   0
+0318    ADDVV    3   3   0
+0319    ADDVV    3   3   0
+0320    ADDVV    3   3   0
+0321    ADDVV    3   3   0
+0322    ADDVV    3   3   0
+0323    ADDVV    3   3   0
+0324    ADDVV    3   3   0
+0325    ADDVV    3   3   0
+0326    ADDVV    3   3   0
+0327    ADDVV    3   3   0
+0328    ADDVV    3   3   0
+0329    ADDVV    3   3   0
+0330    ADDVV    3   3   0
+0331    ADDVV    3   3   0
+0332    ADDVV    3   3   0
+0333    ADDVV    3   3   0
+0334    ADDVV    3   3   0
+0335    ADDVV    3   3   0
+0336    ADDVV    3   3   0
+0337    ADDVV    3   3   0
+0338    ADDVV    3   3   0
+0339    ADDVV    3   3   0
+0340    ADDVV    3   3   0
+0341    ADDVV    3   3   0
+0342    ADDVV    3   3   0
+0343    ADDVV    3   3   0
+0344    ADDVV    3   3   0
+0345    ADDVV    3   3   0
+0346    ADDVV    3   3   0
+0347    ADDVV    3   3   0
+0348    ADDVV    3   3   0
+0349    ADDVV    3   3   0
+0350    ADDVV    3   3   0
+0351    ADDVV    3   3   0
+0352    ADDVV    3   3   0
+0353    ADDVV    3   3   0
+0354    ADDVV    3   3   0
+0355    ADDVV    3   3   0
+0356    ADDVV    3   3   0
+0357    ADDVV    3   3   0
+0358    ADDVV    3   3   0
+0359    ADDVV    3   3   0
+0360    ADDVV    3   3   0
+0361    ADDVV    3   3   0
+0362    ADDVV    3   3   0
+0363    ADDVV    3   3   0
+0364    ADDVV    3   3   0
+0365    ADDVV    3   3   0
+0366    ADDVV    3   3   0
+0367    ADDVV    3   3   0
+0368    ADDVV    3   3   0
+0369    ADDVV    3   3   0
+0370    ADDVV    3   3   0
+0371    ADDVV    3   3   0
+0372    ADDVV    3   3   0
+0373    ADDVV    3   3   0
+0374    ADDVV    3   3   0
+0375    ADDVV    3   3   0
+0376    ADDVV    3   3   0
+0377    ADDVV    3   3   0
+0378    ADDVV    3   3   0
+0379    ADDVV    3   3   0
+0380    ADDVV    3   3   0
+0381    ADDVV    3   3   0
+0382    ADDVV    3   3   0
+0383    ADDVV    3   3   0
+0384    ADDVV    3   3   0
+0385    ADDVV    3   3   0
+0386    ADDVV    3   3   0
+0387    ADDVV    3   3   0
+0388    ADDVV    3   3   0
+0389    ADDVV    3   3   0
+0390    ADDVV    3   3   0
+0391    ADDVV    3   3   0
+0392    ADDVV    3   3   0
+0393    ADDVV    3   3   0
+0394    ADDVV    3   3   0
+0395    ADDVV    3   3   0
+0396    ADDVV    3   3   0
+0397    ADDVV    3   3   0
+0398    ADDVV    3   3   0
+0399    ADDVV    3   3   0
+0400    ADDVV    3   3   0
+0401    ADDVV    3   3   0
+0402    ADDVV    3   3   0
+0403    ADDVV    3   3   0
+0404    ADDVV    3   3   0
+0405    ADDVV    3   3   0
+0406    ADDVV    3   3   0
+0407    ADDVV    3   3   0
+0408    ADDVV    3   3   0
+0409    ADDVV    3   3   0
+0410    ADDVV    3   3   0
+0411    ADDVV    3   3   0
+0412    ADDVV    3   3   0
+0413    ADDVV    3   3   0
+0414    ADDVV    3   3   0
+0415    ADDVV    3   3   0
+0416    ADDVV    3   3   0
+0417    ADDVV    3   3   0
+0418    ADDVV    3   3   0
+0419    ADDVV    3   3   0
+0420    ADDVV    3   3   0
+0421    ADDVV    3   3   0
+0422    ADDVV    3   3   0
+0423    ADDVV    3   3   0
+0424    ADDVV    3   3   0
+0425    ADDVV    3   3   0
+0426    ADDVV    3   3   0
+0427    ADDVV    3   3   0
+0428    ADDVV    3   3   0
+0429    ADDVV    3   3   0
+0430    ADDVV    3   3   0
+0431    ADDVV    3   3   0
+0432    MOV      4   0
+0433    MOV      5   0
+0434    MOV      6   0
+0435    MOV      7   0
+0436    MOV      8   0
+0437    MOV      9   0
+0438    MOV     10   0
+0439    MOV     11   0
+0440    MOV     12   0
+0441    MOV     13   0
+0442    MOV     14   0
+0443    MOV     15   0
+0444    MOV     16   0
+0445    MOV     17   0
+0446    MOV     18   0
+0447    MOV     19   0
+0448    MOV     20   0
+0449    MOV     21   0
+0450    MOV     22   0
+0451    MOV     23   0
+0452    MOV     24   0
+0453    MOV     25   0
+0454    MOV     26   0
+0455    MOV     27   0
+0456    MOV     28   0
+0457    MOV     29   0
+0458    MOV     30   0
+0459    MOV     31   0
+0460    MOV     32   0
+0461    MOV     33   0
+0462    MOV     34   0
+0463    MOV     35   0
+0464    MOV     36   0
+0465    MOV     37   0
+0466    MOV     38   0
+0467    MOV     39   0
+0468    MOV     40   0
+0469    MOV     41   0
+0470    MOV     42   0
+0471    MOV     43   0
+0472    MOV     44   0
+0473    MOV     45   0
+0474    MOV     46   0
+0475    MOV     47   0
+0476    MOV     48   0
+0477    MOV     49   0
+0478    MOV     50   0
+0479    MOV     51   0
+0480    MOV     52   0
+0481    MOV     53   0
+0482    MOV     54   0
+0483    MOV     55   0
+0484    MOV     56   0
+0485    MOV     57   0
+0486    MOV     58   0
+0487    MOV     59   0
+0488    MOV     60   0
+0489    MOV     61   0
+0490    MOV     62   0
+0491    MOV     63   0
+0492    CAT      4   4  63
+0493    UNM      5   0
+0494    UNM      5   5
+0495    NOT      6   0
+0496    NOT      6   6
+0497    NOT      6   6
+0498    NOT      6   6
+0499    NOT      6   6
+0500    NOT      6   6
+0501    NOT      6   6
+0502    NOT      6   6
+0503    NOT      6   6
+0504    NOT      6   6
+0505    NOT      6   6
+0506    NOT      6   6
+0507    NOT      6   6
+0508    NOT      6   6
+0509    NOT      6   6
+0510    NOT      6   6
+0511    NOT      6   6
+0512    NOT      6   6
+0513    NOT      6   6
+0514    NOT      6   6
+0515    NOT      6   6
+0516    NOT      6   6
+0517    NOT      6   6
+0518    NOT      6   6
+0519    NOT      6   6
+0520    NOT      6   6
+0521    NOT      6   6
+0522    NOT      6   6
+0523    NOT      6   6
+0524    NOT      6   6
+0525    NOT      6   6
+0526    NOT      6   6
+0527    NOT      6   6
+0528    NOT      6   6
+0529    NOT      6   6
+0530    NOT      6   6
+0531    NOT      6   6
+0532    NOT      6   6
+0533    NOT      6   6
+0534    NOT      6   6
+0535    NOT      6   6
+0536    NOT      6   6
+0537    NOT      6   6
+0538    NOT      6   6
+0539    NOT      6   6
+0540    NOT      6   6
+0541    NOT      6   6
+0542    NOT      6   6
+0543    NOT      6   6
+0544    NOT      6   6
+0545    NOT      6   6
+0546    NOT      6   6
+0547    NOT      6   6
+0548    NOT      6   6
+0549    NOT      6   6
+0550    NOT      6   6
+0551    NOT      6   6
+0552    NOT      6   6
+0553    NOT      6   6
+0554    NOT      6   6
+0555    NOT      6   6
+0556    NOT      6   6
+0557    NOT      6   6
+0558    NOT      6   6
+0559    NOT      6   6
+0560    NOT      6   6
+0561    NOT      6   6
+0562    NOT      6   6
+0563    NOT      6   6
+0564    NOT      6   6
+0565    NOT      6   6
+0566    NOT      6   6
+0567    NOT      6   6
+0568    NOT      6   6
+0569    NOT      6   6
+0570    NOT      6   6
+0571    NOT      6   6
+0572    NOT      6   6
+0573    NOT      6   6
+0574    NOT      6   6
+0575    NOT      6   6
+0576    NOT      6   6
+0577    NOT      6   6
+0578    NOT      6   6
+0579    NOT      6   6
+0580    NOT      6   6
+0581    NOT      6   6
+0582    NOT      6   6
+0583    NOT      6   6
+0584    NOT      6   6
+0585    NOT      6   6
+0586    NOT      6   6
+0587    NOT      6   6
+0588    NOT      6   6
+0589    NOT      6   6
+0590    NOT      6   6
+0591    NOT      6   6
+0592    NOT      6   6
+0593    NOT      6   6
+0594    NOT      6   6
+0595    RET0     0   1
+

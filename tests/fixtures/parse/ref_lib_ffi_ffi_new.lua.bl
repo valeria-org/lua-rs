@@ -1,0 +1,379 @@
+-- BYTECODE -- ref_lib_ffi_ffi_new.lua:87-87
+0001    USETV    0   0      ; q
+0002    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_new.lua:103-103
+0001    GGET     1   0      ; "assert"
+0002    GGET     3   1      ; "type"
+0003    MOV      5   0
+0004    CALL     3   2   2
+0005    ISEQS    3   2      ; "cdata"
+0006    JMP      3 => 0009
+0007    KPRI     3   1
+0008    JMP      4 => 0010
+0009 => KPRI     3   2
+0010 => CALL     1   1   2
+0011    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_new.lua:0-107
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "ffi"
+0003    CALL     0   2   2
+0004    GGET     1   0      ; "require"
+0005    KSTR     3   2      ; "bit"
+0006    CALL     1   2   2
+0007    GGET     2   3      ; "dofile"
+0008    KSTR     4   4      ; "../common/ffi_util.inc"
+0009    CALL     2   1   2
+0010    TGETS    2   0   5  ; "cdef"
+0011    KSTR     4   6      ; "typedef struct { int a,b,c; } foo1_t;\nt"~
+0012    CALL     2   1   2
+0013    GGET     2   7      ; "assert"
+0014    TGETS    4   0   8  ; "sizeof"
+0015    KSTR     6   9      ; "foo1_t"
+0016    CALL     4   2   2
+0017    ISEQN    4   0      ; 12
+0018    JMP      4 => 0021
+0019    KPRI     4   1
+0020    JMP      5 => 0022
+0021 => KPRI     4   2
+0022 => CALL     2   1   2
+0023    TGETS    2   0  10  ; "new"
+0024    KSTR     4   9      ; "foo1_t"
+0025    CALL     2   2   2
+0026    GGET     3   7      ; "assert"
+0027    TGETS    5   0   8  ; "sizeof"
+0028    MOV      7   2
+0029    CALL     5   2   2
+0030    ISEQN    5   0      ; 12
+0031    JMP      5 => 0034
+0032    KPRI     5   1
+0033    JMP      6 => 0035
+0034 => KPRI     5   2
+0035 => CALL     3   1   2
+0036    TGETS    3   0  11  ; "typeof"
+0037    KSTR     5   9      ; "foo1_t"
+0038    CALL     3   2   2
+0039    GGET     4   7      ; "assert"
+0040    TGETS    6   0   8  ; "sizeof"
+0041    MOV      8   3
+0042    CALL     6   2   2
+0043    ISEQN    6   0      ; 12
+0044    JMP      6 => 0047
+0045    KPRI     6   1
+0046    JMP      7 => 0048
+0047 => KPRI     6   2
+0048 => CALL     4   1   2
+0049    MOV      4   3
+0050    CALL     4   2   1
+0051    MOV      2   4
+0052    GGET     4   7      ; "assert"
+0053    TGETS    6   0   8  ; "sizeof"
+0054    MOV      8   2
+0055    CALL     6   2   2
+0056    ISEQN    6   0      ; 12
+0057    JMP      6 => 0060
+0058    KPRI     6   1
+0059    JMP      7 => 0061
+0060 => KPRI     6   2
+0061 => CALL     4   1   2
+0062    GGET     2   7      ; "assert"
+0063    TGETS    4   0   8  ; "sizeof"
+0064    KSTR     6  12      ; "foo2_t"
+0065    KSHORT   7   3
+0066    CALL     4   2   3
+0067    ISEQN    4   0      ; 12
+0068    JMP      4 => 0071
+0069    KPRI     4   1
+0070    JMP      5 => 0072
+0071 => KPRI     4   2
+0072 => CALL     2   1   2
+0073    TGETS    2   0  10  ; "new"
+0074    KSTR     4  12      ; "foo2_t"
+0075    KSHORT   5   3
+0076    CALL     2   2   3
+0077    GGET     3   7      ; "assert"
+0078    TGETS    5   0   8  ; "sizeof"
+0079    MOV      7   2
+0080    CALL     5   2   2
+0081    ISEQN    5   0      ; 12
+0082    JMP      5 => 0085
+0083    KPRI     5   1
+0084    JMP      6 => 0086
+0085 => KPRI     5   2
+0086 => CALL     3   1   2
+0087    TGETS    3   0  11  ; "typeof"
+0088    KSTR     5  12      ; "foo2_t"
+0089    CALL     3   2   2
+0090    GGET     4  13      ; "fails"
+0091    TGETS    6   0   8  ; "sizeof"
+0092    MOV      7   3
+0093    CALL     4   1   3
+0094    GGET     4   7      ; "assert"
+0095    TGETS    6   0   8  ; "sizeof"
+0096    MOV      8   3
+0097    KSHORT   9   3
+0098    CALL     6   2   3
+0099    ISEQN    6   0      ; 12
+0100    JMP      6 => 0103
+0101    KPRI     6   1
+0102    JMP      7 => 0104
+0103 => KPRI     6   2
+0104 => CALL     4   1   2
+0105    MOV      4   3
+0106    KSHORT   6   3
+0107    CALL     4   2   2
+0108    MOV      2   4
+0109    GGET     4   7      ; "assert"
+0110    TGETS    6   0   8  ; "sizeof"
+0111    MOV      8   2
+0112    CALL     6   2   2
+0113    ISEQN    6   0      ; 12
+0114    JMP      6 => 0117
+0115    KPRI     6   1
+0116    JMP      7 => 0118
+0117 => KPRI     6   2
+0118 => CALL     4   1   2
+0119    TGETS    2   0  11  ; "typeof"
+0120    KSTR     4  14      ; "int"
+0121    CALL     2   2   2
+0122    TGETS    3   0  11  ; "typeof"
+0123    KSTR     5  15      ; "uint8_t"
+0124    CALL     3   2   2
+0125    TNEW     4   0
+0126    KSHORT   5   1
+0127    KSHORT   6 200
+0128    KSHORT   7   1
+0129    FORI     5 => 0132
+0130 => TSETV    2   4   8
+0131    FORL     5 => 0130
+0132 => TSETB    3   4 100
+0133    KSHORT   5   0
+0134    KSHORT   6   1
+0135    KSHORT   7 200
+0136    KSHORT   8   1
+0137    FORI     6 => 0146
+0138 => GGET    10  16      ; "tonumber"
+0139    TGETS   12   0  10  ; "new"
+0140    TGETV   14   4   9
+0141    KSHORT  15 257
+0142    CALL    12   0   3
+0143    CALLM   10   2   0
+0144    ADDVV    5   5  10
+0145    FORL     6 => 0138
+0146 => GGET     6   7      ; "assert"
+0147    ISEQN    5   1      ; 51144
+0148    JMP      8 => 0151
+0149    KPRI     8   1
+0150    JMP      9 => 0152
+0151 => KPRI     8   2
+0152 => CALL     6   1   2
+0153    GGET     2  17      ; "collectgarbage"
+0154    KSTR     4  18      ; "count"
+0155    CALL     2   2   2
+0156    KSHORT   3   0
+0157    KSHORT   4  15
+0158    KSHORT   5   1
+0159    FORI     3 => 0196
+0160 => KSHORT   7   2
+0161    POW      7   7   6
+0162    TGETS    8   0  11  ; "typeof"
+0163    KSTR    10  19      ; "struct { char __attribute__((aligned("
+0164    MOV     11   7
+0165    KSTR    12  20      ; "))) a; }"
+0166    CAT     10  10  12
+0167    CALL     8   2   2
+0168    KSHORT   9   1
+0169    KSHORT  10 100
+0170    KSHORT  11   1
+0171    FORI     9 => 0195
+0172 => MOV     13   8
+0173    CALL    13   2   1
+0174    GGET    14  16      ; "tonumber"
+0175    TGETS   16   0  21  ; "cast"
+0176    KSTR    18  22      ; "intptr_t"
+0177    TGETS   19   0  21  ; "cast"
+0178    KSTR    21  23      ; "void *"
+0179    MOV     22  13
+0180    CALL    19   0   3
+0181    CALLM   16   0   1
+0182    CALLM   14   2   0
+0183    GGET    15   7      ; "assert"
+0184    TGETS   17   1  24  ; "band"
+0185    MOV     19  14
+0186    SUBVN   20   7   2  ; 1
+0187    CALL    17   2   3
+0188    ISEQN   17   3      ; 0
+0189    JMP     17 => 0192
+0190    KPRI    17   1
+0191    JMP     18 => 0193
+0192 => KPRI    17   2
+0193 => CALL    15   1   2
+0194    FORL     9 => 0172
+0195 => FORL     3 => 0160
+0196 => GGET     3  17      ; "collectgarbage"
+0197    KSTR     5  18      ; "count"
+0198    CALL     3   2   2
+0199    GGET     4   7      ; "assert"
+0200    ADDVN    6   2   4  ; 3000
+0201    ISLT     3   6
+0202    JMP      6 => 0205
+0203    KPRI     6   1
+0204    JMP      7 => 0206
+0205 => KPRI     6   2
+0206 => KSTR     7  25      ; "GC step missing for ffi.new"
+0207    CALL     4   1   3
+0208    TNEW     2   0
+0209    KSHORT   3   1
+0210    KSHORT   4 100
+0211    KSHORT   5   1
+0212    FORI     3 => 0219
+0213 => TGETS    7   0  10  ; "new"
+0214    KSTR     9  26      ; "int[?]"
+0215    MOV     10   6
+0216    CALL     7   2   3
+0217    TSETV    7   2   6
+0218    FORL     3 => 0213
+0219 => GGET     3   7      ; "assert"
+0220    TGETS    5   0   8  ; "sizeof"
+0221    TGETB    7   2 100
+0222    CALL     5   2   2
+0223    ISEQN    5   5      ; 400
+0224    JMP      5 => 0227
+0225    KPRI     5   1
+0226    JMP      6 => 0228
+0227 => KPRI     5   2
+0228 => CALL     3   1   2
+0229    KSHORT   3   0
+0230    KSHORT   4  99
+0231    KSHORT   5   1
+0232    FORI     3 => 0243
+0233 => GGET     7   7      ; "assert"
+0234    TGETB    9   2 100
+0235    TGETV    9   9   6
+0236    ISEQN    9   3      ; 0
+0237    JMP      9 => 0240
+0238    KPRI     9   1
+0239    JMP     10 => 0241
+0240 => KPRI     9   2
+0241 => CALL     7   1   2
+0242    FORL     3 => 0233
+0243 => TNEW     2   0
+0244    TGETS    3   0  11  ; "typeof"
+0245    KSTR     5  27      ; "struct { double x; int y[?];}"
+0246    CALL     3   2   2
+0247    KSHORT   4   1
+0248    KSHORT   5 100
+0249    KSHORT   6   1
+0250    FORI     4 => 0256
+0251 => MOV      8   3
+0252    MOV     10   7
+0253    CALL     8   2   2
+0254    TSETV    8   2   7
+0255    FORL     4 => 0251
+0256 => GGET     4   7      ; "assert"
+0257    TGETS    6   0   8  ; "sizeof"
+0258    TGETB    8   2 100
+0259    CALL     6   2   2
+0260    ISEQN    6   6      ; 408
+0261    JMP      6 => 0264
+0262    KPRI     6   1
+0263    JMP      7 => 0265
+0264 => KPRI     6   2
+0265 => CALL     4   1   2
+0266    KSHORT   4   0
+0267    KSHORT   5  99
+0268    KSHORT   6   1
+0269    FORI     4 => 0281
+0270 => GGET     8   7      ; "assert"
+0271    TGETB   10   2 100
+0272    TGETS   10  10  28  ; "y"
+0273    TGETV   10  10   7
+0274    ISEQN   10   3      ; 0
+0275    JMP     10 => 0278
+0276    KPRI    10   1
+0277    JMP     11 => 0279
+0278 => KPRI    10   2
+0279 => CALL     8   1   2
+0280    FORL     4 => 0270
+0281 => TGETS    2   0  11  ; "typeof"
+0282    KSTR     4  29      ; "struct __attribute__((aligned(16))) { in"~
+0283    CALL     2   2   2
+0284    KPRI     3   0
+0285    KSHORT   4   1
+0286    KSHORT   5 200
+0287    KSHORT   6   1
+0288    FORI     4 => 0295
+0289 => MOV      8   2
+0290    CALL     8   2   1
+0291    ISNEN    7   7      ; 150
+0292    JMP      9 => 0294
+0293    MOV      3   8
+0294 => FORL     4 => 0289
+0295 => GGET     4   7      ; "assert"
+0296    TGETS    6   1  24  ; "band"
+0297    TGETS    8   0  21  ; "cast"
+0298    KSTR    10  22      ; "intptr_t"
+0299    TGETS   11   0  21  ; "cast"
+0300    KSTR    13  23      ; "void *"
+0301    MOV     14   3
+0302    CALL    11   0   3
+0303    CALLM    8   2   1
+0304    KSHORT   9  15
+0305    CALL     6   2   3
+0306    ISEQN    6   3      ; 0
+0307    JMP      6 => 0310
+0308    KPRI     6   1
+0309    JMP      7 => 0311
+0310 => KPRI     6   2
+0311 => CALL     4   1   2
+0312    KPRI     2   0
+0313    TGETS    3   0  30  ; "gc"
+0314    TGETS    5   0  10  ; "new"
+0315    KSTR     7  31      ; "int[1]"
+0316    CALL     5   2   2
+0317    FNEW     6  32      ; ref_lib_ffi_ffi_new.lua:87
+0318    CALL     3   2   3
+0319    KPRI     3   0
+0320    GGET     4  17      ; "collectgarbage"
+0321    CALL     4   1   1
+0322    GGET     4   7      ; "assert"
+0323    GGET     6  33      ; "type"
+0324    MOV      8   2
+0325    CALL     6   2   2
+0326    ISEQS    6  34      ; "cdata"
+0327    JMP      6 => 0330
+0328    KPRI     6   1
+0329    JMP      7 => 0331
+0330 => KPRI     6   2
+0331 => CALL     4   1   2
+0332    KPRI     2   0
+0333    GGET     4  17      ; "collectgarbage"
+0334    CALL     4   1   1
+0335    GGET     4   7      ; "assert"
+0336    ISEQP    2   0
+0337    JMP      6 => 0340
+0338    KPRI     6   1
+0339    JMP      7 => 0341
+0340 => KPRI     6   2
+0341 => CALL     4   1   2
+0342    UCLO     2 => 0343
+0343 => TGETS    2   0  30  ; "gc"
+0344    TGETS    4   0  35  ; "C"
+0345    TGETS    4   4  36  ; "malloc"
+0346    KNUM     6   8      ; 1048576
+0347    CALL     4   2   2
+0348    TGETS    5   0  35  ; "C"
+0349    TGETS    5   5  37  ; "free"
+0350    CALL     2   2   3
+0351    KPRI     2   0
+0352    GGET     3  17      ; "collectgarbage"
+0353    CALL     3   1   1
+0354    TGETS    2   0  30  ; "gc"
+0355    TGETS    4   0  10  ; "new"
+0356    KSTR     6  31      ; "int[1]"
+0357    CALL     4   2   2
+0358    FNEW     5  38      ; ref_lib_ffi_ffi_new.lua:103
+0359    CALL     2   2   3
+0360    RET0     0   1
+

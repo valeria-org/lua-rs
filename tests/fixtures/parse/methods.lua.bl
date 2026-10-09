@@ -1,0 +1,122 @@
+-- BYTECODE -- methods.lua:3-3
+0001    RET1     0   2
+
+-- BYTECODE -- methods.lua:4-4
+0001    MOV      2   0
+0002    MOV      3   1
+0003    RET      2   3
+
+-- BYTECODE -- methods.lua:5-5
+0001    RET0     0   1
+
+-- BYTECODE -- methods.lua:6-6
+0001    RET1     0   2
+
+-- BYTECODE -- methods.lua:7-7
+0001    RET0     0   1
+
+-- BYTECODE -- methods.lua:8-8
+0001    RET0     0   1
+
+-- BYTECODE -- methods.lua:9-9
+0001    VARG     1   0   1
+0002    RETM     1   0
+
+-- BYTECODE -- methods.lua:10-10
+0001    RET0     0   1
+
+-- BYTECODE -- methods.lua:21-21
+0001    RET1     0   2
+
+-- BYTECODE -- methods.lua:19-22
+0001    KSHORT   0   1
+0002    UGET     1   0      ; obj
+0003    FNEW     2   1      ; methods.lua:21
+0004    TSETS    2   1   0  ; "x"
+0005    RET0     0   1
+
+-- BYTECODE -- methods.lua:0-27
+0001    TNEW     0   0
+0002    FNEW     1   1      ; methods.lua:3
+0003    TSETS    1   0   0  ; "f"
+0004    FNEW     1   3      ; methods.lua:4
+0005    TSETS    1   0   2  ; "m"
+0006    TGETS    1   0   4  ; "a"
+0007    TGETS    1   1   5  ; "b"
+0008    FNEW     2   7      ; methods.lua:5
+0009    TSETS    2   1   6  ; "c"
+0010    TGETS    1   0   4  ; "a"
+0011    TGETS    1   1   5  ; "b"
+0012    TGETS    1   1   6  ; "c"
+0013    FNEW     2   9      ; methods.lua:6
+0014    TSETS    2   1   8  ; "m2"
+0015    FNEW     1  10      ; methods.lua:7
+0016    GSET     1  11      ; "gf"
+0017    GGET     1  12      ; "gt"
+0018    FNEW     2  14      ; methods.lua:8
+0019    TSETS    2   1  13  ; "x"
+0020    GGET     1  12      ; "gt"
+0021    TGETS    1   1  13  ; "x"
+0022    TGETS    1   1  15  ; "y"
+0023    FNEW     2  17      ; methods.lua:9
+0024    TSETS    2   1  16  ; "z"
+0025    FNEW     1  18      ; methods.lua:10
+0026    MOV      4   0
+0027    TGETS    2   0   2  ; "m"
+0028    KSHORT   5   1
+0029    CALL     2   1   3
+0030    TGETS    2   0   4  ; "a"
+0031    TGETS    2   2   5  ; "b"
+0032    MOV      4   2
+0033    TGETS    2   2   6  ; "c"
+0034    KSHORT   5   1
+0035    KSHORT   6   2
+0036    CALL     2   1   4
+0037    TGETS    2   0   2  ; "m"
+0038    MOV      4   0
+0039    KSHORT   5   1
+0040    CALL     2   1   3
+0041    MOV      4   0
+0042    TGETS    2   0   2  ; "m"
+0043    KSTR     5  19      ; "s"
+0044    CALL     2   1   3
+0045    MOV      4   0
+0046    TGETS    2   0   2  ; "m"
+0047    TDUP     5  20
+0048    CALL     2   1   3
+0049    MOV      4   0
+0050    TGETS    2   0   2  ; "m"
+0051    CALL     2   1   2
+0052    MOV      4   0
+0053    TGETS    2   0   2  ; "m"
+0054    KSHORT   5   1
+0055    CALL     2   2   3
+0056    MOV      4   2
+0057    TGETS    2   2   2  ; "m"
+0058    KSHORT   5   2
+0059    CALL     2   2   3
+0060    TGETS    3   0   4  ; "a"
+0061    MOV      5   3
+0062    TGETS    3   3   5  ; "b"
+0063    CALL     3   2   2
+0064    TGETS    3   3   6  ; "c"
+0065    MOV      5   3
+0066    TGETS    3   3  21  ; "d"
+0067    CALL     3   2   2
+0068    FNEW     4  22      ; methods.lua:19
+0069    KSTR     5  23      ; "key"
+0070    TGETV    6   0   5
+0071    MOV      8   6
+0072    TGETS    6   6   2  ; "m"
+0073    CALL     6   1   2
+0074    TGETB    6   0   1
+0075    MOV      8   6
+0076    TGETS    6   6   2  ; "m"
+0077    CALL     6   1   2
+0078    TGETS    6   0  24  ; "long_method_name_that_exceeds_things"
+0079    MOV      8   6
+0080    TGETS    6   6  25  ; "another_long_method_name"
+0081    CALL     6   1   2
+0082    UCLO     0 => 0083
+0083 => RET0     0   1
+

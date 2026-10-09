@@ -1,0 +1,680 @@
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:10-12
+0001    ADDVV    3   0   1
+0002    ADDVV    3   3   2
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:23-25
+0001    ADDVV    3   0   1
+0002    ADDVV    3   3   2
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:28-30
+0001    ADDVV    3   0   1
+0002    ADDVV    3   3   2
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:32-34
+0001    ADDVV    2   0   1
+0002    RET1     2   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:36-38
+0001    ADDVV    3   0   1
+0002    ADDVV    3   3   2
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:41-43
+0001    ADDVV   10   0   1
+0002    ADDVV   10  10   2
+0003    ADDVV   10  10   3
+0004    ADDVV   10  10   4
+0005    ADDVV   10  10   5
+0006    ADDVV   10  10   6
+0007    ADDVV   10  10   7
+0008    ADDVV   10  10   8
+0009    ADDVV   10  10   9
+0010    RET1    10   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:47-49
+0001    ADDVV   10   0   1
+0002    ADDVV   10  10   2
+0003    ADDVV   10  10   3
+0004    ADDVV   10  10   4
+0005    ADDVV   10  10   5
+0006    ADDVV   10  10   6
+0007    ADDVV   10  10   7
+0008    ADDVV   10  10   8
+0009    ADDVV   10  10   9
+0010    RET1    10   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:55-57
+0001    ADDVV    3   0   1
+0002    ADDVV    3   3   2
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:59-61
+0001    ADDVV    3   0   1
+0002    ADDVV    3   3   2
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:64-66
+0001    ADDVV    3   0   1
+0002    ADDVV    3   3   2
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:72-74
+0001    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:79-79
+0001    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:80-80
+0001    GGET     0   0      ; "error"
+0002    KSTR     2   1      ; "test"
+0003    CALL     0   1   2
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:81-81
+0001    ADDVN    1   0   0  ; 1
+0002    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:83-83
+0001    GGET     0   0      ; "error"
+0002    KSTR     2   1      ; "test"
+0003    CALL     0   1   2
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:84-84
+0001    GGET     0   0      ; "error"
+0002    KSTR     2   1      ; "test"
+0003    CALL     0   1   2
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:88-97
+0001    TGETB    2   0   0
+0002    TGETB    3   1   0
+0003    ISGE     2   3
+0004    JMP      4 => 0008
+0005    KSHORT   4  -1
+0006    RET1     4   2
+0007    JMP      4 => 0015
+0008 => ISGE     3   2
+0009    JMP      4 => 0013
+0010    KSHORT   4   1
+0011    RET1     4   2
+0012    JMP      4 => 0015
+0013 => KSHORT   4   0
+0014    RET1     4   2
+0015 => RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:117-122
+0001    UGET     2   0      ; C
+0002    TGETS    2   2   0  ; "SendMessageA"
+0003    MOV      4   0
+0004    UGET     5   0      ; C
+0005    TGETS    5   5   1  ; "WM_GETTEXT"
+0006    KSHORT   6 255
+0007    UGET     7   1      ; lbuf
+0008    CALL     2   2   5
+0009    ISEQN    2   0      ; 0
+0010    JMP      2 => 0014
+0011    UGET     2   2      ; count
+0012    ADDVN    2   2   1  ; 1
+0013    USETV    2   2      ; count
+0014 => KPRI     2   2
+0015    RET1     2   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:127-127
+0001    KSHORT   0   1
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:132-132
+0001    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:133-133
+0001    KSHORT   0   2
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:135-135
+0001    KSHORT   0   3
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:141-141
+0001    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:150-150
+0001    GGET     0   0      ; "string"
+0002    TGETS    0   0   1  ; "byte"
+0003    KSTR     2   2      ; "A"
+0004    CALLT    0   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:154-154
+0001    GGET     0   0      ; "debug"
+0002    TGETS    0   0   1  ; "traceback"
+0003    CALL     0   1   1
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:155-155
+0001    GGET     0   0      ; "debug"
+0002    TGETS    0   0   1  ; "sethook"
+0003    KPRI     2   0
+0004    KSTR     3   2      ; ""
+0005    KSHORT   4   0
+0006    CALL     0   1   4
+0007    UGET     0   0      ; f
+0008    CALL     0   1   1
+0009    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_callback.lua:0-159
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "ffi"
+0003    CALL     0   2   2
+0004    TGETS    1   0   2  ; "cdef"
+0005    KSTR     3   3      ; "void qsort(void *base, size_t nmemb, siz"~
+0006    CALL     1   1   2
+0007    TGETS    1   0   4  ; "cast"
+0008    KSTR     3   5      ; "int (*)(int, int, int)"
+0009    FNEW     4   6      ; ref_lib_ffi_ffi_callback.lua:10
+0010    CALL     1   2   3
+0011    GGET     2   7      ; "assert"
+0012    MOV      4   1
+0013    KSHORT   6  10
+0014    KSHORT   7  99
+0015    KSHORT   8  13
+0016    CALL     4   2   4
+0017    ISEQN    4   0      ; 122
+0018    JMP      4 => 0021
+0019    KPRI     4   1
+0020    JMP      5 => 0022
+0021 => KPRI     4   2
+0022 => CALL     2   1   2
+0023    KSHORT   2   1
+0024    KSHORT   3 200
+0025    KSHORT   4   1
+0026    FORI     2 => 0043
+0027 => KSHORT   6  60
+0028    ISGE     6   5
+0029    JMP      6 => 0042
+0030    GGET     6   7      ; "assert"
+0031    MOV      8   1
+0032    KSHORT  10  10
+0033    KSHORT  11  99
+0034    KSHORT  12  13
+0035    CALL     8   2   4
+0036    ISEQN    8   0      ; 122
+0037    JMP      8 => 0040
+0038    KPRI     8   1
+0039    JMP      9 => 0041
+0040 => KPRI     8   2
+0041 => CALL     6   1   2
+0042 => FORL     2 => 0027
+0043 => GGET     1   7      ; "assert"
+0044    TGETS    3   0   4  ; "cast"
+0045    KSTR     5   8      ; "int64_t (*)(int64_t, int64_t, int64_t)"
+0046    FNEW     6   9      ; ref_lib_ffi_ffi_callback.lua:23
+0047    CALL     3   2   3
+0048    KCDATA   5  10
+0049    KCDATA   6  11
+0050    KCDATA   7  12
+0051    CALL     3   2   4
+0052    KCDATA   4  13
+0053    KCDATA   5  14
+0054    ADDVV    4   4   5
+0055    KCDATA   5  15
+0056    ADDVV    4   4   5
+0057    ISEQV    3   4
+0058    JMP      3 => 0061
+0059    KPRI     3   1
+0060    JMP      4 => 0062
+0061 => KPRI     3   2
+0062 => CALL     1   1   2
+0063    GGET     1   7      ; "assert"
+0064    TGETS    3   0   4  ; "cast"
+0065    KSTR     5  16      ; "double (*)(double, float, double)"
+0066    FNEW     6  17      ; ref_lib_ffi_ffi_callback.lua:28
+0067    CALL     3   2   3
+0068    KNUM     5   1      ; 7.125
+0069    KNUM     6   2      ; -123.25
+0070    KNUM     7   3      ; 9999.33
+0071    CALL     3   2   4
+0072    ISEQN    3   4      ; 9883.205
+0073    JMP      3 => 0076
+0074    KPRI     3   1
+0075    JMP      4 => 0077
+0076 => KPRI     3   2
+0077 => CALL     1   1   2
+0078    GGET     1   7      ; "assert"
+0079    TGETS    3   0   4  ; "cast"
+0080    KSTR     5  18      ; "double (*)(int, double)"
+0081    FNEW     6  19      ; ref_lib_ffi_ffi_callback.lua:32
+0082    CALL     3   2   3
+0083    KSHORT   5 12345
+0084    KNUM     6   1      ; 7.125
+0085    CALL     3   2   3
+0086    ISEQN    3   5      ; 12352.125
+0087    JMP      3 => 0090
+0088    KPRI     3   1
+0089    JMP      4 => 0091
+0090 => KPRI     3   2
+0091 => CALL     1   1   2
+0092    GGET     1   7      ; "assert"
+0093    TGETS    3   0   4  ; "cast"
+0094    KSTR     5  20      ; "float (*)(double, float, double)"
+0095    FNEW     6  21      ; ref_lib_ffi_ffi_callback.lua:36
+0096    CALL     3   2   3
+0097    KNUM     5   1      ; 7.125
+0098    KNUM     6   2      ; -123.25
+0099    KNUM     7   3      ; 9999.33
+0100    CALL     3   2   4
+0101    ISEQN    3   6      ; 9883.205078125
+0102    JMP      3 => 0105
+0103    KPRI     3   1
+0104    JMP      4 => 0106
+0105 => KPRI     3   2
+0106 => CALL     1   1   2
+0107    GGET     1   7      ; "assert"
+0108    TGETS    3   0   4  ; "cast"
+0109    KSTR     5  22      ; "int (*)(int, int, int, int, int, int, in"~
+0110    FNEW     6  23      ; ref_lib_ffi_ffi_callback.lua:41
+0111    CALL     3   2   3
+0112    KSHORT   5 -42
+0113    KSHORT   6  17
+0114    KSHORT   7 12345
+0115    KSHORT   8 9987
+0116    KSHORT   9 -100
+0117    KSHORT  10  11
+0118    KSHORT  11  51
+0119    KNUM    12   7      ; 305419896
+0120    KSHORT  13 338
+0121    KNUM    14   8      ; -78901234
+0122    CALL     3   2  11
+0123    ISEQN    3   9      ; 226541269
+0124    JMP      3 => 0127
+0125    KPRI     3   1
+0126    JMP      4 => 0128
+0127 => KPRI     3   2
+0128 => CALL     1   1   2
+0129    GGET     1   7      ; "assert"
+0130    TGETS    3   0   4  ; "cast"
+0131    KSTR     5  24      ; "double (*)(double, double, double, doubl"~
+0132    FNEW     6  25      ; ref_lib_ffi_ffi_callback.lua:47
+0133    CALL     3   2   3
+0134    KNUM     5  10      ; -42.5
+0135    KNUM     6  11      ; 17.125
+0136    KNUM     7  12      ; 12345.5
+0137    KSHORT   8 9987
+0138    KNUM     9  13      ; -100.625
+0139    KSHORT  10  11
+0140    KSHORT  11  51
+0141    KNUM    12   7      ; 305419896
+0142    KSHORT  13 338
+0143    KNUM    14  14      ; -78901234.75
+0144    CALL     3   2  11
+0145    ISEQN    3  15      ; 226541267.75
+0146    JMP      3 => 0149
+0147    KPRI     3   1
+0148    JMP      4 => 0150
+0149 => KPRI     3   2
+0150 => CALL     1   1   2
+0151    GGET     1  26      ; "jit"
+0152    TGETS    1   1  27  ; "arch"
+0153    ISNES    1  28      ; "x86"
+0154    JMP      1 => 0203
+0155    GGET     1   7      ; "assert"
+0156    TGETS    3   0   4  ; "cast"
+0157    KSTR     5  29      ; "__fastcall int (*)(int, int, int)"
+0158    FNEW     6  30      ; ref_lib_ffi_ffi_callback.lua:55
+0159    CALL     3   2   3
+0160    KSHORT   5  10
+0161    KSHORT   6  99
+0162    KSHORT   7  13
+0163    CALL     3   2   4
+0164    ISEQN    3   0      ; 122
+0165    JMP      3 => 0168
+0166    KPRI     3   1
+0167    JMP      4 => 0169
+0168 => KPRI     3   2
+0169 => CALL     1   1   2
+0170    GGET     1   7      ; "assert"
+0171    TGETS    3   0   4  ; "cast"
+0172    KSTR     5  31      ; "__stdcall int (*)(int, int, int)"
+0173    FNEW     6  32      ; ref_lib_ffi_ffi_callback.lua:59
+0174    CALL     3   2   3
+0175    KSHORT   5  10
+0176    KSHORT   6  99
+0177    KSHORT   7  13
+0178    CALL     3   2   4
+0179    ISEQN    3   0      ; 122
+0180    JMP      3 => 0183
+0181    KPRI     3   1
+0182    JMP      4 => 0184
+0183 => KPRI     3   2
+0184 => CALL     1   1   2
+0185    GGET     1   7      ; "assert"
+0186    TGETS    3   0   4  ; "cast"
+0187    KSTR     5  33      ; "int64_t __fastcall (*)(int64_t, int, int"~
+0188    FNEW     6  34      ; ref_lib_ffi_ffi_callback.lua:64
+0189    CALL     3   2   3
+0190    KCDATA   5  35
+0191    KSHORT   6 12345
+0192    KNUM     7  16      ; 989797123
+0193    CALL     3   2   4
+0194    KCDATA   4  36
+0195    ADDVN    4   4  17  ; 12345
+0196    ADDVN    4   4  16  ; 989797123
+0197    ISEQV    3   4
+0198    JMP      3 => 0201
+0199    KPRI     3   1
+0200    JMP      4 => 0202
+0201 => KPRI     3   2
+0202 => CALL     1   1   2
+0203 => FNEW     1  37      ; ref_lib_ffi_ffi_callback.lua:72
+0204    GGET     2  38      ; "pcall"
+0205    TGETS    4   0   4  ; "cast"
+0206    KSTR     6  39      ; "int (*)(void)"
+0207    MOV      7   1
+0208    CALL     4   0   3
+0209    CALLM    2   3   0
+0210    GGET     4   7      ; "assert"
+0211    ISEQP    2   1
+0212    JMP      6 => 0215
+0213    KPRI     6   1
+0214    JMP      7 => 0216
+0215 => KPRI     6   2
+0216 => CALL     4   1   2
+0217    GGET     4   7      ; "assert"
+0218    GGET     6  40      ; "string"
+0219    TGETS    6   6  41  ; "match"
+0220    MOV      8   3
+0221    KSTR     9  42      ; ":"
+0222    GGET    10  43      ; "debug"
+0223    TGETS   10  10  44  ; "getinfo"
+0224    MOV     12   1
+0225    KSTR    13  45      ; "S"
+0226    CALL    10   2   3
+0227    TGETS   10  10  46  ; "lastlinedefined"
+0228    KSTR    11  42      ; ":"
+0229    CAT      9   9  11
+0230    CALL     6   0   3
+0231    CALLM    4   1   0
+0232    GGET     4   7      ; "assert"
+0233    GGET     6  38      ; "pcall"
+0234    TGETS    8   0   4  ; "cast"
+0235    KSTR    10  39      ; "int (*)(void)"
+0236    FNEW    11  47      ; ref_lib_ffi_ffi_callback.lua:79
+0237    CALL     8   0   3
+0238    CALLM    6   2   0
+0239    ISEQP    6   1
+0240    JMP      6 => 0243
+0241    KPRI     6   1
+0242    JMP      7 => 0244
+0243 => KPRI     6   2
+0244 => CALL     4   1   2
+0245    GGET     4   7      ; "assert"
+0246    GGET     6  38      ; "pcall"
+0247    TGETS    8   0   4  ; "cast"
+0248    KSTR    10  39      ; "int (*)(void)"
+0249    FNEW    11  48      ; ref_lib_ffi_ffi_callback.lua:80
+0250    CALL     8   0   3
+0251    CALLM    6   2   0
+0252    ISEQP    6   1
+0253    JMP      6 => 0256
+0254    KPRI     6   1
+0255    JMP      7 => 0257
+0256 => KPRI     6   2
+0257 => CALL     4   1   2
+0258    GGET     4   7      ; "assert"
+0259    GGET     6  38      ; "pcall"
+0260    TGETS    8   0   4  ; "cast"
+0261    KSTR    10  39      ; "int (*)(void)"
+0262    FNEW    11  49      ; ref_lib_ffi_ffi_callback.lua:81
+0263    CALL     8   0   3
+0264    CALLM    6   2   0
+0265    ISEQP    6   1
+0266    JMP      6 => 0269
+0267    KPRI     6   1
+0268    JMP      7 => 0270
+0269 => KPRI     6   2
+0270 => CALL     4   1   2
+0271    GGET     4   7      ; "assert"
+0272    GGET     6  38      ; "pcall"
+0273    TGETS    8   0   4  ; "cast"
+0274    KSTR    10  50      ; "int (*)(int,int,int,int, int,int,int,int"~
+0275    FNEW    11  51      ; ref_lib_ffi_ffi_callback.lua:83
+0276    CALL     8   2   3
+0277    KSHORT   9   1
+0278    KSHORT  10   1
+0279    KSHORT  11   1
+0280    KSHORT  12   1
+0281    KSHORT  13   1
+0282    KSHORT  14   1
+0283    KSHORT  15   1
+0284    KSHORT  16   1
+0285    KSHORT  17   1
+0286    CALL     6   2  11
+0287    ISEQP    6   1
+0288    JMP      6 => 0291
+0289    KPRI     6   1
+0290    JMP      7 => 0292
+0291 => KPRI     6   2
+0292 => CALL     4   1   2
+0293    GGET     4   7      ; "assert"
+0294    GGET     6  38      ; "pcall"
+0295    TGETS    8   0   4  ; "cast"
+0296    KSTR    10  50      ; "int (*)(int,int,int,int, int,int,int,int"~
+0297    FNEW    11  52      ; ref_lib_ffi_ffi_callback.lua:84
+0298    CALL     8   2   3
+0299    KSHORT   9   1
+0300    KSHORT  10   1
+0301    KSHORT  11   1
+0302    KSHORT  12   1
+0303    KSHORT  13   1
+0304    KSHORT  14   1
+0305    KSHORT  15   1
+0306    KSHORT  16   1
+0307    KSHORT  17   1
+0308    CALL     6   2  11
+0309    ISEQP    6   1
+0310    JMP      6 => 0313
+0311    KPRI     6   1
+0312    JMP      7 => 0314
+0313 => KPRI     6   2
+0314 => CALL     4   1   2
+0315    FNEW     1  53      ; ref_lib_ffi_ffi_callback.lua:88
+0316    TGETS    2   0  54  ; "new"
+0317    KSTR     4  55      ; "uint8_t[?]"
+0318    KSHORT   5 256
+0319    CALL     2   2   3
+0320    KSHORT   3   0
+0321    KSHORT   4 255
+0322    KSHORT   5   1
+0323    FORI     3 => 0331
+0324 => GGET     7  56      ; "math"
+0325    TGETS    7   7  57  ; "random"
+0326    KSHORT   9   0
+0327    KSHORT  10 255
+0328    CALL     7   2   3
+0329    TSETV    7   2   6
+0330    FORL     3 => 0324
+0331 => TGETS    3   0  58  ; "C"
+0332    TGETS    3   3  59  ; "qsort"
+0333    MOV      5   2
+0334    KSHORT   6 256
+0335    KSHORT   7   1
+0336    MOV      8   1
+0337    CALL     3   1   5
+0338    KSHORT   3   0
+0339    KSHORT   4 254
+0340    KSHORT   5   1
+0341    FORI     3 => 0353
+0342 => GGET     7   7      ; "assert"
+0343    TGETV    9   2   6
+0344    ADDVN   10   6  18  ; 1
+0345    TGETV   10   2  10
+0346    ISLE     9  10
+0347    JMP      9 => 0350
+0348    KPRI     9   1
+0349    JMP     10 => 0351
+0350 => KPRI     9   2
+0351 => CALL     7   1   2
+0352    FORL     3 => 0342
+0353 => TGETS    1   0  60  ; "abi"
+0354    KSTR     3  61      ; "win"
+0355    CALL     1   2   2
+0356    ISF          1
+0357    JMP      2 => 0384
+0358    TGETS    1   0   2  ; "cdef"
+0359    KSTR     3  62      ; "  typedef int (__stdcall *WNDENUMPROC)(v"~
+0360    CALL     1   1   2
+0361    TGETS    1   0  58  ; "C"
+0362    TGETS    2   0  54  ; "new"
+0363    KSTR     4  63      ; "char[?]"
+0364    KSHORT   5 256
+0365    CALL     2   2   3
+0366    TGETS    3   0   4  ; "cast"
+0367    KSTR     5  64      ; "intptr_t"
+0368    MOV      6   2
+0369    CALL     3   2   3
+0370    KSHORT   4   0
+0371    TGETS    5   1  65  ; "EnumWindows"
+0372    FNEW     7  66      ; ref_lib_ffi_ffi_callback.lua:117
+0373    KSHORT   8   0
+0374    CALL     5   1   3
+0375    GGET     5   7      ; "assert"
+0376    KSHORT   7  10
+0377    ISLT     7   4
+0378    JMP      7 => 0381
+0379    KPRI     7   1
+0380    JMP      8 => 0382
+0381 => KPRI     7   2
+0382 => CALL     5   1   2
+0383    UCLO     1 => 0384
+0384 => TGETS    1   0   4  ; "cast"
+0385    KSTR     3  67      ; "int(*)(void)"
+0386    FNEW     4  68      ; ref_lib_ffi_ffi_callback.lua:127
+0387    CALL     1   2   3
+0388    GGET     2   7      ; "assert"
+0389    MOV      4   1
+0390    CALL     4   2   1
+0391    ISEQN    4  18      ; 1
+0392    JMP      4 => 0395
+0393    KPRI     4   1
+0394    JMP      5 => 0396
+0395 => KPRI     4   2
+0396 => CALL     2   1   2
+0397    MOV      4   1
+0398    TGETS    2   1  69  ; "free"
+0399    CALL     2   1   2
+0400    GGET     2   7      ; "assert"
+0401    GGET     4  38      ; "pcall"
+0402    MOV      6   1
+0403    CALL     4   2   2
+0404    ISEQP    4   1
+0405    JMP      4 => 0408
+0406    KPRI     4   1
+0407    JMP      5 => 0409
+0408 => KPRI     4   2
+0409 => CALL     2   1   2
+0410    GGET     2   7      ; "assert"
+0411    GGET     4  38      ; "pcall"
+0412    TGETS    6   1  69  ; "free"
+0413    MOV      7   1
+0414    CALL     4   2   3
+0415    ISEQP    4   1
+0416    JMP      4 => 0419
+0417    KPRI     4   1
+0418    JMP      5 => 0420
+0419 => KPRI     4   2
+0420 => CALL     2   1   2
+0421    GGET     2   7      ; "assert"
+0422    GGET     4  38      ; "pcall"
+0423    TGETS    6   1  70  ; "set"
+0424    MOV      7   1
+0425    FNEW     8  71      ; ref_lib_ffi_ffi_callback.lua:132
+0426    CALL     4   2   4
+0427    ISEQP    4   1
+0428    JMP      4 => 0431
+0429    KPRI     4   1
+0430    JMP      5 => 0432
+0431 => KPRI     4   2
+0432 => CALL     2   1   2
+0433    TGETS    2   0   4  ; "cast"
+0434    KSTR     4  67      ; "int(*)(void)"
+0435    FNEW     5  72      ; ref_lib_ffi_ffi_callback.lua:133
+0436    CALL     2   2   3
+0437    MOV      1   2
+0438    GGET     2   7      ; "assert"
+0439    MOV      4   1
+0440    CALL     4   2   1
+0441    ISEQN    4  19      ; 2
+0442    JMP      4 => 0445
+0443    KPRI     4   1
+0444    JMP      5 => 0446
+0445 => KPRI     4   2
+0446 => CALL     2   1   2
+0447    MOV      4   1
+0448    TGETS    2   1  70  ; "set"
+0449    FNEW     5  73      ; ref_lib_ffi_ffi_callback.lua:135
+0450    CALL     2   1   3
+0451    GGET     2   7      ; "assert"
+0452    MOV      4   1
+0453    CALL     4   2   1
+0454    ISEQN    4  20      ; 3
+0455    JMP      4 => 0458
+0456    KPRI     4   1
+0457    JMP      5 => 0459
+0458 => KPRI     4   2
+0459 => CALL     2   1   2
+0460    TGETS    1   0  74  ; "typeof"
+0461    KSTR     3  75      ; "void(*)(void)"
+0462    CALL     1   2   2
+0463    FNEW     2  76      ; ref_lib_ffi_ffi_callback.lua:141
+0464    TNEW     3   0
+0465    KSHORT   4   1
+0466    KSHORT   5   4
+0467    KSHORT   6   1
+0468    FORI     4 => 0488
+0469 => KSHORT   8   1
+0470    KSHORT   9 400
+0471    KSHORT  10   1
+0472    FORI     8 => 0478
+0473 => MOV     12   1
+0474    MOV     14   2
+0475    CALL    12   2   2
+0476    TSETV   12   3  11
+0477    FORL     8 => 0473
+0478 => KSHORT   8   1
+0479    KSHORT   9 400
+0480    KSHORT  10   1
+0481    FORI     8 => 0487
+0482 => TGETV   12   3  11
+0483    MOV     14  12
+0484    TGETS   12  12  69  ; "free"
+0485    CALL    12   1   2
+0486    FORL     8 => 0482
+0487 => FORL     4 => 0469
+0488 => GGET     1   7      ; "assert"
+0489    TGETS    3   0   4  ; "cast"
+0490    KSTR     5  77      ; "int (*)()"
+0491    FNEW     6  78      ; ref_lib_ffi_ffi_callback.lua:150
+0492    CALL     3   2   3
+0493    CALL     3   2   1
+0494    ISEQN    3  21      ; 65
+0495    JMP      3 => 0498
+0496    KPRI     3   1
+0497    JMP      4 => 0499
+0498 => KPRI     3   2
+0499 => CALL     1   1   2
+0500    TGETS    1   0   4  ; "cast"
+0501    KSTR     3  79      ; "void (*)(void)"
+0502    FNEW     4  80      ; ref_lib_ffi_ffi_callback.lua:154
+0503    CALL     1   2   3
+0504    GGET     2  43      ; "debug"
+0505    TGETS    2   2  81  ; "sethook"
+0506    FNEW     4  82      ; ref_lib_ffi_ffi_callback.lua:155
+0507    KSTR     5  83      ; ""
+0508    KSHORT   6   1
+0509    CALL     2   1   4
+0510    KPRI     2   0
+0511    UCLO     1 => 0512
+0512 => RET0     0   1
+

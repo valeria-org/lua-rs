@@ -1,0 +1,12 @@
+-- BYTECODE -- knil_merge.lua:10-14
+0001    KNIL     0   2
+0002    RET0     0   1
+
+-- BYTECODE -- knil_merge.lua:0-15
+0001    KNIL     0   4
+0002    KPRI     5   1
+0003    KNIL     6   7
+0004    KPRI     8   1
+0005    FNEW     9   0      ; knil_merge.lua:10
+0006    RET0     0   1
+

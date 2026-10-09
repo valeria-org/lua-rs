@@ -1,0 +1,1 @@
+[string "const p = 1..."]:2: attempt to re-declare const variable 'p'

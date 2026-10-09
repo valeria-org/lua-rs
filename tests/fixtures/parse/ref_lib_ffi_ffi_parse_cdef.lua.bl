@@ -1,0 +1,34 @@
+-- BYTECODE -- ref_lib_ffi_ffi_parse_cdef.lua:0-78
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "ffi"
+0003    CALL     0   2   2
+0004    GGET     1   2      ; "dofile"
+0005    KSTR     3   3      ; "../common/ffi_util.inc"
+0006    CALL     1   1   2
+0007    GGET     1   4      ; "checkfail"
+0008    TDUP     3   5
+0009    TGETS    4   0   6  ; "cdef"
+0010    CALL     1   1   3
+0011    TGETS    1   0   6  ; "cdef"
+0012    KSTR     3   7      ; "static const int K_42a = 42;\nstatic con"~
+0013    CALL     1   1   2
+0014    GGET     1   8      ; "checktypes"
+0015    TDUP     3   9
+0016    CALL     1   1   2
+0017    TGETS    1   0   6  ; "cdef"
+0018    KSTR     3  10      ; "struct str1 {\n  enum {\n    K_99 = 99\n"~
+0019    CALL     1   1   2
+0020    GGET     1   8      ; "checktypes"
+0021    TDUP     3  11
+0022    CALL     1   1   2
+0023    GGET     1   4      ; "checkfail"
+0024    TDUP     3  12
+0025    CALL     1   1   2
+0026    TGETS    1   0   6  ; "cdef"
+0027    KSTR     3  13      ; "extern int func1(void);\nextern int func"~
+0028    CALL     1   1   2
+0029    TGETS    1   0   6  ; "cdef"
+0030    KSTR     3  14      ; "int ext1;\nextern int ext2;\n"
+0031    CALL     1   1   2
+0032    RET0     0   1
+

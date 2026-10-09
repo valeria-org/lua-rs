@@ -1,0 +1,318 @@
+-- BYTECODE -- ref_lib_base_select.lua:40-46
+0001    KSHORT   1   0
+0002    KSHORT   2   1
+0003    GGET     3   0      ; "select"
+0004    KSTR     5   1      ; "#"
+0005    VARG     6   0   1
+0006    CALLM    3   2   1
+0007    KSHORT   4   1
+0008    FORI     2 => 0015
+0009 => GGET     6   0      ; "select"
+0010    MOV      8   5
+0011    VARG     9   0   1
+0012    CALLM    6   2   1
+0013    ADDVV    1   1   6
+0014    FORL     2 => 0009
+0015 => GGET     2   2      ; "assert"
+0016    ISEQV    1   0
+0017    JMP      4 => 0020
+0018    KPRI     4   1
+0019    JMP      5 => 0021
+0020 => KPRI     4   2
+0021 => CALL     2   1   2
+0022    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_select.lua:57-64
+0001    KSHORT   1   0
+0002    KSHORT   2   1
+0003    KSHORT   3  20
+0004    KSHORT   4   1
+0005    FORI     2 => 0016
+0006 => GGET     6   0      ; "select"
+0007    MOV      8   5
+0008    VARG     9   0   1
+0009    CALLM    6   2   1
+0010    ISF          6
+0011    JMP      7 => 0014
+0012    ADDVV    1   1   6
+0013    JMP      7 => 0015
+0014 => ADDVN    1   1   0  ; 9
+0015 => FORL     2 => 0006
+0016 => GGET     2   1      ; "assert"
+0017    ISEQV    1   0
+0018    JMP      4 => 0021
+0019    KPRI     4   1
+0020    JMP      5 => 0022
+0021 => KPRI     4   2
+0022 => CALL     2   1   2
+0023    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_select.lua:75-82
+0001    KSHORT   1   0
+0002    KSHORT   2   1
+0003    KSHORT   3  20
+0004    KSHORT   4   1
+0005    FORI     2 => 0016
+0006 => GGET     6   0      ; "select"
+0007    KSHORT   8   4
+0008    VARG     9   0   1
+0009    CALLM    6   2   1
+0010    ISF          6
+0011    JMP      7 => 0014
+0012    ADDVV    1   1   6
+0013    JMP      7 => 0015
+0014 => ADDVN    1   1   0  ; 9
+0015 => FORL     2 => 0006
+0016 => GGET     2   1      ; "assert"
+0017    ISEQV    1   0
+0018    JMP      4 => 0021
+0019    KPRI     4   1
+0020    JMP      5 => 0022
+0021 => KPRI     4   2
+0022 => CALL     2   1   2
+0023    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_select.lua:99-99
+0001    KSTR     0   0      ; ""
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lib_base_select.lua:95-103
+0001    KSHORT   0   1
+0002    KSHORT   1 100
+0003    KSHORT   2   1
+0004    FORI     0 => 0025
+0005 => GGET     4   0      ; "assert"
+0006    GGET     6   1      ; "type"
+0007    UGET     8   0      ; select
+0008    KSTR    10   2      ; "#"
+0009    VARG    11   0   0
+0010    CALLM    8   2   1
+0011    CALL     6   2   2
+0012    UGET     7   1      ; exptyp
+0013    ISEQV    6   7
+0014    JMP      6 => 0017
+0015    KPRI     6   1
+0016    JMP      7 => 0018
+0017 => KPRI     6   2
+0018 => CALL     4   1   2
+0019    ISNEN    3   0      ; 75
+0020    JMP      4 => 0024
+0021    FNEW     4   3      ; ref_lib_base_select.lua:99
+0022    USETV    0   4      ; select
+0023    USETS    1   4      ; exptyp ; "string"
+0024 => FORL     0 => 0005
+0025 => RET0     0   1
+
+-- BYTECODE -- ref_lib_base_select.lua:0-106
+0001    KSHORT   0   0
+0002    KSHORT   1   1
+0003    KSHORT   2 100
+0004    KSHORT   3   1
+0005    FORI     1 => 0013
+0006 => GGET     5   0      ; "select"
+0007    KSTR     7   1      ; "#"
+0008    KSHORT   8   3
+0009    KSHORT   9   4
+0010    CALL     5   2   4
+0011    ADDVV    0   0   5
+0012    FORL     1 => 0006
+0013 => GGET     1   2      ; "assert"
+0014    ISEQN    0   0      ; 200
+0015    JMP      3 => 0018
+0016    KPRI     3   1
+0017    JMP      4 => 0019
+0018 => KPRI     3   2
+0019 => CALL     1   1   2
+0020    KSHORT   0   0
+0021    GGET     1   3      ; "math"
+0022    TGETS    1   1   4  ; "frexp"
+0023    KSHORT   3   3
+0024    CALL     1   1   2
+0025    KSHORT   1   1
+0026    KSHORT   2 100
+0027    KSHORT   3   1
+0028    FORI     1 => 0038
+0029 => GGET     5   0      ; "select"
+0030    KSTR     7   1      ; "#"
+0031    GGET     8   3      ; "math"
+0032    TGETS    8   8   5  ; "modf"
+0033    MOV     10   4
+0034    CALL     8   0   2
+0035    CALLM    5   2   1
+0036    ADDVV    0   0   5
+0037    FORL     1 => 0029
+0038 => GGET     1   2      ; "assert"
+0039    ISEQN    0   0      ; 200
+0040    JMP      3 => 0043
+0041    KPRI     3   1
+0042    JMP      4 => 0044
+0043 => KPRI     3   2
+0044 => CALL     1   1   2
+0045    KSHORT   0   0
+0046    KSHORT   1   1
+0047    KSHORT   2 100
+0048    KSHORT   3   1
+0049    FORI     1 => 0056
+0050 => GGET     5   0      ; "select"
+0051    KSHORT   7   1
+0052    MOV      8   4
+0053    CALL     5   2   3
+0054    ADDVV    0   0   5
+0055    FORL     1 => 0050
+0056 => GGET     1   2      ; "assert"
+0057    ISEQN    0   1      ; 5050
+0058    JMP      3 => 0061
+0059    KPRI     3   1
+0060    JMP      4 => 0062
+0061 => KPRI     3   2
+0062 => CALL     1   1   2
+0063    KSHORT   0   0
+0064    KSHORT   1   0
+0065    KSHORT   2   1
+0066    KSHORT   3 100
+0067    KSHORT   4   1
+0068    FORI     2 => 0078
+0069 => GGET     6   0      ; "select"
+0070    KSHORT   8   2
+0071    KSHORT   9   1
+0072    MOV     10   5
+0073    ADDVN   11   5   2  ; 10
+0074    CALL     6   3   5
+0075    ADDVV    0   0   6
+0076    ADDVV    1   1   7
+0077    FORL     2 => 0069
+0078 => GGET     2   2      ; "assert"
+0079    ISNEN    0   1      ; 5050
+0080    JMP      4 => 0083
+0081    ISEQN    1   3      ; 6050
+0082    JMP      4 => 0085
+0083 => KPRI     4   1
+0084    JMP      5 => 0086
+0085 => KPRI     4   2
+0086 => CALL     2   1   2
+0087    FNEW     0   6      ; ref_lib_base_select.lua:40
+0088    KSHORT   1   1
+0089    KSHORT   2 100
+0090    KSHORT   3   1
+0091    FORI     1 => 0126
+0092 => MOV      5   0
+0093    KSHORT   7   1
+0094    KSHORT   8   1
+0095    CALL     5   1   3
+0096    MOV      5   0
+0097    KSHORT   7   3
+0098    KSHORT   8   1
+0099    KSHORT   9   2
+0100    CALL     5   1   4
+0101    MOV      5   0
+0102    KSHORT   7  15
+0103    KSHORT   8   1
+0104    KSHORT   9   2
+0105    KSHORT  10   3
+0106    KSHORT  11   4
+0107    KSHORT  12   5
+0108    CALL     5   1   7
+0109    MOV      5   0
+0110    KSHORT   7   0
+0111    CALL     5   1   2
+0112    MOV      5   0
+0113    KSHORT   7 3200
+0114    GGET     8   7      ; "string"
+0115    TGETS    8   8   8  ; "byte"
+0116    GGET    10   7      ; "string"
+0117    TGETS   10  10   9  ; "rep"
+0118    KSTR    12  10      ; " "
+0119    KSHORT  13 100
+0120    CALL    10   2   3
+0121    KSHORT  11   1
+0122    KSHORT  12 100
+0123    CALL     8   0   4
+0124    CALLM    5   1   1
+0125    FORL     1 => 0092
+0126 => FNEW     0  11      ; ref_lib_base_select.lua:57
+0127    KSHORT   1   1
+0128    KSHORT   2 100
+0129    KSHORT   3   1
+0130    FORI     1 => 0165
+0131 => MOV      5   0
+0132    KSHORT   7 172
+0133    KSHORT   8   1
+0134    CALL     5   1   3
+0135    MOV      5   0
+0136    KSHORT   7 165
+0137    KSHORT   8   1
+0138    KSHORT   9   2
+0139    CALL     5   1   4
+0140    MOV      5   0
+0141    KSHORT   7 150
+0142    KSHORT   8   1
+0143    KSHORT   9   2
+0144    KSHORT  10   3
+0145    KSHORT  11   4
+0146    KSHORT  12   5
+0147    CALL     5   1   7
+0148    MOV      5   0
+0149    KSHORT   7 180
+0150    CALL     5   1   2
+0151    MOV      5   0
+0152    KSHORT   7 640
+0153    GGET     8   7      ; "string"
+0154    TGETS    8   8   8  ; "byte"
+0155    GGET    10   7      ; "string"
+0156    TGETS   10  10   9  ; "rep"
+0157    KSTR    12  10      ; " "
+0158    KSHORT  13 100
+0159    CALL    10   2   3
+0160    KSHORT  11   1
+0161    KSHORT  12 100
+0162    CALL     8   0   4
+0163    CALLM    5   1   1
+0164    FORL     1 => 0131
+0165 => FNEW     0  12      ; ref_lib_base_select.lua:75
+0166    KSHORT   1   1
+0167    KSHORT   2 100
+0168    KSHORT   3   1
+0169    FORI     1 => 0204
+0170 => MOV      5   0
+0171    KSHORT   7 180
+0172    KSHORT   8   1
+0173    CALL     5   1   3
+0174    MOV      5   0
+0175    KSHORT   7 180
+0176    KSHORT   8   1
+0177    KSHORT   9   2
+0178    CALL     5   1   4
+0179    MOV      5   0
+0180    KSHORT   7  80
+0181    KSHORT   8   1
+0182    KSHORT   9   2
+0183    KSHORT  10   3
+0184    KSHORT  11   4
+0185    KSHORT  12   5
+0186    CALL     5   1   7
+0187    MOV      5   0
+0188    KSHORT   7 180
+0189    CALL     5   1   2
+0190    MOV      5   0
+0191    KSHORT   7 640
+0192    GGET     8   7      ; "string"
+0193    TGETS    8   8   8  ; "byte"
+0194    GGET    10   7      ; "string"
+0195    TGETS   10  10   9  ; "rep"
+0196    KSTR    12  10      ; " "
+0197    KSHORT  13 100
+0198    CALL    10   2   3
+0199    KSHORT  11   1
+0200    KSHORT  12 100
+0201    CALL     8   0   4
+0202    CALLM    5   1   1
+0203    FORL     1 => 0170
+0204 => GGET     0   0      ; "select"
+0205    KSTR     1  13      ; "number"
+0206    FNEW     2  14      ; ref_lib_base_select.lua:95
+0207    MOV      3   2
+0208    KSHORT   5   1
+0209    CALL     3   1   2
+0210    UCLO     0 => 0211
+0211 => RET0     0   1
+

@@ -1,0 +1,124 @@
+-- BYTECODE -- numeric_for.lua:0-22
+0001    KSHORT   0   1
+0002    KSHORT   1  10
+0003    KSHORT   2   1
+0004    FORI     0 => 0009
+0005 => GGET     4   0      ; "print"
+0006    MOV      6   3
+0007    CALL     4   1   2
+0008    FORL     0 => 0005
+0009 => KSHORT   0   1
+0010    KSHORT   1  10
+0011    KSHORT   2   2
+0012    FORI     0 => 0017
+0013 => GGET     4   0      ; "print"
+0014    MOV      6   3
+0015    CALL     4   1   2
+0016    FORL     0 => 0013
+0017 => KSHORT   0  10
+0018    KSHORT   1   1
+0019    KSHORT   2  -1
+0020    FORI     0 => 0025
+0021 => GGET     4   0      ; "print"
+0022    MOV      6   3
+0023    CALL     4   1   2
+0024    FORL     0 => 0021
+0025 => KSHORT   0   0
+0026    KSHORT   1   1
+0027    KNUM     2   0      ; 0.1
+0028    FORI     0 => 0033
+0029 => GGET     4   0      ; "print"
+0030    MOV      6   3
+0031    CALL     4   1   2
+0032    FORL     0 => 0029
+0033 => KNUM     0   1      ; 1.5
+0034    KNUM     1   2      ; 10.5
+0035    KSHORT   2   1
+0036    FORI     0 => 0041
+0037 => GGET     4   0      ; "print"
+0038    MOV      6   3
+0039    CALL     4   1   2
+0040    FORL     0 => 0037
+0041 => KSHORT   0  10
+0042    KSHORT   1   1
+0043    KNUM     2   3      ; -0.5
+0044    FORI     0 => 0046
+0045 => FORL     0 => 0045
+0046 => KSHORT   0   1
+0047    KSHORT   1 100
+0048    KSHORT   2   3
+0049    MOV      3   0
+0050    MOV      4   1
+0051    MOV      5   2
+0052    FORI     3 => 0057
+0053 => GGET     7   0      ; "print"
+0054    MOV      9   6
+0055    CALL     7   1   2
+0056    FORL     3 => 0053
+0057 => MOV      3   0
+0058    MOV      4   1
+0059    KSHORT   5   1
+0060    FORI     3 => 0062
+0061 => FORL     3 => 0061
+0062 => KSHORT   3  -1
+0063    KSHORT   4 -10
+0064    KSHORT   5  -1
+0065    FORI     3 => 0067
+0066 => FORL     3 => 0066
+0067 => KSHORT   3   1
+0068    KSHORT   4   0
+0069    KSHORT   5   1
+0070    FORI     3 => 0072
+0071 => FORL     3 => 0071
+0072 => KSHORT   3   1
+0073    KSHORT   4   3
+0074    KSHORT   5   1
+0075    FORI     3 => 0092
+0076 => MOV      7   6
+0077    KSHORT   8   3
+0078    KSHORT   9   1
+0079    FORI     7 => 0091
+0080 => MOV     11  10
+0081    KSHORT  12   3
+0082    KSHORT  13   1
+0083    FORI    11 => 0090
+0084 => GGET    15   0      ; "print"
+0085    MOV     17   6
+0086    MOV     18  10
+0087    MOV     19  14
+0088    CALL    15   1   4
+0089    FORL    11 => 0084
+0090 => FORL     7 => 0080
+0091 => FORL     3 => 0076
+0092 => KSHORT   3   1
+0093    KSHORT   4   2
+0094    KSHORT   5   1
+0095    FORI     3 => 0101
+0096 => MULVN    7   6   4  ; 2
+0097    GGET     8   0      ; "print"
+0098    MOV     10   7
+0099    CALL     8   1   2
+0100    FORL     3 => 0096
+0101 => GGET     3   1      ; "f"
+0102    CALL     3   2   1
+0103    GGET     4   2      ; "g"
+0104    CALL     4   2   1
+0105    GGET     5   3      ; "h"
+0106    CALL     5   2   1
+0107    FORI     3 => 0109
+0108 => FORL     3 => 0108
+0109 => KSHORT   3   1
+0110    GGET     4   4      ; "t"
+0111    LEN      4   4
+0112    KSHORT   5   1
+0113    FORI     3 => 0117
+0114 => GGET     7   4      ; "t"
+0115    TSETV    6   7   6
+0116    FORL     3 => 0114
+0117 => KSHORT   3   1
+0118    KNUM     4   5      ; 100000
+0119    KNUM     5   6      ; 32768
+0120    FORI     3 => 0122
+0121 => FORL     3 => 0121
+0122 => RET0     0   1
+

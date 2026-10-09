@@ -1,0 +1,292 @@
+-- BYTECODE -- ref_lib_contents.lua:1-19
+0001    TNEW     3   0
+0002    TNEW     4   0
+0003    ISF          2
+0004    JMP      5 => 0014
+0005    MOV      7   2
+0006    TGETS    5   2   0  ; "gmatch"
+0007    KSTR     8   1      ; "[^:]+"
+0008    CALL     5   4   3
+0009    JMP      8 => 0012
+0010 => KPRI     9   2
+0011    TSETV    9   4   8
+0012 => ITERC    8   2   3
+0013    ITERL    8 => 0010
+0014 => GGET     5   2      ; "pairs"
+0015    MOV      7   0
+0016    CALL     5   4   2
+0017    ISNEXT   8 => 0027
+0018 => TGETV    9   4   8
+0019    IST          9
+0020    JMP      9 => 0027
+0021    LEN      9   3
+0022    ADDVN    9   9   0  ; 1
+0023    GGET    10   3      ; "tostring"
+0024    MOV     12   8
+0025    CALL    10   2   2
+0026    TSETV   10   3   9
+0027 => ITERN    8   2   3
+0028    ITERL    8 => 0018
+0029    GGET     5   4      ; "table"
+0030    TGETS    5   5   5  ; "sort"
+0031    MOV      7   3
+0032    CALL     5   1   2
+0033    GGET     5   4      ; "table"
+0034    TGETS    5   5   6  ; "concat"
+0035    MOV      7   3
+0036    KSTR     8   7      ; ":"
+0037    CALL     5   2   3
+0038    ISEQV    5   1
+0039    JMP      6 => 0049
+0040    GGET     6   8      ; "error"
+0041    KSTR     8   9      ; "got: ""
+0042    MOV      9   5
+0043    KSTR    10  10      ; ""\nexpected: ""
+0044    MOV     11   1
+0045    KSTR    12  11      ; """
+0046    CAT      8   8  12
+0047    KSHORT   9   2
+0048    CALL     6   1   3
+0049 => RET0     0   1
+
+-- BYTECODE -- ref_lib_contents.lua:0-156
+0001    FNEW     0   0      ; ref_lib_contents.lua:1
+0002    MOV      1   0
+0003    GGET     3   1      ; "_G"
+0004    KSTR     4   2      ; "_G:_VERSION:arg:assert:collectgarbage:co"~
+0005    KSTR     5   3      ; "rawlen:bit:bit32:jit:gcinfo:setfenv:getf"~
+0006    CALL     1   1   4
+0007    GGET     1   4      ; "assert"
+0008    GGET     3   5      ; "gcinfo"
+0009    CALL     1   1   2
+0010    GGET     1   4      ; "assert"
+0011    GGET     3   6      ; "setfenv"
+0012    CALL     1   1   2
+0013    GGET     1   4      ; "assert"
+0014    GGET     3   7      ; "getfenv"
+0015    CALL     1   1   2
+0016    GGET     1   4      ; "assert"
+0017    GGET     3   8      ; "loadstring"
+0018    CALL     1   1   2
+0019    GGET     1   4      ; "assert"
+0020    GGET     3   9      ; "unpack"
+0021    CALL     1   1   2
+0022    GGET     1   4      ; "assert"
+0023    GGET     3  10      ; "module"
+0024    CALL     1   1   2
+0025    GGET     1   4      ; "assert"
+0026    GGET     3  11      ; "newproxy"
+0027    CALL     1   1   2
+0028    GGET     1   4      ; "assert"
+0029    GGET     3   5      ; "gcinfo"
+0030    NOT      3   3
+0031    CALL     1   1   2
+0032    GGET     1   4      ; "assert"
+0033    GGET     3   6      ; "setfenv"
+0034    NOT      3   3
+0035    CALL     1   1   2
+0036    GGET     1   4      ; "assert"
+0037    GGET     3   7      ; "getfenv"
+0038    NOT      3   3
+0039    CALL     1   1   2
+0040    GGET     1   4      ; "assert"
+0041    GGET     3   8      ; "loadstring"
+0042    NOT      3   3
+0043    CALL     1   1   2
+0044    GGET     1   4      ; "assert"
+0045    GGET     3   9      ; "unpack"
+0046    NOT      3   3
+0047    CALL     1   1   2
+0048    GGET     1   4      ; "assert"
+0049    GGET     3  10      ; "module"
+0050    NOT      3   3
+0051    CALL     1   1   2
+0052    GGET     1   4      ; "assert"
+0053    GGET     3  11      ; "newproxy"
+0054    NOT      3   3
+0055    CALL     1   1   2
+0056    GGET     1   4      ; "assert"
+0057    GGET     3  12      ; "rawlen"
+0058    NOT      3   3
+0059    CALL     1   1   2
+0060    GGET     1   4      ; "assert"
+0061    GGET     3  12      ; "rawlen"
+0062    CALL     1   1   2
+0063    MOV      1   0
+0064    GGET     3  13      ; "math"
+0065    KSTR     4  14      ; "abs:acos:asin:atan:atan2:ceil:cos:cosh:d"~
+0066    KSTR     5  15      ; "log10:mod"
+0067    CALL     1   1   4
+0068    GGET     1   4      ; "assert"
+0069    GGET     3  13      ; "math"
+0070    TGETS    3   3  16  ; "mod"
+0071    CALL     1   1   2
+0072    GGET     1   4      ; "assert"
+0073    GGET     3  13      ; "math"
+0074    TGETS    3   3  17  ; "log10"
+0075    CALL     1   1   2
+0076    GGET     1   4      ; "assert"
+0077    GGET     3  13      ; "math"
+0078    TGETS    3   3  16  ; "mod"
+0079    NOT      3   3
+0080    CALL     1   1   2
+0081    GGET     1   4      ; "assert"
+0082    GGET     3  13      ; "math"
+0083    TGETS    3   3  17  ; "log10"
+0084    NOT      3   3
+0085    CALL     1   1   2
+0086    MOV      1   0
+0087    GGET     3  18      ; "string"
+0088    KSTR     4  19      ; "byte:char:dump:find:format:gmatch:gsub:l"~
+0089    KSTR     5  20      ; "gfind"
+0090    CALL     1   1   4
+0091    GGET     1   4      ; "assert"
+0092    GGET     3  18      ; "string"
+0093    TGETS    3   3  20  ; "gfind"
+0094    CALL     1   1   2
+0095    GGET     1   4      ; "assert"
+0096    GGET     3  18      ; "string"
+0097    TGETS    3   3  20  ; "gfind"
+0098    NOT      3   3
+0099    CALL     1   1   2
+0100    MOV      1   0
+0101    GGET     3  21      ; "table"
+0102    KSTR     4  22      ; "concat:foreach:foreachi:getn:insert:maxn"~
+0103    KSTR     5  23      ; "pack:unpack:setn:new"
+0104    CALL     1   1   4
+0105    MOV      1   0
+0106    GGET     3  21      ; "table"
+0107    KSTR     4  24      ; "concat:insert:pack:remove:sort:unpack"
+0108    CALL     1   1   3
+0109    GGET     1   4      ; "assert"
+0110    GGET     3  21      ; "table"
+0111    TGETS    3   3  25  ; "pack"
+0112    NOT      3   3
+0113    CALL     1   1   2
+0114    GGET     1   4      ; "assert"
+0115    GGET     3  21      ; "table"
+0116    TGETS    3   3   9  ; "unpack"
+0117    NOT      3   3
+0118    CALL     1   1   2
+0119    GGET     1   4      ; "assert"
+0120    GGET     3  21      ; "table"
+0121    TGETS    3   3  25  ; "pack"
+0122    CALL     1   1   2
+0123    GGET     1   4      ; "assert"
+0124    GGET     3  21      ; "table"
+0125    TGETS    3   3   9  ; "unpack"
+0126    CALL     1   1   2
+0127    MOV      1   0
+0128    GGET     3  26      ; "io"
+0129    KSTR     4  27      ; "close:flush:input:lines:open:output:pope"~
+0130    CALL     1   1   3
+0131    MOV      1   0
+0132    GGET     3  28      ; "debug"
+0133    TGETS    3   3  29  ; "getmetatable"
+0134    GGET     5  26      ; "io"
+0135    TGETS    5   5  30  ; "stdin"
+0136    CALL     3   2   2
+0137    KSTR     4  31      ; "__gc:__index:__tostring:close:flush:line"~
+0138    CALL     1   1   3
+0139    MOV      1   0
+0140    GGET     3  32      ; "os"
+0141    KSTR     4  33      ; "clock:date:difftime:execute:exit:getenv:"~
+0142    CALL     1   1   3
+0143    MOV      1   0
+0144    GGET     3  28      ; "debug"
+0145    KSTR     4  34      ; "debug:gethook:getinfo:getlocal:getmetata"~
+0146    KSTR     5  35      ; "getfenv:setfenv:upvalueid:upvaluejoin:ge"~
+0147    CALL     1   1   4
+0148    MOV      1   0
+0149    GGET     3  36      ; "package"
+0150    KSTR     4  37      ; "config:cpath:loaded:loadlib:path:preload"
+0151    KSTR     5  38      ; "searchpath:loaders:searchers:seeall"
+0152    CALL     1   1   4
+0153    GGET     1   4      ; "assert"
+0154    GGET     3  36      ; "package"
+0155    TGETS    3   3  39  ; "loaders"
+0156    CALL     1   1   2
+0157    GGET     1   4      ; "assert"
+0158    GGET     3  36      ; "package"
+0159    TGETS    3   3  40  ; "searchers"
+0160    NOT      3   3
+0161    CALL     1   1   2
+0162    GGET     1   4      ; "assert"
+0163    GGET     3  36      ; "package"
+0164    TGETS    3   3  41  ; "seeall"
+0165    CALL     1   1   2
+0166    GGET     1   4      ; "assert"
+0167    GGET     3  36      ; "package"
+0168    TGETS    3   3  39  ; "loaders"
+0169    NOT      3   3
+0170    CALL     1   1   2
+0171    GGET     1   4      ; "assert"
+0172    GGET     3  36      ; "package"
+0173    TGETS    3   3  40  ; "searchers"
+0174    CALL     1   1   2
+0175    GGET     1   4      ; "assert"
+0176    GGET     3  36      ; "package"
+0177    TGETS    3   3  41  ; "seeall"
+0178    NOT      3   3
+0179    CALL     1   1   2
+0180    MOV      1   0
+0181    GGET     3  36      ; "package"
+0182    TGETS    3   3  39  ; "loaders"
+0183    IST          3
+0184    JMP      4 => 0187
+0185    GGET     3  36      ; "package"
+0186    TGETS    3   3  40  ; "searchers"
+0187 => KSTR     4  42      ; "1:2:3:4"
+0188    CALL     1   1   3
+0189    TNEW     1   0
+0190    GGET     2  43      ; "pairs"
+0191    GGET     4  36      ; "package"
+0192    TGETS    4   4  44  ; "loaded"
+0193    CALL     2   4   2
+0194    ISNEXT   5 => 0215
+0195 => GGET     7  45      ; "type"
+0196    MOV      9   5
+0197    CALL     7   2   2
+0198    ISNES    7  18      ; "string"
+0199    JMP      7 => 0214
+0200    MOV      9   5
+0201    TGETS    7   5  46  ; "sub"
+0202    KSHORT  10   1
+0203    KSHORT  11   7
+0204    CALL     7   2   4
+0205    ISEQS    7  47      ; "common."
+0206    JMP      7 => 0215
+0207    MOV      9   5
+0208    TGETS    7   5  46  ; "sub"
+0209    KSHORT  10   1
+0210    KSHORT  11   4
+0211    CALL     7   2   4
+0212    ISEQS    7  48      ; "jit."
+0213    JMP      7 => 0215
+0214 => TSETV    6   1   5
+0215 => ITERN    5   3   3
+0216    ITERL    5 => 0195
+0217    MOV      2   0
+0218    MOV      4   1
+0219    KSTR     5  49      ; "_G:coroutine:debug:io:math:os:package:st"~
+0220    KSTR     6  50      ; "bit:bit32:common:ffi:jit:table.new"
+0221    CALL     2   1   4
+0222    MOV      1   0
+0223    GGET     3  51      ; "bit"
+0224    KSTR     4  52      ; "arshift:band:bnot:bor:bswap:bxor:lshift:"~
+0225    CALL     1   1   3
+0226    MOV      1   0
+0227    GGET     3  53      ; "require"
+0228    KSTR     5  54      ; "ffi"
+0229    CALL     3   2   2
+0230    KSTR     4  55      ; "C:abi:alignof:arch:cast:cdef:copy:errno:"~
+0231    KSTR     5  56      ; "typeinfo"
+0232    CALL     1   1   4
+0233    GGET     1   4      ; "assert"
+0234    GGET     3  53      ; "require"
+0235    KSTR     5  54      ; "ffi"
+0236    CALL     3   2   2
+0237    TGETS    3   3  56  ; "typeinfo"
+0238    CALL     1   1   2
+0239    RET0     0   1
+

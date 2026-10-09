@@ -1,0 +1,77 @@
+-- BYTECODE -- goto_labels.lua:37-37
+0001    UGET     0   0      ; z
+0002    RET1     0   2
+
+-- BYTECODE -- goto_labels.lua:44-44
+0001    UGET     0   0      ; q
+0002    RET1     0   2
+
+-- BYTECODE -- goto_labels.lua:0-58
+0001    JMP      0 => 0005
+0002    GGET     0   0      ; "print"
+0003    KSTR     2   1      ; "skipped"
+0004    CALL     0   1   2
+0005 => KSHORT   0   1
+0006 => ADDVN    0   0   0  ; 1
+0007    KSHORT   1   3
+0008    ISGE     0   1
+0009    JMP      1 => 0011
+0010    JMP      1 => 0006
+0011 => KSHORT   0   1
+0012    KSHORT   1   3
+0013    KSHORT   2   1
+0014    FORI     0 => 0024
+0015 => KSHORT   4   1
+0016    KSHORT   5   3
+0017    KSHORT   6   1
+0018    FORI     4 => 0023
+0019 => ISNEN    7   1      ; 2
+0020    JMP      8 => 0022
+0021    JMP      4 => 0023
+0022 => FORL     4 => 0019
+0023 => FORL     0 => 0015
+0024 => KSHORT   0   1
+0025 => ISF          0
+0026    JMP      1 => 0028
+0027    JMP      1 => 0025
+0028 => LOOP     1 => 0028
+0029    JMP      1 => 0025
+0030    JMP      0 => 0035
+0031    KSHORT   0   1
+0032    GGET     1   0      ; "print"
+0033    MOV      3   0
+0034    CALL     1   1   2
+0035 => KSHORT   0   0
+0036 => MOV      1   0
+0037    FNEW     2   2      ; goto_labels.lua:37
+0038    ADDVN    0   0   0  ; 1
+0039    KSHORT   3   3
+0040    ISGE     0   3
+0041    JMP      3 => 0043
+0042    UCLO     1 => 0036
+0043 => UCLO     0 => 0044
+0044 => LOOP     0 => 0049
+0045    KSHORT   0   1
+0046    FNEW     1   3      ; goto_labels.lua:44
+0047    UCLO     0 => 0049
+0048    UCLO     0 => 0044
+0049 => GGET     0   4      ; "a"
+0050    ISF          0
+0051    JMP      1 => 0058
+0052    JMP      0 => 0055
+0053    JMP      0 => 0055
+0054    JMP      0 => 0058
+0055 => GGET     0   0      ; "print"
+0056    KSHORT   2   1
+0057    CALL     0   1   2
+0058 => GGET     0   0      ; "print"
+0059    KSHORT   2   2
+0060    CALL     0   1   2
+0061    KSHORT   0   1
+0062    ADDVN    0   0   0  ; 1
+0063    GGET     1   0      ; "print"
+0064    MOV      3   0
+0065    CALL     1   1   2
+0066    JMP      1 => 0067
+0067 => RET0     0   1
+

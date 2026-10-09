@@ -1,0 +1,1 @@
+[string "x = 1_000_x"]:1: malformed number near '1000x'

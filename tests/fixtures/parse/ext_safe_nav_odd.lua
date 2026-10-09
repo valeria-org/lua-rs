@@ -1,0 +1,9 @@
+local a, k = ...
+local r = a?.:m()
+r = a?.:m(1)?.x
+r = a?.[k]?.[1]
+a?.:m()
+r = a?.(1)?.(2)
+r = a?.b?.c?.d?.e
+r = ("s")?.len
+return a?.:m()

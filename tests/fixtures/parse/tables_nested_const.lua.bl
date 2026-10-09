@@ -1,0 +1,63 @@
+-- BYTECODE -- tables_nested_const.lua:11-11
+0001    RET0     0   1
+
+-- BYTECODE -- tables_nested_const.lua:0-14
+0001    TDUP     0   1
+0002    TDUP     1   0
+0003    TSETS    1   0   2  ; "a"
+0004    TDUP     1   3
+0005    TDUP     2   4
+0006    TSETS    2   1   5  ; "z"
+0007    TSETS    1   0   6  ; "b"
+0008    TNEW     1   4
+0009    TDUP     2   7
+0010    TSETB    2   1   1
+0011    TDUP     2   8
+0012    TSETB    2   1   2
+0013    TDUP     2   9
+0014    TDUP     3  10
+0015    TDUP     4  11
+0016    TSETB    4   3   2
+0017    TSETB    3   2   2
+0018    TSETB    2   1   3
+0019    TSETS    1   0  12  ; "c"
+0020    TDUP     1  16
+0021    TDUP     2  14
+0022    TDUP     3  13
+0023    TSETS    3   2  15  ; "deeper"
+0024    TSETS    2   1  17  ; "nested"
+0025    TSETB    1   0   2
+0026    TDUP     1  18
+0027    TDUP     2  19
+0028    TDUP     3  20
+0029    TDUP     4  21
+0030    TDUP     5  22
+0031    TDUP     6  23
+0032    TSETB    6   5   2
+0033    TSETB    5   4   2
+0034    TSETB    4   3   2
+0035    TSETB    3   2   2
+0036    TSETB    2   1   2
+0037    TNEW     2   4
+0038    TDUP     3  24
+0039    TSETB    3   2   1
+0040    TDUP     3  25
+0041    TSETB    3   2   2
+0042    TDUP     3  26
+0043    FNEW     4  27      ; tables_nested_const.lua:11
+0044    TSETS    4   3  28  ; "f"
+0045    TSETB    3   2   3
+0046    TDUP     3  32
+0047    TDUP     4  30
+0048    TDUP     5  29
+0049    VARG     6   2   0
+0050    TSETS    6   5   5  ; "z"
+0051    TSETS    5   4  31  ; "y"
+0052    TSETS    4   3  33  ; "x"
+0053    MOV      4   0
+0054    MOV      5   1
+0055    MOV      6   2
+0056    MOV      7   3
+0057    UCLO     0 => 0058
+0058 => RET      4   5
+

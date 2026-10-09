@@ -1,0 +1,1 @@
+[string "goto f..."]:1: <goto f> jumps into the scope of local 'x'

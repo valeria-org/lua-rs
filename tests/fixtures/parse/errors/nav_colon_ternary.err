@@ -1,0 +1,1 @@
+[string "x = c ? a?.b:c() : 1"]:1: '<name>' expected near '1'

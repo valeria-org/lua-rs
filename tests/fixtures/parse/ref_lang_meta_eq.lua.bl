@@ -1,0 +1,189 @@
+-- BYTECODE -- ref_lang_meta_eq.lua:1-4
+0001    TDUP     3   0
+0002    TSETS    0   3   1  ; "__eq"
+0003    GGET     4   2      ; "setmetatable"
+0004    TNEW     6   3
+0005    TSETB    1   6   1
+0006    MOV      7   3
+0007    CALL     4   2   3
+0008    GGET     5   2      ; "setmetatable"
+0009    TNEW     7   3
+0010    TSETB    2   7   1
+0011    MOV      8   3
+0012    CALL     5   0   3
+0013    RETM     4   1
+
+-- BYTECODE -- ref_lang_meta_eq.lua:8-8
+0001    USETS    0   0      ; xop ; "eq"
+0002    KSTR     2   1      ; ""
+0003    RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_eq.lua:19-19
+0001    TGETB    2   0   1
+0002    TGETB    3   1   1
+0003    ISEQV    2   3
+0004    JMP      2 => 0007
+0005    KPRI     2   1
+0006    JMP      3 => 0008
+0007 => KPRI     2   2
+0008 => RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_eq.lua:0-31
+0001    FNEW     0   0      ; ref_lang_meta_eq.lua:1
+0002    KPRI     1   0
+0003    MOV      2   0
+0004    FNEW     4   1      ; ref_lang_meta_eq.lua:8
+0005    CALL     2   3   2
+0006    GGET     4   2      ; "assert"
+0007    ISEQV    2   3
+0008    JMP      6 => 0011
+0009    KPRI     6   1
+0010    JMP      7 => 0012
+0011 => KPRI     6   2
+0012 => ISNEP    6   2
+0013    JMP      6 => 0016
+0014    ISEQS    1   3      ; "eq"
+0015    JMP      6 => 0018
+0016 => KPRI     6   1
+0017    JMP      7 => 0019
+0018 => KPRI     6   2
+0019 => CALL     4   1   2
+0020    KPRI     1   0
+0021    GGET     4   2      ; "assert"
+0022    ISNEV    2   3
+0023    JMP      6 => 0026
+0024    KPRI     6   1
+0025    JMP      7 => 0027
+0026 => KPRI     6   2
+0027 => ISNEP    6   1
+0028    JMP      6 => 0031
+0029    ISEQS    1   3      ; "eq"
+0030    JMP      6 => 0033
+0031 => KPRI     6   1
+0032    JMP      7 => 0034
+0033 => KPRI     6   2
+0034 => CALL     4   1   2
+0035    KPRI     1   0
+0036    GGET     4   4      ; "setmetatable"
+0037    MOV      6   3
+0038    TDUP     7   7
+0039    GGET     8   5      ; "getmetatable"
+0040    MOV     10   3
+0041    CALL     8   2   2
+0042    TGETS    8   8   6  ; "__eq"
+0043    TSETS    8   7   6  ; "__eq"
+0044    CALL     4   1   3
+0045    GGET     4   2      ; "assert"
+0046    ISEQV    2   3
+0047    JMP      6 => 0050
+0048    KPRI     6   1
+0049    JMP      7 => 0051
+0050 => KPRI     6   2
+0051 => ISNEP    6   2
+0052    JMP      6 => 0055
+0053    ISEQS    1   3      ; "eq"
+0054    JMP      6 => 0057
+0055 => KPRI     6   1
+0056    JMP      7 => 0058
+0057 => KPRI     6   2
+0058 => CALL     4   1   2
+0059    KPRI     1   0
+0060    GGET     4   2      ; "assert"
+0061    ISNEV    2   3
+0062    JMP      6 => 0065
+0063    KPRI     6   1
+0064    JMP      7 => 0066
+0065 => KPRI     6   2
+0066 => ISNEP    6   1
+0067    JMP      6 => 0070
+0068    ISEQS    1   3      ; "eq"
+0069    JMP      6 => 0072
+0070 => KPRI     6   1
+0071    JMP      7 => 0073
+0072 => KPRI     6   2
+0073 => CALL     4   1   2
+0074    KPRI     1   0
+0075    UCLO     1 => 0076
+0076 => MOV      1   0
+0077    FNEW     3   8      ; ref_lang_meta_eq.lua:19
+0078    KSHORT   4   1
+0079    KSHORT   5   2
+0080    CALL     1   3   4
+0081    GGET     3   2      ; "assert"
+0082    ISEQV    1   2
+0083    JMP      5 => 0086
+0084    KPRI     5   1
+0085    JMP      6 => 0087
+0086 => KPRI     5   2
+0087 => ISEQP    5   1
+0088    JMP      5 => 0091
+0089    KPRI     5   1
+0090    JMP      6 => 0092
+0091 => KPRI     5   2
+0092 => CALL     3   1   2
+0093    GGET     3   2      ; "assert"
+0094    ISNEV    1   2
+0095    JMP      5 => 0098
+0096    KPRI     5   1
+0097    JMP      6 => 0099
+0098 => KPRI     5   2
+0099 => ISEQP    5   2
+0100    JMP      5 => 0103
+0101    KPRI     5   1
+0102    JMP      6 => 0104
+0103 => KPRI     5   2
+0104 => CALL     3   1   2
+0105    KSHORT   3   1
+0106    TSETB    3   2   1
+0107    GGET     3   2      ; "assert"
+0108    ISEQV    1   2
+0109    JMP      5 => 0112
+0110    KPRI     5   1
+0111    JMP      6 => 0113
+0112 => KPRI     5   2
+0113 => ISEQP    5   2
+0114    JMP      5 => 0117
+0115    KPRI     5   1
+0116    JMP      6 => 0118
+0117 => KPRI     5   2
+0118 => CALL     3   1   2
+0119    GGET     3   2      ; "assert"
+0120    ISNEV    1   2
+0121    JMP      5 => 0124
+0122    KPRI     5   1
+0123    JMP      6 => 0125
+0124 => KPRI     5   2
+0125 => ISEQP    5   1
+0126    JMP      5 => 0129
+0127    KPRI     5   1
+0128    JMP      6 => 0130
+0129 => KPRI     5   2
+0130 => CALL     3   1   2
+0131    KSHORT   3   2
+0132    TSETB    3   1   1
+0133    GGET     3   2      ; "assert"
+0134    ISEQV    1   2
+0135    JMP      5 => 0138
+0136    KPRI     5   1
+0137    JMP      6 => 0139
+0138 => KPRI     5   2
+0139 => ISEQP    5   1
+0140    JMP      5 => 0143
+0141    KPRI     5   1
+0142    JMP      6 => 0144
+0143 => KPRI     5   2
+0144 => CALL     3   1   2
+0145    GGET     3   2      ; "assert"
+0146    ISNEV    1   2
+0147    JMP      5 => 0150
+0148    KPRI     5   1
+0149    JMP      6 => 0151
+0150 => KPRI     5   2
+0151 => ISEQP    5   2
+0152    JMP      5 => 0155
+0153    KPRI     5   1
+0154    JMP      6 => 0156
+0155 => KPRI     5   2
+0156 => CALL     3   1   2
+0157    RET0     0   1
+

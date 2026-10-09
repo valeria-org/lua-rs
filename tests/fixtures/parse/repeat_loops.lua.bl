@@ -1,0 +1,62 @@
+-- BYTECODE -- repeat_loops.lua:10-10
+0001    UGET     0   0      ; y
+0002    RET1     0   2
+
+-- BYTECODE -- repeat_loops.lua:16-16
+0001    UGET     0   0      ; z
+0002    RET1     0   2
+
+-- BYTECODE -- repeat_loops.lua:22-22
+0001    UGET     0   0      ; w
+0002    RET1     0   2
+
+-- BYTECODE -- repeat_loops.lua:0-24
+0001    KSHORT   0   0
+0002 => LOOP     1 => 0007
+0003    ADDVN    0   0   0  ; 1
+0004    KSHORT   1  10
+0005    ISGE     1   0
+0006    JMP      1 => 0002
+0007 => LOOP     1 => 0013
+0008    MULVN    1   0   1  ; 2
+0009    SUBVN    0   0   0  ; 1
+0010    KSHORT   2   3
+0011    ISGE     1   2
+0012    JMP      2 => 0007
+0013 => LOOP     1 => 0022
+0014    MOV      1   0
+0015    FNEW     2   0      ; repeat_loops.lua:10
+0016    ADDVN    0   0   0  ; 1
+0017    KSHORT   3  20
+0018    ISGE     3   1
+0019    JMP      3 => 0021
+0020    UCLO     1 => 0022
+0021 => UCLO     1 => 0013
+0022 => LOOP     1 => 0035
+0023    MOV      1   0
+0024    ISNEN    1   2      ; 3
+0025    JMP      2 => 0027
+0026    UCLO     1 => 0035
+0027 => FNEW     2   1      ; repeat_loops.lua:16
+0028    MOV      3   2
+0029    CALL     3   2   1
+0030    KSHORT   4   5
+0031    ISGE     4   3
+0032    JMP      3 => 0034
+0033    UCLO     1 => 0035
+0034 => UCLO     1 => 0022
+0035 => LOOP     1 => 0036
+0036 => LOOP     1 => 0040
+0037    JMP      1 => 0040
+0038    JMP      1 => 0039
+0039 => JMP      1 => 0036
+0040 => LOOP     1 => 0048
+0041    MOV      1   0
+0042    FNEW     2   2      ; repeat_loops.lua:22
+0043    GSET     2   3      ; "cb"
+0044    ISF          1
+0045    JMP      2 => 0047
+0046    UCLO     1 => 0048
+0047 => UCLO     1 => 0040
+0048 => RET0     0   1
+

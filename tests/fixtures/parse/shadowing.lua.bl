@@ -1,0 +1,35 @@
+-- BYTECODE -- shadowing.lua:6-6
+0001    UGET     0   0      ; a
+0002    RET1     0   2
+
+-- BYTECODE -- shadowing.lua:12-12
+0001    RET1     1   2
+
+-- BYTECODE -- shadowing.lua:0-13
+0001    KSHORT   0   1
+0002    ADDVN    1   0   0  ; 1
+0003    MOV      2   1
+0004    MOV      3   1
+0005    MOV      4   3
+0006    FNEW     4   0      ; shadowing.lua:6
+0007    MOV      5   4
+0008    KSHORT   6  10
+0009    KSHORT   7   1
+0010    FORI     5 => 0013
+0011 => MOV      9   8
+0012    FORL     5 => 0011
+0013 => GGET     5   1      ; "pairs"
+0014    MOV      7   4
+0015    CALL     5   4   2
+0016    ISNEXT   8 => 0017
+0017 => ITERN    8   3   3
+0018    ITERL    8 => 0017
+0019    GGET     5   2      ; "x"
+0020    GGET     6   3      ; "print"
+0021    MOV      7   6
+0022    MOV      9   6
+0023    CALL     7   1   2
+0024    FNEW     7   4      ; shadowing.lua:12
+0025    UCLO     0 => 0026
+0026 => RET0     0   1
+

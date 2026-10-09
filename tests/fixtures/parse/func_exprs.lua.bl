@@ -1,0 +1,93 @@
+-- BYTECODE -- func_exprs.lua:2-2
+0001    RET0     0   1
+
+-- BYTECODE -- func_exprs.lua:3-3
+0001    RET1     0   2
+
+-- BYTECODE -- func_exprs.lua:4-4
+0001    MOV      3   0
+0002    MOV      4   1
+0003    MOV      5   2
+0004    RET      3   4
+
+-- BYTECODE -- func_exprs.lua:5-5
+0001    VARG     0   0   0
+0002    RETM     0   0
+
+-- BYTECODE -- func_exprs.lua:6-6
+0001    MOV      1   0
+0002    VARG     2   0   1
+0003    RETM     1   1
+
+-- BYTECODE -- func_exprs.lua:7-7
+0001    RET1     0   2
+
+-- BYTECODE -- func_exprs.lua:8-8
+0001    KSHORT   0   1
+0002    RET1     0   2
+
+-- BYTECODE -- func_exprs.lua:9-9
+0001    RET0     0   1
+
+-- BYTECODE -- func_exprs.lua:9-9
+0001    FNEW     0   0      ; func_exprs.lua:9
+0002    UCLO     0 => 0003
+0003 => RET1     0   2
+
+-- BYTECODE -- func_exprs.lua:9-9
+0001    FNEW     0   0      ; func_exprs.lua:9
+0002    UCLO     0 => 0003
+0003 => RET1     0   2
+
+-- BYTECODE -- func_exprs.lua:10-10
+0001    RET0     0   1
+
+-- BYTECODE -- func_exprs.lua:11-11
+0001    UGET     2   0      ; localf
+0002    RET1     2   2
+
+-- BYTECODE -- func_exprs.lua:12-12
+0001    RET0     0   1
+
+-- BYTECODE -- func_exprs.lua:13-13
+0001    RET0     0   1
+
+-- BYTECODE -- func_exprs.lua:14-14
+0001    RET1     9   2
+
+-- BYTECODE -- func_exprs.lua:16-16
+0001    KSHORT   1   0
+0002    ISGE     1   0
+0003    JMP      1 => 0009
+0004    UGET     1   0      ; recursive
+0005    SUBVN    3   0   0  ; 1
+0006    CALL     1   2   2
+0007    IST          1
+0008    JMP      2 => 0010
+0009 => KSHORT   1   0
+0010 => RET1     1   2
+
+-- BYTECODE -- func_exprs.lua:0-17
+0001    FNEW     0   0      ; func_exprs.lua:2
+0002    FNEW     1   1      ; func_exprs.lua:3
+0003    FNEW     2   2      ; func_exprs.lua:4
+0004    FNEW     3   3      ; func_exprs.lua:5
+0005    FNEW     4   4      ; func_exprs.lua:6
+0006    FNEW     5   5      ; func_exprs.lua:7
+0007    FNEW     6   6      ; func_exprs.lua:8
+0008    CALL     6   2   1
+0009    FNEW     7   7      ; func_exprs.lua:9
+0010    FNEW     8   8      ; func_exprs.lua:10
+0011    GSET     8   9      ; "globalf"
+0012    FNEW     8  10      ; func_exprs.lua:11
+0013    TDUP     9  12
+0014    FNEW    10  11      ; func_exprs.lua:12
+0015    TSETS   10   9  13  ; "f"
+0016    FNEW    10  15      ; func_exprs.lua:13
+0017    TSETS   10   9  14  ; "g"
+0018    FNEW    10  16      ; func_exprs.lua:14
+0019    KPRI    11   0
+0020    FNEW    11  17      ; func_exprs.lua:16
+0021    UCLO     0 => 0022
+0022 => RET0     0   1
+

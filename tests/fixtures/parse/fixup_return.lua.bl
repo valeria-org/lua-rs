@@ -1,0 +1,97 @@
+-- BYTECODE -- fixup_return.lua:9-9
+0001    UGET     0   0      ; up
+0002    RET1     0   2
+
+-- BYTECODE -- fixup_return.lua:2-12
+0001    ISNEN    0   0      ; 1
+0002    JMP      1 => 0004
+0003    UCLO     0 => 0032
+0004 => ISNEN    0   1      ; 2
+0005    JMP      1 => 0007
+0006    UCLO     0 => 0033
+0007 => ISNEN    0   2      ; 3
+0008    JMP      1 => 0012
+0009    MOV      1   0
+0010    MOV      2   0
+0011    UCLO     0 => 0034
+0012 => ISNEN    0   3      ; 4
+0013    JMP      1 => 0017
+0014    GGET     1   0      ; "f"
+0015    MOV      3   0
+0016    UCLO     0 => 0035
+0017 => ISNEN    0   4      ; 5
+0018    JMP      1 => 0022
+0019    MOV      3   0
+0020    TGETS    1   0   1  ; "m"
+0021    UCLO     0 => 0036
+0022 => MOV      1   0
+0023    FNEW     2   2      ; fixup_return.lua:9
+0024    ISNEN    0   5      ; 6
+0025    JMP      3 => 0028
+0026    UCLO     0 => 0027
+0027 => RET1     2   2
+0028 => GGET     3   0      ; "f"
+0029    MOV      5   1
+0030    UCLO     0 => 0031
+0031 => CALLT    3   2
+0032 => RET0     0   1
+0033 => RET1     0   2
+0034 => RET      1   3
+0035 => CALLT    1   2
+0036 => CALLT    1   2
+
+-- BYTECODE -- fixup_return.lua:17-17
+0001    UGET     0   0      ; v
+0002    RET1     0   2
+
+-- BYTECODE -- fixup_return.lua:13-18
+0001    VARG     0   2   0
+0002    ISF          0
+0003    JMP      1 => 0006
+0004    VARG     0   0   0
+0005    UCLO     0 => 0020
+0006 => GGET     0   0      ; "select"
+0007    KSTR     2   1      ; "#"
+0008    VARG     3   0   0
+0009    CALLM    0   2   1
+0010    KSHORT   1   1
+0011    ISGE     1   0
+0012    JMP      0 => 0016
+0013    GGET     0   2      ; "f"
+0014    VARG     2   0   0
+0015    UCLO     0 => 0021
+0016 => VARG     0   2   0
+0017    FNEW     1   3      ; fixup_return.lua:17
+0018    UCLO     0 => 0019
+0019 => RET1     1   2
+0020 => RETM     0   0
+0021 => CALLMT   0   0
+
+-- BYTECODE -- fixup_return.lua:22-22
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- fixup_return.lua:19-24
+0001 => ISF          0
+0002    JMP      1 => 0010
+0003    LOOP     1 => 0010
+0004    ISF          0
+0005    JMP      1 => 0008
+0006    KSHORT   1   1
+0007    UCLO     0 => 0012
+0008 => FNEW     0   0      ; fixup_return.lua:22
+0009    JMP      1 => 0001
+0010 => UCLO     0 => 0011
+0011 => RET0     0   1
+0012 => RET1     1   2
+
+-- BYTECODE -- fixup_return.lua:0-26
+0001    FNEW     0   0      ; fixup_return.lua:2
+0002    FNEW     1   1      ; fixup_return.lua:13
+0003    FNEW     2   2      ; fixup_return.lua:19
+0004    MOV      3   0
+0005    MOV      4   1
+0006    MOV      5   2
+0007    UCLO     0 => 0008
+0008 => RET      3   4
+

@@ -1,0 +1,31 @@
+-- BYTECODE -- generic_for_global_pairs.lua:0-8
+0001    GGET     0   0      ; "pairs"
+0002    GGET     2   1      ; "t"
+0003    CALL     0   4   2
+0004    ISNEXT   3 => 0005
+0005 => ITERN    3   3   3
+0006    ITERL    3 => 0005
+0007    GGET     0   2      ; "next"
+0008    GGET     1   1      ; "t"
+0009    KPRI     2   0
+0010    ISNEXT   3 => 0011
+0011 => ITERN    3   3   3
+0012    ITERL    3 => 0011
+0013    GGET     0   3      ; "ipairs"
+0014    GGET     2   1      ; "t"
+0015    CALL     0   4   2
+0016    JMP      3 => 0017
+0017 => ITERC    3   3   3
+0018    ITERL    3 => 0017
+0019    GGET     0   4      ; "print"
+0020    GGET     2   0      ; "pairs"
+0021    GGET     3   2      ; "next"
+0022    CALL     0   1   3
+0023    GGET     0   0      ; "pairs"
+0024    GGET     2   1      ; "t"
+0025    CALL     0   4   2
+0026    ISNEXT   3 => 0027
+0027 => ITERN    3   3   3
+0028    ITERL    3 => 0027
+0029    RET0     0   1
+
