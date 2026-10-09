@@ -18,6 +18,8 @@ pub type LibFn = (&'static str, NativeFn, u8);
 /// here.
 pub fn open_libs(vm: &mut Vm) -> LuaResult<()> {
     base::open_base(vm)?;
+    // lj_lib_preload: modules loaded on demand through package.preload.
+    crate::ffi::libffi::preload_ffi(vm)?;
     Ok(())
 }
 
