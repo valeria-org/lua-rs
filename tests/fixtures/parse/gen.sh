@@ -2,6 +2,7 @@
 # Regenerate parser goldens from the reference LuaJIT binary.
 #   *.lua         -> *.lua.bl   (exact stdout of `luajit -bl NAME.lua`, run in this dir)
 #   *.lua         -> *.lua.blw  (same with -bWl: non-native FR1 frame layout)
+#   *.lua         -> *.lua.raw  (`luajit -bgd -t raw`: deterministic dump with debug info)
 #   errors/*.lua  -> errors/*.err (exact loadstring() error message, no trailing newline)
 # Override the binary with $LUAJIT_REF.
 set -euo pipefail
@@ -20,6 +21,7 @@ for f in *.lua; do
   fi
   mv "$f.bl.tmp" "$f.bl"
   "$LUAJIT_REF" -bWl "$f" > "$f.blw"
+  "$LUAJIT_REF" -bgd -t raw "$f" "$f.raw"
 done
 
 cd errors
