@@ -1,0 +1,1 @@
+[string "function f() return 1"]:1: 'end' expected near '<eof>'

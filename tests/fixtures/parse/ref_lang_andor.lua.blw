@@ -1,0 +1,177 @@
+-- BYTECODE -- ref_lang_andor.lua:16-39
+0001    UGET     1   0      ; mem
+0002    TGETV    1   1   0
+0003    ISF          1
+0004    JMP      2 => 0008
+0005    UGET     1   0      ; mem
+0006    TGETV    1   1   0
+0007    RET1     1   2
+0008 => TNEW     1   0
+0009    GGET     2   0      ; "ipairs"
+0010    UGET     3   1      ; allcases
+0011    SUBVN    4   0   0  ; 1
+0012    CALL     3   0   2
+0013    CALLM    2   4   0
+0014    JMP      5 => 0018
+0015 => LEN      7   1
+0016    ADDVN    7   7   0  ; 1
+0017    TSETV    6   1   7
+0018 => ITERC    5   3   3
+0019    ITERL    5 => 0015
+0020    KSHORT   2   1
+0021    SUBVN    3   0   0  ; 1
+0022    KSHORT   4   1
+0023    FORI     2 => 0073
+0024 => GGET     6   0      ; "ipairs"
+0025    UGET     7   1      ; allcases
+0026    MOV      8   5
+0027    CALL     7   0   2
+0028    CALLM    6   4   0
+0029    JMP      9 => 0070
+0030 => GGET    11   0      ; "ipairs"
+0031    UGET    12   1      ; allcases
+0032    SUBVV   13   0   5
+0033    CALL    12   0   2
+0034    CALLM   11   4   0
+0035    JMP     14 => 0068
+0036 => LEN     16   1
+0037    ADDVN   16  16   0  ; 1
+0038    TNEW    17   3
+0039    KSTR    18   1      ; "("
+0040    TGETB   19  10   1
+0041    KSTR    20   2      ; " and "
+0042    TGETB   21  15   1
+0043    KSTR    22   3      ; ")"
+0044    CAT     18  18  22
+0045    TSETB   18  17   1
+0046    TGETB   18  10   2
+0047    ISF         18
+0048    JMP     19 => 0050
+0049    TGETB   18  15   2
+0050 => TSETB   18  17   2
+0051    TSETV   17   1  16
+0052    LEN     16   1
+0053    ADDVN   16  16   0  ; 1
+0054    TNEW    17   3
+0055    KSTR    18   1      ; "("
+0056    TGETB   19  10   1
+0057    KSTR    20   4      ; " or "
+0058    TGETB   21  15   1
+0059    KSTR    22   3      ; ")"
+0060    CAT     18  18  22
+0061    TSETB   18  17   1
+0062    TGETB   18  10   2
+0063    IST         18
+0064    JMP     19 => 0066
+0065    TGETB   18  15   2
+0066 => TSETB   18  17   2
+0067    TSETV   17   1  16
+0068 => ITERC   14   3   3
+0069    ITERL   14 => 0036
+0070 => ITERC    9   3   3
+0071    ITERL    9 => 0030
+0072    FORL     2 => 0024
+0073 => UGET     2   0      ; mem
+0074    TSETV    1   2   0
+0075    RET1     1   2
+
+-- BYTECODE -- ref_lang_andor.lua:58-58
+0001    KSHORT   1   2
+0002    ISGE     0   1
+0003    JMP      1 => 0006
+0004    KSHORT   1   1
+0005    JMP      2 => 0013
+0006 => UGET     1   0      ; fib
+0007    SUBVN    2   0   0  ; 1
+0008    CALL     1   2   2
+0009    UGET     2   0      ; fib
+0010    SUBVN    3   0   1  ; 2
+0011    CALL     2   2   2
+0012    ADDVV    1   1   2
+0013 => RET1     1   2
+
+-- BYTECODE -- ref_lang_andor.lua:0-62
+0001    JMP      0 => 0002
+0002 => JMP      0 => 0005
+0003    JMP      0 => 0004
+0004 => JMP      0 => 0007
+0005 => KPRI     0   2
+0006    JMP      1 => 0008
+0007 => KPRI     0   1
+0008 => GGET     1   0      ; "assert"
+0009    ISEQP    0   2
+0010    JMP      2 => 0013
+0011    KPRI     2   1
+0012    JMP      3 => 0014
+0013 => KPRI     2   2
+0014 => CALL     1   1   2
+0015    TNEW     0   5
+0016    TDUP     1   1
+0017    TSETB    1   0   1
+0018    TDUP     1   2
+0019    TSETB    1   0   2
+0020    TDUP     1   3
+0021    TSETB    1   0   3
+0022    TDUP     1   4
+0023    TSETB    1   0   4
+0024    TNEW     1   3
+0025    TSETB    0   1   1
+0026    FNEW     2   5      ; ref_lang_andor.lua:16
+0027    GGET     3   6      ; "pairs"
+0028    MOV      4   2
+0029    KSHORT   5   4
+0030    CALL     4   0   2
+0031    CALLM    3   4   0
+0032    ISNEXT   6 => 0058
+0033 => GGET     8   7      ; "loadstring"
+0034    IST          8
+0035    JMP      9 => 0037
+0036    GGET     8   8      ; "load"
+0037 => KSTR     9   9      ; "return "
+0038    TGETB   10   7   1
+0039    CAT      9   9  10
+0040    CALL     8   2   2
+0041    CALL     8   2   1
+0042    TGETB    9   7   2
+0043    ISEQV    8   9
+0044    JMP      9 => 0058
+0045    GGET     9  10      ; "error"
+0046    GGET    10  11      ; "string"
+0047    TGETS   10  10  12  ; "format"
+0048    KSTR    11  13      ; "bad conditional eval\n%s\nexpected: %s\n"~
+0049    TGETB   12   7   1
+0050    GGET    13  14      ; "tostring"
+0051    TGETB   14   7   2
+0052    CALL    13   2   2
+0053    GGET    14  14      ; "tostring"
+0054    MOV     15   8
+0055    CALL    14   0   2
+0056    CALLM   10   0   3
+0057    CALLM    9   1   0
+0058 => ITERN    6   3   3
+0059    ITERL    6 => 0033
+0060    UCLO     0 => 0061
+0061 => FNEW     0  15      ; ref_lang_andor.lua:58
+0062    GGET     1   0      ; "assert"
+0063    MOV      2   0
+0064    KSHORT   3   5
+0065    CALL     2   2   2
+0066    ISEQN    2   0      ; 8
+0067    JMP      2 => 0070
+0068    KPRI     2   1
+0069    JMP      3 => 0071
+0070 => KPRI     2   2
+0071 => CALL     1   1   2
+0072    GGET     1   0      ; "assert"
+0073    MOV      2   0
+0074    KSHORT   3  10
+0075    CALL     2   2   2
+0076    ISEQN    2   1      ; 89
+0077    JMP      2 => 0080
+0078    KPRI     2   1
+0079    JMP      3 => 0081
+0080 => KPRI     2   2
+0081 => CALL     1   1   2
+0082    UCLO     0 => 0083
+0083 => RET0     0   1
+

@@ -1,0 +1,22 @@
+
+local a, b, c = 1, 2, 3
+a, b = b, a
+a, b, c = c, a, b
+a, b, c = 1
+a, b, c = f()
+a, b = 1, 2, 3
+a, b = f(), g()
+a, b, c = f(), g()
+a = f(), g()
+local t = {}
+t.x, t.y = 1, 2
+t[1], t[2] = t[2], t[1]
+t.a, a = a, t.a
+g1, g2 = g2, g1
+a, g1, t.z = g1, t.z, a
+a, b, c, d, e, f2 = 1, 2
+local u = 1
+local function cl() u = 2 end
+u, a = a, u
+t[a], t[b] = 1, 2
+a.b.c, d.e.f = 1, 2

@@ -1,0 +1,388 @@
+-- BYTECODE -- ref_lib_coroutine_yield.lua:8-10
+0001    UGET     0   0      ; yield
+0002    GGET     2   0      ; "string"
+0003    TGETS    2   2   1  ; "byte"
+0004    GGET     4   0      ; "string"
+0005    TGETS    4   4   2  ; "rep"
+0006    KSTR     6   3      ; " "
+0007    KSHORT   7 100
+0008    CALL     4   2   3
+0009    KSHORT   5   1
+0010    KSHORT   6 100
+0011    CALL     2   0   4
+0012    CALLM    0   1   0
+0013    RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:7-12
+0001    UGET     0   0      ; create
+0002    FNEW     2   0      ; ref_lib_coroutine_yield.lua:8
+0003    CALL     0   2   2
+0004    GGET     1   1      ; "assert"
+0005    GGET     3   2      ; "select"
+0006    KSTR     5   3      ; "#"
+0007    UGET     6   2      ; resume
+0008    MOV      8   0
+0009    CALL     6   0   2
+0010    CALLM    3   2   1
+0011    ISEQN    3   0      ; 101
+0012    JMP      3 => 0015
+0013    KPRI     3   1
+0014    JMP      4 => 0016
+0015 => KPRI     3   2
+0016 => CALL     1   1   2
+0017    RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:17-19
+0001    UGET     0   0      ; yield
+0002    GGET     2   0      ; "string"
+0003    TGETS    2   2   1  ; "byte"
+0004    GGET     4   0      ; "string"
+0005    TGETS    4   4   2  ; "rep"
+0006    KSTR     6   3      ; " "
+0007    KSHORT   7 100
+0008    CALL     4   2   3
+0009    KSHORT   5   1
+0010    KSHORT   6 100
+0011    CALL     2   0   4
+0012    CALLM    0   1   0
+0013    RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:16-21
+0001    UGET     0   0      ; wrap
+0002    FNEW     2   0      ; ref_lib_coroutine_yield.lua:17
+0003    CALL     0   2   2
+0004    GGET     1   1      ; "assert"
+0005    GGET     3   2      ; "select"
+0006    KSTR     5   3      ; "#"
+0007    MOV      6   0
+0008    CALL     6   0   1
+0009    CALLM    3   2   1
+0010    ISEQN    3   0      ; 100
+0011    JMP      3 => 0014
+0012    KPRI     3   1
+0013    JMP      4 => 0015
+0014 => KPRI     3   2
+0015 => CALL     1   1   2
+0016    RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:26-26
+0001 => LOOP     1 => 0011
+0002    UGET     1   0      ; x
+0003    ADDVV    1   1   0
+0004    USETV    0   1      ; x
+0005    UGET     1   1      ; yield
+0006    UGET     3   0      ; x
+0007    CALL     1   2   2
+0008    MOV      0   1
+0009    JMP      1 => 0010
+0010 => JMP      1 => 0001
+0011 => RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:27-27
+0001 => LOOP     1 => 0011
+0002    UGET     1   0      ; x
+0003    MULVV    1   1   0
+0004    USETV    0   1      ; x
+0005    UGET     1   1      ; yield
+0006    UGET     3   0      ; x
+0007    CALL     1   2   2
+0008    MOV      0   1
+0009    JMP      1 => 0010
+0010 => JMP      1 => 0001
+0011 => RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:25-28
+0001    UGET     1   0      ; wrap
+0002    FNEW     3   0      ; ref_lib_coroutine_yield.lua:26
+0003    CALL     1   2   2
+0004    UGET     2   0      ; wrap
+0005    FNEW     4   1      ; ref_lib_coroutine_yield.lua:27
+0006    CALL     2   0   2
+0007    UCLO     0 => 0008
+0008 => RETM     1   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:36-46
+0001    TNEW     2   3
+0002    VARG     3   0   2
+0003    TSETM    3   0      ; 1
+0004    KSHORT   3   1
+0005    KSHORT   4 100
+0006    KSHORT   5   1
+0007    FORI     3 => 0022
+0008 => TGETV    7   1   6
+0009    TGETV    8   2   6
+0010    ISEQV    7   8
+0011    JMP      7 => 0017
+0012    GGET     7   0      ; "error"
+0013    KSTR     9   1      ; "FAIL "
+0014    MOV     10   0
+0015    CAT      9   9  10
+0016    CALL     7   1   2
+0017 => TGETV    7   1   6
+0018    ISNEP    7   0
+0019    JMP      7 => 0021
+0020    JMP      3 => 0022
+0021 => FORL     3 => 0008
+0022 => RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:48-53
+0001    UGET     0   0      ; verify
+0002    KSTR     2   0      ; "call"
+0003    TDUP     3   1
+0004    VARG     4   0   0
+0005    CALLM    0   1   2
+0006    UGET     0   0      ; verify
+0007    KSTR     2   2      ; "yield"
+0008    TDUP     3   3
+0009    UGET     4   1      ; yield
+0010    KSHORT   6   2
+0011    KSTR     7   4      ; "test"
+0012    CALL     4   0   3
+0013    CALLM    0   1   2
+0014    UGET     0   0      ; verify
+0015    KSTR     2   5      ; "pcall yield"
+0016    TDUP     3   6
+0017    GGET     4   7      ; "pcall"
+0018    UGET     6   1      ; yield
+0019    KSTR     7   8      ; "from pcall"
+0020    CALL     4   0   3
+0021    CALLM    0   1   2
+0022    KSTR     0   9      ; "end"
+0023    RET1     0   2
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:62-76
+0001    UGET     2   0      ; create
+0002    MOV      4   1
+0003    CALL     2   2   2
+0004    KSHORT   3   1
+0005    KSHORT   4 100
+0006    KSHORT   5   1
+0007    FORI     3 => 0050
+0008 => UGET     7   1      ; resume
+0009    MOV      9   2
+0010    VARG    10   0   2
+0011    CALLM    7   3   1
+0012    IST          7
+0013    JMP      9 => 0032
+0014    TGETV    9   0   6
+0015    ISEQP    9   0
+0016    JMP      9 => 0050
+0017    GGET     9   0      ; "error"
+0018    KSTR    11   1      ; "too few results: ["
+0019    MOV     12   6
+0020    KSTR    13   2      ; "] = "
+0021    GGET    14   3      ; "tostring"
+0022    TGETV   16   0   6
+0023    CALL    14   2   2
+0024    KSTR    15   4      ; " (got: "
+0025    GGET    16   3      ; "tostring"
+0026    MOV     18   8
+0027    CALL    16   2   2
+0028    KSTR    17   5      ; ")"
+0029    CAT     11  11  17
+0030    CALL     9   1   2
+0031    JMP      3 => 0050
+0032 => TGETV    9   0   6
+0033    ISEQV    9   8
+0034    JMP      9 => 0049
+0035    GGET     9   0      ; "error"
+0036    KSTR    11   6      ; "bad result: ["
+0037    MOV     12   6
+0038    KSTR    13   2      ; "] = "
+0039    GGET    14   3      ; "tostring"
+0040    MOV     16   8
+0041    CALL    14   2   2
+0042    KSTR    15   7      ; " (should be: "
+0043    GGET    16   3      ; "tostring"
+0044    TGETV   18   0   6
+0045    CALL    16   2   2
+0046    KSTR    17   5      ; ")"
+0047    CAT     11  11  17
+0048    CALL     9   1   2
+0049 => FORL     3 => 0008
+0050 => RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:79-79
+0001    GGET     1   0      ; "pcall"
+0002    UGET     3   0      ; yield
+0003    MOV      4   0
+0004    CALL     1   1   3
+0005    KSHORT   1  99
+0006    RET1     1   2
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:83-83
+0001    UGET     1   0      ; yield
+0002    MOV      3   0
+0003    CALL     1   1   2
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:83-83
+0001    GGET     1   0      ; "pcall"
+0002    FNEW     3   1      ; ref_lib_coroutine_yield.lua:83
+0003    MOV      4   0
+0004    CALL     1   1   3
+0005    KSHORT   1  99
+0006    UCLO     0 => 0007
+0007 => RET1     1   2
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:87-87
+0001    GGET     1   0      ; "xpcall"
+0002    UGET     3   0      ; yield
+0003    GGET     4   1      ; "debug"
+0004    TGETS    4   4   2  ; "traceback"
+0005    MOV      5   0
+0006    CALL     1   1   4
+0007    KSHORT   1  99
+0008    RET1     1   2
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:93-96
+0001    UGET     2   0      ; yield
+0002    ADDVV    4   0   1
+0003    CALL     2   1   2
+0004    ISEQN    1   0      ; 0
+0005    JMP      2 => 0008
+0006    SUBVN    2   1   1  ; 1
+0007    RET1     2   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:91-99
+0001    FNEW     2   0      ; ref_lib_coroutine_yield.lua:93
+0002    MOV      3   0
+0003    MOV      4   1
+0004    JMP      5 => 0005
+0005 => ITERC    5   2   3
+0006    ITERL    5 => 0005
+0007    KSHORT   2  99
+0008    UCLO     0 => 0009
+0009 => RET1     2   2
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:105-105
+0001    UGET     2   0      ; yield
+0002    TGETB    4   0   1
+0003    TGETB    5   1   1
+0004    ADDVV    4   4   5
+0005    CALL     2   1   2
+0006    KSHORT   2  99
+0007    RET1     2   2
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:103-107
+0001    GGET     1   0      ; "setmetatable"
+0002    TNEW     3   3
+0003    TSETB    0   3   1
+0004    TDUP     4   2
+0005    FNEW     5   1      ; ref_lib_coroutine_yield.lua:105
+0006    TSETS    5   4   3  ; "__add"
+0007    CALL     1   2   3
+0008    ADDVV    2   1   1
+0009    UCLO     0 => 0010
+0010 => RET1     2   2
+
+-- BYTECODE -- ref_lib_coroutine_yield.lua:0-110
+0001    GGET     0   0      ; "coroutine"
+0002    TGETS    0   0   1  ; "create"
+0003    GGET     1   0      ; "coroutine"
+0004    TGETS    1   1   2  ; "wrap"
+0005    GGET     2   0      ; "coroutine"
+0006    TGETS    2   2   3  ; "resume"
+0007    GGET     3   0      ; "coroutine"
+0008    TGETS    3   3   4  ; "yield"
+0009    MOV      4   1
+0010    FNEW     6   5      ; ref_lib_coroutine_yield.lua:7
+0011    CALL     4   2   2
+0012    CALL     4   1   1
+0013    MOV      4   1
+0014    FNEW     6   6      ; ref_lib_coroutine_yield.lua:16
+0015    CALL     4   2   2
+0016    CALL     4   1   1
+0017    FNEW     4   7      ; ref_lib_coroutine_yield.lua:25
+0018    MOV      5   4
+0019    KSHORT   7   3
+0020    CALL     5   3   2
+0021    MOV      7   4
+0022    KSHORT   9   5
+0023    CALL     7   3   2
+0024    GGET     9   8      ; "assert"
+0025    MOV     11   8
+0026    MOV     13   6
+0027    MOV     15   7
+0028    MOV     17   5
+0029    MOV     19   8
+0030    MOV     21   6
+0031    MOV     23   7
+0032    MOV     25   5
+0033    KSHORT  27   1
+0034    CALL    25   0   2
+0035    CALLM   23   0   0
+0036    CALLM   21   0   0
+0037    CALLM   19   0   0
+0038    CALLM   17   0   0
+0039    CALLM   15   0   0
+0040    CALLM   13   0   0
+0041    CALLM   11   2   0
+0042    ISEQN   11   0      ; 168428160
+0043    JMP     11 => 0046
+0044    KPRI    11   1
+0045    JMP     12 => 0047
+0046 => KPRI    11   2
+0047 => CALL     9   1   2
+0048    FNEW     4   9      ; ref_lib_coroutine_yield.lua:36
+0049    FNEW     5  10      ; ref_lib_coroutine_yield.lua:48
+0050    MOV      6   0
+0051    MOV      8   5
+0052    CALL     6   2   2
+0053    MOV      7   4
+0054    KSTR     9   3      ; "resume"
+0055    TDUP    10  11
+0056    MOV     11   2
+0057    MOV     13   6
+0058    KSHORT  14   1
+0059    KSTR    15  12      ; "foo"
+0060    CALL    11   0   4
+0061    CALLM    7   1   2
+0062    MOV      7   4
+0063    KSTR     9  13      ; "resume pcall"
+0064    TDUP    10  14
+0065    MOV     11   2
+0066    MOV     13   6
+0067    KSTR    14  15      ; "bar"
+0068    CALL    11   0   3
+0069    CALLM    7   1   2
+0070    MOV      7   4
+0071    KSTR     9  16      ; "resume end"
+0072    TDUP    10  17
+0073    MOV     11   2
+0074    MOV     13   6
+0075    KSTR    14  18      ; "again"
+0076    CALL    11   0   3
+0077    CALLM    7   1   2
+0078    UCLO     4 => 0079
+0079 => FNEW     4  19      ; ref_lib_coroutine_yield.lua:62
+0080    MOV      5   4
+0081    TDUP     7  20
+0082    FNEW     8  21      ; ref_lib_coroutine_yield.lua:79
+0083    KSHORT   9  42
+0084    CALL     5   1   4
+0085    MOV      5   4
+0086    TDUP     7  22
+0087    FNEW     8  23      ; ref_lib_coroutine_yield.lua:83
+0088    KSHORT   9  42
+0089    CALL     5   1   4
+0090    MOV      5   4
+0091    TDUP     7  24
+0092    FNEW     8  25      ; ref_lib_coroutine_yield.lua:87
+0093    KSHORT   9  42
+0094    CALL     5   1   4
+0095    MOV      5   4
+0096    TDUP     7  26
+0097    FNEW     8  27      ; ref_lib_coroutine_yield.lua:91
+0098    KSHORT   9  42
+0099    KSHORT  10   3
+0100    CALL     5   1   5
+0101    MOV      5   4
+0102    TDUP     7  28
+0103    FNEW     8  29      ; ref_lib_coroutine_yield.lua:103
+0104    KSHORT   9  42
+0105    CALL     5   1   4
+0106    UCLO     0 => 0107
+0107 => RET0     0   1
+

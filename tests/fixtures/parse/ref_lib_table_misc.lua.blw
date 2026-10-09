@@ -1,0 +1,214 @@
+-- BYTECODE -- ref_lib_table_misc.lua:17-19
+0001    MOV      3   0
+0002    MOV      4   1
+0003    MOV      5   2
+0004    RET      3   4
+
+-- BYTECODE -- ref_lib_table_misc.lua:50-50
+0001    KSHORT   0   9
+0002    KSHORT   1  10
+0003    RET      0   3
+
+-- BYTECODE -- ref_lib_table_misc.lua:0-59
+0001    TNEW     0   0
+0002    TNEW     1   0
+0003    KSHORT   2   1
+0004    KSHORT   3 100
+0005    KSHORT   4   1
+0006    FORI     2 => 0010
+0007 => KSHORT   6   1
+0008    TSETV    6   1   5
+0009    FORL     2 => 0007
+0010 => KSHORT   2   1
+0011    KSHORT   3 100
+0012    KSHORT   4   1
+0013    FORI     2 => 0016
+0014 => TSETV    1   0   5
+0015    FORL     2 => 0014
+0016 => TNEW     2   0
+0017    TSETB    2   0  90
+0018    KSHORT   2 100
+0019    KSHORT   3   1
+0020    MOV      4   2
+0021    KSHORT   5   1
+0022    FORI     3 => 0026
+0023 => TGETV    7   0   6
+0024    TSETV    6   7   6
+0025    FORL     3 => 0023
+0026 => FNEW     0   0      ; ref_lib_table_misc.lua:17
+0027    KPRI     1   0
+0028    TNEW     2   3
+0029    MOV      3   0
+0030    KSHORT   4   1
+0031    KSHORT   5   2
+0032    KSHORT   6   3
+0033    CALL     3   2   4
+0034    TSETB    3   2   1
+0035    MOV      1   2
+0036    GGET     2   1      ; "assert"
+0037    TGETB    3   1   1
+0038    ISNEN    3   0      ; 1
+0039    JMP      3 => 0046
+0040    TGETB    3   1   2
+0041    ISNEP    3   0
+0042    JMP      3 => 0046
+0043    TGETB    3   1   3
+0044    ISEQP    3   0
+0045    JMP      3 => 0048
+0046 => KPRI     3   1
+0047    JMP      4 => 0049
+0048 => KPRI     3   2
+0049 => CALL     2   1   2
+0050    TNEW     2   3
+0051    MOV      3   0
+0052    KSHORT   4   1
+0053    KSHORT   5   2
+0054    KSHORT   6   3
+0055    CALL     3   0   4
+0056    TSETM    3   1      ; 1
+0057    MOV      1   2
+0058    GGET     2   1      ; "assert"
+0059    TGETB    3   1   1
+0060    ISNEN    3   0      ; 1
+0061    JMP      3 => 0071
+0062    TGETB    3   1   2
+0063    ISNEN    3   2      ; 2
+0064    JMP      3 => 0071
+0065    TGETB    3   1   3
+0066    ISNEN    3   3      ; 3
+0067    JMP      3 => 0071
+0068    TGETB    3   1   4
+0069    ISEQP    3   0
+0070    JMP      3 => 0073
+0071 => KPRI     3   1
+0072    JMP      4 => 0074
+0073 => KPRI     3   2
+0074 => CALL     2   1   2
+0075    TNEW     2   3
+0076    MOV      3   0
+0077    KSHORT   4   1
+0078    KSHORT   5   2
+0079    KSHORT   6   3
+0080    CALL     3   0   4
+0081    TSETM    3   1      ; 1
+0082    MOV      1   2
+0083    GGET     2   1      ; "assert"
+0084    TGETB    3   1   1
+0085    ISNEN    3   0      ; 1
+0086    JMP      3 => 0096
+0087    TGETB    3   1   2
+0088    ISNEN    3   2      ; 2
+0089    JMP      3 => 0096
+0090    TGETB    3   1   3
+0091    ISNEN    3   3      ; 3
+0092    JMP      3 => 0096
+0093    TGETB    3   1   4
+0094    ISEQP    3   0
+0095    JMP      3 => 0098
+0096 => KPRI     3   1
+0097    JMP      4 => 0099
+0098 => KPRI     3   2
+0099 => CALL     2   1   2
+0100    TNEW     2   3
+0101    MOV      3   0
+0102    KSHORT   4   1
+0103    KSHORT   5   2
+0104    KSHORT   6   3
+0105    CALL     3   2   4
+0106    TSETB    3   2   1
+0107    MOV      3   0
+0108    KSHORT   4   4
+0109    KSHORT   5   5
+0110    KSHORT   6   6
+0111    CALL     3   0   4
+0112    TSETM    3   4      ; 2
+0113    MOV      1   2
+0114    GGET     2   1      ; "assert"
+0115    TGETB    3   1   1
+0116    ISNEN    3   0      ; 1
+0117    JMP      3 => 0130
+0118    TGETB    3   1   2
+0119    ISNEN    3   5      ; 4
+0120    JMP      3 => 0130
+0121    TGETB    3   1   3
+0122    ISNEN    3   6      ; 5
+0123    JMP      3 => 0130
+0124    TGETB    3   1   4
+0125    ISNEN    3   7      ; 6
+0126    JMP      3 => 0130
+0127    TGETB    3   1   5
+0128    ISEQP    3   0
+0129    JMP      3 => 0132
+0130 => KPRI     3   1
+0131    JMP      4 => 0133
+0132 => KPRI     3   2
+0133 => CALL     2   1   2
+0134    TDUP     2   2
+0135    MOV      3   0
+0136    KSHORT   4   2
+0137    KSHORT   5   3
+0138    KSHORT   6   4
+0139    CALL     3   0   4
+0140    TSETM    3   8      ; 256
+0141    MOV      1   2
+0142    GGET     2   1      ; "assert"
+0143    TGETB    3   1 255
+0144    ISNEN    3   0      ; 1
+0145    JMP      3 => 0162
+0146    KSHORT   3 256
+0147    TGETV    3   1   3
+0148    ISNEN    3   2      ; 2
+0149    JMP      3 => 0162
+0150    KSHORT   3 257
+0151    TGETV    3   1   3
+0152    ISNEN    3   3      ; 3
+0153    JMP      3 => 0162
+0154    KSHORT   3 258
+0155    TGETV    3   1   3
+0156    ISNEN    3   5      ; 4
+0157    JMP      3 => 0162
+0158    KSHORT   3 259
+0159    TGETV    3   1   3
+0160    ISEQP    3   0
+0161    JMP      3 => 0164
+0162 => KPRI     3   1
+0163    JMP      4 => 0165
+0164 => KPRI     3   2
+0165 => CALL     2   1   2
+0166    FNEW     0   3      ; ref_lib_table_misc.lua:50
+0167    KPRI     1   0
+0168    KSHORT   2   1
+0169    KSHORT   3 100
+0170    KSHORT   4   1
+0171    FORI     2 => 0178
+0172 => TDUP     6   4
+0173    MOV      7   0
+0174    CALL     7   0   1
+0175    TSETM    7   9      ; 4
+0176    MOV      1   6
+0177    FORL     2 => 0172
+0178 => GGET     2   1      ; "assert"
+0179    TGETB    3   1   1
+0180    ISNEN    3   0      ; 1
+0181    JMP      3 => 0197
+0182    TGETB    3   1   2
+0183    ISNEN    3   2      ; 2
+0184    JMP      3 => 0197
+0185    TGETB    3   1   3
+0186    ISNEN    3   3      ; 3
+0187    JMP      3 => 0197
+0188    TGETB    3   1   4
+0189    ISNEN    3  10      ; 9
+0190    JMP      3 => 0197
+0191    TGETB    3   1   5
+0192    ISNEN    3  11      ; 10
+0193    JMP      3 => 0197
+0194    TGETB    3   1   6
+0195    ISEQP    3   0
+0196    JMP      3 => 0199
+0197 => KPRI     3   1
+0198    JMP      4 => 0200
+0199 => KPRI     3   2
+0200 => CALL     2   1   2
+0201    RET0     0   1
+

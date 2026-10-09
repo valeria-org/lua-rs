@@ -1,0 +1,221 @@
+-- BYTECODE -- ref_lang_meta_eq_jit.lua:6-10
+0001    UGET     3   0      ; x
+0002    ISEQV    3   0
+0003    JMP      3 => 0008
+0004    GGET     3   0      ; "error"
+0005    KSTR     4   1      ; "bad x"
+0006    KSHORT   5   2
+0007    CALL     3   1   3
+0008 => UGET     3   1      ; ax
+0009    ISEQV    3   1
+0010    JMP      3 => 0015
+0011    GGET     3   0      ; "error"
+0012    KSTR     4   2      ; "bad ax"
+0013    KSHORT   5   2
+0014    CALL     3   1   3
+0015 => UGET     3   2      ; bx
+0016    ISEQV    3   2
+0017    JMP      3 => 0022
+0018    GGET     3   0      ; "error"
+0019    KSTR     4   3      ; "bad bx"
+0020    KSHORT   5   2
+0021    CALL     3   1   3
+0022 => RET0     0   1
+
+-- BYTECODE -- ref_lang_meta_eq_jit.lua:12-12
+0001    USETV    0   0      ; ax
+0002    USETV    1   1      ; bx
+0003    UGET     2   2      ; eq
+0004    RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_eq_jit.lua:30-30
+0001    KPRI     2   2
+0002    RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_eq_jit.lua:0-36
+0001    KPRI     0   1
+0002    TNEW     1   0
+0003    TNEW     2   0
+0004    KNIL     3   5
+0005    FNEW     6   0      ; ref_lang_meta_eq_jit.lua:6
+0006    TDUP     7   2
+0007    FNEW     8   1      ; ref_lang_meta_eq_jit.lua:12
+0008    TSETS    8   7   3  ; "__eq"
+0009    GGET     8   4      ; "setmetatable"
+0010    MOV      9   1
+0011    MOV     10   7
+0012    CALL     8   2   3
+0013    MOV      1   8
+0014    GGET     8   4      ; "setmetatable"
+0015    MOV      9   2
+0016    MOV     10   7
+0017    CALL     8   2   3
+0018    MOV      2   8
+0019    KPRI     0   1
+0020    KSHORT   3   0
+0021    KSHORT   8   1
+0022    KSHORT   9 100
+0023    KSHORT  10   1
+0024    FORI     8 => 0031
+0025 => ISNEV    1   2
+0026    JMP     12 => 0029
+0027    KSHORT   3   2
+0028    JMP     12 => 0030
+0029 => KSHORT   3   1
+0030 => FORL     8 => 0025
+0031 => MOV      8   6
+0032    KSHORT   9   1
+0033    MOV     10   1
+0034    MOV     11   2
+0035    CALL     8   1   4
+0036    KSHORT   3   0
+0037    KSHORT   8   1
+0038    KSHORT   9 100
+0039    KSHORT  10   1
+0040    FORI     8 => 0047
+0041 => ISEQV    1   2
+0042    JMP     12 => 0045
+0043    KSHORT   3   2
+0044    JMP     12 => 0046
+0045 => KSHORT   3   1
+0046 => FORL     8 => 0041
+0047 => MOV      8   6
+0048    KSHORT   9   2
+0049    MOV     10   1
+0050    MOV     11   2
+0051    CALL     8   1   4
+0052    KSHORT   3   0
+0053    KSHORT   8   1
+0054    KSHORT   9 100
+0055    KSHORT  10   1
+0056    FORI     8 => 0063
+0057 => ISEQV    1   2
+0058    JMP     12 => 0061
+0059    KSHORT   3   2
+0060    JMP     12 => 0062
+0061 => KSHORT   3   1
+0062 => FORL     8 => 0057
+0063 => MOV      8   6
+0064    KSHORT   9   2
+0065    MOV     10   1
+0066    MOV     11   2
+0067    CALL     8   1   4
+0068    KSHORT   3   0
+0069    KSHORT   8   1
+0070    KSHORT   9 100
+0071    KSHORT  10   1
+0072    FORI     8 => 0079
+0073 => ISNEV    1   2
+0074    JMP     12 => 0077
+0075    KSHORT   3   2
+0076    JMP     12 => 0078
+0077 => KSHORT   3   1
+0078 => FORL     8 => 0073
+0079 => MOV      8   6
+0080    KSHORT   9   1
+0081    MOV     10   1
+0082    MOV     11   2
+0083    CALL     8   1   4
+0084    KPRI     0   2
+0085    KSHORT   3   0
+0086    KSHORT   8   1
+0087    KSHORT   9 100
+0088    KSHORT  10   1
+0089    FORI     8 => 0096
+0090 => ISNEV    1   2
+0091    JMP     12 => 0094
+0092    KSHORT   3   2
+0093    JMP     12 => 0095
+0094 => KSHORT   3   1
+0095 => FORL     8 => 0090
+0096 => MOV      8   6
+0097    KSHORT   9   2
+0098    MOV     10   1
+0099    MOV     11   2
+0100    CALL     8   1   4
+0101    KSHORT   3   0
+0102    KSHORT   8   1
+0103    KSHORT   9 100
+0104    KSHORT  10   1
+0105    FORI     8 => 0112
+0106 => ISEQV    1   2
+0107    JMP     12 => 0110
+0108    KSHORT   3   2
+0109    JMP     12 => 0111
+0110 => KSHORT   3   1
+0111 => FORL     8 => 0106
+0112 => MOV      8   6
+0113    KSHORT   9   1
+0114    MOV     10   1
+0115    MOV     11   2
+0116    CALL     8   1   4
+0117    KSHORT   3   0
+0118    KSHORT   8   1
+0119    KSHORT   9 100
+0120    KSHORT  10   1
+0121    FORI     8 => 0128
+0122 => ISEQV    1   2
+0123    JMP     12 => 0126
+0124    KSHORT   3   2
+0125    JMP     12 => 0127
+0126 => KSHORT   3   1
+0127 => FORL     8 => 0122
+0128 => MOV      8   6
+0129    KSHORT   9   1
+0130    MOV     10   1
+0131    MOV     11   2
+0132    CALL     8   1   4
+0133    KSHORT   3   0
+0134    KSHORT   8   1
+0135    KSHORT   9 100
+0136    KSHORT  10   1
+0137    FORI     8 => 0144
+0138 => ISNEV    1   2
+0139    JMP     12 => 0142
+0140    KSHORT   3   2
+0141    JMP     12 => 0143
+0142 => KSHORT   3   1
+0143 => FORL     8 => 0138
+0144 => MOV      8   6
+0145    KSHORT   9   2
+0146    MOV     10   1
+0147    MOV     11   2
+0148    CALL     8   1   4
+0149    UCLO     0 => 0150
+0150 => GGET     0   5      ; "require"
+0151    KSTR     1   6      ; "bit"
+0152    CALL     0   2   2
+0153    TDUP     1   8
+0154    FNEW     2   7      ; ref_lang_meta_eq_jit.lua:30
+0155    TSETS    2   1   3  ; "__eq"
+0156    TNEW     2   3
+0157    GGET     3   4      ; "setmetatable"
+0158    TNEW     4   0
+0159    MOV      5   1
+0160    CALL     3   2   3
+0161    TSETB    3   2   0
+0162    GGET     3   4      ; "setmetatable"
+0163    TNEW     4   0
+0164    MOV      5   1
+0165    CALL     3   0   3
+0166    TSETM    3   0      ; 1
+0167    KSHORT   3   0
+0168    KSHORT   4 100
+0169    KSHORT   5   1
+0170    FORI     3 => 0185
+0171 => GGET     7   9      ; "assert"
+0172    TGETB    8   2   0
+0173    TGETS    9   0  10  ; "band"
+0174    MOV     10   6
+0175    KSHORT  11   1
+0176    CALL     9   2   3
+0177    TGETV    9   2   9
+0178    ISEQV    8   9
+0179    JMP      8 => 0182
+0180    KPRI     8   1
+0181    JMP      9 => 0183
+0182 => KPRI     8   2
+0183 => CALL     7   1   2
+0184    FORL     3 => 0171
+0185 => RET0     0   1
+

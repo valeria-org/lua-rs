@@ -1,0 +1,202 @@
+-- BYTECODE -- ref_lib_ffi_meta_tostring.lua:0-56
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "ffi"
+0003    CALL     0   2   2
+0004    TGETS    1   0   2  ; "cdef"
+0005    KSTR     2   3      ; "typedef union meta_tostring_foo_t {\n  i"~
+0006    CALL     1   1   2
+0007    GGET     1   4      ; "assert"
+0008    GGET     2   5      ; "tostring"
+0009    TGETS    3   0   6  ; "typeof"
+0010    KSTR     4   7      ; "int (*(*[1][2])[3][4])[5][6]"
+0011    CALL     3   0   2
+0012    CALLM    2   2   0
+0013    ISEQS    2   8      ; "ctype<int (*(*[1][2])[3][4])[5][6]>"
+0014    JMP      2 => 0017
+0015    KPRI     2   1
+0016    JMP      3 => 0018
+0017 => KPRI     2   2
+0018 => CALL     1   1   2
+0019    GGET     1   4      ; "assert"
+0020    GGET     2   5      ; "tostring"
+0021    TGETS    3   0   6  ; "typeof"
+0022    KSTR     4   9      ; "int (*const)(void)"
+0023    CALL     3   0   2
+0024    CALLM    2   2   0
+0025    ISEQS    2  10      ; "ctype<int (*const)()>"
+0026    JMP      2 => 0029
+0027    KPRI     2   1
+0028    JMP      3 => 0030
+0029 => KPRI     2   2
+0030 => CALL     1   1   2
+0031    GGET     1   4      ; "assert"
+0032    GGET     2   5      ; "tostring"
+0033    TGETS    3   0   6  ; "typeof"
+0034    KSTR     4  11      ; "complex float(*(void))[2]"
+0035    CALL     3   0   2
+0036    CALLM    2   2   0
+0037    ISEQS    2  12      ; "ctype<complex float (*())[2]>"
+0038    JMP      2 => 0041
+0039    KPRI     2   1
+0040    JMP      3 => 0042
+0041 => KPRI     2   2
+0042 => CALL     1   1   2
+0043    GGET     1   4      ; "assert"
+0044    GGET     2   5      ; "tostring"
+0045    TGETS    3   0   6  ; "typeof"
+0046    KSTR     4  13      ; "complex*"
+0047    CALL     3   0   2
+0048    CALLM    2   2   0
+0049    ISEQS    2  14      ; "ctype<complex *>"
+0050    JMP      2 => 0053
+0051    KPRI     2   1
+0052    JMP      3 => 0054
+0053 => KPRI     2   2
+0054 => CALL     1   1   2
+0055    TGETS    1   0   6  ; "typeof"
+0056    KSTR     2  15      ; "meta_tostring_foo_t"
+0057    CALL     1   2   2
+0058    MOV      2   1
+0059    CALL     2   2   1
+0060    GGET     3   4      ; "assert"
+0061    GGET     4   5      ; "tostring"
+0062    MOV      5   1
+0063    CALL     4   2   2
+0064    ISEQS    4  16      ; "ctype<union meta_tostring_foo_t>"
+0065    JMP      4 => 0068
+0066    KPRI     4   1
+0067    JMP      5 => 0069
+0068 => KPRI     4   2
+0069 => CALL     3   1   2
+0070    GGET     3   4      ; "assert"
+0071    GGET     4  17      ; "string"
+0072    TGETS    4   4  18  ; "find"
+0073    GGET     5   5      ; "tostring"
+0074    MOV      6   2
+0075    CALL     5   2   2
+0076    KSTR     6  19      ; "^cdata<union meta_tostring_foo_t>: "
+0077    CALL     4   0   3
+0078    CALLM    3   1   0
+0079    KSHORT   3  -1
+0080    TSETS    3   2  20  ; "i64"
+0081    GGET     3   4      ; "assert"
+0082    GGET     4   5      ; "tostring"
+0083    TGETS    5   2  20  ; "i64"
+0084    CALL     4   2   2
+0085    ISEQS    4  21      ; "-1LL"
+0086    JMP      4 => 0089
+0087    KPRI     4   1
+0088    JMP      5 => 0090
+0089 => KPRI     4   2
+0090 => CALL     3   1   2
+0091    GGET     3   4      ; "assert"
+0092    GGET     4   5      ; "tostring"
+0093    TGETS    5   2  22  ; "u64"
+0094    CALL     4   2   2
+0095    ISEQS    4  23      ; "18446744073709551615ULL"
+0096    JMP      4 => 0099
+0097    KPRI     4   1
+0098    JMP      5 => 0100
+0099 => KPRI     4   2
+0100 => CALL     3   1   2
+0101    TGETS    3   2  24  ; "d"
+0102    KNUM     4   0      ; 12.5
+0103    TSETB    4   3   0
+0104    TGETS    3   2  24  ; "d"
+0105    KNUM     4   1      ; -753.125
+0106    TSETB    4   3   1
+0107    GGET     3   4      ; "assert"
+0108    GGET     4   5      ; "tostring"
+0109    TGETS    5   2  25  ; "cd"
+0110    CALL     4   2   2
+0111    ISEQS    4  26      ; "12.5-753.125i"
+0112    JMP      4 => 0115
+0113    KPRI     4   1
+0114    JMP      5 => 0116
+0115 => KPRI     4   2
+0116 => CALL     3   1   2
+0117    TGETS    3   2  24  ; "d"
+0118    KNUM     4   2      ; -12.5
+0119    TSETB    4   3   0
+0120    TGETS    3   2  24  ; "d"
+0121    KNUM     4   3      ; 753.125
+0122    TSETB    4   3   1
+0123    GGET     3   4      ; "assert"
+0124    GGET     4   5      ; "tostring"
+0125    TGETS    5   2  25  ; "cd"
+0126    CALL     4   2   2
+0127    ISEQS    4  27      ; "-12.5+753.125i"
+0128    JMP      4 => 0131
+0129    KPRI     4   1
+0130    JMP      5 => 0132
+0131 => KPRI     4   2
+0132 => CALL     3   1   2
+0133    TGETS    3   2  24  ; "d"
+0134    KSHORT   4   0
+0135    DIVVN    4   4   4  ; -1
+0136    TSETB    4   3   0
+0137    TGETS    3   2  24  ; "d"
+0138    KSHORT   4   0
+0139    DIVVN    4   4   4  ; -1
+0140    TSETB    4   3   1
+0141    GGET     3   4      ; "assert"
+0142    GGET     4   5      ; "tostring"
+0143    TGETS    5   2  25  ; "cd"
+0144    CALL     4   2   2
+0145    ISEQS    4  28      ; "-0-0i"
+0146    JMP      4 => 0149
+0147    KPRI     4   1
+0148    JMP      5 => 0150
+0149 => KPRI     4   2
+0150 => CALL     3   1   2
+0151    TGETS    3   2  24  ; "d"
+0152    KNUM     4   5      ; inf
+0153    TSETB    4   3   0
+0154    TGETS    3   2  24  ; "d"
+0155    KNUM     4   6      ; -inf
+0156    TSETB    4   3   1
+0157    GGET     3   4      ; "assert"
+0158    GGET     4   5      ; "tostring"
+0159    TGETS    5   2  25  ; "cd"
+0160    CALL     4   2   2
+0161    ISEQS    4  29      ; "inf-infI"
+0162    JMP      4 => 0165
+0163    KPRI     4   1
+0164    JMP      5 => 0166
+0165 => KPRI     4   2
+0166 => CALL     3   1   2
+0167    TGETS    3   2  24  ; "d"
+0168    KNUM     4   6      ; -inf
+0169    TSETB    4   3   0
+0170    TGETS    3   2  24  ; "d"
+0171    KSHORT   4   0
+0172    DIVVN    4   4   7  ; 0
+0173    TSETB    4   3   1
+0174    GGET     3   4      ; "assert"
+0175    GGET     4   5      ; "tostring"
+0176    TGETS    5   2  25  ; "cd"
+0177    CALL     4   2   2
+0178    ISEQS    4  30      ; "-inf+nanI"
+0179    JMP      4 => 0182
+0180    KPRI     4   1
+0181    JMP      5 => 0183
+0182 => KPRI     4   2
+0183 => CALL     3   1   2
+0184    TGETS    3   2  31  ; "f"
+0185    KNUM     4   0      ; 12.5
+0186    TSETB    4   3   0
+0187    TGETS    3   2  31  ; "f"
+0188    KNUM     4   1      ; -753.125
+0189    TSETB    4   3   1
+0190    GGET     3   4      ; "assert"
+0191    GGET     4   5      ; "tostring"
+0192    TGETS    5   2  32  ; "cf"
+0193    CALL     4   2   2
+0194    ISEQS    4  26      ; "12.5-753.125i"
+0195    JMP      4 => 0198
+0196    KPRI     4   1
+0197    JMP      5 => 0199
+0198 => KPRI     4   2
+0199 => CALL     3   1   2
+0200    RET0     0   1
+

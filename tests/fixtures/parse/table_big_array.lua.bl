@@ -1,0 +1,657 @@
+-- BYTECODE -- table_big_array.lua:0-5
+0001    TDUP     0   0
+0002    TNEW     1 301
+0003    GGET     2   1      ; "x0"
+0004    TSETB    2   1   1
+0005    GGET     2   2      ; "x1"
+0006    TSETB    2   1   2
+0007    GGET     2   3      ; "x2"
+0008    TSETB    2   1   3
+0009    GGET     2   4      ; "x3"
+0010    TSETB    2   1   4
+0011    GGET     2   5      ; "x4"
+0012    TSETB    2   1   5
+0013    GGET     2   6      ; "x5"
+0014    TSETB    2   1   6
+0015    GGET     2   7      ; "x6"
+0016    TSETB    2   1   7
+0017    GGET     2   1      ; "x0"
+0018    TSETB    2   1   8
+0019    GGET     2   2      ; "x1"
+0020    TSETB    2   1   9
+0021    GGET     2   3      ; "x2"
+0022    TSETB    2   1  10
+0023    GGET     2   4      ; "x3"
+0024    TSETB    2   1  11
+0025    GGET     2   5      ; "x4"
+0026    TSETB    2   1  12
+0027    GGET     2   6      ; "x5"
+0028    TSETB    2   1  13
+0029    GGET     2   7      ; "x6"
+0030    TSETB    2   1  14
+0031    GGET     2   1      ; "x0"
+0032    TSETB    2   1  15
+0033    GGET     2   2      ; "x1"
+0034    TSETB    2   1  16
+0035    GGET     2   3      ; "x2"
+0036    TSETB    2   1  17
+0037    GGET     2   4      ; "x3"
+0038    TSETB    2   1  18
+0039    GGET     2   5      ; "x4"
+0040    TSETB    2   1  19
+0041    GGET     2   6      ; "x5"
+0042    TSETB    2   1  20
+0043    GGET     2   7      ; "x6"
+0044    TSETB    2   1  21
+0045    GGET     2   1      ; "x0"
+0046    TSETB    2   1  22
+0047    GGET     2   2      ; "x1"
+0048    TSETB    2   1  23
+0049    GGET     2   3      ; "x2"
+0050    TSETB    2   1  24
+0051    GGET     2   4      ; "x3"
+0052    TSETB    2   1  25
+0053    GGET     2   5      ; "x4"
+0054    TSETB    2   1  26
+0055    GGET     2   6      ; "x5"
+0056    TSETB    2   1  27
+0057    GGET     2   7      ; "x6"
+0058    TSETB    2   1  28
+0059    GGET     2   1      ; "x0"
+0060    TSETB    2   1  29
+0061    GGET     2   2      ; "x1"
+0062    TSETB    2   1  30
+0063    GGET     2   3      ; "x2"
+0064    TSETB    2   1  31
+0065    GGET     2   4      ; "x3"
+0066    TSETB    2   1  32
+0067    GGET     2   5      ; "x4"
+0068    TSETB    2   1  33
+0069    GGET     2   6      ; "x5"
+0070    TSETB    2   1  34
+0071    GGET     2   7      ; "x6"
+0072    TSETB    2   1  35
+0073    GGET     2   1      ; "x0"
+0074    TSETB    2   1  36
+0075    GGET     2   2      ; "x1"
+0076    TSETB    2   1  37
+0077    GGET     2   3      ; "x2"
+0078    TSETB    2   1  38
+0079    GGET     2   4      ; "x3"
+0080    TSETB    2   1  39
+0081    GGET     2   5      ; "x4"
+0082    TSETB    2   1  40
+0083    GGET     2   6      ; "x5"
+0084    TSETB    2   1  41
+0085    GGET     2   7      ; "x6"
+0086    TSETB    2   1  42
+0087    GGET     2   1      ; "x0"
+0088    TSETB    2   1  43
+0089    GGET     2   2      ; "x1"
+0090    TSETB    2   1  44
+0091    GGET     2   3      ; "x2"
+0092    TSETB    2   1  45
+0093    GGET     2   4      ; "x3"
+0094    TSETB    2   1  46
+0095    GGET     2   5      ; "x4"
+0096    TSETB    2   1  47
+0097    GGET     2   6      ; "x5"
+0098    TSETB    2   1  48
+0099    GGET     2   7      ; "x6"
+0100    TSETB    2   1  49
+0101    GGET     2   1      ; "x0"
+0102    TSETB    2   1  50
+0103    GGET     2   2      ; "x1"
+0104    TSETB    2   1  51
+0105    GGET     2   3      ; "x2"
+0106    TSETB    2   1  52
+0107    GGET     2   4      ; "x3"
+0108    TSETB    2   1  53
+0109    GGET     2   5      ; "x4"
+0110    TSETB    2   1  54
+0111    GGET     2   6      ; "x5"
+0112    TSETB    2   1  55
+0113    GGET     2   7      ; "x6"
+0114    TSETB    2   1  56
+0115    GGET     2   1      ; "x0"
+0116    TSETB    2   1  57
+0117    GGET     2   2      ; "x1"
+0118    TSETB    2   1  58
+0119    GGET     2   3      ; "x2"
+0120    TSETB    2   1  59
+0121    GGET     2   4      ; "x3"
+0122    TSETB    2   1  60
+0123    GGET     2   5      ; "x4"
+0124    TSETB    2   1  61
+0125    GGET     2   6      ; "x5"
+0126    TSETB    2   1  62
+0127    GGET     2   7      ; "x6"
+0128    TSETB    2   1  63
+0129    GGET     2   1      ; "x0"
+0130    TSETB    2   1  64
+0131    GGET     2   2      ; "x1"
+0132    TSETB    2   1  65
+0133    GGET     2   3      ; "x2"
+0134    TSETB    2   1  66
+0135    GGET     2   4      ; "x3"
+0136    TSETB    2   1  67
+0137    GGET     2   5      ; "x4"
+0138    TSETB    2   1  68
+0139    GGET     2   6      ; "x5"
+0140    TSETB    2   1  69
+0141    GGET     2   7      ; "x6"
+0142    TSETB    2   1  70
+0143    GGET     2   1      ; "x0"
+0144    TSETB    2   1  71
+0145    GGET     2   2      ; "x1"
+0146    TSETB    2   1  72
+0147    GGET     2   3      ; "x2"
+0148    TSETB    2   1  73
+0149    GGET     2   4      ; "x3"
+0150    TSETB    2   1  74
+0151    GGET     2   5      ; "x4"
+0152    TSETB    2   1  75
+0153    GGET     2   6      ; "x5"
+0154    TSETB    2   1  76
+0155    GGET     2   7      ; "x6"
+0156    TSETB    2   1  77
+0157    GGET     2   1      ; "x0"
+0158    TSETB    2   1  78
+0159    GGET     2   2      ; "x1"
+0160    TSETB    2   1  79
+0161    GGET     2   3      ; "x2"
+0162    TSETB    2   1  80
+0163    GGET     2   4      ; "x3"
+0164    TSETB    2   1  81
+0165    GGET     2   5      ; "x4"
+0166    TSETB    2   1  82
+0167    GGET     2   6      ; "x5"
+0168    TSETB    2   1  83
+0169    GGET     2   7      ; "x6"
+0170    TSETB    2   1  84
+0171    GGET     2   1      ; "x0"
+0172    TSETB    2   1  85
+0173    GGET     2   2      ; "x1"
+0174    TSETB    2   1  86
+0175    GGET     2   3      ; "x2"
+0176    TSETB    2   1  87
+0177    GGET     2   4      ; "x3"
+0178    TSETB    2   1  88
+0179    GGET     2   5      ; "x4"
+0180    TSETB    2   1  89
+0181    GGET     2   6      ; "x5"
+0182    TSETB    2   1  90
+0183    GGET     2   7      ; "x6"
+0184    TSETB    2   1  91
+0185    GGET     2   1      ; "x0"
+0186    TSETB    2   1  92
+0187    GGET     2   2      ; "x1"
+0188    TSETB    2   1  93
+0189    GGET     2   3      ; "x2"
+0190    TSETB    2   1  94
+0191    GGET     2   4      ; "x3"
+0192    TSETB    2   1  95
+0193    GGET     2   5      ; "x4"
+0194    TSETB    2   1  96
+0195    GGET     2   6      ; "x5"
+0196    TSETB    2   1  97
+0197    GGET     2   7      ; "x6"
+0198    TSETB    2   1  98
+0199    GGET     2   1      ; "x0"
+0200    TSETB    2   1  99
+0201    GGET     2   2      ; "x1"
+0202    TSETB    2   1 100
+0203    GGET     2   3      ; "x2"
+0204    TSETB    2   1 101
+0205    GGET     2   4      ; "x3"
+0206    TSETB    2   1 102
+0207    GGET     2   5      ; "x4"
+0208    TSETB    2   1 103
+0209    GGET     2   6      ; "x5"
+0210    TSETB    2   1 104
+0211    GGET     2   7      ; "x6"
+0212    TSETB    2   1 105
+0213    GGET     2   1      ; "x0"
+0214    TSETB    2   1 106
+0215    GGET     2   2      ; "x1"
+0216    TSETB    2   1 107
+0217    GGET     2   3      ; "x2"
+0218    TSETB    2   1 108
+0219    GGET     2   4      ; "x3"
+0220    TSETB    2   1 109
+0221    GGET     2   5      ; "x4"
+0222    TSETB    2   1 110
+0223    GGET     2   6      ; "x5"
+0224    TSETB    2   1 111
+0225    GGET     2   7      ; "x6"
+0226    TSETB    2   1 112
+0227    GGET     2   1      ; "x0"
+0228    TSETB    2   1 113
+0229    GGET     2   2      ; "x1"
+0230    TSETB    2   1 114
+0231    GGET     2   3      ; "x2"
+0232    TSETB    2   1 115
+0233    GGET     2   4      ; "x3"
+0234    TSETB    2   1 116
+0235    GGET     2   5      ; "x4"
+0236    TSETB    2   1 117
+0237    GGET     2   6      ; "x5"
+0238    TSETB    2   1 118
+0239    GGET     2   7      ; "x6"
+0240    TSETB    2   1 119
+0241    GGET     2   1      ; "x0"
+0242    TSETB    2   1 120
+0243    GGET     2   2      ; "x1"
+0244    TSETB    2   1 121
+0245    GGET     2   3      ; "x2"
+0246    TSETB    2   1 122
+0247    GGET     2   4      ; "x3"
+0248    TSETB    2   1 123
+0249    GGET     2   5      ; "x4"
+0250    TSETB    2   1 124
+0251    GGET     2   6      ; "x5"
+0252    TSETB    2   1 125
+0253    GGET     2   7      ; "x6"
+0254    TSETB    2   1 126
+0255    GGET     2   1      ; "x0"
+0256    TSETB    2   1 127
+0257    GGET     2   2      ; "x1"
+0258    TSETB    2   1 128
+0259    GGET     2   3      ; "x2"
+0260    TSETB    2   1 129
+0261    GGET     2   4      ; "x3"
+0262    TSETB    2   1 130
+0263    GGET     2   5      ; "x4"
+0264    TSETB    2   1 131
+0265    GGET     2   6      ; "x5"
+0266    TSETB    2   1 132
+0267    GGET     2   7      ; "x6"
+0268    TSETB    2   1 133
+0269    GGET     2   1      ; "x0"
+0270    TSETB    2   1 134
+0271    GGET     2   2      ; "x1"
+0272    TSETB    2   1 135
+0273    GGET     2   3      ; "x2"
+0274    TSETB    2   1 136
+0275    GGET     2   4      ; "x3"
+0276    TSETB    2   1 137
+0277    GGET     2   5      ; "x4"
+0278    TSETB    2   1 138
+0279    GGET     2   6      ; "x5"
+0280    TSETB    2   1 139
+0281    GGET     2   7      ; "x6"
+0282    TSETB    2   1 140
+0283    GGET     2   1      ; "x0"
+0284    TSETB    2   1 141
+0285    GGET     2   2      ; "x1"
+0286    TSETB    2   1 142
+0287    GGET     2   3      ; "x2"
+0288    TSETB    2   1 143
+0289    GGET     2   4      ; "x3"
+0290    TSETB    2   1 144
+0291    GGET     2   5      ; "x4"
+0292    TSETB    2   1 145
+0293    GGET     2   6      ; "x5"
+0294    TSETB    2   1 146
+0295    GGET     2   7      ; "x6"
+0296    TSETB    2   1 147
+0297    GGET     2   1      ; "x0"
+0298    TSETB    2   1 148
+0299    GGET     2   2      ; "x1"
+0300    TSETB    2   1 149
+0301    GGET     2   3      ; "x2"
+0302    TSETB    2   1 150
+0303    GGET     2   4      ; "x3"
+0304    TSETB    2   1 151
+0305    GGET     2   5      ; "x4"
+0306    TSETB    2   1 152
+0307    GGET     2   6      ; "x5"
+0308    TSETB    2   1 153
+0309    GGET     2   7      ; "x6"
+0310    TSETB    2   1 154
+0311    GGET     2   1      ; "x0"
+0312    TSETB    2   1 155
+0313    GGET     2   2      ; "x1"
+0314    TSETB    2   1 156
+0315    GGET     2   3      ; "x2"
+0316    TSETB    2   1 157
+0317    GGET     2   4      ; "x3"
+0318    TSETB    2   1 158
+0319    GGET     2   5      ; "x4"
+0320    TSETB    2   1 159
+0321    GGET     2   6      ; "x5"
+0322    TSETB    2   1 160
+0323    GGET     2   7      ; "x6"
+0324    TSETB    2   1 161
+0325    GGET     2   1      ; "x0"
+0326    TSETB    2   1 162
+0327    GGET     2   2      ; "x1"
+0328    TSETB    2   1 163
+0329    GGET     2   3      ; "x2"
+0330    TSETB    2   1 164
+0331    GGET     2   4      ; "x3"
+0332    TSETB    2   1 165
+0333    GGET     2   5      ; "x4"
+0334    TSETB    2   1 166
+0335    GGET     2   6      ; "x5"
+0336    TSETB    2   1 167
+0337    GGET     2   7      ; "x6"
+0338    TSETB    2   1 168
+0339    GGET     2   1      ; "x0"
+0340    TSETB    2   1 169
+0341    GGET     2   2      ; "x1"
+0342    TSETB    2   1 170
+0343    GGET     2   3      ; "x2"
+0344    TSETB    2   1 171
+0345    GGET     2   4      ; "x3"
+0346    TSETB    2   1 172
+0347    GGET     2   5      ; "x4"
+0348    TSETB    2   1 173
+0349    GGET     2   6      ; "x5"
+0350    TSETB    2   1 174
+0351    GGET     2   7      ; "x6"
+0352    TSETB    2   1 175
+0353    GGET     2   1      ; "x0"
+0354    TSETB    2   1 176
+0355    GGET     2   2      ; "x1"
+0356    TSETB    2   1 177
+0357    GGET     2   3      ; "x2"
+0358    TSETB    2   1 178
+0359    GGET     2   4      ; "x3"
+0360    TSETB    2   1 179
+0361    GGET     2   5      ; "x4"
+0362    TSETB    2   1 180
+0363    GGET     2   6      ; "x5"
+0364    TSETB    2   1 181
+0365    GGET     2   7      ; "x6"
+0366    TSETB    2   1 182
+0367    GGET     2   1      ; "x0"
+0368    TSETB    2   1 183
+0369    GGET     2   2      ; "x1"
+0370    TSETB    2   1 184
+0371    GGET     2   3      ; "x2"
+0372    TSETB    2   1 185
+0373    GGET     2   4      ; "x3"
+0374    TSETB    2   1 186
+0375    GGET     2   5      ; "x4"
+0376    TSETB    2   1 187
+0377    GGET     2   6      ; "x5"
+0378    TSETB    2   1 188
+0379    GGET     2   7      ; "x6"
+0380    TSETB    2   1 189
+0381    GGET     2   1      ; "x0"
+0382    TSETB    2   1 190
+0383    GGET     2   2      ; "x1"
+0384    TSETB    2   1 191
+0385    GGET     2   3      ; "x2"
+0386    TSETB    2   1 192
+0387    GGET     2   4      ; "x3"
+0388    TSETB    2   1 193
+0389    GGET     2   5      ; "x4"
+0390    TSETB    2   1 194
+0391    GGET     2   6      ; "x5"
+0392    TSETB    2   1 195
+0393    GGET     2   7      ; "x6"
+0394    TSETB    2   1 196
+0395    GGET     2   1      ; "x0"
+0396    TSETB    2   1 197
+0397    GGET     2   2      ; "x1"
+0398    TSETB    2   1 198
+0399    GGET     2   3      ; "x2"
+0400    TSETB    2   1 199
+0401    GGET     2   4      ; "x3"
+0402    TSETB    2   1 200
+0403    GGET     2   5      ; "x4"
+0404    TSETB    2   1 201
+0405    GGET     2   6      ; "x5"
+0406    TSETB    2   1 202
+0407    GGET     2   7      ; "x6"
+0408    TSETB    2   1 203
+0409    GGET     2   1      ; "x0"
+0410    TSETB    2   1 204
+0411    GGET     2   2      ; "x1"
+0412    TSETB    2   1 205
+0413    GGET     2   3      ; "x2"
+0414    TSETB    2   1 206
+0415    GGET     2   4      ; "x3"
+0416    TSETB    2   1 207
+0417    GGET     2   5      ; "x4"
+0418    TSETB    2   1 208
+0419    GGET     2   6      ; "x5"
+0420    TSETB    2   1 209
+0421    GGET     2   7      ; "x6"
+0422    TSETB    2   1 210
+0423    GGET     2   1      ; "x0"
+0424    TSETB    2   1 211
+0425    GGET     2   2      ; "x1"
+0426    TSETB    2   1 212
+0427    GGET     2   3      ; "x2"
+0428    TSETB    2   1 213
+0429    GGET     2   4      ; "x3"
+0430    TSETB    2   1 214
+0431    GGET     2   5      ; "x4"
+0432    TSETB    2   1 215
+0433    GGET     2   6      ; "x5"
+0434    TSETB    2   1 216
+0435    GGET     2   7      ; "x6"
+0436    TSETB    2   1 217
+0437    GGET     2   1      ; "x0"
+0438    TSETB    2   1 218
+0439    GGET     2   2      ; "x1"
+0440    TSETB    2   1 219
+0441    GGET     2   3      ; "x2"
+0442    TSETB    2   1 220
+0443    GGET     2   4      ; "x3"
+0444    TSETB    2   1 221
+0445    GGET     2   5      ; "x4"
+0446    TSETB    2   1 222
+0447    GGET     2   6      ; "x5"
+0448    TSETB    2   1 223
+0449    GGET     2   7      ; "x6"
+0450    TSETB    2   1 224
+0451    GGET     2   1      ; "x0"
+0452    TSETB    2   1 225
+0453    GGET     2   2      ; "x1"
+0454    TSETB    2   1 226
+0455    GGET     2   3      ; "x2"
+0456    TSETB    2   1 227
+0457    GGET     2   4      ; "x3"
+0458    TSETB    2   1 228
+0459    GGET     2   5      ; "x4"
+0460    TSETB    2   1 229
+0461    GGET     2   6      ; "x5"
+0462    TSETB    2   1 230
+0463    GGET     2   7      ; "x6"
+0464    TSETB    2   1 231
+0465    GGET     2   1      ; "x0"
+0466    TSETB    2   1 232
+0467    GGET     2   2      ; "x1"
+0468    TSETB    2   1 233
+0469    GGET     2   3      ; "x2"
+0470    TSETB    2   1 234
+0471    GGET     2   4      ; "x3"
+0472    TSETB    2   1 235
+0473    GGET     2   5      ; "x4"
+0474    TSETB    2   1 236
+0475    GGET     2   6      ; "x5"
+0476    TSETB    2   1 237
+0477    GGET     2   7      ; "x6"
+0478    TSETB    2   1 238
+0479    GGET     2   1      ; "x0"
+0480    TSETB    2   1 239
+0481    GGET     2   2      ; "x1"
+0482    TSETB    2   1 240
+0483    GGET     2   3      ; "x2"
+0484    TSETB    2   1 241
+0485    GGET     2   4      ; "x3"
+0486    TSETB    2   1 242
+0487    GGET     2   5      ; "x4"
+0488    TSETB    2   1 243
+0489    GGET     2   6      ; "x5"
+0490    TSETB    2   1 244
+0491    GGET     2   7      ; "x6"
+0492    TSETB    2   1 245
+0493    GGET     2   1      ; "x0"
+0494    TSETB    2   1 246
+0495    GGET     2   2      ; "x1"
+0496    TSETB    2   1 247
+0497    GGET     2   3      ; "x2"
+0498    TSETB    2   1 248
+0499    GGET     2   4      ; "x3"
+0500    TSETB    2   1 249
+0501    GGET     2   5      ; "x4"
+0502    TSETB    2   1 250
+0503    GGET     2   6      ; "x5"
+0504    TSETB    2   1 251
+0505    GGET     2   7      ; "x6"
+0506    TSETB    2   1 252
+0507    GGET     2   1      ; "x0"
+0508    TSETB    2   1 253
+0509    GGET     2   2      ; "x1"
+0510    TSETB    2   1 254
+0511    GGET     2   3      ; "x2"
+0512    TSETB    2   1 255
+0513    GGET     2   4      ; "x3"
+0514    KSHORT   3 256
+0515    TSETV    2   1   3
+0516    GGET     2   5      ; "x4"
+0517    KSHORT   3 257
+0518    TSETV    2   1   3
+0519    GGET     2   6      ; "x5"
+0520    KSHORT   3 258
+0521    TSETV    2   1   3
+0522    GGET     2   7      ; "x6"
+0523    KSHORT   3 259
+0524    TSETV    2   1   3
+0525    GGET     2   1      ; "x0"
+0526    KSHORT   3 260
+0527    TSETV    2   1   3
+0528    GGET     2   2      ; "x1"
+0529    KSHORT   3 261
+0530    TSETV    2   1   3
+0531    GGET     2   3      ; "x2"
+0532    KSHORT   3 262
+0533    TSETV    2   1   3
+0534    GGET     2   4      ; "x3"
+0535    KSHORT   3 263
+0536    TSETV    2   1   3
+0537    GGET     2   5      ; "x4"
+0538    KSHORT   3 264
+0539    TSETV    2   1   3
+0540    GGET     2   6      ; "x5"
+0541    KSHORT   3 265
+0542    TSETV    2   1   3
+0543    GGET     2   7      ; "x6"
+0544    KSHORT   3 266
+0545    TSETV    2   1   3
+0546    GGET     2   1      ; "x0"
+0547    KSHORT   3 267
+0548    TSETV    2   1   3
+0549    GGET     2   2      ; "x1"
+0550    KSHORT   3 268
+0551    TSETV    2   1   3
+0552    GGET     2   3      ; "x2"
+0553    KSHORT   3 269
+0554    TSETV    2   1   3
+0555    GGET     2   4      ; "x3"
+0556    KSHORT   3 270
+0557    TSETV    2   1   3
+0558    GGET     2   5      ; "x4"
+0559    KSHORT   3 271
+0560    TSETV    2   1   3
+0561    GGET     2   6      ; "x5"
+0562    KSHORT   3 272
+0563    TSETV    2   1   3
+0564    GGET     2   7      ; "x6"
+0565    KSHORT   3 273
+0566    TSETV    2   1   3
+0567    GGET     2   1      ; "x0"
+0568    KSHORT   3 274
+0569    TSETV    2   1   3
+0570    GGET     2   2      ; "x1"
+0571    KSHORT   3 275
+0572    TSETV    2   1   3
+0573    GGET     2   3      ; "x2"
+0574    KSHORT   3 276
+0575    TSETV    2   1   3
+0576    GGET     2   4      ; "x3"
+0577    KSHORT   3 277
+0578    TSETV    2   1   3
+0579    GGET     2   5      ; "x4"
+0580    KSHORT   3 278
+0581    TSETV    2   1   3
+0582    GGET     2   6      ; "x5"
+0583    KSHORT   3 279
+0584    TSETV    2   1   3
+0585    GGET     2   7      ; "x6"
+0586    KSHORT   3 280
+0587    TSETV    2   1   3
+0588    GGET     2   1      ; "x0"
+0589    KSHORT   3 281
+0590    TSETV    2   1   3
+0591    GGET     2   2      ; "x1"
+0592    KSHORT   3 282
+0593    TSETV    2   1   3
+0594    GGET     2   3      ; "x2"
+0595    KSHORT   3 283
+0596    TSETV    2   1   3
+0597    GGET     2   4      ; "x3"
+0598    KSHORT   3 284
+0599    TSETV    2   1   3
+0600    GGET     2   5      ; "x4"
+0601    KSHORT   3 285
+0602    TSETV    2   1   3
+0603    GGET     2   6      ; "x5"
+0604    KSHORT   3 286
+0605    TSETV    2   1   3
+0606    GGET     2   7      ; "x6"
+0607    KSHORT   3 287
+0608    TSETV    2   1   3
+0609    GGET     2   1      ; "x0"
+0610    KSHORT   3 288
+0611    TSETV    2   1   3
+0612    GGET     2   2      ; "x1"
+0613    KSHORT   3 289
+0614    TSETV    2   1   3
+0615    GGET     2   3      ; "x2"
+0616    KSHORT   3 290
+0617    TSETV    2   1   3
+0618    GGET     2   4      ; "x3"
+0619    KSHORT   3 291
+0620    TSETV    2   1   3
+0621    GGET     2   5      ; "x4"
+0622    KSHORT   3 292
+0623    TSETV    2   1   3
+0624    GGET     2   6      ; "x5"
+0625    KSHORT   3 293
+0626    TSETV    2   1   3
+0627    GGET     2   7      ; "x6"
+0628    KSHORT   3 294
+0629    TSETV    2   1   3
+0630    GGET     2   1      ; "x0"
+0631    KSHORT   3 295
+0632    TSETV    2   1   3
+0633    GGET     2   2      ; "x1"
+0634    KSHORT   3 296
+0635    TSETV    2   1   3
+0636    GGET     2   3      ; "x2"
+0637    KSHORT   3 297
+0638    TSETV    2   1   3
+0639    GGET     2   4      ; "x3"
+0640    KSHORT   3 298
+0641    TSETV    2   1   3
+0642    GGET     2   5      ; "x4"
+0643    KSHORT   3 299
+0644    TSETV    2   1   3
+0645    GGET     2   6      ; "x5"
+0646    KSHORT   3 300
+0647    TSETV    2   1   3
+0648    TDUP     2   8
+0649    GGET     3   9      ; "f"
+0650    CALL     3   0   1
+0651    TSETM    3   0      ; 271
+0652    TDUP     3  10
+0653    VARG     4   0   0
+0654    TSETM    4   1      ; 301
+0655    RET0     0   1
+

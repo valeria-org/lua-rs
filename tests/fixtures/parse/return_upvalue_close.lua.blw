@@ -1,0 +1,130 @@
+-- BYTECODE -- return_upvalue_close.lua:4-4
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- return_upvalue_close.lua:2-6
+0001    KSHORT   0   1
+0002    FNEW     1   0      ; return_upvalue_close.lua:4
+0003    UCLO     0 => 0004
+0004 => RET1     1   2
+
+-- BYTECODE -- return_upvalue_close.lua:10-10
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- return_upvalue_close.lua:7-14
+0001    MOV      1   0
+0002    KSHORT   2   0
+0003    ISGE     2   0
+0004    JMP      2 => 0009
+0005    FNEW     2   0      ; return_upvalue_close.lua:10
+0006    MOV      3   2
+0007    UCLO     0 => 0008
+0008 => CALLT    3   1
+0009 => KSHORT   2   0
+0010    UCLO     0 => 0011
+0011 => RET1     2   2
+
+-- BYTECODE -- return_upvalue_close.lua:17-17
+0001    UGET     0   0      ; i
+0002    RET1     0   2
+
+-- BYTECODE -- return_upvalue_close.lua:15-20
+0001    KSHORT   0   1
+0002    KSHORT   1   3
+0003    KSHORT   2   1
+0004    FORI     0 => 0012
+0005 => FNEW     4   0      ; return_upvalue_close.lua:17
+0006    ISNEN    3   0      ; 2
+0007    JMP      5 => 0010
+0008    UCLO     0 => 0009
+0009 => RET1     4   2
+0010 => UCLO     3 => 0011
+0011 => FORL     0 => 0005
+0012 => RET0     0   1
+
+-- BYTECODE -- return_upvalue_close.lua:24-24
+0001    UGET     0   0      ; y
+0002    RET1     0   2
+
+-- BYTECODE -- return_upvalue_close.lua:21-26
+0001    ISF          0
+0002    JMP      1 => 0005
+0003    KSHORT   1   1
+0004    UCLO     0 => 0009
+0005 => MOV      1   0
+0006    FNEW     2   0      ; return_upvalue_close.lua:24
+0007    UCLO     0 => 0008
+0008 => RET1     2   2
+0009 => RET1     1   2
+
+-- BYTECODE -- return_upvalue_close.lua:30-30
+0001    UGET     0   0      ; a
+0002    RET1     0   2
+
+-- BYTECODE -- return_upvalue_close.lua:27-32
+0001    ISF          0
+0002    JMP      1 => 0004
+0003    UCLO     0 => 0010
+0004 => IST          0
+0005    JMP      1 => 0007
+0006    UCLO     0 => 0011
+0007 => FNEW     1   0      ; return_upvalue_close.lua:30
+0008    UCLO     0 => 0009
+0009 => RET1     1   2
+0010 => RET1     0   2
+0011 => RET0     0   1
+
+-- BYTECODE -- return_upvalue_close.lua:36-36
+0001    UGET     0   0      ; a
+0002    RET1     0   2
+
+-- BYTECODE -- return_upvalue_close.lua:33-38
+0001    ISF          0
+0002    JMP      1 => 0006
+0003    MOV      1   0
+0004    KSHORT   2   1
+0005    UCLO     0 => 0013
+0006 => ISNEN    0   0      ; 1
+0007    JMP      1 => 0010
+0008    VARG     1   0   1
+0009    UCLO     0 => 0014
+0010 => FNEW     1   0      ; return_upvalue_close.lua:36
+0011    UCLO     0 => 0012
+0012 => RET1     1   2
+0013 => RET      1   3
+0014 => RETM     1   0
+
+-- BYTECODE -- return_upvalue_close.lua:43-43
+0001    USETN    0   0      ; a ; 1
+0002    RET0     0   1
+
+-- BYTECODE -- return_upvalue_close.lua:39-44
+0001 => ISF          0
+0002    JMP      1 => 0008
+0003    LOOP     1 => 0008
+0004    ISF          0
+0005    JMP      1 => 0001
+0006    UCLO     0 => 0011
+0007    JMP      1 => 0001
+0008 => FNEW     1   0      ; return_upvalue_close.lua:43
+0009    UCLO     0 => 0010
+0010 => RET0     0   1
+0011 => RET0     0   1
+
+-- BYTECODE -- return_upvalue_close.lua:0-46
+0001    FNEW     0   0      ; return_upvalue_close.lua:2
+0002    FNEW     1   1      ; return_upvalue_close.lua:7
+0003    FNEW     2   2      ; return_upvalue_close.lua:15
+0004    FNEW     3   3      ; return_upvalue_close.lua:21
+0005    FNEW     4   4      ; return_upvalue_close.lua:27
+0006    FNEW     5   5      ; return_upvalue_close.lua:33
+0007    FNEW     6   6      ; return_upvalue_close.lua:39
+0008    MOV      7   0
+0009    MOV      8   1
+0010    MOV      9   2
+0011    MOV     10   3
+0012    MOV     11   4
+0013    UCLO     0 => 0014
+0014 => RET      7   6
+

@@ -1,0 +1,32 @@
+-- BYTECODE -- ref_lib_math_constants.lua:0-9
+0001    GGET     0   0      ; "assert"
+0002    GGET     2   1      ; "math"
+0003    TGETS    2   2   2  ; "pi"
+0004    ISEQN    2   0      ; 3.1415926535898
+0005    JMP      2 => 0008
+0006    KPRI     2   1
+0007    JMP      3 => 0009
+0008 => KPRI     2   2
+0009 => CALL     0   1   2
+0010    GGET     0   0      ; "assert"
+0011    GGET     2   1      ; "math"
+0012    TGETS    2   2   3  ; "huge"
+0013    KSHORT   3   0
+0014    ISLT     3   2
+0015    JMP      2 => 0018
+0016    KPRI     2   1
+0017    JMP      3 => 0019
+0018 => KPRI     2   2
+0019 => CALL     0   1   2
+0020    GGET     0   0      ; "assert"
+0021    GGET     2   1      ; "math"
+0022    TGETS    2   2   3  ; "huge"
+0023    DIVNV    2   2   1  ; 1
+0024    ISEQN    2   2      ; 0
+0025    JMP      2 => 0028
+0026    KPRI     2   1
+0027    JMP      3 => 0029
+0028 => KPRI     2   2
+0029 => CALL     0   1   2
+0030    RET0     0   1
+

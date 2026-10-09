@@ -1,0 +1,1147 @@
+-- BYTECODE -- ref_lib_ffi_ffi_call.lua:108-108
+0001    UGET     0   0      ; C
+0002    TGETS    0   0   0  ; "call_dd_cd"
+0003    RET1     0   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_call.lua:0-267
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "ffi"
+0003    CALL     0   2   2
+0004    GGET     1   2      ; "dofile"
+0005    KSTR     3   3      ; "../common/ffi_util.inc"
+0006    CALL     1   1   2
+0007    GGET     1   4      ; "tonumber"
+0008    TGETS    2   0   5  ; "cdef"
+0009    KSTR     4   6      ; "typedef struct s_ii { int x, y; } s_ii;\"~
+0010    CALL     2   1   2
+0011    TGETS    2   0   7  ; "load"
+0012    KSTR     4   8      ; "../clib/ctest"
+0013    CALL     2   2   2
+0014    GGET     3   9      ; "assert"
+0015    TGETS    5   2  10  ; "call_i"
+0016    KSHORT   7 -42
+0017    CALL     5   2   2
+0018    ISEQN    5   0      ; -41
+0019    JMP      5 => 0022
+0020    KPRI     5   1
+0021    JMP      6 => 0023
+0022 => KPRI     5   2
+0023 => CALL     3   1   2
+0024    GGET     3   9      ; "assert"
+0025    TGETS    5   2  11  ; "call_ii"
+0026    KSHORT   7 -42
+0027    KSHORT   8  17
+0028    CALL     5   2   3
+0029    ISEQN    5   1      ; -25
+0030    JMP      5 => 0033
+0031    KPRI     5   1
+0032    JMP      6 => 0034
+0033 => KPRI     5   2
+0034 => CALL     3   1   2
+0035    GGET     3   9      ; "assert"
+0036    TGETS    5   2  12  ; "call_10i"
+0037    KSHORT   7 -42
+0038    KSHORT   8  17
+0039    KSHORT   9 12345
+0040    KSHORT  10 9987
+0041    KSHORT  11 -100
+0042    KSHORT  12  11
+0043    KSHORT  13  51
+0044    KNUM    14   2      ; 305419896
+0045    KSHORT  15 338
+0046    KNUM    16   3      ; -78901234
+0047    CALL     5   2  11
+0048    ISEQN    5   4      ; 226541269
+0049    JMP      5 => 0052
+0050    KPRI     5   1
+0051    JMP      6 => 0053
+0052 => KPRI     5   2
+0053 => CALL     3   1   2
+0054    GGET     3   9      ; "assert"
+0055    TGETS    5   2  13  ; "call_ie"
+0056    KSHORT   7 123
+0057    CALL     5   2   2
+0058    ISEQN    5   5      ; 124
+0059    JMP      5 => 0062
+0060    KPRI     5   1
+0061    JMP      6 => 0063
+0062 => KPRI     5   2
+0063 => CALL     3   1   2
+0064    GGET     3   9      ; "assert"
+0065    MOV      5   1
+0066    TGETS    7   2  14  ; "call_ji"
+0067    KCDATA   9  15
+0068    KSHORT  10 -17
+0069    CALL     7   0   3
+0070    CALLM    5   2   0
+0071    MOV      6   1
+0072    KCDATA   8  16
+0073    SUBVN    8   8   6  ; 17
+0074    CALL     6   2   2
+0075    ISEQV    5   6
+0076    JMP      5 => 0079
+0077    KPRI     5   1
+0078    JMP      6 => 0080
+0079 => KPRI     5   2
+0080 => CALL     3   1   2
+0081    GGET     3   9      ; "assert"
+0082    MOV      5   1
+0083    TGETS    7   2  17  ; "call_ij"
+0084    KSHORT   9 -17
+0085    KCDATA  10  18
+0086    CALL     7   0   3
+0087    CALLM    5   2   0
+0088    MOV      6   1
+0089    KCDATA   8  19
+0090    SUBVN    8   8   6  ; 17
+0091    CALL     6   2   2
+0092    ISEQV    5   6
+0093    JMP      5 => 0096
+0094    KPRI     5   1
+0095    JMP      6 => 0097
+0096 => KPRI     5   2
+0097 => CALL     3   1   2
+0098    GGET     3   9      ; "assert"
+0099    MOV      5   1
+0100    TGETS    7   2  20  ; "call_jj"
+0101    KSHORT   9 -42
+0102    KSHORT  10  17
+0103    CALL     7   0   3
+0104    CALLM    5   2   0
+0105    ISEQN    5   1      ; -25
+0106    JMP      5 => 0109
+0107    KPRI     5   1
+0108    JMP      6 => 0110
+0109 => KPRI     5   2
+0110 => CALL     3   1   2
+0111    GGET     3   9      ; "assert"
+0112    MOV      5   1
+0113    TGETS    7   2  20  ; "call_jj"
+0114    KCDATA   9  21
+0115    KCDATA  10  22
+0116    CALL     7   0   3
+0117    CALLM    5   2   0
+0118    MOV      6   1
+0119    KCDATA   8  23
+0120    KCDATA   9  24
+0121    SUBVV    8   8   9
+0122    CALL     6   2   2
+0123    ISEQV    5   6
+0124    JMP      5 => 0127
+0125    KPRI     5   1
+0126    JMP      6 => 0128
+0127 => KPRI     5   2
+0128 => CALL     3   1   2
+0129    GGET     3   9      ; "assert"
+0130    TGETS    5   2  25  ; "call_dd"
+0131    KNUM     7   7      ; 12.5
+0132    KNUM     8   8      ; -3.25
+0133    CALL     5   2   3
+0134    ISEQN    5   9      ; 9.25
+0135    JMP      5 => 0138
+0136    KPRI     5   1
+0137    JMP      6 => 0139
+0138 => KPRI     5   2
+0139 => CALL     3   1   2
+0140    GGET     3   9      ; "assert"
+0141    TGETS    5   2  26  ; "call_10d"
+0142    KNUM     7  10      ; -42.5
+0143    KNUM     8  11      ; 17.125
+0144    KNUM     9  12      ; 12345.5
+0145    KSHORT  10 9987
+0146    KNUM    11  13      ; -100.625
+0147    KSHORT  12  11
+0148    KSHORT  13  51
+0149    KNUM    14   2      ; 305419896
+0150    KSHORT  15 338
+0151    KNUM    16  14      ; -78901234.75
+0152    CALL     5   2  11
+0153    ISEQN    5  15      ; 226541267.75
+0154    JMP      5 => 0157
+0155    KPRI     5   1
+0156    JMP      6 => 0158
+0157 => KPRI     5   2
+0158 => CALL     3   1   2
+0159    GGET     3   9      ; "assert"
+0160    TGETS    5   2  27  ; "call_ff"
+0161    KNUM     7   7      ; 12.5
+0162    KNUM     8   8      ; -3.25
+0163    CALL     5   2   3
+0164    ISEQN    5   9      ; 9.25
+0165    JMP      5 => 0168
+0166    KPRI     5   1
+0167    JMP      6 => 0169
+0168 => KPRI     5   2
+0169 => CALL     3   1   2
+0170    GGET     3   9      ; "assert"
+0171    TGETS    5   2  28  ; "call_10f"
+0172    KNUM     7  10      ; -42.5
+0173    KNUM     8  11      ; 17.125
+0174    KNUM     9  12      ; 12345.5
+0175    KSHORT  10 9987
+0176    KNUM    11  13      ; -100.625
+0177    KSHORT  12  11
+0178    KSHORT  13  51
+0179    KNUM    14  16      ; 1193046
+0180    KSHORT  15 338
+0181    KNUM    16  17      ; -789012.75
+0182    CALL     5   2  11
+0183    ISEQN    5  18      ; 426639.75
+0184    JMP      5 => 0187
+0185    KPRI     5   1
+0186    JMP      6 => 0188
+0187 => KPRI     5   2
+0188 => CALL     3   1   2
+0189    GGET     3   9      ; "assert"
+0190    TGETS    5   2  29  ; "call_idifjd"
+0191    KSHORT   7 -42
+0192    KNUM     8  11      ; 17.125
+0193    KNUM     9  19      ; 74565
+0194    KNUM    10  13      ; -100.625
+0195    KNUM    11  20      ; 12345678901234
+0196    KNUM    12  17      ; -789012.75
+0197    CALL     5   2   7
+0198    ISEQN    5  21      ; 12345678186661
+0199    JMP      5 => 0202
+0200    KPRI     5   1
+0201    JMP      6 => 0203
+0202 => KPRI     5   2
+0203 => CALL     3   1   2
+0204    TGETS    3   0  30  ; "new"
+0205    KSTR     5  31      ; "int[10]"
+0206    KSHORT   6 -42
+0207    CALL     3   2   3
+0208    GGET     4   9      ; "assert"
+0209    TGETS    6   2  32  ; "call_p_i"
+0210    MOV      8   3
+0211    CALL     6   2   2
+0212    ISEQN    6   0      ; -41
+0213    JMP      6 => 0216
+0214    KPRI     6   1
+0215    JMP      7 => 0217
+0216 => KPRI     6   2
+0217 => CALL     4   1   2
+0218    GGET     4   9      ; "assert"
+0219    MOV      6   1
+0220    TGETS    8   0  33  ; "cast"
+0221    KSTR    10  34      ; "intptr_t"
+0222    TGETS   11   2  35  ; "call_p_p"
+0223    ADDVN   13   3  22  ; 3
+0224    CALL    11   0   2
+0225    CALLM    8   0   1
+0226    CALLM    6   2   0
+0227    MOV      7   1
+0228    TGETS    9   0  33  ; "cast"
+0229    KSTR    11  34      ; "intptr_t"
+0230    ADDVN   12   3  23  ; 4
+0231    CALL     9   0   3
+0232    CALLM    7   2   0
+0233    ISEQV    6   7
+0234    JMP      6 => 0237
+0235    KPRI     6   1
+0236    JMP      7 => 0238
+0237 => KPRI     6   2
+0238 => CALL     4   1   2
+0239    GGET     4   9      ; "assert"
+0240    TGETS    6   2  36  ; "call_pp_i"
+0241    ADDVN    8   3  24  ; 8
+0242    ADDVN    9   3  25  ; 5
+0243    CALL     6   2   3
+0244    ISEQN    6  22      ; 3
+0245    JMP      6 => 0248
+0246    KPRI     6   1
+0247    JMP      7 => 0249
+0248 => KPRI     6   2
+0249 => CALL     4   1   2
+0250    GGET     3   9      ; "assert"
+0251    TGETS    5   2  37  ; "call_ividi"
+0252    KSHORT   7 -42
+0253    TGETS    8   0  30  ; "new"
+0254    KSTR    10  38      ; "int"
+0255    KSHORT  11  17
+0256    CALL     8   2   3
+0257    KNUM     9   7      ; 12.5
+0258    TGETS   10   0  30  ; "new"
+0259    KSTR    12  38      ; "int"
+0260    KSHORT  13 131
+0261    CALL    10   0   3
+0262    CALLM    5   2   3
+0263    ISEQN    5  26      ; 118.5
+0264    JMP      5 => 0267
+0265    KPRI     5   1
+0266    JMP      6 => 0268
+0267 => KPRI     5   2
+0268 => CALL     3   1   2
+0269    GGET     3  39      ; "pcall"
+0270    FNEW     5  40      ; ref_lib_ffi_ffi_call.lua:108
+0271    CALL     3   2   2
+0272    ISF          3
+0273    JMP      4 => 0392
+0274    TGETS    3   2  41  ; "call_dd_cd"
+0275    KNUM     5   7      ; 12.5
+0276    KNUM     6   8      ; -3.25
+0277    CALL     3   2   3
+0278    GGET     4   9      ; "assert"
+0279    TGETS    6   3  42  ; "re"
+0280    ISNEN    6   7      ; 12.5
+0281    JMP      6 => 0285
+0282    TGETS    6   3  43  ; "im"
+0283    ISEQN    6  27      ; -6.5
+0284    JMP      6 => 0287
+0285 => KPRI     6   1
+0286    JMP      7 => 0288
+0287 => KPRI     6   2
+0288 => CALL     4   1   2
+0289    TGETS    3   0  30  ; "new"
+0290    KSTR     5  44      ; "complex"
+0291    KNUM     6   7      ; 12.5
+0292    KNUM     7   8      ; -3.25
+0293    CALL     3   2   4
+0294    TGETS    4   2  45  ; "call_cd"
+0295    MOV      6   3
+0296    CALL     4   2   2
+0297    GGET     5   9      ; "assert"
+0298    TGETS    7   4  42  ; "re"
+0299    ISNEN    7  28      ; 13.5
+0300    JMP      7 => 0304
+0301    TGETS    7   4  43  ; "im"
+0302    ISEQN    7  29      ; -5.25
+0303    JMP      7 => 0306
+0304 => KPRI     7   1
+0305    JMP      8 => 0307
+0306 => KPRI     7   2
+0307 => CALL     5   1   2
+0308    TGETS    3   0  30  ; "new"
+0309    KSTR     5  44      ; "complex"
+0310    KNUM     6   7      ; 12.5
+0311    KNUM     7   8      ; -3.25
+0312    CALL     3   2   4
+0313    TGETS    4   0  30  ; "new"
+0314    KSTR     6  44      ; "complex"
+0315    KNUM     7  30      ; -17.125
+0316    KNUM     8  31      ; 100.625
+0317    CALL     4   2   4
+0318    TGETS    5   2  46  ; "call_cdcd"
+0319    MOV      7   3
+0320    MOV      8   4
+0321    CALL     5   2   3
+0322    GGET     6   9      ; "assert"
+0323    TGETS    8   5  42  ; "re"
+0324    ISNEN    8  32      ; -4.625
+0325    JMP      8 => 0329
+0326    TGETS    8   5  43  ; "im"
+0327    ISEQN    8  33      ; 97.375
+0328    JMP      8 => 0331
+0329 => KPRI     8   1
+0330    JMP      9 => 0332
+0331 => KPRI     8   2
+0332 => CALL     6   1   2
+0333    TGETS    3   2  47  ; "call_ff_cf"
+0334    KNUM     5   7      ; 12.5
+0335    KNUM     6   8      ; -3.25
+0336    CALL     3   2   3
+0337    GGET     4   9      ; "assert"
+0338    TGETS    6   3  42  ; "re"
+0339    ISNEN    6   7      ; 12.5
+0340    JMP      6 => 0344
+0341    TGETS    6   3  43  ; "im"
+0342    ISEQN    6  27      ; -6.5
+0343    JMP      6 => 0346
+0344 => KPRI     6   1
+0345    JMP      7 => 0347
+0346 => KPRI     6   2
+0347 => CALL     4   1   2
+0348    TGETS    3   0  30  ; "new"
+0349    KSTR     5  48      ; "complex float"
+0350    KNUM     6   7      ; 12.5
+0351    KNUM     7   8      ; -3.25
+0352    CALL     3   2   4
+0353    TGETS    4   2  49  ; "call_cf"
+0354    MOV      6   3
+0355    CALL     4   2   2
+0356    GGET     5   9      ; "assert"
+0357    TGETS    7   4  42  ; "re"
+0358    ISNEN    7  28      ; 13.5
+0359    JMP      7 => 0363
+0360    TGETS    7   4  43  ; "im"
+0361    ISEQN    7  29      ; -5.25
+0362    JMP      7 => 0365
+0363 => KPRI     7   1
+0364    JMP      8 => 0366
+0365 => KPRI     7   2
+0366 => CALL     5   1   2
+0367    TGETS    3   0  30  ; "new"
+0368    KSTR     5  48      ; "complex float"
+0369    KNUM     6   7      ; 12.5
+0370    KNUM     7   8      ; -3.25
+0371    CALL     3   2   4
+0372    TGETS    4   0  30  ; "new"
+0373    KSTR     6  48      ; "complex float"
+0374    KNUM     7  30      ; -17.125
+0375    KNUM     8  31      ; 100.625
+0376    CALL     4   2   4
+0377    TGETS    5   2  50  ; "call_cfcf"
+0378    MOV      7   3
+0379    MOV      8   4
+0380    CALL     5   2   3
+0381    GGET     6   9      ; "assert"
+0382    TGETS    8   5  42  ; "re"
+0383    ISNEN    8  32      ; -4.625
+0384    JMP      8 => 0388
+0385    TGETS    8   5  43  ; "im"
+0386    ISEQN    8  33      ; 97.375
+0387    JMP      8 => 0390
+0388 => KPRI     8   1
+0389    JMP      9 => 0391
+0390 => KPRI     8   2
+0391 => CALL     6   1   2
+0392 => TGETS    3   0  30  ; "new"
+0393    KSTR     5  51      ; "s_ii"
+0394    KSHORT   6 -42
+0395    KSHORT   7  17
+0396    CALL     3   2   4
+0397    TGETS    4   2  52  ; "call_sii"
+0398    MOV      6   3
+0399    CALL     4   2   2
+0400    GGET     5   9      ; "assert"
+0401    TGETS    7   3  53  ; "x"
+0402    ISNEN    7  34      ; -42
+0403    JMP      7 => 0407
+0404    TGETS    7   3  54  ; "y"
+0405    ISEQN    7   6      ; 17
+0406    JMP      7 => 0409
+0407 => KPRI     7   1
+0408    JMP      8 => 0410
+0409 => KPRI     7   2
+0410 => CALL     5   1   2
+0411    GGET     5   9      ; "assert"
+0412    TGETS    7   4  53  ; "x"
+0413    ISNEN    7  34      ; -42
+0414    JMP      7 => 0418
+0415    TGETS    7   4  54  ; "y"
+0416    ISEQN    7   6      ; 17
+0417    JMP      7 => 0420
+0418 => KPRI     7   1
+0419    JMP      8 => 0421
+0420 => KPRI     7   2
+0421 => CALL     5   1   2
+0422    TGETS    3   0  30  ; "new"
+0423    KSTR     5  55      ; "s_jj"
+0424    KCDATA   6  56
+0425    KCDATA   7  57
+0426    CALL     3   2   4
+0427    TGETS    4   2  58  ; "call_sjj"
+0428    MOV      6   3
+0429    CALL     4   2   2
+0430    GGET     5   9      ; "assert"
+0431    TGETS    7   3  53  ; "x"
+0432    KCDATA   8  59
+0433    ISEQV    7   8
+0434    JMP      7 => 0437
+0435    KPRI     7   1
+0436    JMP      8 => 0438
+0437 => KPRI     7   2
+0438 => CALL     5   1   2
+0439    GGET     5   9      ; "assert"
+0440    TGETS    7   3  54  ; "y"
+0441    KCDATA   8  60
+0442    ISEQV    7   8
+0443    JMP      7 => 0446
+0444    KPRI     7   1
+0445    JMP      8 => 0447
+0446 => KPRI     7   2
+0447 => CALL     5   1   2
+0448    GGET     5   9      ; "assert"
+0449    TGETS    7   4  53  ; "x"
+0450    KCDATA   8  61
+0451    ISEQV    7   8
+0452    JMP      7 => 0455
+0453    KPRI     7   1
+0454    JMP      8 => 0456
+0455 => KPRI     7   2
+0456 => CALL     5   1   2
+0457    GGET     5   9      ; "assert"
+0458    TGETS    7   4  54  ; "y"
+0459    KCDATA   8  62
+0460    ISEQV    7   8
+0461    JMP      7 => 0464
+0462    KPRI     7   1
+0463    JMP      8 => 0465
+0464 => KPRI     7   2
+0465 => CALL     5   1   2
+0466    TGETS    3   0  30  ; "new"
+0467    KSTR     5  63      ; "s_ff"
+0468    KNUM     6   7      ; 12.5
+0469    KNUM     7   8      ; -3.25
+0470    CALL     3   2   4
+0471    TGETS    4   2  64  ; "call_sff"
+0472    MOV      6   3
+0473    CALL     4   2   2
+0474    GGET     5   9      ; "assert"
+0475    TGETS    7   3  53  ; "x"
+0476    ISNEN    7   7      ; 12.5
+0477    JMP      7 => 0481
+0478    TGETS    7   3  54  ; "y"
+0479    ISEQN    7   8      ; -3.25
+0480    JMP      7 => 0483
+0481 => KPRI     7   1
+0482    JMP      8 => 0484
+0483 => KPRI     7   2
+0484 => CALL     5   1   2
+0485    GGET     5   9      ; "assert"
+0486    TGETS    7   4  53  ; "x"
+0487    ISNEN    7   7      ; 12.5
+0488    JMP      7 => 0492
+0489    TGETS    7   4  54  ; "y"
+0490    ISEQN    7   8      ; -3.25
+0491    JMP      7 => 0494
+0492 => KPRI     7   1
+0493    JMP      8 => 0495
+0494 => KPRI     7   2
+0495 => CALL     5   1   2
+0496    TGETS    3   0  30  ; "new"
+0497    KSTR     5  65      ; "s_dd"
+0498    KNUM     6   7      ; 12.5
+0499    KNUM     7   8      ; -3.25
+0500    CALL     3   2   4
+0501    TGETS    4   2  66  ; "call_sdd"
+0502    MOV      6   3
+0503    CALL     4   2   2
+0504    GGET     5   9      ; "assert"
+0505    TGETS    7   3  53  ; "x"
+0506    ISNEN    7   7      ; 12.5
+0507    JMP      7 => 0511
+0508    TGETS    7   3  54  ; "y"
+0509    ISEQN    7   8      ; -3.25
+0510    JMP      7 => 0513
+0511 => KPRI     7   1
+0512    JMP      8 => 0514
+0513 => KPRI     7   2
+0514 => CALL     5   1   2
+0515    GGET     5   9      ; "assert"
+0516    TGETS    7   4  53  ; "x"
+0517    ISNEN    7   7      ; 12.5
+0518    JMP      7 => 0522
+0519    TGETS    7   4  54  ; "y"
+0520    ISEQN    7   8      ; -3.25
+0521    JMP      7 => 0524
+0522 => KPRI     7   1
+0523    JMP      8 => 0525
+0524 => KPRI     7   2
+0525 => CALL     5   1   2
+0526    TGETS    3   0  30  ; "new"
+0527    KSTR     5  67      ; "s_8i"
+0528    KSHORT   6 -42
+0529    KSHORT   7  17
+0530    KSHORT   8 12345
+0531    KSHORT   9 9987
+0532    KSHORT  10 -100
+0533    KSHORT  11  11
+0534    KSHORT  12  51
+0535    KNUM    13   2      ; 305419896
+0536    CALL     3   2  10
+0537    TGETS    4   2  68  ; "call_s8i"
+0538    MOV      6   3
+0539    CALL     4   2   2
+0540    GGET     5   9      ; "assert"
+0541    TGETS    7   3  69  ; "a"
+0542    TGETS    8   3  70  ; "b"
+0543    ADDVV    7   7   8
+0544    TGETS    8   3  71  ; "c"
+0545    ADDVV    7   7   8
+0546    TGETS    8   3  72  ; "d"
+0547    ADDVV    7   7   8
+0548    TGETS    8   3  73  ; "e"
+0549    ADDVV    7   7   8
+0550    TGETS    8   3  74  ; "f"
+0551    ADDVV    7   7   8
+0552    TGETS    8   3  75  ; "g"
+0553    ADDVV    7   7   8
+0554    TGETS    8   3  76  ; "h"
+0555    ADDVV    7   7   8
+0556    ISEQN    7  35      ; 305442165
+0557    JMP      7 => 0560
+0558    KPRI     7   1
+0559    JMP      8 => 0561
+0560 => KPRI     7   2
+0561 => CALL     5   1   2
+0562    GGET     5   9      ; "assert"
+0563    TGETS    7   4  69  ; "a"
+0564    TGETS    8   4  70  ; "b"
+0565    ADDVV    7   7   8
+0566    TGETS    8   4  71  ; "c"
+0567    ADDVV    7   7   8
+0568    TGETS    8   4  72  ; "d"
+0569    ADDVV    7   7   8
+0570    TGETS    8   4  73  ; "e"
+0571    ADDVV    7   7   8
+0572    TGETS    8   4  74  ; "f"
+0573    ADDVV    7   7   8
+0574    TGETS    8   4  75  ; "g"
+0575    ADDVV    7   7   8
+0576    TGETS    8   4  76  ; "h"
+0577    ADDVV    7   7   8
+0578    ISEQN    7  35      ; 305442165
+0579    JMP      7 => 0582
+0580    KPRI     7   1
+0581    JMP      8 => 0583
+0582 => KPRI     7   2
+0583 => CALL     5   1   2
+0584    TGETS    3   0  30  ; "new"
+0585    KSTR     5  51      ; "s_ii"
+0586    KSHORT   6 -42
+0587    KSHORT   7  17
+0588    CALL     3   2   4
+0589    TGETS    4   0  30  ; "new"
+0590    KSTR     6  51      ; "s_ii"
+0591    KNUM     7  19      ; 74565
+0592    KNUM     8  36      ; -98765
+0593    CALL     4   2   4
+0594    TGETS    5   2  77  ; "call_siisii"
+0595    MOV      7   3
+0596    MOV      8   4
+0597    CALL     5   2   3
+0598    GGET     6   9      ; "assert"
+0599    TGETS    8   3  53  ; "x"
+0600    ISNEN    8  34      ; -42
+0601    JMP      8 => 0605
+0602    TGETS    8   3  54  ; "y"
+0603    ISEQN    8   6      ; 17
+0604    JMP      8 => 0607
+0605 => KPRI     8   1
+0606    JMP      9 => 0608
+0607 => KPRI     8   2
+0608 => CALL     6   1   2
+0609    GGET     6   9      ; "assert"
+0610    TGETS    8   4  53  ; "x"
+0611    ISNEN    8  19      ; 74565
+0612    JMP      8 => 0616
+0613    TGETS    8   4  54  ; "y"
+0614    ISEQN    8  36      ; -98765
+0615    JMP      8 => 0618
+0616 => KPRI     8   1
+0617    JMP      9 => 0619
+0618 => KPRI     8   2
+0619 => CALL     6   1   2
+0620    GGET     6   9      ; "assert"
+0621    TGETS    8   5  53  ; "x"
+0622    ISNEN    8  37      ; 74523
+0623    JMP      8 => 0627
+0624    TGETS    8   5  54  ; "y"
+0625    ISEQN    8  38      ; -98748
+0626    JMP      8 => 0629
+0627 => KPRI     8   1
+0628    JMP      9 => 0630
+0629 => KPRI     8   2
+0630 => CALL     6   1   2
+0631    TGETS    3   0  30  ; "new"
+0632    KSTR     5  63      ; "s_ff"
+0633    KNUM     6   7      ; 12.5
+0634    KNUM     7   8      ; -3.25
+0635    CALL     3   2   4
+0636    TGETS    4   0  30  ; "new"
+0637    KSTR     6  63      ; "s_ff"
+0638    KNUM     7  30      ; -17.125
+0639    KNUM     8  31      ; 100.625
+0640    CALL     4   2   4
+0641    TGETS    5   2  78  ; "call_sffsff"
+0642    MOV      7   3
+0643    MOV      8   4
+0644    CALL     5   2   3
+0645    GGET     6   9      ; "assert"
+0646    TGETS    8   3  53  ; "x"
+0647    ISNEN    8   7      ; 12.5
+0648    JMP      8 => 0652
+0649    TGETS    8   3  54  ; "y"
+0650    ISEQN    8   8      ; -3.25
+0651    JMP      8 => 0654
+0652 => KPRI     8   1
+0653    JMP      9 => 0655
+0654 => KPRI     8   2
+0655 => CALL     6   1   2
+0656    GGET     6   9      ; "assert"
+0657    TGETS    8   4  53  ; "x"
+0658    ISNEN    8  30      ; -17.125
+0659    JMP      8 => 0663
+0660    TGETS    8   4  54  ; "y"
+0661    ISEQN    8  31      ; 100.625
+0662    JMP      8 => 0665
+0663 => KPRI     8   1
+0664    JMP      9 => 0666
+0665 => KPRI     8   2
+0666 => CALL     6   1   2
+0667    GGET     6   9      ; "assert"
+0668    TGETS    8   5  53  ; "x"
+0669    ISNEN    8  32      ; -4.625
+0670    JMP      8 => 0674
+0671    TGETS    8   5  54  ; "y"
+0672    ISEQN    8  33      ; 97.375
+0673    JMP      8 => 0676
+0674 => KPRI     8   1
+0675    JMP      9 => 0677
+0676 => KPRI     8   2
+0677 => CALL     6   1   2
+0678    TGETS    3   0  30  ; "new"
+0679    KSTR     5  65      ; "s_dd"
+0680    KNUM     6   7      ; 12.5
+0681    KNUM     7   8      ; -3.25
+0682    CALL     3   2   4
+0683    TGETS    4   0  30  ; "new"
+0684    KSTR     6  65      ; "s_dd"
+0685    KNUM     7  30      ; -17.125
+0686    KNUM     8  31      ; 100.625
+0687    CALL     4   2   4
+0688    TGETS    5   2  79  ; "call_sddsdd"
+0689    MOV      7   3
+0690    MOV      8   4
+0691    CALL     5   2   3
+0692    GGET     6   9      ; "assert"
+0693    TGETS    8   3  53  ; "x"
+0694    ISNEN    8   7      ; 12.5
+0695    JMP      8 => 0699
+0696    TGETS    8   3  54  ; "y"
+0697    ISEQN    8   8      ; -3.25
+0698    JMP      8 => 0701
+0699 => KPRI     8   1
+0700    JMP      9 => 0702
+0701 => KPRI     8   2
+0702 => CALL     6   1   2
+0703    GGET     6   9      ; "assert"
+0704    TGETS    8   4  53  ; "x"
+0705    ISNEN    8  30      ; -17.125
+0706    JMP      8 => 0710
+0707    TGETS    8   4  54  ; "y"
+0708    ISEQN    8  31      ; 100.625
+0709    JMP      8 => 0712
+0710 => KPRI     8   1
+0711    JMP      9 => 0713
+0712 => KPRI     8   2
+0713 => CALL     6   1   2
+0714    GGET     6   9      ; "assert"
+0715    TGETS    8   5  53  ; "x"
+0716    ISNEN    8  32      ; -4.625
+0717    JMP      8 => 0721
+0718    TGETS    8   5  54  ; "y"
+0719    ISEQN    8  33      ; 97.375
+0720    JMP      8 => 0723
+0721 => KPRI     8   1
+0722    JMP      9 => 0724
+0723 => KPRI     8   2
+0724 => CALL     6   1   2
+0725    TGETS    3   0  30  ; "new"
+0726    KSTR     5  67      ; "s_8i"
+0727    KSHORT   6 -42
+0728    KSHORT   7  17
+0729    KSHORT   8 12345
+0730    KSHORT   9 9987
+0731    KSHORT  10 -100
+0732    KSHORT  11  11
+0733    KSHORT  12  51
+0734    KNUM    13   2      ; 305419896
+0735    CALL     3   2  10
+0736    TGETS    4   0  30  ; "new"
+0737    KSTR     6  67      ; "s_8i"
+0738    KSHORT   7  99
+0739    KSHORT   8 311
+0740    KNUM     9  39      ; 98765
+0741    KSHORT  10 -51
+0742    KSHORT  11 312
+0743    KSHORT  12  97
+0744    KSHORT  13  17
+0745    KNUM    14  40      ; 1144201745
+0746    CALL     4   2  10
+0747    TGETS    5   2  80  ; "call_s8is8i"
+0748    MOV      7   3
+0749    MOV      8   4
+0750    CALL     5   2   3
+0751    GGET     6   9      ; "assert"
+0752    TGETS    8   3  69  ; "a"
+0753    TGETS    9   3  70  ; "b"
+0754    ADDVV    8   8   9
+0755    TGETS    9   3  71  ; "c"
+0756    ADDVV    8   8   9
+0757    TGETS    9   3  72  ; "d"
+0758    ADDVV    8   8   9
+0759    TGETS    9   3  73  ; "e"
+0760    ADDVV    8   8   9
+0761    TGETS    9   3  74  ; "f"
+0762    ADDVV    8   8   9
+0763    TGETS    9   3  75  ; "g"
+0764    ADDVV    8   8   9
+0765    TGETS    9   3  76  ; "h"
+0766    ADDVV    8   8   9
+0767    ISEQN    8  35      ; 305442165
+0768    JMP      8 => 0771
+0769    KPRI     8   1
+0770    JMP      9 => 0772
+0771 => KPRI     8   2
+0772 => CALL     6   1   2
+0773    GGET     6   9      ; "assert"
+0774    TGETS    8   4  69  ; "a"
+0775    TGETS    9   4  70  ; "b"
+0776    ADDVV    8   8   9
+0777    TGETS    9   4  71  ; "c"
+0778    ADDVV    8   8   9
+0779    TGETS    9   4  72  ; "d"
+0780    ADDVV    8   8   9
+0781    TGETS    9   4  73  ; "e"
+0782    ADDVV    8   8   9
+0783    TGETS    9   4  74  ; "f"
+0784    ADDVV    8   8   9
+0785    TGETS    9   4  75  ; "g"
+0786    ADDVV    8   8   9
+0787    TGETS    9   4  76  ; "h"
+0788    ADDVV    8   8   9
+0789    ISEQN    8  41      ; 1144301295
+0790    JMP      8 => 0793
+0791    KPRI     8   1
+0792    JMP      9 => 0794
+0793 => KPRI     8   2
+0794 => CALL     6   1   2
+0795    GGET     6   9      ; "assert"
+0796    TGETS    8   5  69  ; "a"
+0797    TGETS    9   5  70  ; "b"
+0798    ADDVV    8   8   9
+0799    TGETS    9   5  71  ; "c"
+0800    ADDVV    8   8   9
+0801    TGETS    9   5  72  ; "d"
+0802    ADDVV    8   8   9
+0803    TGETS    9   5  73  ; "e"
+0804    ADDVV    8   8   9
+0805    TGETS    9   5  74  ; "f"
+0806    ADDVV    8   8   9
+0807    TGETS    9   5  75  ; "g"
+0808    ADDVV    8   8   9
+0809    TGETS    9   5  76  ; "h"
+0810    ADDVV    8   8   9
+0811    ISEQN    8  42      ; 1449743460
+0812    JMP      8 => 0815
+0813    KPRI     8   1
+0814    JMP      9 => 0816
+0815 => KPRI     8   2
+0816 => CALL     6   1   2
+0817    GGET     6   9      ; "assert"
+0818    TGETS    8   5  69  ; "a"
+0819    ISEQN    8  43      ; 57
+0820    JMP      8 => 0823
+0821    KPRI     8   1
+0822    JMP      9 => 0824
+0823 => KPRI     8   2
+0824 => CALL     6   1   2
+0825    GGET     6   9      ; "assert"
+0826    TGETS    8   5  76  ; "h"
+0827    ISEQN    8  44      ; 1449621641
+0828    JMP      8 => 0831
+0829    KPRI     8   1
+0830    JMP      9 => 0832
+0831 => KPRI     8   2
+0832 => CALL     6   1   2
+0833    TGETS    3   0  30  ; "new"
+0834    KSTR     5  67      ; "s_8i"
+0835    KSHORT   6 -42
+0836    KSHORT   7  17
+0837    KSHORT   8 12345
+0838    KSHORT   9 9987
+0839    KSHORT  10 -100
+0840    KSHORT  11  11
+0841    KSHORT  12  51
+0842    KNUM    13   2      ; 305419896
+0843    CALL     3   2  10
+0844    TGETS    4   2  81  ; "call_is8ii"
+0845    KSHORT   6  19
+0846    MOV      7   3
+0847    KSHORT   8 -51
+0848    CALL     4   2   4
+0849    GGET     5   9      ; "assert"
+0850    TGETS    7   3  69  ; "a"
+0851    TGETS    8   3  70  ; "b"
+0852    ADDVV    7   7   8
+0853    TGETS    8   3  71  ; "c"
+0854    ADDVV    7   7   8
+0855    TGETS    8   3  72  ; "d"
+0856    ADDVV    7   7   8
+0857    TGETS    8   3  73  ; "e"
+0858    ADDVV    7   7   8
+0859    TGETS    8   3  74  ; "f"
+0860    ADDVV    7   7   8
+0861    TGETS    8   3  75  ; "g"
+0862    ADDVV    7   7   8
+0863    TGETS    8   3  76  ; "h"
+0864    ADDVV    7   7   8
+0865    ISEQN    7  35      ; 305442165
+0866    JMP      7 => 0869
+0867    KPRI     7   1
+0868    JMP      8 => 0870
+0869 => KPRI     7   2
+0870 => CALL     5   1   2
+0871    GGET     5   9      ; "assert"
+0872    TGETS    7   4  69  ; "a"
+0873    TGETS    8   4  70  ; "b"
+0874    ADDVV    7   7   8
+0875    TGETS    8   4  71  ; "c"
+0876    ADDVV    7   7   8
+0877    TGETS    8   4  72  ; "d"
+0878    ADDVV    7   7   8
+0879    TGETS    8   4  73  ; "e"
+0880    ADDVV    7   7   8
+0881    TGETS    8   4  74  ; "f"
+0882    ADDVV    7   7   8
+0883    TGETS    8   4  75  ; "g"
+0884    ADDVV    7   7   8
+0885    TGETS    8   4  76  ; "h"
+0886    ADDVV    7   7   8
+0887    ISEQN    7  45      ; 305442133
+0888    JMP      7 => 0891
+0889    KPRI     7   1
+0890    JMP      8 => 0892
+0891 => KPRI     7   2
+0892 => CALL     5   1   2
+0893    GGET     5   9      ; "assert"
+0894    TGETS    7   4  69  ; "a"
+0895    ISEQN    7  46      ; -23
+0896    JMP      7 => 0899
+0897    KPRI     7   1
+0898    JMP      8 => 0900
+0899 => KPRI     7   2
+0900 => CALL     5   1   2
+0901    GGET     5   9      ; "assert"
+0902    TGETS    7   4  71  ; "c"
+0903    ISEQN    7  47      ; 12294
+0904    JMP      7 => 0907
+0905    KPRI     7   1
+0906    JMP      8 => 0908
+0907 => KPRI     7   2
+0908 => CALL     5   1   2
+0909    GGET     3  82      ; "jit"
+0910    TGETS    3   3  83  ; "arch"
+0911    ISNES    3  84      ; "x86"
+0912    JMP      3 => 1139
+0913    GGET     3   9      ; "assert"
+0914    TGETS    5   2  85  ; "fastcall_void"
+0915    CALL     5   2   1
+0916    ISEQN    5  48      ; 1
+0917    JMP      5 => 0920
+0918    KPRI     5   1
+0919    JMP      6 => 0921
+0920 => KPRI     5   2
+0921 => CALL     3   1   2
+0922    GGET     3   9      ; "assert"
+0923    TGETS    5   2  86  ; "fastcall_i"
+0924    KSHORT   7 -42
+0925    CALL     5   2   2
+0926    ISEQN    5   0      ; -41
+0927    JMP      5 => 0930
+0928    KPRI     5   1
+0929    JMP      6 => 0931
+0930 => KPRI     5   2
+0931 => CALL     3   1   2
+0932    GGET     3   9      ; "assert"
+0933    TGETS    5   2  87  ; "fastcall_ii"
+0934    KSHORT   7 -42
+0935    KSHORT   8  17
+0936    CALL     5   2   3
+0937    ISEQN    5   1      ; -25
+0938    JMP      5 => 0941
+0939    KPRI     5   1
+0940    JMP      6 => 0942
+0941 => KPRI     5   2
+0942 => CALL     3   1   2
+0943    GGET     3   9      ; "assert"
+0944    TGETS    5   2  88  ; "fastcall_iii"
+0945    KSHORT   7 -42
+0946    KSHORT   8  17
+0947    KSHORT   9 139
+0948    CALL     5   2   4
+0949    ISEQN    5  49      ; 114
+0950    JMP      5 => 0953
+0951    KPRI     5   1
+0952    JMP      6 => 0954
+0953 => KPRI     5   2
+0954 => CALL     3   1   2
+0955    GGET     3   9      ; "assert"
+0956    MOV      5   1
+0957    TGETS    7   2  89  ; "fastcall_ji"
+0958    KCDATA   9  90
+0959    KSHORT  10 -17
+0960    CALL     7   0   3
+0961    CALLM    5   2   0
+0962    MOV      6   1
+0963    KCDATA   8  91
+0964    SUBVN    8   8   6  ; 17
+0965    CALL     6   2   2
+0966    ISEQV    5   6
+0967    JMP      5 => 0970
+0968    KPRI     5   1
+0969    JMP      6 => 0971
+0970 => KPRI     5   2
+0971 => CALL     3   1   2
+0972    GGET     3   9      ; "assert"
+0973    TGETS    5   2  92  ; "fastcall_dd"
+0974    KNUM     7   7      ; 12.5
+0975    KNUM     8   8      ; -3.25
+0976    CALL     5   2   3
+0977    ISEQN    5   9      ; 9.25
+0978    JMP      5 => 0981
+0979    KPRI     5   1
+0980    JMP      6 => 0982
+0981 => KPRI     5   2
+0982 => CALL     3   1   2
+0983    TGETS    3   0  30  ; "new"
+0984    KSTR     5  31      ; "int[10]"
+0985    KSHORT   6 -42
+0986    CALL     3   2   3
+0987    GGET     4   9      ; "assert"
+0988    TGETS    6   2  93  ; "fastcall_pp_i"
+0989    ADDVN    8   3  24  ; 8
+0990    ADDVN    9   3  25  ; 5
+0991    CALL     6   2   3
+0992    ISEQN    6  22      ; 3
+0993    JMP      6 => 0996
+0994    KPRI     6   1
+0995    JMP      7 => 0997
+0996 => KPRI     6   2
+0997 => CALL     4   1   2
+0998    TGETS    3   0  30  ; "new"
+0999    KSTR     5  51      ; "s_ii"
+1000    KSHORT   6 -42
+1001    KSHORT   7  17
+1002    CALL     3   2   4
+1003    TGETS    4   0  30  ; "new"
+1004    KSTR     6  51      ; "s_ii"
+1005    KNUM     7  19      ; 74565
+1006    KNUM     8  36      ; -98765
+1007    CALL     4   2   4
+1008    TGETS    5   2  94  ; "fastcall_siisii"
+1009    MOV      7   3
+1010    MOV      8   4
+1011    CALL     5   2   3
+1012    GGET     6   9      ; "assert"
+1013    TGETS    8   3  53  ; "x"
+1014    ISNEN    8  34      ; -42
+1015    JMP      8 => 1019
+1016    TGETS    8   3  54  ; "y"
+1017    ISEQN    8   6      ; 17
+1018    JMP      8 => 1021
+1019 => KPRI     8   1
+1020    JMP      9 => 1022
+1021 => KPRI     8   2
+1022 => CALL     6   1   2
+1023    GGET     6   9      ; "assert"
+1024    TGETS    8   4  53  ; "x"
+1025    ISNEN    8  19      ; 74565
+1026    JMP      8 => 1030
+1027    TGETS    8   4  54  ; "y"
+1028    ISEQN    8  36      ; -98765
+1029    JMP      8 => 1032
+1030 => KPRI     8   1
+1031    JMP      9 => 1033
+1032 => KPRI     8   2
+1033 => CALL     6   1   2
+1034    GGET     6   9      ; "assert"
+1035    TGETS    8   5  53  ; "x"
+1036    ISNEN    8  37      ; 74523
+1037    JMP      8 => 1041
+1038    TGETS    8   5  54  ; "y"
+1039    ISEQN    8  38      ; -98748
+1040    JMP      8 => 1043
+1041 => KPRI     8   1
+1042    JMP      9 => 1044
+1043 => KPRI     8   2
+1044 => CALL     6   1   2
+1045    TGETS    3   0  30  ; "new"
+1046    KSTR     5  65      ; "s_dd"
+1047    KNUM     6   7      ; 12.5
+1048    KNUM     7   8      ; -3.25
+1049    CALL     3   2   4
+1050    TGETS    4   0  30  ; "new"
+1051    KSTR     6  65      ; "s_dd"
+1052    KNUM     7  30      ; -17.125
+1053    KNUM     8  31      ; 100.625
+1054    CALL     4   2   4
+1055    TGETS    5   2  95  ; "fastcall_sddsdd"
+1056    MOV      7   3
+1057    MOV      8   4
+1058    CALL     5   2   3
+1059    GGET     6   9      ; "assert"
+1060    TGETS    8   3  53  ; "x"
+1061    ISNEN    8   7      ; 12.5
+1062    JMP      8 => 1066
+1063    TGETS    8   3  54  ; "y"
+1064    ISEQN    8   8      ; -3.25
+1065    JMP      8 => 1068
+1066 => KPRI     8   1
+1067    JMP      9 => 1069
+1068 => KPRI     8   2
+1069 => CALL     6   1   2
+1070    GGET     6   9      ; "assert"
+1071    TGETS    8   4  53  ; "x"
+1072    ISNEN    8  30      ; -17.125
+1073    JMP      8 => 1077
+1074    TGETS    8   4  54  ; "y"
+1075    ISEQN    8  31      ; 100.625
+1076    JMP      8 => 1079
+1077 => KPRI     8   1
+1078    JMP      9 => 1080
+1079 => KPRI     8   2
+1080 => CALL     6   1   2
+1081    GGET     6   9      ; "assert"
+1082    TGETS    8   5  53  ; "x"
+1083    ISNEN    8  32      ; -4.625
+1084    JMP      8 => 1088
+1085    TGETS    8   5  54  ; "y"
+1086    ISEQN    8  33      ; 97.375
+1087    JMP      8 => 1090
+1088 => KPRI     8   1
+1089    JMP      9 => 1091
+1090 => KPRI     8   2
+1091 => CALL     6   1   2
+1092    GGET     3  82      ; "jit"
+1093    TGETS    3   3  96  ; "os"
+1094    ISNES    3  97      ; "Windows"
+1095    JMP      3 => 1139
+1096    GGET     3   9      ; "assert"
+1097    TGETS    5   2  98  ; "stdcall_i"
+1098    KSHORT   7 -42
+1099    CALL     5   2   2
+1100    ISEQN    5   0      ; -41
+1101    JMP      5 => 1104
+1102    KPRI     5   1
+1103    JMP      6 => 1105
+1104 => KPRI     5   2
+1105 => CALL     3   1   2
+1106    GGET     3   9      ; "assert"
+1107    TGETS    5   2  99  ; "stdcall_ii"
+1108    KSHORT   7 -42
+1109    KSHORT   8  17
+1110    CALL     5   2   3
+1111    ISEQN    5   1      ; -25
+1112    JMP      5 => 1115
+1113    KPRI     5   1
+1114    JMP      6 => 1116
+1115 => KPRI     5   2
+1116 => CALL     3   1   2
+1117    GGET     3   9      ; "assert"
+1118    TGETS    5   2 100  ; "stdcall_dd"
+1119    KNUM     7   7      ; 12.5
+1120    KNUM     8   8      ; -3.25
+1121    CALL     5   2   3
+1122    ISEQN    5   9      ; 9.25
+1123    JMP      5 => 1126
+1124    KPRI     5   1
+1125    JMP      6 => 1127
+1126 => KPRI     5   2
+1127 => CALL     3   1   2
+1128    GGET     3   9      ; "assert"
+1129    TGETS    5   2 101  ; "stdcall_ff"
+1130    KNUM     7   7      ; 12.5
+1131    KNUM     8   8      ; -3.25
+1132    CALL     5   2   3
+1133    ISEQN    5   9      ; 9.25
+1134    JMP      5 => 1137
+1135    KPRI     5   1
+1136    JMP      6 => 1138
+1137 => KPRI     5   2
+1138 => CALL     3   1   2
+1139 => UCLO     0 => 1140
+1140 => RET0     0   1
+

@@ -1,0 +1,7 @@
+-- BYTECODE -- shebang.lua:0-4
+0001    KSHORT   0   1
+0002    GGET     1   0      ; "print"
+0003    MOV      2   0
+0004    CALL     1   1   2
+0005    RET0     0   1
+

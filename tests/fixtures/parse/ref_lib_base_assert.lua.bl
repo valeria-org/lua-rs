@@ -1,0 +1,157 @@
+-- BYTECODE -- ref_lib_base_assert.lua:6-6
+0001    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_assert.lua:0-34
+0001    GGET     0   0      ; "assert"
+0002    GGET     2   0      ; "assert"
+0003    KPRI     4   2
+0004    CALL     2   2   2
+0005    ISEQP    2   2
+0006    JMP      2 => 0009
+0007    KPRI     2   1
+0008    JMP      3 => 0010
+0009 => KPRI     2   2
+0010 => CALL     0   1   2
+0011    GGET     0   0      ; "assert"
+0012    GGET     2   0      ; "assert"
+0013    KSHORT   4   3
+0014    CALL     2   2   2
+0015    ISEQN    2   0      ; 3
+0016    JMP      2 => 0019
+0017    KPRI     2   1
+0018    JMP      3 => 0020
+0019 => KPRI     2   2
+0020 => CALL     0   1   2
+0021    GGET     0   0      ; "assert"
+0022    GGET     2   0      ; "assert"
+0023    KNUM     4   1      ; 1.5
+0024    CALL     2   2   2
+0025    ISEQN    2   1      ; 1.5
+0026    JMP      2 => 0029
+0027    KPRI     2   1
+0028    JMP      3 => 0030
+0029 => KPRI     2   2
+0030 => CALL     0   1   2
+0031    GGET     0   0      ; "assert"
+0032    GGET     2   0      ; "assert"
+0033    KSTR     4   1      ; "x"
+0034    CALL     2   2   2
+0035    ISEQS    2   1      ; "x"
+0036    JMP      2 => 0039
+0037    KPRI     2   1
+0038    JMP      3 => 0040
+0039 => KPRI     2   2
+0040 => CALL     0   1   2
+0041    FNEW     0   2      ; ref_lib_base_assert.lua:6
+0042    GGET     1   0      ; "assert"
+0043    GGET     3   0      ; "assert"
+0044    MOV      5   0
+0045    CALL     3   2   2
+0046    ISEQV    3   0
+0047    JMP      3 => 0050
+0048    KPRI     3   1
+0049    JMP      4 => 0051
+0050 => KPRI     3   2
+0051 => CALL     1   1   2
+0052    TNEW     1   0
+0053    GGET     2   0      ; "assert"
+0054    GGET     4   0      ; "assert"
+0055    MOV      6   1
+0056    CALL     4   2   2
+0057    ISEQV    4   1
+0058    JMP      4 => 0061
+0059    KPRI     4   1
+0060    JMP      5 => 0062
+0061 => KPRI     4   2
+0062 => CALL     2   1   2
+0063    GGET     0   0      ; "assert"
+0064    KSTR     2   3      ; "b"
+0065    KSTR     3   4      ; "c"
+0066    CALL     0   3   3
+0067    GGET     2   0      ; "assert"
+0068    ISEQS    0   3      ; "b"
+0069    JMP      4 => 0072
+0070    KPRI     4   1
+0071    JMP      5 => 0073
+0072 => KPRI     4   2
+0073 => CALL     2   1   2
+0074    GGET     2   0      ; "assert"
+0075    ISEQS    1   4      ; "c"
+0076    JMP      4 => 0079
+0077    KPRI     4   1
+0078    JMP      5 => 0080
+0079 => KPRI     4   2
+0080 => CALL     2   1   2
+0081    GGET     2   0      ; "assert"
+0082    KSTR     4   5      ; "d"
+0083    KSHORT   5   5
+0084    KPRI     6   2
+0085    KPRI     7   1
+0086    CALL     2   5   5
+0087    GGET     6   0      ; "assert"
+0088    ISEQS    2   5      ; "d"
+0089    JMP      8 => 0092
+0090    KPRI     8   1
+0091    JMP      9 => 0093
+0092 => KPRI     8   2
+0093 => CALL     6   1   2
+0094    GGET     6   0      ; "assert"
+0095    ISEQN    3   2      ; 5
+0096    JMP      8 => 0099
+0097    KPRI     8   1
+0098    JMP      9 => 0100
+0099 => KPRI     8   2
+0100 => CALL     6   1   2
+0101    GGET     6   0      ; "assert"
+0102    ISEQP    4   2
+0103    JMP      8 => 0106
+0104    KPRI     8   1
+0105    JMP      9 => 0107
+0106 => KPRI     8   2
+0107 => CALL     6   1   2
+0108    GGET     6   0      ; "assert"
+0109    ISEQP    5   1
+0110    JMP      8 => 0113
+0111    KPRI     8   1
+0112    JMP      9 => 0114
+0113 => KPRI     8   2
+0114 => CALL     6   1   2
+0115    GGET     0   6      ; "pcall"
+0116    GGET     2   0      ; "assert"
+0117    KPRI     3   0
+0118    CALL     0   3   3
+0119    GGET     2   0      ; "assert"
+0120    ISEQP    0   1
+0121    JMP      4 => 0124
+0122    KPRI     4   1
+0123    JMP      5 => 0125
+0124 => KPRI     4   2
+0125 => CALL     2   1   2
+0126    GGET     2   0      ; "assert"
+0127    ISEQS    1   7      ; "assertion failed!"
+0128    JMP      4 => 0131
+0129    KPRI     4   1
+0130    JMP      5 => 0132
+0131 => KPRI     4   2
+0132 => CALL     2   1   2
+0133    GGET     0   6      ; "pcall"
+0134    GGET     2   0      ; "assert"
+0135    KPRI     3   1
+0136    KSTR     4   8      ; "msg"
+0137    CALL     0   3   4
+0138    GGET     2   0      ; "assert"
+0139    ISEQP    0   1
+0140    JMP      4 => 0143
+0141    KPRI     4   1
+0142    JMP      5 => 0144
+0143 => KPRI     4   2
+0144 => CALL     2   1   2
+0145    GGET     2   0      ; "assert"
+0146    ISEQS    1   8      ; "msg"
+0147    JMP      4 => 0150
+0148    KPRI     4   1
+0149    JMP      5 => 0151
+0150 => KPRI     4   2
+0151 => CALL     2   1   2
+0152    RET0     0   1
+

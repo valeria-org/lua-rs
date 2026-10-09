@@ -1,0 +1,9 @@
+-- BYTECODE -- eol_mixed.lua:0-12
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    KSHORT   2   3
+0004    KSTR     3   0      ; "x\ny\nz\n\nw"
+0005    ADDVV    4   0   1
+0006    ADDVV    4   4   2
+0007    RET1     4   2
+

@@ -1,0 +1,1 @@
+[string "x = function() return function() return funct..."]:1: chunk has too many syntax levels

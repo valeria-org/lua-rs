@@ -1,0 +1,23 @@
+-- BYTECODE -- strings_escapes.lua:0-23
+0001    KPRI     0   0
+0002    KSTR     0   0      ; "\007\008\012\n\r\t\011\"'"
+0003    KSTR     0   0      ; "\007\008\012\n\r\t\011\"'"
+0004    KSTR     0   1      ; "ABCz\127ˇ\000"
+0005    KSTR     0   2      ; "ABC7\000\000\000ˇ\001\012{"
+0006    KSTR     0   3      ; "abc"
+0007    KSTR     0   4      ; "H\000\127¬Äﬂø‡†ÄÔøøêÄÄÙèøøA"
+0008    KSTR     0   5      ; "line1\nline2"
+0009    KSTR     0   6      ; "it's"
+0010    KSTR     0   7      ; "tab\tinside"
+0011    KSTR     0   8      ; ""
+0012    KSTR     0   8      ; ""
+0013    KSTR     0   9      ; ""quoted""
+0014    KSTR     0  10      ; ""single""
+0015    KSTR     0  11      ; "\n"
+0016    KSTR     0  12      ; "nul\000byte"
+0017    KSTR     0  13      ; "high»…˛"
+0018    KSTR     0   8      ; ""
+0019    KSTR     0  14      ; "esc\027[0m"
+0020    KSTR     0  15      ; "ÓÄÄÌüø"
+0021    RET0     0   1
+

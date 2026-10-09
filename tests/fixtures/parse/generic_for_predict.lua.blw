@@ -1,0 +1,82 @@
+-- BYTECODE -- generic_for_predict.lua:15-17
+0001    GGET     0   0      ; "pairs"
+0002    UGET     1   0      ; t
+0003    CALL     0   4   2
+0004    ISNEXT   3 => 0005
+0005 => ITERN    3   3   3
+0006    ITERL    3 => 0005
+0007    RET0     0   1
+
+-- BYTECODE -- generic_for_predict.lua:19-22
+0001    UGET     0   0      ; pairs
+0002    UGET     1   1      ; t
+0003    CALL     0   4   2
+0004    ISNEXT   3 => 0005
+0005 => ITERN    3   3   3
+0006    ITERL    3 => 0005
+0007    UGET     0   2      ; next
+0008    UGET     1   1      ; t
+0009    KPRI     2   0
+0010    ISNEXT   3 => 0011
+0011 => ITERN    3   3   3
+0012    ITERL    3 => 0011
+0013    RET0     0   1
+
+-- BYTECODE -- generic_for_predict.lua:23-26
+0001    KSHORT   0   1
+0002    MOV      1   0
+0003    KNIL     2   3
+0004    ISNEXT   4 => 0005
+0005 => ITERN    4   2   3
+0006    ITERL    4 => 0005
+0007    RET0     0   1
+
+-- BYTECODE -- generic_for_predict.lua:0-30
+0001    TNEW     0   0
+0002    GGET     1   0      ; "pairs"
+0003    MOV      2   1
+0004    MOV      3   0
+0005    CALL     2   4   2
+0006    ISNEXT   5 => 0007
+0007 => ITERN    5   3   3
+0008    ITERL    5 => 0007
+0009    GGET     1   1      ; "next"
+0010    MOV      2   1
+0011    MOV      3   0
+0012    KPRI     4   0
+0013    ISNEXT   5 => 0014
+0014 => ITERN    5   3   3
+0015    ITERL    5 => 0014
+0016    GGET     1   0      ; "pairs"
+0017    MOV      2   1
+0018    MOV      3   0
+0019    CALL     2   4   2
+0020    JMP      5 => 0021
+0021 => ITERC    5   3   3
+0022    ITERL    5 => 0021
+0023    FNEW     1   2      ; generic_for_predict.lua:15
+0024    GGET     2   0      ; "pairs"
+0025    GGET     3   1      ; "next"
+0026    FNEW     4   3      ; generic_for_predict.lua:19
+0027    FNEW     5   4      ; generic_for_predict.lua:23
+0028    MOV      6   2
+0029    MOV      7   0
+0030    CALL     6   4   2
+0031    ISNEXT   9 => 0032
+0032 => ITERN    9   3   3
+0033    ITERL    9 => 0032
+0034    TGETS    6   0   0  ; "pairs"
+0035    MOV      7   0
+0036    CALL     6   4   2
+0037    JMP      9 => 0038
+0038 => ITERC    9   3   3
+0039    ITERL    9 => 0038
+0040    MOV      6   2
+0041    MOV      7   0
+0042    KPRI     8   0
+0043    ISNEXT   9 => 0044
+0044 => ITERN    9   3   3
+0045    ITERL    9 => 0044
+0046    UCLO     0 => 0047
+0047 => RET0     0   1
+

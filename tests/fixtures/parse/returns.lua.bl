@@ -1,0 +1,164 @@
+-- BYTECODE -- returns.lua:2-2
+0001    RET0     0   1
+
+-- BYTECODE -- returns.lua:3-3
+0001    KSHORT   0   1
+0002    RET1     0   2
+
+-- BYTECODE -- returns.lua:4-4
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    RET      0   3
+
+-- BYTECODE -- returns.lua:5-5
+0001    RET1     0   2
+
+-- BYTECODE -- returns.lua:6-6
+0001    MOV      2   1
+0002    MOV      3   0
+0003    RET      2   3
+
+-- BYTECODE -- returns.lua:7-7
+0001    VARG     0   0   0
+0002    RETM     0   0
+
+-- BYTECODE -- returns.lua:8-8
+0001    GGET     0   0      ; "f"
+0002    VARG     2   0   0
+0003    CALLMT   0   0
+
+-- BYTECODE -- returns.lua:9-9
+0001    MOV      1   0
+0002    KSHORT   3   1
+0003    KSHORT   4   2
+0004    CALLT    1   3
+
+-- BYTECODE -- returns.lua:10-10
+0001    MOV      3   0
+0002    TGETS    1   0   0  ; "m"
+0003    KSHORT   4   1
+0004    CALLT    1   3
+
+-- BYTECODE -- returns.lua:11-11
+0001    KSHORT   0   1
+0002    VARG     1   0   0
+0003    RETM     0   1
+
+-- BYTECODE -- returns.lua:12-12
+0001    KSHORT   0   1
+0002    GGET     1   0      ; "f"
+0003    CALL     1   0   1
+0004    RETM     0   1
+
+-- BYTECODE -- returns.lua:13-13
+0001    GGET     0   0      ; "f"
+0002    CALL     0   2   1
+0003    RET1     0   2
+
+-- BYTECODE -- returns.lua:14-14
+0001    KPRI     0   0
+0002    RET1     0   2
+
+-- BYTECODE -- returns.lua:15-15
+0001    KPRI     0   2
+0002    KPRI     1   1
+0003    RET      0   3
+
+-- BYTECODE -- returns.lua:16-16
+0001    KSTR     0   0      ; "s"
+0002    RET1     0   2
+
+-- BYTECODE -- returns.lua:17-17
+0001    KNUM     0   0      ; 1.5
+0002    RET1     0   2
+
+-- BYTECODE -- returns.lua:18-18
+0001    TDUP     0   0
+0002    RET1     0   2
+
+-- BYTECODE -- returns.lua:19-19
+0001    RET0     0   1
+
+-- BYTECODE -- returns.lua:19-19
+0001    FNEW     0   0      ; returns.lua:19
+0002    UCLO     0 => 0003
+0003 => RET1     0   2
+
+-- BYTECODE -- returns.lua:20-20
+0001    ISF          0
+0002    JMP      1 => 0006
+0003    KSHORT   1   1
+0004    RET1     1   2
+0005    JMP      1 => 0008
+0006 => KSHORT   1   2
+0007    RET1     1   2
+0008 => RET0     0   1
+
+-- BYTECODE -- returns.lua:21-21
+0001    ADDVV    2   0   1
+0002    RET1     2   2
+
+-- BYTECODE -- returns.lua:22-22
+0001    RET0     0   1
+
+-- BYTECODE -- returns.lua:23-23
+0001    KSHORT   0   1
+0002    RET1     0   2
+
+-- BYTECODE -- returns.lua:24-24
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    KSHORT   2   1
+0004    FORI     0 => 0007
+0005 => RET1     3   2
+0006    FORL     0 => 0005
+0007 => RET0     0   1
+
+-- BYTECODE -- returns.lua:25-25
+0001    TGETS    1   0   0  ; "b"
+0002    TGETS    1   1   1  ; "c"
+0003    TGETS    1   1   2  ; "d"
+0004    RET1     1   2
+
+-- BYTECODE -- returns.lua:26-26
+0001    GGET     0   0      ; "f"
+0002    KSTR     2   1      ; "x"
+0003    CALLT    0   2
+
+-- BYTECODE -- returns.lua:27-27
+0001    GGET     0   0      ; "f"
+0002    TDUP     2   1
+0003    CALLT    0   2
+
+-- BYTECODE -- returns.lua:0-29
+0001    FNEW     0   0      ; returns.lua:2
+0002    FNEW     1   1      ; returns.lua:3
+0003    FNEW     2   2      ; returns.lua:4
+0004    FNEW     3   3      ; returns.lua:5
+0005    FNEW     4   4      ; returns.lua:6
+0006    FNEW     5   5      ; returns.lua:7
+0007    FNEW     6   6      ; returns.lua:8
+0008    FNEW     7   7      ; returns.lua:9
+0009    FNEW     8   8      ; returns.lua:10
+0010    FNEW     9   9      ; returns.lua:11
+0011    FNEW    10  10      ; returns.lua:12
+0012    FNEW    11  11      ; returns.lua:13
+0013    FNEW    12  12      ; returns.lua:14
+0014    FNEW    13  13      ; returns.lua:15
+0015    FNEW    14  14      ; returns.lua:16
+0016    FNEW    15  15      ; returns.lua:17
+0017    FNEW    16  16      ; returns.lua:18
+0018    FNEW    17  17      ; returns.lua:19
+0019    FNEW    18  18      ; returns.lua:20
+0020    FNEW    19  19      ; returns.lua:21
+0021    FNEW    20  20      ; returns.lua:22
+0022    FNEW    21  21      ; returns.lua:23
+0023    FNEW    22  22      ; returns.lua:24
+0024    FNEW    23  23      ; returns.lua:25
+0025    FNEW    24  24      ; returns.lua:26
+0026    FNEW    25  25      ; returns.lua:27
+0027    MOV     26   0
+0028    MOV     27   1
+0029    UCLO     0 => 0030
+0030 => RET     26   3
+

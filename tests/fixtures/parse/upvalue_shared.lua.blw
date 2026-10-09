@@ -1,0 +1,68 @@
+-- BYTECODE -- upvalue_shared.lua:4-4
+0001    UGET     0   0      ; a
+0002    UGET     1   1      ; b
+0003    RET      0   3
+
+-- BYTECODE -- upvalue_shared.lua:5-5
+0001    UGET     0   0      ; c
+0002    UGET     1   1      ; d
+0003    UGET     2   2      ; a
+0004    RET      0   4
+
+-- BYTECODE -- upvalue_shared.lua:6-6
+0001    USETN    0   0      ; a ; 10
+0002    UGET     0   1      ; f1
+0003    UGET     1   2      ; f2
+0004    RET      0   3
+
+-- BYTECODE -- upvalue_shared.lua:9-9
+0001    UGET     0   0      ; a
+0002    UGET     1   1      ; b
+0003    UGET     2   2      ; c
+0004    UGET     3   3      ; d
+0005    UGET     4   4      ; f1
+0006    UGET     5   5      ; f2
+0007    UGET     6   6      ; f3
+0008    RET      0   8
+
+-- BYTECODE -- upvalue_shared.lua:8-10
+0001    FNEW     0   0      ; upvalue_shared.lua:9
+0002    UCLO     0 => 0003
+0003 => RET1     0   2
+
+-- BYTECODE -- upvalue_shared.lua:7-11
+0001    FNEW     0   0      ; upvalue_shared.lua:8
+0002    UCLO     0 => 0003
+0003 => RET1     0   2
+
+-- BYTECODE -- upvalue_shared.lua:2-12
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    KSHORT   2   3
+0004    KSHORT   3   4
+0005    FNEW     4   0      ; upvalue_shared.lua:4
+0006    FNEW     5   1      ; upvalue_shared.lua:5
+0007    FNEW     6   2      ; upvalue_shared.lua:6
+0008    FNEW     7   3      ; upvalue_shared.lua:7
+0009    UCLO     0 => 0010
+0010 => RET1     7   2
+
+-- BYTECODE -- upvalue_shared.lua:14-14
+0001    KSHORT   1   0
+0002    ISGE     1   0
+0003    JMP      1 => 0007
+0004    UGET     1   0      ; rec
+0005    SUBVN    2   0   0  ; 1
+0006    CALLT    1   2
+0007 => UGET     1   1      ; x
+0008    RET1     1   2
+
+-- BYTECODE -- upvalue_shared.lua:0-16
+0001    FNEW     0   0      ; upvalue_shared.lua:2
+0002    KSHORT   1   1
+0003    FNEW     2   1      ; upvalue_shared.lua:14
+0004    MOV      3   0
+0005    MOV      4   2
+0006    UCLO     0 => 0007
+0007 => RET      3   3
+

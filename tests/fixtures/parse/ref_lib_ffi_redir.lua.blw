@@ -1,0 +1,38 @@
+-- BYTECODE -- ref_lib_ffi_redir.lua:0-20
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "ffi"
+0003    CALL     0   2   2
+0004    TGETS    1   0   2  ; "cdef"
+0005    KSTR     2   3      ; "  int redir_foo(const char *s) asm("strl"~
+0006    CALL     1   1   2
+0007    GGET     1   4      ; "assert"
+0008    TGETS    2   0   5  ; "C"
+0009    TGETS    2   2   6  ; "redir_foo"
+0010    KSTR     3   7      ; "abcd"
+0011    CALL     2   2   2
+0012    ISEQN    2   0      ; 4
+0013    JMP      2 => 0016
+0014    KPRI     2   1
+0015    JMP      3 => 0017
+0016 => KPRI     2   2
+0017 => CALL     1   1   2
+0018    TGETS    1   0   2  ; "cdef"
+0019    KSTR     2   8      ; "  int redir_bar asm("errno");\n  "
+0020    CALL     1   1   2
+0021    TGETS    1   0   5  ; "C"
+0022    KSHORT   2  14
+0023    TSETS    2   1   9  ; "redir_bar"
+0024    GGET     1   4      ; "assert"
+0025    TGETS    2   0   5  ; "C"
+0026    TGETS    2   2   9  ; "redir_bar"
+0027    ISEQN    2   1      ; 14
+0028    JMP      2 => 0031
+0029    KPRI     2   1
+0030    JMP      3 => 0032
+0031 => KPRI     2   2
+0032 => CALL     1   1   2
+0033    TGETS    1   0   5  ; "C"
+0034    KSHORT   2   0
+0035    TSETS    2   1   9  ; "redir_bar"
+0036    RET0     0   1
+

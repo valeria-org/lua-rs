@@ -1,0 +1,1983 @@
+-- BYTECODE -- ref_jit_dump.lua:84-98
+0001    TNEW     2   0
+0002    UGET     3   0      ; symtabmt
+0003    TSETS    2   3   0  ; "__index"
+0004    UGET     3   1      ; jit
+0005    TGETS    3   3   1  ; "arch"
+0006    MOV      4   3
+0007    TGETS    3   3   2  ; "sub"
+0008    KSHORT   5   1
+0009    KSHORT   6   4
+0010    CALL     3   2   4
+0011    ISNES    3   3      ; "mips"
+0012    JMP      3 => 0020
+0013    UGET     3   2      ; traceexitstub
+0014    MOV      4   0
+0015    KSHORT   5   0
+0016    CALL     3   2   3
+0017    KSTR     4   4      ; "exit"
+0018    TSETV    4   2   3
+0019    RET0     0   1
+0020 => KSHORT   3   0
+0021    SUBVN    4   1   0  ; 1
+0022    KSHORT   5   1
+0023    FORI     3 => 0037
+0024 => UGET     7   2      ; traceexitstub
+0025    MOV      8   0
+0026    MOV      9   6
+0027    CALL     7   2   3
+0028    KSHORT   8   0
+0029    ISGE     7   8
+0030    JMP      8 => 0032
+0031    ADDVN    7   7   1  ; 4294967296
+0032 => UGET     8   3      ; tostring
+0033    MOV      9   6
+0034    CALL     8   2   2
+0035    TSETV    8   2   7
+0036    FORL     3 => 0024
+0037 => UGET     3   2      ; traceexitstub
+0038    MOV      4   0
+0039    MOV      5   1
+0040    CALL     3   2   3
+0041    ISF          3
+0042    JMP      4 => 0045
+0043    KSTR     4   5      ; "stack_check"
+0044    TSETV    4   2   3
+0045 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:101-132
+0001    UGET     2   0      ; symtab
+0002    UGET     3   1      ; nexitsym
+0003    ISNEN    3   0      ; 0
+0004    JMP      3 => 0035
+0005    UGET     3   2      ; jit
+0006    TGETS    3   3   0  ; "arch"
+0007    ISNES    3   1      ; "arm"
+0008    JMP      3 => 0011
+0009    KSHORT   3  -2
+0010    JMP      4 => 0014
+0011 => KPRI     3   1
+0012    JMP      4 => 0014
+0013    KPRI     3   2
+0014 => UGET     4   3      ; vmdef
+0015    TGETS    4   4   2  ; "ircall"
+0016    KSHORT   5   0
+0017    LEN      6   4
+0018    KSHORT   7   1
+0019    FORI     5 => 0035
+0020 => UGET     9   4      ; ircalladdr
+0021    MOV     10   8
+0022    CALL     9   2   2
+0023    ISEQN    9   0      ; 0
+0024    JMP     10 => 0034
+0025    ISF          3
+0026    JMP     10 => 0028
+0027    BAND     9   9   3
+0028 => KSHORT  10   0
+0029    ISGE     9  10
+0030    JMP     10 => 0032
+0031    ADDVN    9   9   1  ; 4294967296
+0032 => TGETV   10   4   8
+0033    TSETV   10   2   9
+0034 => FORL     5 => 0020
+0035 => UGET     3   1      ; nexitsym
+0036    ISNEN    3   2      ; 1000000
+0037    JMP      3 => 0043
+0038    UGET     3   5      ; fillsymtab_tr
+0039    MOV      4   0
+0040    MOV      5   1
+0041    CALL     3   1   3
+0042    JMP      3 => 0075
+0043 => UGET     3   1      ; nexitsym
+0044    ISGE     3   1
+0045    JMP      3 => 0075
+0046    UGET     3   1      ; nexitsym
+0047    SUBVN    4   1   3  ; 1
+0048    KSHORT   5   1
+0049    FORI     3 => 0074
+0050 => UGET     7   6      ; traceexitstub
+0051    MOV      8   6
+0052    CALL     7   2   2
+0053    ISNEP    7   0
+0054    JMP      8 => 0065
+0055    UGET     8   5      ; fillsymtab_tr
+0056    MOV      9   0
+0057    MOV     10   1
+0058    CALL     8   1   3
+0059    GGET     8   3      ; "setmetatable"
+0060    UGET     9   0      ; symtab
+0061    UGET    10   7      ; symtabmt
+0062    CALL     8   1   3
+0063    KNUM     1   2      ; 1000000
+0064    JMP      3 => 0074
+0065 => KSHORT   8   0
+0066    ISGE     7   8
+0067    JMP      8 => 0069
+0068    ADDVN    7   7   1  ; 4294967296
+0069 => UGET     8   8      ; tostring
+0070    MOV      9   6
+0071    CALL     8   2   2
+0072    TSETV    8   2   7
+0073    FORL     3 => 0050
+0074 => USETV    1   1      ; nexitsym
+0075 => RET1     2   2
+
+-- BYTECODE -- ref_jit_dump.lua:134-136
+0001    UGET     1   0      ; out
+0002    MOV      2   1
+0003    TGETS    1   1   0  ; "write"
+0004    MOV      3   0
+0005    CALL     1   1   3
+0006    RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:139-159
+0001    UGET     1   0      ; traceinfo
+0002    MOV      2   0
+0003    CALL     1   2   2
+0004    IST          1
+0005    JMP      2 => 0007
+0006    RET0     0   1
+0007 => UGET     2   1      ; tracemc
+0008    MOV      3   0
+0009    CALL     2   4   2
+0010    IST          2
+0011    JMP      5 => 0013
+0012    RET0     0   1
+0013 => UGET     5   2      ; disass
+0014    IST          5
+0015    JMP      5 => 0023
+0016    GGET     5   0      ; "require"
+0017    KSTR     6   1      ; "jit.dis_"
+0018    UGET     7   3      ; jit
+0019    TGETS    7   7   2  ; "arch"
+0020    CAT      6   6   7
+0021    CALL     5   2   2
+0022    USETV    2   5      ; disass
+0023 => KSHORT   5   0
+0024    ISGE     3   5
+0025    JMP      5 => 0027
+0026    ADDVN    3   3   0  ; 4294967296
+0027 => UGET     5   4      ; out
+0028    MOV      6   5
+0029    TGETS    5   5   3  ; "write"
+0030    KSTR     7   4      ; "---- TRACE "
+0031    MOV      8   0
+0032    KSTR     9   5      ; " mcode "
+0033    LEN     10   2
+0034    KSTR    11   6      ; "\n"
+0035    CALL     5   1   7
+0036    UGET     5   2      ; disass
+0037    TGETS    5   5   7  ; "create"
+0038    MOV      6   2
+0039    MOV      7   3
+0040    UGET     8   5      ; dumpwrite
+0041    CALL     5   2   4
+0042    KSHORT   6   0
+0043    TSETS    6   5   8  ; "hexdump"
+0044    UGET     6   6      ; fillsymtab
+0045    MOV      7   0
+0046    TGETS    8   1  10  ; "nexit"
+0047    CALL     6   2   3
+0048    TSETS    6   5   9  ; "symtab"
+0049    ISEQN    4   1      ; 0
+0050    JMP      6 => 0076
+0051    UGET     6   7      ; symtab
+0052    ADDVV    7   3   4
+0053    KSTR     8  11      ; "LOOP"
+0054    TSETV    8   6   7
+0055    MOV      7   5
+0056    TGETS    6   5  12  ; "disass"
+0057    KSHORT   8   0
+0058    MOV      9   4
+0059    CALL     6   1   4
+0060    UGET     6   4      ; out
+0061    MOV      7   6
+0062    TGETS    6   6   3  ; "write"
+0063    KSTR     8  13      ; "->LOOP:\n"
+0064    CALL     6   1   3
+0065    MOV      7   5
+0066    TGETS    6   5  12  ; "disass"
+0067    MOV      8   4
+0068    LEN      9   2
+0069    SUBVV    9   9   4
+0070    CALL     6   1   4
+0071    UGET     6   7      ; symtab
+0072    ADDVV    7   3   4
+0073    KPRI     8   0
+0074    TSETV    8   6   7
+0075    JMP      6 => 0081
+0076 => MOV      7   5
+0077    TGETS    6   5  12  ; "disass"
+0078    KSHORT   8   0
+0079    LEN      9   2
+0080    CALL     6   1   4
+0081 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:217-219
+0001    RET1     0   2
+
+-- BYTECODE -- ref_jit_dump.lua:221-225
+0001    UGET     3   0      ; format
+0002    UGET     4   1      ; colortype_ansi
+0003    TGETV    4   4   1
+0004    MOV      5   0
+0005    CALL     3   2   3
+0006    ISF          2
+0007    JMP      4 => 0011
+0008    KSTR     4   0      ; "\027[3m"
+0009    MOV      5   3
+0010    CAT      3   4   5
+0011 => RET1     3   2
+
+-- BYTECODE -- ref_jit_dump.lua:228-229
+0001    UGET     2   0      ; colorize_ansi
+0002    UGET     3   1      ; irtype_text
+0003    TGETV    3   3   1
+0004    MOV      4   1
+0005    CALL     2   2   3
+0006    TSETV    2   0   1
+0007    RET1     2   2
+
+-- BYTECODE -- ref_jit_dump.lua:233-237
+0001    UGET     3   0      ; gsub
+0002    MOV      4   0
+0003    KSTR     5   0      ; "[<>&]"
+0004    UGET     6   1      ; html_escape
+0005    CALL     3   2   4
+0006    MOV      0   3
+0007    UGET     3   2      ; format
+0008    KSTR     4   1      ; "<span class="irt_%s%s">%s</span>"
+0009    UGET     5   3      ; irtype_text
+0010    TGETV    5   5   1
+0011    ISF          2
+0012    JMP      6 => 0015
+0013    KSTR     6   2      ; " irt_extra"
+0014    JMP      7 => 0016
+0015 => KSTR     6   3      ; ""
+0016 => MOV      7   0
+0017    CALLT    3   5
+
+-- BYTECODE -- ref_jit_dump.lua:240-241
+0001    UGET     2   0      ; colorize_html
+0002    UGET     3   1      ; irtype_text
+0003    TGETV    3   3   1
+0004    MOV      4   1
+0005    CALL     2   2   3
+0006    TSETV    2   0   1
+0007    RET1     2   2
+
+-- BYTECODE -- ref_jit_dump.lua:269-280
+0001    KSTR     2   0      ; ""
+0002    KSHORT   3   1
+0003    BAND     3   1   3
+0004    ISEQN    3   0      ; 0
+0005    JMP      3 => 0009
+0006    MOV      3   2
+0007    KSTR     4   1      ; "P"
+0008    CAT      2   3   4
+0009 => KSHORT   3   2
+0010    BAND     3   1   3
+0011    ISEQN    3   0      ; 0
+0012    JMP      3 => 0016
+0013    MOV      3   2
+0014    KSTR     4   2      ; "F"
+0015    CAT      2   3   4
+0016 => KSHORT   3   4
+0017    BAND     3   1   3
+0018    ISEQN    3   0      ; 0
+0019    JMP      3 => 0023
+0020    MOV      3   2
+0021    KSTR     4   3      ; "T"
+0022    CAT      2   3   4
+0023 => KSHORT   3   8
+0024    BAND     3   1   3
+0025    ISEQN    3   0      ; 0
+0026    JMP      3 => 0030
+0027    MOV      3   2
+0028    KSTR     4   4      ; "C"
+0029    CAT      2   3   4
+0030 => KSHORT   3  16
+0031    BAND     3   1   3
+0032    ISEQN    3   0      ; 0
+0033    JMP      3 => 0037
+0034    MOV      3   2
+0035    KSTR     4   5      ; "R"
+0036    CAT      2   3   4
+0037 => KSHORT   3  32
+0038    BAND     3   1   3
+0039    ISEQN    3   0      ; 0
+0040    JMP      3 => 0044
+0041    MOV      3   2
+0042    KSTR     4   6      ; "I"
+0043    CAT      2   3   4
+0044 => KSHORT   3  64
+0045    BAND     3   1   3
+0046    ISEQN    3   0      ; 0
+0047    JMP      3 => 0051
+0048    MOV      3   2
+0049    KSTR     4   7      ; "K"
+0050    CAT      2   3   4
+0051 => TSETV    2   0   1
+0052    RET1     2   2
+
+-- BYTECODE -- ref_jit_dump.lua:282-292
+0001    UGET     2   0      ; irtype
+0002    KSHORT   3  31
+0003    BAND     3   1   3
+0004    TGETV    2   2   3
+0005    UGET     3   0      ; irtype
+0006    KSHORT   4   5
+0007    BSHR     4   1   4
+0008    KSHORT   5  31
+0009    BAND     4   4   5
+0010    TGETV    3   3   4
+0011    KSTR     4   0      ; "."
+0012    MOV      5   2
+0013    CAT      2   3   5
+0014    KSHORT   3 2048
+0015    BAND     3   1   3
+0016    ISEQN    3   0      ; 0
+0017    JMP      3 => 0021
+0018    MOV      3   2
+0019    KSTR     4   1      ; " sext"
+0020    CAT      2   3   4
+0021 => KSHORT   3  12
+0022    BSHR     3   1   3
+0023    ISNEN    3   1      ; 1
+0024    JMP      4 => 0029
+0025    MOV      4   2
+0026    KSTR     5   2      ; " none"
+0027    CAT      2   4   5
+0028    JMP      4 => 0040
+0029 => ISNEN    3   2      ; 2
+0030    JMP      4 => 0035
+0031    MOV      4   2
+0032    KSTR     5   3      ; " index"
+0033    CAT      2   4   5
+0034    JMP      4 => 0040
+0035 => ISNEN    3   3      ; 3
+0036    JMP      4 => 0040
+0037    MOV      4   2
+0038    KSTR     5   4      ; " check"
+0039    CAT      2   4   5
+0040 => TSETV    2   0   1
+0041    RET1     2   2
+
+-- BYTECODE -- ref_jit_dump.lua:301-307
+0001    ISNES    0   0      ; "\n"
+0002    JMP      1 => 0006
+0003    KSTR     1   1      ; "\n"
+0004    RET1     1   2
+0005    JMP      1 => 0022
+0006 => ISNES    0   2      ; "\r"
+0007    JMP      1 => 0011
+0008    KSTR     1   3      ; "\r"
+0009    RET1     1   2
+0010    JMP      1 => 0022
+0011 => ISNES    0   4      ; "\t"
+0012    JMP      1 => 0016
+0013    KSTR     1   5      ; "\t"
+0014    RET1     1   2
+0015    JMP      1 => 0022
+0016 => UGET     1   0      ; format
+0017    KSTR     2   6      ; "\%03d"
+0018    UGET     3   1      ; byte
+0019    MOV      4   0
+0020    CALL     3   0   2
+0021    CALLMT   1   1
+0022 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:309-320
+0001    UGET     2   0      ; funcinfo
+0002    MOV      3   0
+0003    MOV      4   1
+0004    CALL     2   2   3
+0005    TGETS    3   2   0  ; "loc"
+0006    ISF          3
+0007    JMP      4 => 0011
+0008    TGETS    3   2   0  ; "loc"
+0009    RET1     3   2
+0010    JMP      3 => 0030
+0011 => TGETS    3   2   1  ; "ffid"
+0012    ISF          3
+0013    JMP      4 => 0020
+0014    UGET     3   1      ; vmdef
+0015    TGETS    3   3   2  ; "ffnames"
+0016    TGETS    4   2   1  ; "ffid"
+0017    TGETV    3   3   4
+0018    RET1     3   2
+0019    JMP      3 => 0030
+0020 => TGETS    3   2   3  ; "addr"
+0021    ISF          3
+0022    JMP      4 => 0028
+0023    UGET     3   2      ; format
+0024    KSTR     4   4      ; "C:%x"
+0025    TGETS    5   2   3  ; "addr"
+0026    CALLT    3   3
+0027    JMP      3 => 0030
+0028 => KSTR     3   5      ; "(?)"
+0029    RET1     3   2
+0030 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:322-362
+0001    UGET     3   0      ; tracek
+0002    MOV      4   0
+0003    MOV      5   1
+0004    CALL     3   4   3
+0005    UGET     6   1      ; type
+0006    MOV      7   3
+0007    CALL     6   2   2
+0008    KPRI     7   0
+0009    ISNES    6   0      ; "number"
+0010    JMP      8 => 0058
+0011    KSHORT   8  12
+0012    ISGE     4   8
+0013    JMP      8 => 0024
+0014    ISNEN    3   0      ; 0
+0015    JMP      8 => 0018
+0016    KSTR     8   1      ; "NULL"
+0017    JMP      9 => 0022
+0018 => UGET     8   2      ; format
+0019    KSTR     9   2      ; "[0x%08x]"
+0020    MOV     10   3
+0021    CALL     8   2   3
+0022 => MOV      7   8
+0023    JMP      8 => 0140
+0024 => ISTC     8   2
+0025    JMP      8 => 0027
+0026    KSHORT   8   0
+0027 => KNUM     9   1      ; 196608
+0028    BAND     8   8   9
+0029    ISEQN    8   0      ; 0
+0030    JMP      8 => 0040
+0031    KNUM     8   2      ; 131072
+0032    BAND     8   2   8
+0033    ISEQN    8   0      ; 0
+0034    JMP      8 => 0037
+0035    KSTR     8   3      ; "contpc"
+0036    JMP      9 => 0038
+0037 => KSTR     8   4      ; "ftsz"
+0038 => MOV      7   8
+0039    JMP      8 => 0140
+0040 => ISNEN    3   3      ; 6.7553994410557e+15
+0041    JMP      8 => 0044
+0042    KSTR     7   5      ; "bias"
+0043    JMP      8 => 0140
+0044 => UGET     8   2      ; format
+0045    KSHORT   9   0
+0046    ISGE     9   3
+0047    JMP      9 => 0053
+0048    KNUM     9   4      ; 1.390671161567e-309
+0049    ISGE     3   9
+0050    JMP      9 => 0053
+0051    KSTR     9   6      ; "%+a"
+0052    JMP     10 => 0054
+0053 => KSTR     9   7      ; "%+.14g"
+0054 => MOV     10   3
+0055    CALL     8   2   3
+0056    MOV      7   8
+0057    JMP      8 => 0140
+0058 => ISNES    6   8      ; "string"
+0059    JMP      8 => 0076
+0060    UGET     8   2      ; format
+0061    LEN      9   3
+0062    KSHORT  10  20
+0063    ISGE    10   9
+0064    JMP      9 => 0067
+0065    KSTR     9   9      ; ""%.20s"~"
+0066    JMP     10 => 0068
+0067 => KSTR     9  10      ; ""%s""
+0068 => UGET    10   3      ; gsub
+0069    MOV     11   3
+0070    KSTR    12  11      ; "%c"
+0071    UGET    13   4      ; ctlsub
+0072    CALL    10   0   4
+0073    CALLM    8   2   1
+0074    MOV      7   8
+0075    JMP      8 => 0140
+0076 => ISNES    6  12      ; "function"
+0077    JMP      8 => 0083
+0078    UGET     8   5      ; fmtfunc
+0079    MOV      9   3
+0080    CALL     8   2   2
+0081    MOV      7   8
+0082    JMP      8 => 0140
+0083 => ISNES    6  13      ; "table"
+0084    JMP      8 => 0091
+0085    UGET     8   2      ; format
+0086    KSTR     9  14      ; "{%p}"
+0087    MOV     10   3
+0088    CALL     8   2   3
+0089    MOV      7   8
+0090    JMP      8 => 0140
+0091 => ISNES    6  15      ; "userdata"
+0092    JMP      8 => 0110
+0093    ISNEN    4   5      ; 12
+0094    JMP      8 => 0101
+0095    UGET     8   2      ; format
+0096    KSTR     9  16      ; "userdata:%p"
+0097    MOV     10   3
+0098    CALL     8   2   3
+0099    MOV      7   8
+0100    JMP      8 => 0140
+0101 => UGET     8   2      ; format
+0102    KSTR     9  17      ; "[%p]"
+0103    MOV     10   3
+0104    CALL     8   2   3
+0105    MOV      7   8
+0106    ISNES    7  18      ; "[NULL]"
+0107    JMP      8 => 0140
+0108    KSTR     7   1      ; "NULL"
+0109    JMP      8 => 0140
+0110 => ISNEN    4   6      ; 21
+0111    JMP      8 => 0131
+0112    UGET     8   6      ; sub
+0113    UGET     9   7      ; tostring
+0114    MOV     10   3
+0115    CALL     9   2   2
+0116    KSHORT  10   1
+0117    KSHORT  11  -3
+0118    CALL     8   2   4
+0119    MOV      7   8
+0120    UGET     8   6      ; sub
+0121    MOV      9   7
+0122    KSHORT  10   1
+0123    KSHORT  11   1
+0124    CALL     8   2   4
+0125    ISEQS    8  19      ; "-"
+0126    JMP      8 => 0140
+0127    KSTR     8  20      ; "+"
+0128    MOV      9   7
+0129    CAT      7   8   9
+0130    JMP      8 => 0140
+0131 => ISNEN    2   7      ; 17137663
+0132    JMP      8 => 0136
+0133    KSTR     8  21      ; "----"
+0134    RET1     8   2
+0135    JMP      8 => 0140
+0136 => UGET     8   7      ; tostring
+0137    MOV      9   3
+0138    CALL     8   2   2
+0139    MOV      7   8
+0140 => UGET     8   8      ; colorize
+0141    UGET     9   2      ; format
+0142    KSTR    10  22      ; "%-4s"
+0143    MOV     11   7
+0144    CALL     9   2   3
+0145    MOV     10   4
+0146    ISTC    11   2
+0147    JMP     11 => 0149
+0148    KSHORT  11   0
+0149 => KNUM    12   8      ; 1048576
+0150    BAND    11  11  12
+0151    ISNEN   11   0      ; 0
+0152    JMP     11 => 0155
+0153    KPRI    11   1
+0154    JMP     12 => 0156
+0155 => KPRI    11   2
+0156 => CALL     8   2   4
+0157    MOV      7   8
+0158    ISF          5
+0159    JMP      8 => 0166
+0160    UGET     8   2      ; format
+0161    KSTR     9  23      ; "%s @%d"
+0162    MOV     10   7
+0163    MOV     11   5
+0164    CALL     8   2   4
+0165    MOV      7   8
+0166 => RET1     7   2
+
+-- BYTECODE -- ref_jit_dump.lua:364-385
+0001    KSHORT   2   2
+0002    KSHORT   3   0
+0003    TGETB    4   1   1
+0004    SUBVN    4   4   0  ; 1
+0005    KSHORT   5   1
+0006    FORI     3 => 0087
+0007 => TGETV    7   1   2
+0008    KSHORT   8  24
+0009    BSHR     8   7   8
+0010    ISNEV    8   6
+0011    JMP      8 => 0081
+0012    ADDVN    2   2   0  ; 1
+0013    KNUM     8   1      ; 65535
+0014    BAND     8   7   8
+0015    SUBVN    8   8   2  ; 32768
+0016    KSHORT   9   0
+0017    ISGE     8   9
+0018    JMP      9 => 0029
+0019    UGET     9   0      ; out
+0020    MOV     10   9
+0021    TGETS    9   9   0  ; "write"
+0022    UGET    11   1      ; formatk
+0023    MOV     12   0
+0024    MOV     13   8
+0025    MOV     14   7
+0026    CALL    11   0   4
+0027    CALLM    9   1   1
+0028    JMP      9 => 0069
+0029 => KNUM     9   3      ; 524288
+0030    BAND     9   7   9
+0031    ISEQN    9   4      ; 0
+0032    JMP      9 => 0046
+0033    UGET     9   0      ; out
+0034    MOV     10   9
+0035    TGETS    9   9   0  ; "write"
+0036    UGET    11   2      ; colorize
+0037    UGET    12   3      ; format
+0038    KSTR    13   1      ; "%04d/%04d"
+0039    MOV     14   8
+0040    ADDVN   15   8   0  ; 1
+0041    CALL    12   2   4
+0042    KSHORT  13  14
+0043    CALL    11   0   3
+0044    CALLM    9   1   1
+0045    JMP      9 => 0069
+0046 => UGET     9   4      ; traceir
+0047    MOV     10   0
+0048    MOV     11   8
+0049    CALL     9   5   3
+0050    UGET    13   0      ; out
+0051    MOV     14  13
+0052    TGETS   13  13   0  ; "write"
+0053    UGET    15   2      ; colorize
+0054    UGET    16   3      ; format
+0055    KSTR    17   2      ; "%04d"
+0056    MOV     18   8
+0057    CALL    16   2   3
+0058    KSHORT  17  31
+0059    BAND    17  10  17
+0060    KNUM    18   5      ; 1048576
+0061    BAND    18   7  18
+0062    ISNEN   18   4      ; 0
+0063    JMP     18 => 0066
+0064    KPRI    18   1
+0065    JMP     19 => 0067
+0066 => KPRI    18   2
+0067 => CALL    15   0   4
+0068    CALLM   13   1   1
+0069 => UGET     9   0      ; out
+0070    MOV     10   9
+0071    TGETS    9   9   0  ; "write"
+0072    KNUM    11   6      ; 65536
+0073    BAND    11   7  11
+0074    ISNEN   11   4      ; 0
+0075    JMP     11 => 0078
+0076    KSTR    11   3      ; " "
+0077    JMP     12 => 0079
+0078 => KSTR    11   4      ; "|"
+0079 => CALL     9   1   3
+0080    JMP      8 => 0086
+0081 => UGET     8   0      ; out
+0082    MOV      9   8
+0083    TGETS    8   8   0  ; "write"
+0084    KSTR    10   5      ; "---- "
+0085    CALL     8   1   3
+0086 => FORL     3 => 0007
+0087 => UGET     3   0      ; out
+0088    MOV      4   3
+0089    TGETS    3   3   0  ; "write"
+0090    KSTR     5   6      ; "]\n"
+0091    CALL     3   1   3
+0092    RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:388-396
+0001    UGET     1   0      ; out
+0002    MOV      2   1
+0003    TGETS    1   1   0  ; "write"
+0004    KSTR     3   1      ; "---- TRACE "
+0005    MOV      4   0
+0006    KSTR     5   2      ; " snapshots\n"
+0007    CALL     1   1   5
+0008    KSHORT   1   0
+0009    KNUM     2   0      ; 1000000000
+0010    KSHORT   3   1
+0011    FORI     1 => 0033
+0012 => UGET     5   1      ; tracesnap
+0013    MOV      6   0
+0014    MOV      7   4
+0015    CALL     5   2   3
+0016    IST          5
+0017    JMP      6 => 0019
+0018    JMP      1 => 0033
+0019 => UGET     6   0      ; out
+0020    MOV      7   6
+0021    TGETS    6   6   0  ; "write"
+0022    UGET     8   2      ; format
+0023    KSTR     9   3      ; "#%-3d %04d [ "
+0024    MOV     10   4
+0025    TGETB   11   5   0
+0026    CALL     8   0   4
+0027    CALLM    6   1   1
+0028    UGET     6   3      ; printsnap
+0029    MOV      7   0
+0030    MOV      8   5
+0031    CALL     6   1   3
+0032    FORL     1 => 0012
+0033 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:399-408
+0001    UGET     2   0      ; disass
+0002    IST          2
+0003    JMP      2 => 0011
+0004    GGET     2   0      ; "require"
+0005    KSTR     3   1      ; "jit.dis_"
+0006    UGET     4   1      ; jit
+0007    TGETS    4   4   2  ; "arch"
+0008    CAT      3   3   4
+0009    CALL     2   2   2
+0010    USETV    0   2      ; disass
+0011 => KSHORT   2 255
+0012    BAND     2   0   2
+0013    KSHORT   3   8
+0014    BSHR     3   0   3
+0015    ISEQN    2   0      ; 253
+0016    JMP      4 => 0019
+0017    ISNEN    2   1      ; 254
+0018    JMP      4 => 0030
+0019 => ISEQN    3   2      ; 0
+0020    JMP      4 => 0023
+0021    ISNEN    3   3      ; 255
+0022    JMP      4 => 0025
+0023 => KSTR     4   3      ; " {sink"
+0024    JMP      5 => 0029
+0025 => UGET     4   2      ; format
+0026    KSTR     5   4      ; " {%04d"
+0027    SUBVV    6   1   3
+0028    CALL     4   2   3
+0029 => RET1     4   2
+0030 => KSHORT   4 255
+0031    ISGE     4   0
+0032    JMP      4 => 0037
+0033    UGET     4   2      ; format
+0034    KSTR     5   5      ; "[%x]"
+0035    MULVN    6   3   4  ; 4
+0036    CALLT    4   3
+0037 => KSHORT   4 128
+0038    ISGE     2   4
+0039    JMP      4 => 0044
+0040    UGET     4   0      ; disass
+0041    TGETS    4   4   6  ; "regname"
+0042    MOV      5   2
+0043    CALLT    4   2
+0044 => KSTR     4   7      ; ""
+0045    RET1     4   2
+
+-- BYTECODE -- ref_jit_dump.lua:411-426
+0001    KPRI     2   0
+0002    KSHORT   3   0
+0003    ISGE     3   1
+0004    JMP      3 => 0019
+0005    UGET     3   0      ; traceir
+0006    MOV      4   0
+0007    MOV      5   1
+0008    CALL     3   5   3
+0009    KSHORT   7  31
+0010    BAND     7   4   7
+0011    ISNEN    7   0      ; 0
+0012    JMP      7 => 0019
+0013    MOV      1   5
+0014    UGET     7   1      ; formatk
+0015    MOV      8   0
+0016    MOV      9   6
+0017    CALL     7   2   3
+0018    MOV      2   7
+0019 => KSHORT   3   0
+0020    ISGE     1   3
+0021    JMP      3 => 0036
+0022    UGET     3   2      ; out
+0023    MOV      4   3
+0024    TGETS    3   3   0  ; "write"
+0025    UGET     5   3      ; format
+0026    KSTR     6   1      ; "[0x%x]("
+0027    GGET     7   2      ; "tonumber"
+0028    UGET     8   4      ; tracek
+0029    MOV      9   0
+0030    MOV     10   1
+0031    CALL     8   2   3
+0032    CALL     7   0   2
+0033    CALLM    5   0   1
+0034    CALLM    3   1   1
+0035    JMP      3 => 0044
+0036 => UGET     3   2      ; out
+0037    MOV      4   3
+0038    TGETS    3   3   0  ; "write"
+0039    UGET     5   3      ; format
+0040    KSTR     6   3      ; "%04d ("
+0041    MOV      7   1
+0042    CALL     5   0   3
+0043    CALLM    3   1   1
+0044 => RET1     2   2
+
+-- BYTECODE -- ref_jit_dump.lua:429-447
+0001    KSHORT   2   0
+0002    ISGE     1   2
+0003    JMP      2 => 0013
+0004    UGET     2   0      ; out
+0005    MOV      3   2
+0006    TGETS    2   2   0  ; "write"
+0007    UGET     4   1      ; formatk
+0008    MOV      5   0
+0009    MOV      6   1
+0010    CALL     4   0   3
+0011    CALLM    2   1   1
+0012    JMP      2 => 0063
+0013 => UGET     2   2      ; traceir
+0014    MOV      3   0
+0015    MOV      4   1
+0016    CALL     2   5   3
+0017    KSHORT   6   8
+0018    BSHR     6   3   6
+0019    MULNV    6   6   0  ; 6
+0020    UGET     7   3      ; sub
+0021    UGET     8   4      ; vmdef
+0022    TGETS    8   8   1  ; "irnames"
+0023    ADDVN    9   6   1  ; 1
+0024    ADDVN   10   6   0  ; 6
+0025    CALL     7   2   4
+0026    ISNES    7   2      ; "CARG  "
+0027    JMP      8 => 0055
+0028    UGET     8   5      ; dumpcallargs
+0029    MOV      9   0
+0030    MOV     10   4
+0031    CALL     8   1   3
+0032    KSHORT   8   0
+0033    ISGE     5   8
+0034    JMP      8 => 0045
+0035    UGET     8   0      ; out
+0036    MOV      9   8
+0037    TGETS    8   8   0  ; "write"
+0038    KSTR    10   3      ; " "
+0039    UGET    11   1      ; formatk
+0040    MOV     12   0
+0041    MOV     13   5
+0042    CALL    11   0   3
+0043    CALLM    8   1   2
+0044    JMP      8 => 0063
+0045 => UGET     8   0      ; out
+0046    MOV      9   8
+0047    TGETS    8   8   0  ; "write"
+0048    KSTR    10   3      ; " "
+0049    UGET    11   6      ; format
+0050    KSTR    12   4      ; "%04d"
+0051    MOV     13   5
+0052    CALL    11   0   3
+0053    CALLM    8   1   2
+0054    JMP      8 => 0063
+0055 => UGET     8   0      ; out
+0056    MOV      9   8
+0057    TGETS    8   8   0  ; "write"
+0058    UGET    10   6      ; format
+0059    KSTR    11   4      ; "%04d"
+0060    MOV     12   1
+0061    CALL    10   0   3
+0062    CALLM    8   1   1
+0063 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:450-544
+0001    UGET     3   0      ; traceinfo
+0002    MOV      4   0
+0003    CALL     3   2   2
+0004    IST          3
+0005    JMP      4 => 0007
+0006    RET0     0   1
+0007 => TGETS    4   3   0  ; "nins"
+0008    UGET     5   1      ; out
+0009    MOV      6   5
+0010    TGETS    5   5   1  ; "write"
+0011    KSTR     7   2      ; "---- TRACE "
+0012    MOV      8   0
+0013    KSTR     9   3      ; " IR\n"
+0014    CALL     5   1   5
+0015    UGET     5   2      ; vmdef
+0016    TGETS    5   5   4  ; "irnames"
+0017    KNUM     6   0      ; 65536
+0018    KNIL     7   8
+0019    ISF          1
+0020    JMP      9 => 0028
+0021    UGET     9   3      ; tracesnap
+0022    MOV     10   0
+0023    KSHORT  11   0
+0024    CALL     9   2   3
+0025    MOV      7   9
+0026    TGETB    6   7   0
+0027    KSHORT   8   0
+0028 => KSHORT   9   1
+0029    MOV     10   4
+0030    KSHORT  11   1
+0031    FORI     9 => 0325
+0032 => ISGT     6  12
+0033    JMP     13 => 0069
+0034    ISF          2
+0035    JMP     13 => 0045
+0036    UGET    13   1      ; out
+0037    MOV     14  13
+0038    TGETS   13  13   1  ; "write"
+0039    UGET    15   4      ; format
+0040    KSTR    16   5      ; "....              SNAP   #%-3d [ "
+0041    MOV     17   8
+0042    CALL    15   0   3
+0043    CALLM   13   1   1
+0044    JMP     13 => 0053
+0045 => UGET    13   1      ; out
+0046    MOV     14  13
+0047    TGETS   13  13   1  ; "write"
+0048    UGET    15   4      ; format
+0049    KSTR    16   6      ; "....        SNAP   #%-3d [ "
+0050    MOV     17   8
+0051    CALL    15   0   3
+0052    CALLM   13   1   1
+0053 => UGET    13   5      ; printsnap
+0054    MOV     14   0
+0055    MOV     15   7
+0056    CALL    13   1   3
+0057    ADDVN    8   8   1  ; 1
+0058    UGET    13   3      ; tracesnap
+0059    MOV     14   0
+0060    MOV     15   8
+0061    CALL    13   2   3
+0062    MOV      7  13
+0063    ISF          7
+0064    JMP     13 => 0067
+0065    TGETB   13   7   0
+0066    JMP     14 => 0068
+0067 => KNUM    13   0      ; 65536
+0068 => MOV      6  13
+0069 => UGET    13   6      ; traceir
+0070    MOV     14   0
+0071    MOV     15  12
+0072    CALL    13   6   3
+0073    KSHORT  18   8
+0074    BSHR    18  14  18
+0075    MULNV   18  18   2  ; 6
+0076    KSHORT  19  31
+0077    BAND    19  14  19
+0078    UGET    20   7      ; sub
+0079    MOV     21   5
+0080    ADDVN   22  18   1  ; 1
+0081    ADDVN   23  18   2  ; 6
+0082    CALL    20   2   4
+0083    ISNES   20   7      ; "LOOP  "
+0084    JMP     21 => 0105
+0085    ISF          2
+0086    JMP     21 => 0096
+0087    UGET    21   1      ; out
+0088    MOV     22  21
+0089    TGETS   21  21   1  ; "write"
+0090    UGET    23   4      ; format
+0091    KSTR    24   8      ; "%04d ------------ LOOP ------------\n"
+0092    MOV     25  12
+0093    CALL    23   0   3
+0094    CALLM   21   1   1
+0095    JMP     21 => 0324
+0096 => UGET    21   1      ; out
+0097    MOV     22  21
+0098    TGETS   21  21   1  ; "write"
+0099    UGET    23   4      ; format
+0100    KSTR    24   9      ; "%04d ------ LOOP ------------\n"
+0101    MOV     25  12
+0102    CALL    23   0   3
+0103    CALLM   21   1   1
+0104    JMP     21 => 0324
+0105 => ISEQS   20  10      ; "NOP   "
+0106    JMP     21 => 0324
+0107    ISEQS   20  11      ; "CARG  "
+0108    JMP     21 => 0324
+0109    IST          2
+0110    JMP     21 => 0113
+0111    ISEQS   20  12      ; "RENAME"
+0112    JMP     21 => 0324
+0113 => KSHORT  21 255
+0114    BAND    21  17  21
+0115    ISF          2
+0116    JMP     22 => 0130
+0117    UGET    22   1      ; out
+0118    MOV     23  22
+0119    TGETS   22  22   1  ; "write"
+0120    UGET    24   4      ; format
+0121    KSTR    25  13      ; "%04d %-6s"
+0122    MOV     26  12
+0123    UGET    27   8      ; ridsp_name
+0124    MOV     28  17
+0125    MOV     29  12
+0126    CALL    27   0   3
+0127    CALLM   24   0   2
+0128    CALLM   22   1   1
+0129    JMP     22 => 0138
+0130 => UGET    22   1      ; out
+0131    MOV     23  22
+0132    TGETS   22  22   1  ; "write"
+0133    UGET    24   4      ; format
+0134    KSTR    25  14      ; "%04d "
+0135    MOV     26  12
+0136    CALL    24   0   3
+0137    CALLM   22   1   1
+0138 => UGET    22   1      ; out
+0139    MOV     23  22
+0140    TGETS   22  22   1  ; "write"
+0141    UGET    24   4      ; format
+0142    KSTR    25  15      ; "%s%s %s %s "
+0143    ISEQN   21   3      ; 254
+0144    JMP     26 => 0147
+0145    ISNEN   21   4      ; 253
+0146    JMP     26 => 0149
+0147 => KSTR    26  16      ; "}"
+0148    JMP     27 => 0156
+0149 => KSHORT  26 128
+0150    BAND    26  14  26
+0151    ISNEN   26   5      ; 0
+0152    JMP     26 => 0155
+0153    KSTR    26  17      ; " "
+0154    JMP     27 => 0156
+0155 => KSTR    26  18      ; ">"
+0156 => KSHORT  27  64
+0157    BAND    27  14  27
+0158    ISNEN   27   5      ; 0
+0159    JMP     27 => 0162
+0160    KSTR    27  17      ; " "
+0161    JMP     28 => 0163
+0162 => KSTR    27  19      ; "+"
+0163 => UGET    28   9      ; irtype
+0164    TGETV   28  28  19
+0165    MOV     29  20
+0166    CALL    24   0   6
+0167    CALLM   22   1   1
+0168    KSHORT  22   3
+0169    BAND    22  13  22
+0170    KSHORT  23  12
+0171    BAND    23  13  23
+0172    UGET    24   7      ; sub
+0173    MOV     25  20
+0174    KSHORT  26   1
+0175    KSHORT  27   4
+0176    CALL    24   2   4
+0177    ISNES   24  20      ; "CALL"
+0178    JMP     24 => 0218
+0179    KPRI    24   0
+0180    ISNEN   23   6      ; 4
+0181    JMP     25 => 0193
+0182    UGET    25   1      ; out
+0183    MOV     26  25
+0184    TGETS   25  25   1  ; "write"
+0185    UGET    27   4      ; format
+0186    KSTR    28  21      ; "%-10s  ("
+0187    UGET    29   2      ; vmdef
+0188    TGETS   29  29  22  ; "ircall"
+0189    TGETV   29  29  16
+0190    CALL    27   0   3
+0191    CALLM   25   1   1
+0192    JMP     25 => 0198
+0193 => UGET    25  10      ; dumpcallfunc
+0194    MOV     26   0
+0195    MOV     27  16
+0196    CALL    25   2   3
+0197    MOV     24  25
+0198 => ISEQN   15   7      ; -1
+0199    JMP     25 => 0204
+0200    UGET    25  11      ; dumpcallargs
+0201    MOV     26   0
+0202    MOV     27  15
+0203    CALL    25   1   3
+0204 => UGET    25   1      ; out
+0205    MOV     26  25
+0206    TGETS   25  25   1  ; "write"
+0207    KSTR    27  23      ; ")"
+0208    CALL    25   1   3
+0209    ISF         24
+0210    JMP     25 => 0319
+0211    UGET    25   1      ; out
+0212    MOV     26  25
+0213    TGETS   25  25   1  ; "write"
+0214    KSTR    27  24      ; " ctype "
+0215    MOV     28  24
+0216    CALL    25   1   4
+0217    JMP     24 => 0319
+0218 => ISNES   20  25      ; "CNEW  "
+0219    JMP     24 => 0231
+0220    ISNEN   16   7      ; -1
+0221    JMP     24 => 0231
+0222    UGET    24   1      ; out
+0223    MOV     25  24
+0224    TGETS   24  24   1  ; "write"
+0225    UGET    26  12      ; formatk
+0226    MOV     27   0
+0227    MOV     28  15
+0228    CALL    26   0   3
+0229    CALLM   24   1   1
+0230    JMP     24 => 0319
+0231 => ISEQN   22   8      ; 3
+0232    JMP     24 => 0319
+0233    KSHORT  24   0
+0234    ISGE    15  24
+0235    JMP     24 => 0245
+0236    UGET    24   1      ; out
+0237    MOV     25  24
+0238    TGETS   24  24   1  ; "write"
+0239    UGET    26  12      ; formatk
+0240    MOV     27   0
+0241    MOV     28  15
+0242    CALL    26   0   3
+0243    CALLM   24   1   1
+0244    JMP     24 => 0257
+0245 => UGET    24   1      ; out
+0246    MOV     25  24
+0247    TGETS   24  24   1  ; "write"
+0248    UGET    26   4      ; format
+0249    ISNEN   22   5      ; 0
+0250    JMP     27 => 0253
+0251    KSTR    27  26      ; "%04d"
+0252    JMP     28 => 0254
+0253 => KSTR    27  27      ; "#%-3d"
+0254 => MOV     28  15
+0255    CALL    26   0   3
+0256    CALLM   24   1   1
+0257 => ISEQN   23   9      ; 12
+0258    JMP     24 => 0319
+0259    ISNEN   23   6      ; 4
+0260    JMP     24 => 0298
+0261    UGET    24  13      ; litname
+0262    TGETV   24  24  20
+0263    ISF         24
+0264    JMP     25 => 0275
+0265    TGETV   25  24  16
+0266    ISF         25
+0267    JMP     26 => 0275
+0268    UGET    25   1      ; out
+0269    MOV     26  25
+0270    TGETS   25  25   1  ; "write"
+0271    KSTR    27  28      ; "  "
+0272    TGETV   28  24  16
+0273    CALL    25   1   4
+0274    JMP     25 => 0319
+0275 => ISEQS   20  29      ; "UREFO "
+0276    JMP     25 => 0279
+0277    ISNES   20  30      ; "UREFC "
+0278    JMP     25 => 0289
+0279 => UGET    25   1      ; out
+0280    MOV     26  25
+0281    TGETS   25  25   1  ; "write"
+0282    UGET    27   4      ; format
+0283    KSTR    28  31      ; "  #%-3d"
+0284    KSHORT  29   8
+0285    BSHR    29  16  29
+0286    CALL    27   0   3
+0287    CALLM   25   1   1
+0288    JMP     25 => 0319
+0289 => UGET    25   1      ; out
+0290    MOV     26  25
+0291    TGETS   25  25   1  ; "write"
+0292    UGET    27   4      ; format
+0293    KSTR    28  31      ; "  #%-3d"
+0294    MOV     29  16
+0295    CALL    27   0   3
+0296    CALLM   25   1   1
+0297    JMP     24 => 0319
+0298 => KSHORT  24   0
+0299    ISGE    16  24
+0300    JMP     24 => 0311
+0301    UGET    24   1      ; out
+0302    MOV     25  24
+0303    TGETS   24  24   1  ; "write"
+0304    KSTR    26  28      ; "  "
+0305    UGET    27  12      ; formatk
+0306    MOV     28   0
+0307    MOV     29  16
+0308    CALL    27   0   3
+0309    CALLM   24   1   2
+0310    JMP     24 => 0319
+0311 => UGET    24   1      ; out
+0312    MOV     25  24
+0313    TGETS   24  24   1  ; "write"
+0314    UGET    26   4      ; format
+0315    KSTR    27  32      ; "  %04d"
+0316    MOV     28  16
+0317    CALL    26   0   3
+0318    CALLM   24   1   1
+0319 => UGET    24   1      ; out
+0320    MOV     25  24
+0321    TGETS   24  24   1  ; "write"
+0322    KSTR    26  33      ; "\n"
+0323    CALL    24   1   3
+0324 => FORL     9 => 0032
+0325 => ISF          7
+0326    JMP      9 => 0350
+0327    ISF          2
+0328    JMP      9 => 0338
+0329    UGET     9   1      ; out
+0330    MOV     10   9
+0331    TGETS    9   9   1  ; "write"
+0332    UGET    11   4      ; format
+0333    KSTR    12   5      ; "....              SNAP   #%-3d [ "
+0334    MOV     13   8
+0335    CALL    11   0   3
+0336    CALLM    9   1   1
+0337    JMP      9 => 0346
+0338 => UGET     9   1      ; out
+0339    MOV     10   9
+0340    TGETS    9   9   1  ; "write"
+0341    UGET    11   4      ; format
+0342    KSTR    12   6      ; "....        SNAP   #%-3d [ "
+0343    MOV     13   8
+0344    CALL    11   0   3
+0345    CALLM    9   1   1
+0346 => UGET     9   5      ; printsnap
+0347    MOV     10   0
+0348    MOV     11   7
+0349    CALL     9   1   3
+0350 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:552-563
+0001    UGET     2   0      ; type
+0002    MOV      3   0
+0003    CALL     2   2   2
+0004    ISNES    2   0      ; "number"
+0005    JMP      2 => 0033
+0006    UGET     2   0      ; type
+0007    MOV      3   1
+0008    CALL     2   2   2
+0009    ISNES    2   1      ; "function"
+0010    JMP      2 => 0015
+0011    UGET     2   1      ; fmtfunc
+0012    MOV      3   1
+0013    CALL     2   2   2
+0014    MOV      1   2
+0015 => UGET     2   2      ; vmdef
+0016    TGETS    2   2   2  ; "traceerr"
+0017    TGETV    2   2   0
+0018    ISNES    2   3      ; "NYI: bytecode %s"
+0019    JMP      3 => 0028
+0020    MULNV    3   1   0  ; 6
+0021    UGET     4   3      ; sub
+0022    UGET     5   2      ; vmdef
+0023    TGETS    5   5   4  ; "bcnames"
+0024    ADDVN    6   3   1  ; 1
+0025    ADDVN    7   3   0  ; 6
+0026    CALL     4   2   4
+0027    MOV      1   4
+0028 => UGET     3   4      ; format
+0029    MOV      4   2
+0030    MOV      5   1
+0031    CALL     3   2   3
+0032    MOV      0   3
+0033 => RET1     0   2
+
+-- BYTECODE -- ref_jit_dump.lua:566-598
+0001    ISEQS    0   0      ; "stop"
+0002    JMP      6 => 0009
+0003    ISNES    0   1      ; "abort"
+0004    JMP      6 => 0042
+0005    UGET     6   0      ; dumpmode
+0006    TGETS    6   6   2  ; "a"
+0007    ISF          6
+0008    JMP      7 => 0042
+0009 => UGET     6   0      ; dumpmode
+0010    TGETS    6   6   3  ; "i"
+0011    ISF          6
+0012    JMP      7 => 0028
+0013    UGET     6   1      ; dump_ir
+0014    MOV      7   1
+0015    UGET     8   0      ; dumpmode
+0016    TGETS    8   8   4  ; "s"
+0017    UGET     9   0      ; dumpmode
+0018    TGETS    9   9   5  ; "r"
+0019    ISF          9
+0020    JMP     10 => 0026
+0021    ISEQS    0   0      ; "stop"
+0022    JMP      9 => 0025
+0023    KPRI     9   1
+0024    JMP     10 => 0026
+0025 => KPRI     9   2
+0026 => CALL     6   1   4
+0027    JMP      6 => 0035
+0028 => UGET     6   0      ; dumpmode
+0029    TGETS    6   6   4  ; "s"
+0030    ISF          6
+0031    JMP      7 => 0035
+0032    UGET     6   2      ; dump_snap
+0033    MOV      7   1
+0034    CALL     6   1   2
+0035 => UGET     6   0      ; dumpmode
+0036    TGETS    6   6   6  ; "m"
+0037    ISF          6
+0038    JMP      7 => 0042
+0039    UGET     6   3      ; dump_mcode
+0040    MOV      7   1
+0041    CALL     6   1   2
+0042 => ISNES    0   7      ; "start"
+0043    JMP      6 => 0086
+0044    UGET     6   0      ; dumpmode
+0045    TGETS    6   6   8  ; "H"
+0046    ISF          6
+0047    JMP      7 => 0053
+0048    UGET     6   4      ; out
+0049    MOV      7   6
+0050    TGETS    6   6   9  ; "write"
+0051    KSTR     8  10      ; "<pre class="ljdump">\n"
+0052    CALL     6   1   3
+0053 => UGET     6   4      ; out
+0054    MOV      7   6
+0055    TGETS    6   6   9  ; "write"
+0056    KSTR     8  11      ; "---- TRACE "
+0057    MOV      9   1
+0058    KSTR    10  12      ; " "
+0059    MOV     11   0
+0060    CALL     6   1   6
+0061    ISF          4
+0062    JMP      6 => 0075
+0063    UGET     6   4      ; out
+0064    MOV      7   6
+0065    TGETS    6   6   9  ; "write"
+0066    KSTR     8  12      ; " "
+0067    MOV      9   4
+0068    KSTR    10  13      ; "/"
+0069    ISNEN    5   0      ; -1
+0070    JMP     11 => 0073
+0071    KSTR    11  14      ; "stitch"
+0072    JMP     12 => 0074
+0073 => MOV     11   5
+0074 => CALL     6   1   6
+0075 => UGET     6   4      ; out
+0076    MOV      7   6
+0077    TGETS    6   6   9  ; "write"
+0078    KSTR     8  12      ; " "
+0079    UGET     9   5      ; fmtfunc
+0080    MOV     10   2
+0081    MOV     11   3
+0082    CALL     9   2   3
+0083    KSTR    10  15      ; "\n"
+0084    CALL     6   1   5
+0085    JMP      6 => 0180
+0086 => ISEQS    0   0      ; "stop"
+0087    JMP      6 => 0090
+0088    ISNES    0   1      ; "abort"
+0089    JMP      6 => 0168
+0090 => UGET     6   4      ; out
+0091    MOV      7   6
+0092    TGETS    6   6   9  ; "write"
+0093    KSTR     8  11      ; "---- TRACE "
+0094    MOV      9   1
+0095    KSTR    10  12      ; " "
+0096    MOV     11   0
+0097    CALL     6   1   6
+0098    ISNES    0   1      ; "abort"
+0099    JMP      6 => 0116
+0100    UGET     6   4      ; out
+0101    MOV      7   6
+0102    TGETS    6   6   9  ; "write"
+0103    KSTR     8  12      ; " "
+0104    UGET     9   5      ; fmtfunc
+0105    MOV     10   2
+0106    MOV     11   3
+0107    CALL     9   2   3
+0108    KSTR    10  16      ; " -- "
+0109    UGET    11   6      ; fmterr
+0110    MOV     12   4
+0111    MOV     13   5
+0112    CALL    11   2   3
+0113    KSTR    12  15      ; "\n"
+0114    CALL     6   1   7
+0115    JMP      6 => 0152
+0116 => UGET     6   7      ; traceinfo
+0117    MOV      7   1
+0118    CALL     6   2   2
+0119    TGETS    7   6  17  ; "link"
+0120    TGETS    8   6  18  ; "linktype"
+0121    ISEQV    7   1
+0122    JMP      9 => 0125
+0123    ISNEN    7   1      ; 0
+0124    JMP      9 => 0133
+0125 => UGET     9   4      ; out
+0126    MOV     10   9
+0127    TGETS    9   9   9  ; "write"
+0128    KSTR    11  19      ; " -> "
+0129    MOV     12   8
+0130    KSTR    13  15      ; "\n"
+0131    CALL     9   1   5
+0132    JMP      9 => 0152
+0133 => ISNES    8  20      ; "root"
+0134    JMP      9 => 0143
+0135    UGET     9   4      ; out
+0136    MOV     10   9
+0137    TGETS    9   9   9  ; "write"
+0138    KSTR    11  19      ; " -> "
+0139    MOV     12   7
+0140    KSTR    13  15      ; "\n"
+0141    CALL     9   1   5
+0142    JMP      9 => 0152
+0143 => UGET     9   4      ; out
+0144    MOV     10   9
+0145    TGETS    9   9   9  ; "write"
+0146    KSTR    11  19      ; " -> "
+0147    MOV     12   7
+0148    KSTR    13  12      ; " "
+0149    MOV     14   8
+0150    KSTR    15  15      ; "\n"
+0151    CALL     9   1   7
+0152 => UGET     6   0      ; dumpmode
+0153    TGETS    6   6   8  ; "H"
+0154    ISF          6
+0155    JMP      7 => 0162
+0156    UGET     6   4      ; out
+0157    MOV      7   6
+0158    TGETS    6   6   9  ; "write"
+0159    KSTR     8  21      ; "</pre>\n\n"
+0160    CALL     6   1   3
+0161    JMP      6 => 0180
+0162 => UGET     6   4      ; out
+0163    MOV      7   6
+0164    TGETS    6   6   9  ; "write"
+0165    KSTR     8  15      ; "\n"
+0166    CALL     6   1   3
+0167    JMP      6 => 0180
+0168 => ISNES    0  22      ; "flush"
+0169    JMP      6 => 0173
+0170    TNEW     6   0
+0171    USETN    9   1      ; nexitsym ; 0
+0172    USETV    8   6      ; symtab
+0173 => UGET     6   4      ; out
+0174    MOV      7   6
+0175    TGETS    6   6   9  ; "write"
+0176    KSTR     8  11      ; "---- TRACE "
+0177    MOV      9   0
+0178    KSTR    10  23      ; "\n\n"
+0179    CALL     6   1   5
+0180 => UGET     6   4      ; out
+0181    MOV      7   6
+0182    TGETS    6   6  22  ; "flush"
+0183    CALL     6   1   2
+0184    RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:601-621
+0001    UGET     4   0      ; recdepth
+0002    ISEQV    3   4
+0003    JMP      4 => 0010
+0004    USETV    0   3      ; recdepth
+0005    UGET     4   2      ; rep
+0006    KSTR     5   0      ; " ."
+0007    MOV      6   3
+0008    CALL     4   2   3
+0009    USETV    1   4      ; recprefix
+0010 => KPRI     4   0
+0011    KSHORT   5   0
+0012    ISGT     5   2
+0013    JMP      5 => 0031
+0014    UGET     5   3      ; bcline
+0015    MOV      6   1
+0016    MOV      7   2
+0017    UGET     8   1      ; recprefix
+0018    CALL     5   2   4
+0019    MOV      4   5
+0020    UGET     5   4      ; dumpmode
+0021    TGETS    5   5   1  ; "H"
+0022    ISF          5
+0023    JMP      6 => 0035
+0024    UGET     5   5      ; gsub
+0025    MOV      6   4
+0026    KSTR     7   2      ; "[<>&]"
+0027    UGET     8   6      ; html_escape
+0028    CALL     5   2   4
+0029    MOV      4   5
+0030    JMP      5 => 0035
+0031 => KSTR     5   3      ; "0000 "
+0032    UGET     6   1      ; recprefix
+0033    KSTR     7   4      ; " FUNCC      \n"
+0034    CAT      4   5   7
+0035 => KSHORT   5   0
+0036    ISGT     2   5
+0037    JMP      5 => 0053
+0038    UGET     5   7      ; out
+0039    MOV      6   5
+0040    TGETS    5   5   5  ; "write"
+0041    UGET     7   8      ; sub
+0042    MOV      8   4
+0043    KSHORT   9   1
+0044    KSHORT  10  -2
+0045    CALL     7   2   4
+0046    KSTR     8   6      ; "         ; "
+0047    UGET     9   9      ; fmtfunc
+0048    MOV     10   1
+0049    CALL     9   2   2
+0050    KSTR    10   7      ; "\n"
+0051    CALL     5   1   6
+0052    JMP      5 => 0058
+0053 => UGET     5   7      ; out
+0054    MOV      6   5
+0055    TGETS    5   5   5  ; "write"
+0056    MOV      7   4
+0057    CALL     5   1   3
+0058 => KSHORT   5   0
+0059    ISGT     5   2
+0060    JMP      5 => 0079
+0061    UGET     5  10      ; funcbc
+0062    MOV      6   1
+0063    MOV      7   2
+0064    CALL     5   2   3
+0065    KSHORT   6 255
+0066    BAND     5   5   6
+0067    KSHORT   6  16
+0068    ISGE     5   6
+0069    JMP      5 => 0079
+0070    UGET     5   7      ; out
+0071    MOV      6   5
+0072    TGETS    5   5   5  ; "write"
+0073    UGET     7   3      ; bcline
+0074    MOV      8   1
+0075    ADDVN    9   2   0  ; 1
+0076    UGET    10   1      ; recprefix
+0077    CALL     7   0   4
+0078    CALLM    5   1   1
+0079 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:629-656
+0001    UGET     4   0      ; out
+0002    MOV      5   4
+0003    TGETS    4   4   0  ; "write"
+0004    KSTR     6   1      ; "---- TRACE "
+0005    MOV      7   0
+0006    KSTR     8   2      ; " exit "
+0007    MOV      9   1
+0008    KSTR    10   3      ; "\n"
+0009    CALL     4   1   7
+0010    UGET     4   1      ; dumpmode
+0011    TGETS    4   4   4  ; "X"
+0012    ISF          4
+0013    JMP      5 => 0111
+0014    TNEW     4   3
+0015    VARG     5   0   4
+0016    TSETM    5   0      ; 1
+0017    UGET     5   2      ; gpr64
+0018    ISF          5
+0019    JMP      6 => 0042
+0020    KSHORT   5   1
+0021    MOV      6   2
+0022    KSHORT   7   1
+0023    FORI     5 => 0041
+0024 => UGET     9   0      ; out
+0025    MOV     10   9
+0026    TGETS    9   9   0  ; "write"
+0027    UGET    11   3      ; format
+0028    KSTR    12   5      ; " %016x"
+0029    TGETV   13   4   8
+0030    CALL    11   0   3
+0031    CALLM    9   1   1
+0032    MODVN    9   8   1  ; 4
+0033    ISNEN    9   2      ; 0
+0034    JMP      9 => 0040
+0035    UGET     9   0      ; out
+0036    MOV     10   9
+0037    TGETS    9   9   0  ; "write"
+0038    KSTR    11   3      ; "\n"
+0039    CALL     9   1   3
+0040 => FORL     5 => 0024
+0041 => JMP      5 => 0063
+0042 => KSHORT   5   1
+0043    MOV      6   2
+0044    KSHORT   7   1
+0045    FORI     5 => 0063
+0046 => UGET     9   0      ; out
+0047    MOV     10   9
+0048    TGETS    9   9   0  ; "write"
+0049    KSTR    11   6      ; " "
+0050    UGET    12   4      ; tohex
+0051    TGETV   13   4   8
+0052    CALL    12   0   2
+0053    CALLM    9   1   2
+0054    MODVN    9   8   3  ; 8
+0055    ISNEN    9   2      ; 0
+0056    JMP      9 => 0062
+0057    UGET     9   0      ; out
+0058    MOV     10   9
+0059    TGETS    9   9   0  ; "write"
+0060    KSTR    11   3      ; "\n"
+0061    CALL     9   1   3
+0062 => FORL     5 => 0046
+0063 => UGET     5   5      ; fprmips32
+0064    ISF          5
+0065    JMP      6 => 0089
+0066    KSHORT   5   1
+0067    MOV      6   3
+0068    KSHORT   7   2
+0069    FORI     5 => 0088
+0070 => UGET     9   0      ; out
+0071    MOV     10   9
+0072    TGETS    9   9   0  ; "write"
+0073    UGET    11   3      ; format
+0074    KSTR    12   7      ; " %+17.14g"
+0075    ADDVV   13   2   8
+0076    TGETV   13   4  13
+0077    CALL    11   0   3
+0078    CALLM    9   1   1
+0079    MODVN    9   8   3  ; 8
+0080    ISNEN    9   4      ; 7
+0081    JMP      9 => 0087
+0082    UGET     9   0      ; out
+0083    MOV     10   9
+0084    TGETS    9   9   0  ; "write"
+0085    KSTR    11   3      ; "\n"
+0086    CALL     9   1   3
+0087 => FORL     5 => 0070
+0088 => JMP      5 => 0111
+0089 => KSHORT   5   1
+0090    MOV      6   3
+0091    KSHORT   7   1
+0092    FORI     5 => 0111
+0093 => UGET     9   0      ; out
+0094    MOV     10   9
+0095    TGETS    9   9   0  ; "write"
+0096    UGET    11   3      ; format
+0097    KSTR    12   7      ; " %+17.14g"
+0098    ADDVV   13   2   8
+0099    TGETV   13   4  13
+0100    CALL    11   0   3
+0101    CALLM    9   1   1
+0102    MODVN    9   8   1  ; 4
+0103    ISNEN    9   2      ; 0
+0104    JMP      9 => 0110
+0105    UGET     9   0      ; out
+0106    MOV     10   9
+0107    TGETS    9   9   0  ; "write"
+0108    KSTR    11   3      ; "\n"
+0109    CALL     9   1   3
+0110 => FORL     5 => 0093
+0111 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:661-670
+0001    UGET     0   0      ; active
+0002    ISF          0
+0003    JMP      1 => 0033
+0004    USETP    0   1      ; active
+0005    UGET     0   1      ; jit
+0006    TGETS    0   0   0  ; "attach"
+0007    UGET     1   2      ; dump_texit
+0008    CALL     0   1   2
+0009    UGET     0   1      ; jit
+0010    TGETS    0   0   0  ; "attach"
+0011    UGET     1   3      ; dump_record
+0012    CALL     0   1   2
+0013    UGET     0   1      ; jit
+0014    TGETS    0   0   0  ; "attach"
+0015    UGET     1   4      ; dump_trace
+0016    CALL     0   1   2
+0017    UGET     0   5      ; out
+0018    ISF          0
+0019    JMP      1 => 0032
+0020    UGET     0   5      ; out
+0021    UGET     1   6      ; stdout
+0022    ISEQV    0   1
+0023    JMP      0 => 0032
+0024    UGET     0   5      ; out
+0025    UGET     1   7      ; stderr
+0026    ISEQV    0   1
+0027    JMP      0 => 0032
+0028    UGET     0   5      ; out
+0029    MOV      1   0
+0030    TGETS    0   0   1  ; "close"
+0031    CALL     0   1   2
+0032 => USETP    5   0      ; out
+0033 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:679-679
+0001    USETV    0   0      ; colormode
+0002    KSTR     1   0      ; ""
+0003    RET1     1   2
+
+-- BYTECODE -- ref_jit_dump.lua:673-722
+0001    UGET     2   0      ; active
+0002    ISF          2
+0003    JMP      3 => 0006
+0004    UGET     2   1      ; dumpoff
+0005    CALL     2   1   1
+0006 => GGET     2   0      ; "os"
+0007    TGETS    2   2   1  ; "getenv"
+0008    KSTR     3   2      ; "TERM"
+0009    CALL     2   2   2
+0010    ISF          2
+0011    JMP      3 => 0017
+0012    MOV      4   2
+0013    TGETS    3   2   3  ; "match"
+0014    KSTR     5   4      ; "color"
+0015    CALL     3   2   3
+0016    JMP      4 => 0021
+0017 => GGET     3   0      ; "os"
+0018    TGETS    3   3   1  ; "getenv"
+0019    KSTR     4   5      ; "COLORTERM"
+0020    CALL     3   2   2
+0021 => ISF          3
+0022    JMP      4 => 0025
+0023    KSTR     3   6      ; "A"
+0024    JMP      4 => 0026
+0025 => KSTR     3   7      ; "T"
+0026 => ISF          0
+0027    JMP      4 => 0034
+0028    UGET     4   2      ; gsub
+0029    MOV      5   0
+0030    KSTR     6   8      ; "[TAH]"
+0031    FNEW     7   9      ; ref_jit_dump.lua:679
+0032    CALL     4   2   4
+0033    MOV      0   4
+0034 => TDUP     4  10
+0035    ISF          0
+0036    JMP      5 => 0065
+0037    ISEQS    0  11      ; ""
+0038    JMP      5 => 0065
+0039    UGET     5   3      ; sub
+0040    MOV      6   0
+0041    KSHORT   7   1
+0042    KSHORT   8   1
+0043    CALL     5   2   4
+0044    ISEQS    5  12      ; "+"
+0045    JMP      6 => 0049
+0046    ISEQS    5  13      ; "-"
+0047    JMP      6 => 0049
+0048    TNEW     4   0
+0049 => KSHORT   6   1
+0050    LEN      7   0
+0051    KSHORT   8   1
+0052    FORI     6 => 0065
+0053 => UGET    10   3      ; sub
+0054    MOV     11   0
+0055    MOV     12   9
+0056    MOV     13   9
+0057    CALL    10   2   4
+0058    ISNES    5  13      ; "-"
+0059    JMP     11 => 0062
+0060    KPRI    11   1
+0061    JMP     12 => 0063
+0062 => KPRI    11   2
+0063 => TSETV   11   4  10
+0064    FORL     6 => 0053
+0065 => USETV    4   4      ; dumpmode
+0066    TGETS    5   4  14  ; "t"
+0067    IST          5
+0068    JMP      6 => 0081
+0069    TGETS    5   4  15  ; "b"
+0070    IST          5
+0071    JMP      6 => 0081
+0072    TGETS    5   4  16  ; "i"
+0073    IST          5
+0074    JMP      6 => 0081
+0075    TGETS    5   4  17  ; "s"
+0076    IST          5
+0077    JMP      6 => 0081
+0078    TGETS    5   4  18  ; "m"
+0079    ISF          5
+0080    JMP      6 => 0086
+0081 => UGET     5   5      ; jit
+0082    TGETS    5   5  19  ; "attach"
+0083    UGET     6   6      ; dump_trace
+0084    KSTR     7  20      ; "trace"
+0085    CALL     5   1   3
+0086 => TGETS    5   4  15  ; "b"
+0087    ISF          5
+0088    JMP      6 => 0102
+0089    UGET     5   5      ; jit
+0090    TGETS    5   5  19  ; "attach"
+0091    UGET     6   7      ; dump_record
+0092    KSTR     7  21      ; "record"
+0093    CALL     5   1   3
+0094    UGET     5   8      ; bcline
+0095    IST          5
+0096    JMP      5 => 0102
+0097    GGET     5  22      ; "require"
+0098    KSTR     6  23      ; "jit.bc"
+0099    CALL     5   2   2
+0100    TGETS    5   5  24  ; "line"
+0101    USETV    8   5      ; bcline
+0102 => TGETS    5   4  25  ; "x"
+0103    IST          5
+0104    JMP      6 => 0108
+0105    TGETS    5   4  26  ; "X"
+0106    ISF          5
+0107    JMP      6 => 0113
+0108 => UGET     5   5      ; jit
+0109    TGETS    5   5  19  ; "attach"
+0110    UGET     6   9      ; dump_texit
+0111    KSTR     7  27      ; "texit"
+0112    CALL     5   1   3
+0113 => IST          1
+0114    JMP      5 => 0120
+0115    GGET     5   0      ; "os"
+0116    TGETS    5   5   1  ; "getenv"
+0117    KSTR     6  28      ; "LUAJIT_DUMPFILE"
+0118    CALL     5   2   2
+0119    MOV      1   5
+0120 => ISF          1
+0121    JMP      5 => 0135
+0122    ISNES    1  13      ; "-"
+0123    JMP      5 => 0126
+0124    UGET     5  11      ; stdout
+0125    JMP      6 => 0133
+0126 => GGET     5  29      ; "assert"
+0127    GGET     6  30      ; "io"
+0128    TGETS    6   6  31  ; "open"
+0129    MOV      7   1
+0130    KSTR     8  32      ; "w"
+0131    CALL     6   0   3
+0132    CALLM    5   2   0
+0133 => USETV   10   5      ; out
+0134    JMP      5 => 0137
+0135 => UGET     5  11      ; stdout
+0136    USETV   10   5      ; out
+0137 => KPRI     5   2
+0138    TSETV    5   4   3
+0139    ISNES    3   6      ; "A"
+0140    JMP      5 => 0146
+0141    UGET     5  13      ; colorize_ansi
+0142    USETV   12   5      ; colorize
+0143    UGET     5  15      ; irtype_ansi
+0144    USETV   14   5      ; irtype
+0145    JMP      5 => 0162
+0146 => ISNES    3  33      ; "H"
+0147    JMP      5 => 0158
+0148    UGET     5  16      ; colorize_html
+0149    USETV   12   5      ; colorize
+0150    UGET     5  17      ; irtype_html
+0151    USETV   14   5      ; irtype
+0152    UGET     5  10      ; out
+0153    MOV      6   5
+0154    TGETS    5   5  34  ; "write"
+0155    UGET     7  18      ; header_html
+0156    CALL     5   1   3
+0157    JMP      5 => 0162
+0158 => UGET     5  19      ; colorize_text
+0159    USETV   12   5      ; colorize
+0160    UGET     5  20      ; irtype_text
+0161    USETV   14   5      ; irtype
+0162 => USETP    0   2      ; active
+0163    UCLO     0 => 0164
+0164 => RET0     0   1
+
+-- BYTECODE -- ref_jit_dump.lua:0-731
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "jit"
+0003    CALL     0   2   2
+0004    GGET     1   0      ; "require"
+0005    KSTR     2   2      ; "jit.util"
+0006    CALL     1   2   2
+0007    GGET     2   0      ; "require"
+0008    KSTR     3   3      ; "jit.vmdef"
+0009    CALL     2   2   2
+0010    TGETS    3   1   4  ; "funcinfo"
+0011    TGETS    4   1   5  ; "funcbc"
+0012    TGETS    5   1   6  ; "traceinfo"
+0013    TGETS    6   1   7  ; "traceir"
+0014    TGETS    7   1   8  ; "tracek"
+0015    TGETS    8   1   9  ; "tracemc"
+0016    TGETS    9   1  10  ; "tracesnap"
+0017    TGETS   10   1  11  ; "traceexitstub"
+0018    TGETS   11   1  12  ; "ircalladdr"
+0019    GGET    12   0      ; "require"
+0020    KSTR    13  13      ; "bit"
+0021    CALL    12   2   2
+0022    TGETS   13  12  14  ; "tohex"
+0023    GGET    14  15      ; "string"
+0024    TGETS   14  14  16  ; "sub"
+0025    GGET    15  15      ; "string"
+0026    TGETS   15  15  17  ; "gsub"
+0027    GGET    16  15      ; "string"
+0028    TGETS   16  16  18  ; "format"
+0029    GGET    17  15      ; "string"
+0030    TGETS   17  17  19  ; "byte"
+0031    GGET    18  15      ; "string"
+0032    TGETS   18  18  20  ; "rep"
+0033    GGET    19  21      ; "type"
+0034    GGET    20  22      ; "tostring"
+0035    GGET    21  23      ; "io"
+0036    TGETS   21  21  24  ; "stdout"
+0037    GGET    22  23      ; "io"
+0038    TGETS   22  22  25  ; "stderr"
+0039    KNIL    23  27
+0040    TDUP    28  26
+0041    TNEW    29   0
+0042    KSHORT  30   0
+0043    FNEW    31  27      ; ref_jit_dump.lua:84
+0044    FNEW    32  28      ; ref_jit_dump.lua:101
+0045    FNEW    33  29      ; ref_jit_dump.lua:134
+0046    FNEW    34  30      ; ref_jit_dump.lua:139
+0047    TDUP    35  31
+0048    TDUP    36  32
+0049    FNEW    37  33      ; ref_jit_dump.lua:217
+0050    FNEW    38  34      ; ref_jit_dump.lua:221
+0051    GGET    39  35      ; "setmetatable"
+0052    TNEW    40   0
+0053    TDUP    41  37
+0054    FNEW    42  36      ; ref_jit_dump.lua:228
+0055    TSETS   42  41  38  ; "__index"
+0056    CALL    39   2   3
+0057    TDUP    40  39
+0058    FNEW    41  40      ; ref_jit_dump.lua:233
+0059    GGET    42  35      ; "setmetatable"
+0060    TNEW    43   0
+0061    TDUP    44  42
+0062    FNEW    45  41      ; ref_jit_dump.lua:240
+0063    TSETS   45  44  38  ; "__index"
+0064    CALL    42   2   3
+0065    KSTR    43  43      ; "<style type="text/css">\nbackground { ba"~
+0066    KNIL    44  45
+0067    TDUP    46  46
+0068    GGET    47  35      ; "setmetatable"
+0069    TNEW    48   0
+0070    TDUP    49  45
+0071    FNEW    50  44      ; ref_jit_dump.lua:269
+0072    TSETS   50  49  38  ; "__index"
+0073    CALL    47   2   3
+0074    TSETS   47  46  47  ; "SLOAD "
+0075    TDUP    47  48
+0076    TSETS   47  46  49  ; "XLOAD "
+0077    GGET    47  35      ; "setmetatable"
+0078    TNEW    48   0
+0079    TDUP    49  51
+0080    FNEW    50  50      ; ref_jit_dump.lua:282
+0081    TSETS   50  49  38  ; "__index"
+0082    CALL    47   2   3
+0083    TSETS   47  46  52  ; "CONV  "
+0084    TGETS   47   2  53  ; "irfield"
+0085    TSETS   47  46  54  ; "FLOAD "
+0086    TGETS   47   2  53  ; "irfield"
+0087    TSETS   47  46  55  ; "FREF  "
+0088    TGETS   47   2  56  ; "irfpm"
+0089    TSETS   47  46  57  ; "FPMATH"
+0090    TDUP    47  58
+0091    TSETS   47  46  59  ; "TMPREF"
+0092    TDUP    47  60
+0093    TSETS   47  46  61  ; "BUFHDR"
+0094    TDUP    47  62
+0095    TSETS   47  46  63  ; "TOSTR "
+0096    FNEW    47  64      ; ref_jit_dump.lua:301
+0097    FNEW    48  65      ; ref_jit_dump.lua:309
+0098    FNEW    49  66      ; ref_jit_dump.lua:322
+0099    FNEW    50  67      ; ref_jit_dump.lua:364
+0100    FNEW    51  68      ; ref_jit_dump.lua:388
+0101    FNEW    52  69      ; ref_jit_dump.lua:399
+0102    FNEW    53  70      ; ref_jit_dump.lua:411
+0103    FNEW    54  71      ; ref_jit_dump.lua:429
+0104    FNEW    55  72      ; ref_jit_dump.lua:450
+0105    KSTR    56  73      ; ""
+0106    KSHORT  57   0
+0107    FNEW    58  74      ; ref_jit_dump.lua:552
+0108    FNEW    59  75      ; ref_jit_dump.lua:566
+0109    FNEW    60  76      ; ref_jit_dump.lua:601
+0110    TGETS   61   0  77  ; "arch"
+0111    MOV     62  61
+0112    TGETS   61  61  78  ; "match"
+0113    KSTR    63  79      ; "64"
+0114    CALL    61   2   3
+0115    TGETS   62   0  77  ; "arch"
+0116    ISEQS   62  80      ; "mips"
+0117    JMP     62 => 0123
+0118    TGETS   62   0  77  ; "arch"
+0119    ISEQS   62  81      ; "mipsel"
+0120    JMP     62 => 0123
+0121    KPRI    62   1
+0122    JMP     63 => 0124
+0123 => KPRI    62   2
+0124 => FNEW    63  82      ; ref_jit_dump.lua:629
+0125    FNEW    64  83      ; ref_jit_dump.lua:661
+0126    FNEW    65  84      ; ref_jit_dump.lua:673
+0127    TDUP    66  85
+0128    TSETS   65  66  86  ; "on"
+0129    TSETS   64  66  87  ; "off"
+0130    TSETS   65  66  88  ; "start"
+0131    UCLO     0 => 0132
+0132 => RET1    66   2
+

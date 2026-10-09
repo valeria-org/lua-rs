@@ -1,0 +1,63 @@
+-- BYTECODE -- goto_nested.lua:9-9
+0001    UGET     0   0      ; a
+0002    UGET     1   1      ; b
+0003    ADDVV    0   0   1
+0004    RET1     0   2
+
+-- BYTECODE -- goto_nested.lua:2-15
+0001 => MOV      1   0
+0002    MOV      2   1
+0003    KSHORT   3   0
+0004    ISGE     3   2
+0005    JMP      3 => 0008
+0006    SUBVN    0   0   0  ; 1
+0007    UCLO     1 => 0001
+0008 => FNEW     3   0      ; goto_nested.lua:9
+0009    MOV      4   3
+0010    CALL     4   2   1
+0011    ISF          4
+0012    JMP      5 => 0014
+0013    UCLO     1 => 0016
+0014 => UCLO     2 => 0015
+0015 => UCLO     1 => 0016
+0016 => UCLO     0 => 0017
+0017 => RET1     0   2
+
+-- BYTECODE -- goto_nested.lua:20-20
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- goto_nested.lua:25-25
+0001    UGET     0   0      ; v
+0002    RET1     0   2
+
+-- BYTECODE -- goto_nested.lua:16-30
+0001    KSHORT   0   1
+0002    JMP      0 => 0004
+0003    FNEW     1   0      ; goto_nested.lua:20
+0004 => UCLO     0 => 0005
+0005 => KSHORT   0   1
+0006    KSHORT   1   3
+0007    KSHORT   2   1
+0008    FORI     0 => 0020
+0009 => MOV      4   3
+0010    FNEW     5   1      ; goto_nested.lua:25
+0011    ISNEN    3   0      ; 2
+0012    JMP      6 => 0014
+0013    JMP      4 => 0018
+0014 => GGET     6   2      ; "print"
+0015    MOV      7   5
+0016    CALL     7   0   1
+0017    CALLM    6   1   0
+0018 => UCLO     4 => 0019
+0019 => FORL     0 => 0009
+0020 => RET0     0   1
+
+-- BYTECODE -- goto_nested.lua:0-32
+0001    FNEW     0   0      ; goto_nested.lua:2
+0002    FNEW     1   1      ; goto_nested.lua:16
+0003    MOV      2   0
+0004    MOV      3   1
+0005    UCLO     0 => 0006
+0006 => RET      2   3
+

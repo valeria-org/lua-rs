@@ -1,0 +1,101 @@
+-- BYTECODE -- register_alloc.lua:14-14
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    ADDVV    2   0   1
+0004    MULVV    3   0   1
+0005    GGET     4   0      ; "f"
+0006    MOV      5   0
+0007    MOV      6   1
+0008    CALL     4   0   3
+0009    RETM     2   2
+
+-- BYTECODE -- register_alloc.lua:0-15
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    KSHORT   2   3
+0004    TNEW     3   0
+0005    ADDVV    4   0   1
+0006    MULVV    5   2   0
+0007    TSETV    5   3   4
+0008    TGETV    4   3   0
+0009    TGETV    4   4   1
+0010    TGETV    5   3   2
+0011    TGETV    5   5   1
+0012    TGETV    5   5   0
+0013    TSETV    5   4   2
+0014    GGET     4   0      ; "f"
+0015    MOV      5   0
+0016    GGET     6   1      ; "g"
+0017    MOV      7   1
+0018    GGET     8   2      ; "h"
+0019    MOV      9   2
+0020    GGET    10   3      ; "i"
+0021    MOV     11   0
+0022    CALL    10   0   2
+0023    CALLM    8   0   1
+0024    CALLM    6   0   1
+0025    CALLM    4   2   1
+0026    TDUP     5   4
+0027    GGET     6   0      ; "f"
+0028    MOV      7   0
+0029    CALL     6   2   2
+0030    TSETB    6   5   1
+0031    GGET     6   1      ; "g"
+0032    MOV      7   1
+0033    CALL     6   2   2
+0034    TSETB    6   5   2
+0035    GGET     6   2      ; "h"
+0036    MOV      7   2
+0037    CALL     6   2   2
+0038    TSETS    6   5   2  ; "h"
+0039    MULVV    6   1   2
+0040    ADDVV    6   0   6
+0041    DIVVV    7   0   1
+0042    POW      8   2   0
+0043    MODVV    7   7   8
+0044    SUBVV    6   6   7
+0045    MOV      7   1
+0046    CAT      6   6   7
+0047    GGET     7   0      ; "f"
+0048    CALL     7   2   1
+0049    GGET     8   1      ; "g"
+0050    CALL     8   3   1
+0051    TSETS    9   3   7  ; "z"
+0052    TSETS    8   3   6  ; "y"
+0053    TSETS    7   3   5  ; "x"
+0054    GGET     7   8      ; "o"
+0055    MOV      8   7
+0056    TGETS    7   7   9  ; "m"
+0057    GGET     9   8      ; "o"
+0058    MOV     10   9
+0059    TGETS    9   9  10  ; "n"
+0060    GGET    11   8      ; "o"
+0061    MOV     12  11
+0062    TGETS   11  11  11  ; "p"
+0063    KSHORT  13   1
+0064    CALL    11   0   3
+0065    CALLM    9   0   1
+0066    CALLM    7   2   1
+0067    ADDVV    8   0   1
+0068    ADDVV    9   2   0
+0069    MULVV    8   8   9
+0070    ADDVV    9   1   2
+0071    MULVV    8   8   9
+0072    ADDVV    9   0   1
+0073    ADDVV    9   9   2
+0074    MULVV    8   8   9
+0075    GGET     9   0      ; "f"
+0076    MOV     10   0
+0077    CALL     9   2   2
+0078    MOV     10   1
+0079    CALL     9   2   2
+0080    MOV     10   2
+0081    CALL     9   1   2
+0082    KSTR     9  12      ; "a"
+0083    KSTR    10  13      ; "b"
+0084    KSTR    11  14      ; "c"
+0085    MOV     12   0
+0086    CAT      9   9  12
+0087    FNEW    10  15      ; register_alloc.lua:14
+0088    RET0     0   1
+

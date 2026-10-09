@@ -1,0 +1,247 @@
+-- BYTECODE -- ext_shortfunc.lua:3-4
+0001    ADDVN    1   0   0  ; 1
+0002    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:4-5
+0001    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:5-6
+0001    ADDVV    2   0   1
+0002    RET1     2   2
+
+-- BYTECODE -- ext_shortfunc.lua:6-7
+0001    MULVN    1   0   0  ; 2
+0002    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:7-8
+0001    KSHORT   0  42
+0002    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:8-9
+0001    VARG     0   0   0
+0002    RETM     0   0
+
+-- BYTECODE -- ext_shortfunc.lua:9-10
+0001    GGET     1   0      ; "select"
+0002    KSTR     3   1      ; "#"
+0003    VARG     4   0   1
+0004    CALLMT   1   1
+
+-- BYTECODE -- ext_shortfunc.lua:10-11
+0001    GGET     0   0      ; "print"
+0002    KSTR     2   1      ; "hi"
+0003    CALL     0   1   2
+0004    RET0     0   1
+
+-- BYTECODE -- ext_shortfunc.lua:11-12
+0001    MULVN    1   0   0  ; 2
+0002    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:12-13
+0001    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:13-14
+0001    RET0     0   1
+
+-- BYTECODE -- ext_shortfunc.lua:14-15
+0001    UGET     1   0      ; x
+0002    ADDVV    1   1   0
+0003    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:14-15
+0001    FNEW     1   0      ; ext_shortfunc.lua:14
+0002    UCLO     0 => 0003
+0003 => RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:15-16
+0001    UGET     1   0      ; a
+0002    MOV      2   0
+0003    CAT      1   1   2
+0004    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:15-16
+0001    FNEW     1   0      ; ext_shortfunc.lua:15
+0002    UCLO     0 => 0003
+0003 => RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:16-17
+0001    ISF          0
+0002    JMP      1 => 0005
+0003    KSHORT   1   1
+0004    JMP      2 => 0006
+0005 => KSHORT   1   2
+0006 => RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:17-18
+0001    MOV      1   0
+0002    ISNEP    1   0
+0003    JMP      2 => 0005
+0004    KSHORT   1   0
+0005 => RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:18-19
+0001    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:19-20
+0001    TNEW     1   3
+0002    TSETB    0   1   1
+0003    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:20-21
+0001    UGET     1   0      ; f
+0002    MOV      3   0
+0003    CALLT    1   2
+
+-- BYTECODE -- ext_shortfunc.lua:21-22
+0001    MOV      3   0
+0002    TGETS    1   0   0  ; "m"
+0003    CALLT    1   2
+
+-- BYTECODE -- ext_shortfunc.lua:22-23
+0001    KPRI     0   0
+0002    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:24-25
+0001    UGET     1   0      ; up
+0002    ADDVV    1   0   1
+0003    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:25-26
+0001    UGET     0   0      ; up
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; up
+0004    RET0     0   1
+
+-- BYTECODE -- ext_shortfunc.lua:26-26
+0001    MULVN    1   0   0  ; 2
+0002    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:26-26
+0001    KSHORT   1   0
+0002    ISLT     1   0
+0003    JMP      1 => 0006
+0004    KPRI     1   1
+0005    JMP      2 => 0007
+0006 => KPRI     1   2
+0007 => RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:27-27
+0001    MULVV    1   0   0
+0002    RET1     1   2
+
+-- BYTECODE -- ext_shortfunc.lua:28-28
+0001    ISLT     0   1
+0002    JMP      2 => 0005
+0003    KPRI     2   1
+0004    JMP      3 => 0006
+0005 => KPRI     2   2
+0006 => RET1     2   2
+
+-- BYTECODE -- ext_shortfunc.lua:29-29
+0001    ISLT     1   0
+0002    JMP      2 => 0005
+0003    KPRI     2   1
+0004    JMP      3 => 0006
+0005 => KPRI     2   2
+0006 => RET1     2   2
+
+-- BYTECODE -- ext_shortfunc.lua:30-31
+0001    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:31-32
+0001    ISEQV    0   1
+0002    JMP      2 => 0005
+0003    KPRI     2   1
+0004    JMP      3 => 0006
+0005 => KPRI     2   2
+0006 => RET1     2   2
+
+-- BYTECODE -- ext_shortfunc.lua:32-32
+0001    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:33-33
+0001    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:34-35
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    RET      0   3
+
+-- BYTECODE -- ext_shortfunc.lua:35-36
+0001    ADDVV    4   0   1
+0002    ADDVV    4   4   2
+0003    ADDVV    4   4   3
+0004    RET1     4   2
+
+-- BYTECODE -- ext_shortfunc.lua:36-37
+0001    UGET     0   0      ; f
+0002    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:37-38
+0001    KSHORT   0   1
+0002    RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:37-38
+0001    FNEW     0   0      ; ext_shortfunc.lua:37
+0002    UCLO     0 => 0003
+0003 => RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:37-38
+0001    FNEW     0   0      ; ext_shortfunc.lua:37
+0002    UCLO     0 => 0003
+0003 => RET1     0   2
+
+-- BYTECODE -- ext_shortfunc.lua:0-38
+0001    KPRI     0   0
+0002    FNEW     0   0      ; ext_shortfunc.lua:3
+0003    FNEW     0   1      ; ext_shortfunc.lua:4
+0004    FNEW     0   2      ; ext_shortfunc.lua:5
+0005    FNEW     0   3      ; ext_shortfunc.lua:6
+0006    FNEW     0   4      ; ext_shortfunc.lua:7
+0007    FNEW     0   5      ; ext_shortfunc.lua:8
+0008    FNEW     0   6      ; ext_shortfunc.lua:9
+0009    FNEW     0   7      ; ext_shortfunc.lua:10
+0010    FNEW     0   8      ; ext_shortfunc.lua:11
+0011    FNEW     0   9      ; ext_shortfunc.lua:12
+0012    FNEW     0  10      ; ext_shortfunc.lua:13
+0013    FNEW     0  11      ; ext_shortfunc.lua:14
+0014    FNEW     0  12      ; ext_shortfunc.lua:15
+0015    FNEW     0  13      ; ext_shortfunc.lua:16
+0016    FNEW     0  14      ; ext_shortfunc.lua:17
+0017    FNEW     0  15      ; ext_shortfunc.lua:18
+0018    FNEW     0  16      ; ext_shortfunc.lua:19
+0019    FNEW     0  17      ; ext_shortfunc.lua:20
+0020    FNEW     0  18      ; ext_shortfunc.lua:21
+0021    FNEW     0  19      ; ext_shortfunc.lua:22
+0022    KSHORT   1  10
+0023    FNEW     0  20      ; ext_shortfunc.lua:24
+0024    FNEW     0  21      ; ext_shortfunc.lua:25
+0025    TDUP     2  23
+0026    FNEW     3  22      ; ext_shortfunc.lua:26
+0027    TSETS    3   2  24  ; "map"
+0028    FNEW     3  25      ; ext_shortfunc.lua:26
+0029    TSETS    3   2  26  ; "filter"
+0030    GGET     3  27      ; "g"
+0031    FNEW     5  28      ; ext_shortfunc.lua:27
+0032    CALL     3   1   2
+0033    GGET     3  27      ; "g"
+0034    FNEW     5  29      ; ext_shortfunc.lua:28
+0035    CALL     3   1   2
+0036    GGET     3  30      ; "table"
+0037    TGETS    3   3  31  ; "sort"
+0038    MOV      5   2
+0039    FNEW     6  32      ; ext_shortfunc.lua:29
+0040    CALL     3   1   3
+0041    FNEW     3  33      ; ext_shortfunc.lua:30
+0042    FNEW     4  34      ; ext_shortfunc.lua:31
+0043    FNEW     5  35      ; ext_shortfunc.lua:32
+0044    KSHORT   6   2
+0045    MOV      0   5
+0046    FNEW     0  36      ; ext_shortfunc.lua:33
+0047    FNEW     0  37      ; ext_shortfunc.lua:34
+0048    FNEW     0  38      ; ext_shortfunc.lua:35
+0049    FNEW     0  39      ; ext_shortfunc.lua:36
+0050    FNEW     0  40      ; ext_shortfunc.lua:37
+0051    UCLO     0 => 0052
+0052 => RET0     0   1
+

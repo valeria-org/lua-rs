@@ -1,0 +1,58 @@
+-- BYTECODE -- unary_ops.lua:0-34
+0001    VARG     0   2   0
+0002    KPRI     1   0
+0003    UNM      1   0
+0004    KSHORT   1  -1
+0005    KNUM     1   0      ; -1.5
+0006    KSTR     2   0      ; "2"
+0007    UNM      1   2
+0008    TNEW     2   0
+0009    UNM      1   2
+0010    KSTR     2   1      ; "abc"
+0011    LEN      1   2
+0012    TDUP     2   2
+0013    LEN      1   2
+0014    LEN      1   0
+0015    TGETS    2   0   3  ; "b"
+0016    LEN      1   2
+0017    TGETS    2   0   3  ; "b"
+0018    UNM      1   2
+0019    GGET     2   4      ; "f"
+0020    CALL     2   2   1
+0021    UNM      1   2
+0022    UNM      2   0
+0023    UNM      2   2
+0024    UNM      1   2
+0025    UNM      2   0
+0026    UNM      1   2
+0027    UNM      2   0
+0028    NOT      1   2
+0029    LEN      2   0
+0030    UNM      1   2
+0031    UNM      2   0
+0032    LEN      1   2
+0033    KSHORT   1  -4
+0034    KSHORT   1   4
+0035    GGET     2   3      ; "b"
+0036    UNM      2   2
+0037    POW      2   0   2
+0038    UNM      1   2
+0039    UNM      2   0
+0040    KSHORT   3   2
+0041    POW      1   3   2
+0042    KCDATA   1   5
+0043    KCDATA   1   6
+0044    KCDATA   1   7
+0045    KPRI     2   0
+0046    UNM      1   2
+0047    KPRI     2   2
+0048    UNM      1   2
+0049    KNUM     1   1      ; -inf
+0050    KSHORT   2   0
+0051    DIVVN    2   2   2  ; 0
+0052    UNM      1   2
+0053    KSHORT   1 -32768
+0054    KNUM     1   3      ; -32769
+0055    KNUM     1   4      ; -65536
+0056    RET0     0   1
+

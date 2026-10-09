@@ -1,0 +1,1054 @@
+-- BYTECODE -- ref_lang_meta_comp.lua:4-4
+0001    UGET     2   0      ; comp
+0002    KSTR     4   0      ; "lt"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_comp.lua:5-5
+0001    UGET     2   0      ; comp
+0002    KSTR     4   0      ; "le"
+0003    MOV      5   0
+0004    MOV      6   1
+0005    CALLT    2   4
+
+-- BYTECODE -- ref_lang_meta_comp.lua:2-8
+0001    TDUP     3   1
+0002    FNEW     4   0      ; ref_lang_meta_comp.lua:4
+0003    TSETS    4   3   2  ; "__lt"
+0004    FNEW     4   3      ; ref_lang_meta_comp.lua:5
+0005    TSETS    4   3   4  ; "__le"
+0006    GGET     4   5      ; "setmetatable"
+0007    TNEW     6   3
+0008    TSETB    1   6   1
+0009    MOV      7   3
+0010    CALL     4   2   3
+0011    GGET     5   5      ; "setmetatable"
+0012    TNEW     7   3
+0013    TSETB    2   7   1
+0014    MOV      8   3
+0015    CALL     5   0   3
+0016    UCLO     0 => 0017
+0017 => RETM     4   1
+
+-- BYTECODE -- ref_lang_meta_comp.lua:12-12
+0001    USETV    0   0      ; xop
+0002    KSTR     3   0      ; ""
+0003    RET1     3   2
+
+-- BYTECODE -- ref_lang_meta_comp.lua:51-52
+0001    ISNES    0   0      ; "lt"
+0002    JMP      3 => 0012
+0003    TGETB    3   1   1
+0004    TGETB    4   2   1
+0005    ISLT     3   4
+0006    JMP      3 => 0009
+0007    KPRI     3   1
+0008    JMP      4 => 0010
+0009 => KPRI     3   2
+0010 => RET1     3   2
+0011    JMP      3 => 0020
+0012 => TGETB    3   1   1
+0013    TGETB    4   2   1
+0014    ISLE     3   4
+0015    JMP      3 => 0018
+0016    KPRI     3   1
+0017    JMP      4 => 0019
+0018 => KPRI     3   2
+0019 => RET1     3   2
+0020 => RET0     0   1
+
+-- BYTECODE -- ref_lang_meta_comp.lua:0-121
+0001    FNEW     0   0      ; ref_lang_meta_comp.lua:2
+0002    KPRI     1   0
+0003    MOV      2   0
+0004    FNEW     4   1      ; ref_lang_meta_comp.lua:12
+0005    CALL     2   3   2
+0006    GGET     4   2      ; "assert"
+0007    ISLT     2   3
+0008    JMP      6 => 0011
+0009    KPRI     6   1
+0010    JMP      7 => 0012
+0011 => KPRI     6   2
+0012 => ISNEP    6   2
+0013    JMP      6 => 0016
+0014    ISEQS    1   3      ; "lt"
+0015    JMP      6 => 0018
+0016 => KPRI     6   1
+0017    JMP      7 => 0019
+0018 => KPRI     6   2
+0019 => CALL     4   1   2
+0020    KPRI     1   0
+0021    GGET     4   2      ; "assert"
+0022    ISLT     3   2
+0023    JMP      6 => 0026
+0024    KPRI     6   1
+0025    JMP      7 => 0027
+0026 => KPRI     6   2
+0027 => ISNEP    6   2
+0028    JMP      6 => 0031
+0029    ISEQS    1   3      ; "lt"
+0030    JMP      6 => 0033
+0031 => KPRI     6   1
+0032    JMP      7 => 0034
+0033 => KPRI     6   2
+0034 => CALL     4   1   2
+0035    KPRI     1   0
+0036    GGET     4   2      ; "assert"
+0037    ISLE     2   3
+0038    JMP      6 => 0041
+0039    KPRI     6   1
+0040    JMP      7 => 0042
+0041 => KPRI     6   2
+0042 => ISNEP    6   2
+0043    JMP      6 => 0046
+0044    ISEQS    1   4      ; "le"
+0045    JMP      6 => 0048
+0046 => KPRI     6   1
+0047    JMP      7 => 0049
+0048 => KPRI     6   2
+0049 => CALL     4   1   2
+0050    KPRI     1   0
+0051    GGET     4   2      ; "assert"
+0052    ISLE     3   2
+0053    JMP      6 => 0056
+0054    KPRI     6   1
+0055    JMP      7 => 0057
+0056 => KPRI     6   2
+0057 => ISNEP    6   2
+0058    JMP      6 => 0061
+0059    ISEQS    1   4      ; "le"
+0060    JMP      6 => 0063
+0061 => KPRI     6   1
+0062    JMP      7 => 0064
+0063 => KPRI     6   2
+0064 => CALL     4   1   2
+0065    KPRI     1   0
+0066    GGET     4   2      ; "assert"
+0067    ISGE     2   3
+0068    JMP      6 => 0071
+0069    KPRI     6   1
+0070    JMP      7 => 0072
+0071 => KPRI     6   2
+0072 => ISNEP    6   1
+0073    JMP      6 => 0076
+0074    ISEQS    1   3      ; "lt"
+0075    JMP      6 => 0078
+0076 => KPRI     6   1
+0077    JMP      7 => 0079
+0078 => KPRI     6   2
+0079 => CALL     4   1   2
+0080    KPRI     1   0
+0081    GGET     4   2      ; "assert"
+0082    ISGE     3   2
+0083    JMP      6 => 0086
+0084    KPRI     6   1
+0085    JMP      7 => 0087
+0086 => KPRI     6   2
+0087 => ISNEP    6   1
+0088    JMP      6 => 0091
+0089    ISEQS    1   3      ; "lt"
+0090    JMP      6 => 0093
+0091 => KPRI     6   1
+0092    JMP      7 => 0094
+0093 => KPRI     6   2
+0094 => CALL     4   1   2
+0095    KPRI     1   0
+0096    GGET     4   2      ; "assert"
+0097    ISGT     2   3
+0098    JMP      6 => 0101
+0099    KPRI     6   1
+0100    JMP      7 => 0102
+0101 => KPRI     6   2
+0102 => ISNEP    6   1
+0103    JMP      6 => 0106
+0104    ISEQS    1   4      ; "le"
+0105    JMP      6 => 0108
+0106 => KPRI     6   1
+0107    JMP      7 => 0109
+0108 => KPRI     6   2
+0109 => CALL     4   1   2
+0110    KPRI     1   0
+0111    GGET     4   2      ; "assert"
+0112    ISGT     3   2
+0113    JMP      6 => 0116
+0114    KPRI     6   1
+0115    JMP      7 => 0117
+0116 => KPRI     6   2
+0117 => ISNEP    6   1
+0118    JMP      6 => 0121
+0119    ISEQS    1   4      ; "le"
+0120    JMP      6 => 0123
+0121 => KPRI     6   1
+0122    JMP      7 => 0124
+0123 => KPRI     6   2
+0124 => CALL     4   1   2
+0125    KPRI     1   0
+0126    GGET     4   5      ; "getmetatable"
+0127    MOV      6   2
+0128    CALL     4   2   2
+0129    TGETS    4   4   6  ; "__le"
+0130    GGET     5   5      ; "getmetatable"
+0131    MOV      7   2
+0132    CALL     5   2   2
+0133    KPRI     6   0
+0134    TSETS    6   5   6  ; "__le"
+0135    GGET     5   2      ; "assert"
+0136    ISLT     2   3
+0137    JMP      7 => 0140
+0138    KPRI     7   1
+0139    JMP      8 => 0141
+0140 => KPRI     7   2
+0141 => ISNEP    7   2
+0142    JMP      7 => 0145
+0143    ISEQS    1   3      ; "lt"
+0144    JMP      7 => 0147
+0145 => KPRI     7   1
+0146    JMP      8 => 0148
+0147 => KPRI     7   2
+0148 => CALL     5   1   2
+0149    KPRI     1   0
+0150    GGET     5   2      ; "assert"
+0151    ISLT     3   2
+0152    JMP      7 => 0155
+0153    KPRI     7   1
+0154    JMP      8 => 0156
+0155 => KPRI     7   2
+0156 => ISNEP    7   2
+0157    JMP      7 => 0160
+0158    ISEQS    1   3      ; "lt"
+0159    JMP      7 => 0162
+0160 => KPRI     7   1
+0161    JMP      8 => 0163
+0162 => KPRI     7   2
+0163 => CALL     5   1   2
+0164    KPRI     1   0
+0165    GGET     5   2      ; "assert"
+0166    ISLE     2   3
+0167    JMP      7 => 0170
+0168    KPRI     7   1
+0169    JMP      8 => 0171
+0170 => KPRI     7   2
+0171 => ISNEP    7   1
+0172    JMP      7 => 0175
+0173    ISEQS    1   3      ; "lt"
+0174    JMP      7 => 0177
+0175 => KPRI     7   1
+0176    JMP      8 => 0178
+0177 => KPRI     7   2
+0178 => CALL     5   1   2
+0179    KPRI     1   0
+0180    GGET     5   2      ; "assert"
+0181    ISLE     3   2
+0182    JMP      7 => 0185
+0183    KPRI     7   1
+0184    JMP      8 => 0186
+0185 => KPRI     7   2
+0186 => ISNEP    7   1
+0187    JMP      7 => 0190
+0188    ISEQS    1   3      ; "lt"
+0189    JMP      7 => 0192
+0190 => KPRI     7   1
+0191    JMP      8 => 0193
+0192 => KPRI     7   2
+0193 => CALL     5   1   2
+0194    KPRI     1   0
+0195    GGET     5   2      ; "assert"
+0196    ISGE     2   3
+0197    JMP      7 => 0200
+0198    KPRI     7   1
+0199    JMP      8 => 0201
+0200 => KPRI     7   2
+0201 => ISNEP    7   1
+0202    JMP      7 => 0205
+0203    ISEQS    1   3      ; "lt"
+0204    JMP      7 => 0207
+0205 => KPRI     7   1
+0206    JMP      8 => 0208
+0207 => KPRI     7   2
+0208 => CALL     5   1   2
+0209    KPRI     1   0
+0210    GGET     5   2      ; "assert"
+0211    ISGE     3   2
+0212    JMP      7 => 0215
+0213    KPRI     7   1
+0214    JMP      8 => 0216
+0215 => KPRI     7   2
+0216 => ISNEP    7   1
+0217    JMP      7 => 0220
+0218    ISEQS    1   3      ; "lt"
+0219    JMP      7 => 0222
+0220 => KPRI     7   1
+0221    JMP      8 => 0223
+0222 => KPRI     7   2
+0223 => CALL     5   1   2
+0224    KPRI     1   0
+0225    GGET     5   2      ; "assert"
+0226    ISGT     2   3
+0227    JMP      7 => 0230
+0228    KPRI     7   1
+0229    JMP      8 => 0231
+0230 => KPRI     7   2
+0231 => ISNEP    7   2
+0232    JMP      7 => 0235
+0233    ISEQS    1   3      ; "lt"
+0234    JMP      7 => 0237
+0235 => KPRI     7   1
+0236    JMP      8 => 0238
+0237 => KPRI     7   2
+0238 => CALL     5   1   2
+0239    KPRI     1   0
+0240    GGET     5   2      ; "assert"
+0241    ISGT     3   2
+0242    JMP      7 => 0245
+0243    KPRI     7   1
+0244    JMP      8 => 0246
+0245 => KPRI     7   2
+0246 => ISNEP    7   2
+0247    JMP      7 => 0250
+0248    ISEQS    1   3      ; "lt"
+0249    JMP      7 => 0252
+0250 => KPRI     7   1
+0251    JMP      8 => 0253
+0252 => KPRI     7   2
+0253 => CALL     5   1   2
+0254    KPRI     1   0
+0255    GGET     5   5      ; "getmetatable"
+0256    MOV      7   2
+0257    CALL     5   2   2
+0258    TSETS    4   5   6  ; "__le"
+0259    GGET     5   7      ; "setmetatable"
+0260    MOV      7   3
+0261    TDUP     8   9
+0262    GGET     9   5      ; "getmetatable"
+0263    MOV     11   3
+0264    CALL     9   2   2
+0265    TGETS    9   9   8  ; "__lt"
+0266    TSETS    9   8   8  ; "__lt"
+0267    GGET     9   5      ; "getmetatable"
+0268    MOV     11   3
+0269    CALL     9   2   2
+0270    TGETS    9   9   6  ; "__le"
+0271    TSETS    9   8   6  ; "__le"
+0272    CALL     5   1   3
+0273    GGET     5   2      ; "assert"
+0274    ISLT     2   3
+0275    JMP      7 => 0278
+0276    KPRI     7   1
+0277    JMP      8 => 0279
+0278 => KPRI     7   2
+0279 => ISNEP    7   2
+0280    JMP      7 => 0283
+0281    ISEQS    1   3      ; "lt"
+0282    JMP      7 => 0285
+0283 => KPRI     7   1
+0284    JMP      8 => 0286
+0285 => KPRI     7   2
+0286 => CALL     5   1   2
+0287    KPRI     1   0
+0288    GGET     5   2      ; "assert"
+0289    ISLT     3   2
+0290    JMP      7 => 0293
+0291    KPRI     7   1
+0292    JMP      8 => 0294
+0293 => KPRI     7   2
+0294 => ISNEP    7   2
+0295    JMP      7 => 0298
+0296    ISEQS    1   3      ; "lt"
+0297    JMP      7 => 0300
+0298 => KPRI     7   1
+0299    JMP      8 => 0301
+0300 => KPRI     7   2
+0301 => CALL     5   1   2
+0302    KPRI     1   0
+0303    GGET     5   2      ; "assert"
+0304    ISLE     2   3
+0305    JMP      7 => 0308
+0306    KPRI     7   1
+0307    JMP      8 => 0309
+0308 => KPRI     7   2
+0309 => ISNEP    7   2
+0310    JMP      7 => 0313
+0311    ISEQS    1   4      ; "le"
+0312    JMP      7 => 0315
+0313 => KPRI     7   1
+0314    JMP      8 => 0316
+0315 => KPRI     7   2
+0316 => CALL     5   1   2
+0317    KPRI     1   0
+0318    GGET     5   2      ; "assert"
+0319    ISLE     3   2
+0320    JMP      7 => 0323
+0321    KPRI     7   1
+0322    JMP      8 => 0324
+0323 => KPRI     7   2
+0324 => ISNEP    7   2
+0325    JMP      7 => 0328
+0326    ISEQS    1   4      ; "le"
+0327    JMP      7 => 0330
+0328 => KPRI     7   1
+0329    JMP      8 => 0331
+0330 => KPRI     7   2
+0331 => CALL     5   1   2
+0332    KPRI     1   0
+0333    GGET     5   2      ; "assert"
+0334    ISGE     2   3
+0335    JMP      7 => 0338
+0336    KPRI     7   1
+0337    JMP      8 => 0339
+0338 => KPRI     7   2
+0339 => ISNEP    7   1
+0340    JMP      7 => 0343
+0341    ISEQS    1   3      ; "lt"
+0342    JMP      7 => 0345
+0343 => KPRI     7   1
+0344    JMP      8 => 0346
+0345 => KPRI     7   2
+0346 => CALL     5   1   2
+0347    KPRI     1   0
+0348    GGET     5   2      ; "assert"
+0349    ISGE     3   2
+0350    JMP      7 => 0353
+0351    KPRI     7   1
+0352    JMP      8 => 0354
+0353 => KPRI     7   2
+0354 => ISNEP    7   1
+0355    JMP      7 => 0358
+0356    ISEQS    1   3      ; "lt"
+0357    JMP      7 => 0360
+0358 => KPRI     7   1
+0359    JMP      8 => 0361
+0360 => KPRI     7   2
+0361 => CALL     5   1   2
+0362    KPRI     1   0
+0363    GGET     5   2      ; "assert"
+0364    ISGT     2   3
+0365    JMP      7 => 0368
+0366    KPRI     7   1
+0367    JMP      8 => 0369
+0368 => KPRI     7   2
+0369 => ISNEP    7   1
+0370    JMP      7 => 0373
+0371    ISEQS    1   4      ; "le"
+0372    JMP      7 => 0375
+0373 => KPRI     7   1
+0374    JMP      8 => 0376
+0375 => KPRI     7   2
+0376 => CALL     5   1   2
+0377    KPRI     1   0
+0378    GGET     5   2      ; "assert"
+0379    ISGT     3   2
+0380    JMP      7 => 0383
+0381    KPRI     7   1
+0382    JMP      8 => 0384
+0383 => KPRI     7   2
+0384 => ISNEP    7   1
+0385    JMP      7 => 0388
+0386    ISEQS    1   4      ; "le"
+0387    JMP      7 => 0390
+0388 => KPRI     7   1
+0389    JMP      8 => 0391
+0390 => KPRI     7   2
+0391 => CALL     5   1   2
+0392    KPRI     1   0
+0393    UCLO     1 => 0394
+0394 => MOV      1   0
+0395    FNEW     3  10      ; ref_lang_meta_comp.lua:51
+0396    KSHORT   4   1
+0397    KSHORT   5   2
+0398    CALL     1   3   4
+0399    GGET     3   2      ; "assert"
+0400    ISLT     1   2
+0401    JMP      5 => 0404
+0402    KPRI     5   1
+0403    JMP      6 => 0405
+0404 => KPRI     5   2
+0405 => ISEQP    5   2
+0406    JMP      5 => 0409
+0407    KPRI     5   1
+0408    JMP      6 => 0410
+0409 => KPRI     5   2
+0410 => CALL     3   1   2
+0411    GGET     3   2      ; "assert"
+0412    ISLT     2   1
+0413    JMP      5 => 0416
+0414    KPRI     5   1
+0415    JMP      6 => 0417
+0416 => KPRI     5   2
+0417 => ISEQP    5   1
+0418    JMP      5 => 0421
+0419    KPRI     5   1
+0420    JMP      6 => 0422
+0421 => KPRI     5   2
+0422 => CALL     3   1   2
+0423    GGET     3   2      ; "assert"
+0424    ISLE     1   2
+0425    JMP      5 => 0428
+0426    KPRI     5   1
+0427    JMP      6 => 0429
+0428 => KPRI     5   2
+0429 => ISEQP    5   2
+0430    JMP      5 => 0433
+0431    KPRI     5   1
+0432    JMP      6 => 0434
+0433 => KPRI     5   2
+0434 => CALL     3   1   2
+0435    GGET     3   2      ; "assert"
+0436    ISLE     2   1
+0437    JMP      5 => 0440
+0438    KPRI     5   1
+0439    JMP      6 => 0441
+0440 => KPRI     5   2
+0441 => ISEQP    5   1
+0442    JMP      5 => 0445
+0443    KPRI     5   1
+0444    JMP      6 => 0446
+0445 => KPRI     5   2
+0446 => CALL     3   1   2
+0447    GGET     3   2      ; "assert"
+0448    ISGE     1   2
+0449    JMP      5 => 0452
+0450    KPRI     5   1
+0451    JMP      6 => 0453
+0452 => KPRI     5   2
+0453 => ISEQP    5   1
+0454    JMP      5 => 0457
+0455    KPRI     5   1
+0456    JMP      6 => 0458
+0457 => KPRI     5   2
+0458 => CALL     3   1   2
+0459    GGET     3   2      ; "assert"
+0460    ISGE     2   1
+0461    JMP      5 => 0464
+0462    KPRI     5   1
+0463    JMP      6 => 0465
+0464 => KPRI     5   2
+0465 => ISEQP    5   2
+0466    JMP      5 => 0469
+0467    KPRI     5   1
+0468    JMP      6 => 0470
+0469 => KPRI     5   2
+0470 => CALL     3   1   2
+0471    GGET     3   2      ; "assert"
+0472    ISGT     1   2
+0473    JMP      5 => 0476
+0474    KPRI     5   1
+0475    JMP      6 => 0477
+0476 => KPRI     5   2
+0477 => ISEQP    5   1
+0478    JMP      5 => 0481
+0479    KPRI     5   1
+0480    JMP      6 => 0482
+0481 => KPRI     5   2
+0482 => CALL     3   1   2
+0483    GGET     3   2      ; "assert"
+0484    ISGT     2   1
+0485    JMP      5 => 0488
+0486    KPRI     5   1
+0487    JMP      6 => 0489
+0488 => KPRI     5   2
+0489 => ISEQP    5   2
+0490    JMP      5 => 0493
+0491    KPRI     5   1
+0492    JMP      6 => 0494
+0493 => KPRI     5   2
+0494 => CALL     3   1   2
+0495    KSHORT   3   1
+0496    TSETB    3   2   1
+0497    GGET     3   2      ; "assert"
+0498    ISLT     1   2
+0499    JMP      5 => 0502
+0500    KPRI     5   1
+0501    JMP      6 => 0503
+0502 => KPRI     5   2
+0503 => ISEQP    5   1
+0504    JMP      5 => 0507
+0505    KPRI     5   1
+0506    JMP      6 => 0508
+0507 => KPRI     5   2
+0508 => CALL     3   1   2
+0509    GGET     3   2      ; "assert"
+0510    ISLT     2   1
+0511    JMP      5 => 0514
+0512    KPRI     5   1
+0513    JMP      6 => 0515
+0514 => KPRI     5   2
+0515 => ISEQP    5   1
+0516    JMP      5 => 0519
+0517    KPRI     5   1
+0518    JMP      6 => 0520
+0519 => KPRI     5   2
+0520 => CALL     3   1   2
+0521    GGET     3   2      ; "assert"
+0522    ISLE     1   2
+0523    JMP      5 => 0526
+0524    KPRI     5   1
+0525    JMP      6 => 0527
+0526 => KPRI     5   2
+0527 => ISEQP    5   2
+0528    JMP      5 => 0531
+0529    KPRI     5   1
+0530    JMP      6 => 0532
+0531 => KPRI     5   2
+0532 => CALL     3   1   2
+0533    GGET     3   2      ; "assert"
+0534    ISLE     2   1
+0535    JMP      5 => 0538
+0536    KPRI     5   1
+0537    JMP      6 => 0539
+0538 => KPRI     5   2
+0539 => ISEQP    5   2
+0540    JMP      5 => 0543
+0541    KPRI     5   1
+0542    JMP      6 => 0544
+0543 => KPRI     5   2
+0544 => CALL     3   1   2
+0545    GGET     3   2      ; "assert"
+0546    ISGE     1   2
+0547    JMP      5 => 0550
+0548    KPRI     5   1
+0549    JMP      6 => 0551
+0550 => KPRI     5   2
+0551 => ISEQP    5   2
+0552    JMP      5 => 0555
+0553    KPRI     5   1
+0554    JMP      6 => 0556
+0555 => KPRI     5   2
+0556 => CALL     3   1   2
+0557    GGET     3   2      ; "assert"
+0558    ISGE     2   1
+0559    JMP      5 => 0562
+0560    KPRI     5   1
+0561    JMP      6 => 0563
+0562 => KPRI     5   2
+0563 => ISEQP    5   2
+0564    JMP      5 => 0567
+0565    KPRI     5   1
+0566    JMP      6 => 0568
+0567 => KPRI     5   2
+0568 => CALL     3   1   2
+0569    GGET     3   2      ; "assert"
+0570    ISGT     1   2
+0571    JMP      5 => 0574
+0572    KPRI     5   1
+0573    JMP      6 => 0575
+0574 => KPRI     5   2
+0575 => ISEQP    5   1
+0576    JMP      5 => 0579
+0577    KPRI     5   1
+0578    JMP      6 => 0580
+0579 => KPRI     5   2
+0580 => CALL     3   1   2
+0581    GGET     3   2      ; "assert"
+0582    ISGT     2   1
+0583    JMP      5 => 0586
+0584    KPRI     5   1
+0585    JMP      6 => 0587
+0586 => KPRI     5   2
+0587 => ISEQP    5   1
+0588    JMP      5 => 0591
+0589    KPRI     5   1
+0590    JMP      6 => 0592
+0591 => KPRI     5   2
+0592 => CALL     3   1   2
+0593    KSHORT   3   2
+0594    TSETB    3   1   1
+0595    GGET     3   2      ; "assert"
+0596    ISLT     1   2
+0597    JMP      5 => 0600
+0598    KPRI     5   1
+0599    JMP      6 => 0601
+0600 => KPRI     5   2
+0601 => ISEQP    5   1
+0602    JMP      5 => 0605
+0603    KPRI     5   1
+0604    JMP      6 => 0606
+0605 => KPRI     5   2
+0606 => CALL     3   1   2
+0607    GGET     3   2      ; "assert"
+0608    ISLT     2   1
+0609    JMP      5 => 0612
+0610    KPRI     5   1
+0611    JMP      6 => 0613
+0612 => KPRI     5   2
+0613 => ISEQP    5   2
+0614    JMP      5 => 0617
+0615    KPRI     5   1
+0616    JMP      6 => 0618
+0617 => KPRI     5   2
+0618 => CALL     3   1   2
+0619    GGET     3   2      ; "assert"
+0620    ISLE     1   2
+0621    JMP      5 => 0624
+0622    KPRI     5   1
+0623    JMP      6 => 0625
+0624 => KPRI     5   2
+0625 => ISEQP    5   1
+0626    JMP      5 => 0629
+0627    KPRI     5   1
+0628    JMP      6 => 0630
+0629 => KPRI     5   2
+0630 => CALL     3   1   2
+0631    GGET     3   2      ; "assert"
+0632    ISLE     2   1
+0633    JMP      5 => 0636
+0634    KPRI     5   1
+0635    JMP      6 => 0637
+0636 => KPRI     5   2
+0637 => ISEQP    5   2
+0638    JMP      5 => 0641
+0639    KPRI     5   1
+0640    JMP      6 => 0642
+0641 => KPRI     5   2
+0642 => CALL     3   1   2
+0643    GGET     3   2      ; "assert"
+0644    ISGE     1   2
+0645    JMP      5 => 0648
+0646    KPRI     5   1
+0647    JMP      6 => 0649
+0648 => KPRI     5   2
+0649 => ISEQP    5   2
+0650    JMP      5 => 0653
+0651    KPRI     5   1
+0652    JMP      6 => 0654
+0653 => KPRI     5   2
+0654 => CALL     3   1   2
+0655    GGET     3   2      ; "assert"
+0656    ISGE     2   1
+0657    JMP      5 => 0660
+0658    KPRI     5   1
+0659    JMP      6 => 0661
+0660 => KPRI     5   2
+0661 => ISEQP    5   1
+0662    JMP      5 => 0665
+0663    KPRI     5   1
+0664    JMP      6 => 0666
+0665 => KPRI     5   2
+0666 => CALL     3   1   2
+0667    GGET     3   2      ; "assert"
+0668    ISGT     1   2
+0669    JMP      5 => 0672
+0670    KPRI     5   1
+0671    JMP      6 => 0673
+0672 => KPRI     5   2
+0673 => ISEQP    5   2
+0674    JMP      5 => 0677
+0675    KPRI     5   1
+0676    JMP      6 => 0678
+0677 => KPRI     5   2
+0678 => CALL     3   1   2
+0679    GGET     3   2      ; "assert"
+0680    ISGT     2   1
+0681    JMP      5 => 0684
+0682    KPRI     5   1
+0683    JMP      6 => 0685
+0684 => KPRI     5   2
+0685 => ISEQP    5   1
+0686    JMP      5 => 0689
+0687    KPRI     5   1
+0688    JMP      6 => 0690
+0689 => KPRI     5   2
+0690 => CALL     3   1   2
+0691    GGET     3   5      ; "getmetatable"
+0692    MOV      5   1
+0693    CALL     3   2   2
+0694    KPRI     4   0
+0695    TSETS    4   3   6  ; "__le"
+0696    KSHORT   3   1
+0697    TSETB    3   1   1
+0698    KSHORT   3   2
+0699    TSETB    3   2   1
+0700    GGET     3   2      ; "assert"
+0701    ISLT     1   2
+0702    JMP      5 => 0705
+0703    KPRI     5   1
+0704    JMP      6 => 0706
+0705 => KPRI     5   2
+0706 => ISEQP    5   2
+0707    JMP      5 => 0710
+0708    KPRI     5   1
+0709    JMP      6 => 0711
+0710 => KPRI     5   2
+0711 => CALL     3   1   2
+0712    GGET     3   2      ; "assert"
+0713    ISLT     2   1
+0714    JMP      5 => 0717
+0715    KPRI     5   1
+0716    JMP      6 => 0718
+0717 => KPRI     5   2
+0718 => ISEQP    5   1
+0719    JMP      5 => 0722
+0720    KPRI     5   1
+0721    JMP      6 => 0723
+0722 => KPRI     5   2
+0723 => CALL     3   1   2
+0724    GGET     3   2      ; "assert"
+0725    ISLE     1   2
+0726    JMP      5 => 0729
+0727    KPRI     5   1
+0728    JMP      6 => 0730
+0729 => KPRI     5   2
+0730 => ISEQP    5   2
+0731    JMP      5 => 0734
+0732    KPRI     5   1
+0733    JMP      6 => 0735
+0734 => KPRI     5   2
+0735 => CALL     3   1   2
+0736    GGET     3   2      ; "assert"
+0737    ISLE     2   1
+0738    JMP      5 => 0741
+0739    KPRI     5   1
+0740    JMP      6 => 0742
+0741 => KPRI     5   2
+0742 => ISEQP    5   1
+0743    JMP      5 => 0746
+0744    KPRI     5   1
+0745    JMP      6 => 0747
+0746 => KPRI     5   2
+0747 => CALL     3   1   2
+0748    GGET     3   2      ; "assert"
+0749    ISGE     1   2
+0750    JMP      5 => 0753
+0751    KPRI     5   1
+0752    JMP      6 => 0754
+0753 => KPRI     5   2
+0754 => ISEQP    5   1
+0755    JMP      5 => 0758
+0756    KPRI     5   1
+0757    JMP      6 => 0759
+0758 => KPRI     5   2
+0759 => CALL     3   1   2
+0760    GGET     3   2      ; "assert"
+0761    ISGE     2   1
+0762    JMP      5 => 0765
+0763    KPRI     5   1
+0764    JMP      6 => 0766
+0765 => KPRI     5   2
+0766 => ISEQP    5   2
+0767    JMP      5 => 0770
+0768    KPRI     5   1
+0769    JMP      6 => 0771
+0770 => KPRI     5   2
+0771 => CALL     3   1   2
+0772    GGET     3   2      ; "assert"
+0773    ISGT     1   2
+0774    JMP      5 => 0777
+0775    KPRI     5   1
+0776    JMP      6 => 0778
+0777 => KPRI     5   2
+0778 => ISEQP    5   1
+0779    JMP      5 => 0782
+0780    KPRI     5   1
+0781    JMP      6 => 0783
+0782 => KPRI     5   2
+0783 => CALL     3   1   2
+0784    GGET     3   2      ; "assert"
+0785    ISGT     2   1
+0786    JMP      5 => 0789
+0787    KPRI     5   1
+0788    JMP      6 => 0790
+0789 => KPRI     5   2
+0790 => ISEQP    5   2
+0791    JMP      5 => 0794
+0792    KPRI     5   1
+0793    JMP      6 => 0795
+0794 => KPRI     5   2
+0795 => CALL     3   1   2
+0796    KSHORT   3   1
+0797    TSETB    3   2   1
+0798    GGET     3   2      ; "assert"
+0799    ISLT     1   2
+0800    JMP      5 => 0803
+0801    KPRI     5   1
+0802    JMP      6 => 0804
+0803 => KPRI     5   2
+0804 => ISEQP    5   1
+0805    JMP      5 => 0808
+0806    KPRI     5   1
+0807    JMP      6 => 0809
+0808 => KPRI     5   2
+0809 => CALL     3   1   2
+0810    GGET     3   2      ; "assert"
+0811    ISLT     2   1
+0812    JMP      5 => 0815
+0813    KPRI     5   1
+0814    JMP      6 => 0816
+0815 => KPRI     5   2
+0816 => ISEQP    5   1
+0817    JMP      5 => 0820
+0818    KPRI     5   1
+0819    JMP      6 => 0821
+0820 => KPRI     5   2
+0821 => CALL     3   1   2
+0822    GGET     3   2      ; "assert"
+0823    ISLE     1   2
+0824    JMP      5 => 0827
+0825    KPRI     5   1
+0826    JMP      6 => 0828
+0827 => KPRI     5   2
+0828 => ISEQP    5   2
+0829    JMP      5 => 0832
+0830    KPRI     5   1
+0831    JMP      6 => 0833
+0832 => KPRI     5   2
+0833 => CALL     3   1   2
+0834    GGET     3   2      ; "assert"
+0835    ISLE     2   1
+0836    JMP      5 => 0839
+0837    KPRI     5   1
+0838    JMP      6 => 0840
+0839 => KPRI     5   2
+0840 => ISEQP    5   2
+0841    JMP      5 => 0844
+0842    KPRI     5   1
+0843    JMP      6 => 0845
+0844 => KPRI     5   2
+0845 => CALL     3   1   2
+0846    GGET     3   2      ; "assert"
+0847    ISGE     1   2
+0848    JMP      5 => 0851
+0849    KPRI     5   1
+0850    JMP      6 => 0852
+0851 => KPRI     5   2
+0852 => ISEQP    5   2
+0853    JMP      5 => 0856
+0854    KPRI     5   1
+0855    JMP      6 => 0857
+0856 => KPRI     5   2
+0857 => CALL     3   1   2
+0858    GGET     3   2      ; "assert"
+0859    ISGE     2   1
+0860    JMP      5 => 0863
+0861    KPRI     5   1
+0862    JMP      6 => 0864
+0863 => KPRI     5   2
+0864 => ISEQP    5   2
+0865    JMP      5 => 0868
+0866    KPRI     5   1
+0867    JMP      6 => 0869
+0868 => KPRI     5   2
+0869 => CALL     3   1   2
+0870    GGET     3   2      ; "assert"
+0871    ISGT     1   2
+0872    JMP      5 => 0875
+0873    KPRI     5   1
+0874    JMP      6 => 0876
+0875 => KPRI     5   2
+0876 => ISEQP    5   1
+0877    JMP      5 => 0880
+0878    KPRI     5   1
+0879    JMP      6 => 0881
+0880 => KPRI     5   2
+0881 => CALL     3   1   2
+0882    GGET     3   2      ; "assert"
+0883    ISGT     2   1
+0884    JMP      5 => 0887
+0885    KPRI     5   1
+0886    JMP      6 => 0888
+0887 => KPRI     5   2
+0888 => ISEQP    5   1
+0889    JMP      5 => 0892
+0890    KPRI     5   1
+0891    JMP      6 => 0893
+0892 => KPRI     5   2
+0893 => CALL     3   1   2
+0894    KSHORT   3   2
+0895    TSETB    3   1   1
+0896    GGET     3   2      ; "assert"
+0897    ISLT     1   2
+0898    JMP      5 => 0901
+0899    KPRI     5   1
+0900    JMP      6 => 0902
+0901 => KPRI     5   2
+0902 => ISEQP    5   1
+0903    JMP      5 => 0906
+0904    KPRI     5   1
+0905    JMP      6 => 0907
+0906 => KPRI     5   2
+0907 => CALL     3   1   2
+0908    GGET     3   2      ; "assert"
+0909    ISLT     2   1
+0910    JMP      5 => 0913
+0911    KPRI     5   1
+0912    JMP      6 => 0914
+0913 => KPRI     5   2
+0914 => ISEQP    5   2
+0915    JMP      5 => 0918
+0916    KPRI     5   1
+0917    JMP      6 => 0919
+0918 => KPRI     5   2
+0919 => CALL     3   1   2
+0920    GGET     3   2      ; "assert"
+0921    ISLE     1   2
+0922    JMP      5 => 0925
+0923    KPRI     5   1
+0924    JMP      6 => 0926
+0925 => KPRI     5   2
+0926 => ISEQP    5   1
+0927    JMP      5 => 0930
+0928    KPRI     5   1
+0929    JMP      6 => 0931
+0930 => KPRI     5   2
+0931 => CALL     3   1   2
+0932    GGET     3   2      ; "assert"
+0933    ISLE     2   1
+0934    JMP      5 => 0937
+0935    KPRI     5   1
+0936    JMP      6 => 0938
+0937 => KPRI     5   2
+0938 => ISEQP    5   2
+0939    JMP      5 => 0942
+0940    KPRI     5   1
+0941    JMP      6 => 0943
+0942 => KPRI     5   2
+0943 => CALL     3   1   2
+0944    GGET     3   2      ; "assert"
+0945    ISGE     1   2
+0946    JMP      5 => 0949
+0947    KPRI     5   1
+0948    JMP      6 => 0950
+0949 => KPRI     5   2
+0950 => ISEQP    5   2
+0951    JMP      5 => 0954
+0952    KPRI     5   1
+0953    JMP      6 => 0955
+0954 => KPRI     5   2
+0955 => CALL     3   1   2
+0956    GGET     3   2      ; "assert"
+0957    ISGE     2   1
+0958    JMP      5 => 0961
+0959    KPRI     5   1
+0960    JMP      6 => 0962
+0961 => KPRI     5   2
+0962 => ISEQP    5   1
+0963    JMP      5 => 0966
+0964    KPRI     5   1
+0965    JMP      6 => 0967
+0966 => KPRI     5   2
+0967 => CALL     3   1   2
+0968    GGET     3   2      ; "assert"
+0969    ISGT     1   2
+0970    JMP      5 => 0973
+0971    KPRI     5   1
+0972    JMP      6 => 0974
+0973 => KPRI     5   2
+0974 => ISEQP    5   2
+0975    JMP      5 => 0978
+0976    KPRI     5   1
+0977    JMP      6 => 0979
+0978 => KPRI     5   2
+0979 => CALL     3   1   2
+0980    GGET     3   2      ; "assert"
+0981    ISGT     2   1
+0982    JMP      5 => 0985
+0983    KPRI     5   1
+0984    JMP      6 => 0986
+0985 => KPRI     5   2
+0986 => ISEQP    5   1
+0987    JMP      5 => 0990
+0988    KPRI     5   1
+0989    JMP      6 => 0991
+0990 => KPRI     5   2
+0991 => CALL     3   1   2
+0992    RET0     0   1
+

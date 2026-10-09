@@ -1,0 +1,20 @@
+-- BYTECODE -- nil_assign.lua:9-9
+0001    KNIL     0   5
+0002    RET0     0   1
+
+-- BYTECODE -- nil_assign.lua:0-13
+0001    KNIL     0   6
+0002    KSHORT   7   1
+0003    KNIL     8  10
+0004    KPRI     1   0
+0005    MOV      0  10
+0006    KNIL    10  12
+0007    MOV      2  12
+0008    MOV      1  11
+0009    MOV      0  10
+0010    KNIL    10  16
+0011    FNEW    17   0      ; nil_assign.lua:9
+0012    KNIL     0   2
+0013    KNIL    18  22
+0014    RET0     0   1
+

@@ -1,0 +1,419 @@
+-- BYTECODE -- ref_jit_bc.lua:55-61
+0001    ISNES    0   0      ; "\n"
+0002    JMP      1 => 0006
+0003    KSTR     1   1      ; "\n"
+0004    RET1     1   2
+0005    JMP      1 => 0022
+0006 => ISNES    0   2      ; "\r"
+0007    JMP      1 => 0011
+0008    KSTR     1   3      ; "\r"
+0009    RET1     1   2
+0010    JMP      1 => 0022
+0011 => ISNES    0   4      ; "\t"
+0012    JMP      1 => 0016
+0013    KSTR     1   5      ; "\t"
+0014    RET1     1   2
+0015    JMP      1 => 0022
+0016 => UGET     1   0      ; format
+0017    KSTR     3   6      ; "\%03d"
+0018    UGET     4   1      ; byte
+0019    MOV      6   0
+0020    CALL     4   0   2
+0021    CALLMT   1   1
+0022 => RET0     0   1
+
+-- BYTECODE -- ref_jit_bc.lua:64-111
+0001    UGET     3   0      ; funcbc
+0002    MOV      5   0
+0003    MOV      6   1
+0004    CALL     3   3   3
+0005    IST          3
+0006    JMP      5 => 0008
+0007    RET0     0   1
+0008 => KSHORT   5   7
+0009    BAND     5   4   5
+0010    KSHORT   6   3
+0011    BSHR     6   4   6
+0012    KSHORT   7  15
+0013    BAND     6   6   7
+0014    KSHORT   7   7
+0015    BSHR     7   4   7
+0016    KSHORT   8  15
+0017    BAND     7   7   8
+0018    KSHORT   8   8
+0019    BSHR     8   3   8
+0020    KSHORT   9 255
+0021    BAND     8   8   9
+0022    KSHORT   9 255
+0023    BAND     9   3   9
+0024    MULNV    9   9   0  ; 6
+0025    UGET    10   1      ; sub
+0026    UGET    12   2      ; bcnames
+0027    ADDVN   13   9   1  ; 1
+0028    ADDVN   14   9   0  ; 6
+0029    CALL    10   2   4
+0030    UGET    11   3      ; format
+0031    KSTR    13   0      ; "%04d %s %-6s %3s "
+0032    MOV     14   1
+0033    ISTC    15   2
+0034    JMP     15 => 0036
+0035    KSTR    15   1      ; "  "
+0036 => MOV     16  10
+0037    ISNEN    5   2      ; 0
+0038    JMP     17 => 0041
+0039    KSTR    17   2      ; ""
+0040    JMP     18 => 0042
+0041 => MOV     17   8
+0042 => CALL    11   2   6
+0043    KSHORT  12  16
+0044    BSHR    12   3  12
+0045    ISNEN    7   3      ; 13
+0046    JMP     13 => 0053
+0047    UGET    13   3      ; format
+0048    KSTR    15   3      ; "%s=> %04d\n"
+0049    MOV     16  11
+0050    ADDVV   17   1  12
+0051    SUBVN   17  17   4  ; 32767
+0052    CALLT   13   4
+0053 => ISEQN    6   2      ; 0
+0054    JMP     13 => 0058
+0055    KSHORT  13 255
+0056    BAND    12  12  13
+0057    JMP     13 => 0064
+0058 => ISNEN    7   2      ; 0
+0059    JMP     13 => 0064
+0060    MOV     13  11
+0061    KSTR    14   4      ; "\n"
+0062    CAT     13  13  14
+0063    RET1    13   2
+0064 => KPRI    13   0
+0065    ISNEN    7   5      ; 10
+0066    JMP     14 => 0089
+0067    UGET    14   4      ; funck
+0068    MOV     16   0
+0069    UNM     17  12
+0070    SUBVN   17  17   1  ; 1
+0071    CALL    14   2   3
+0072    MOV     13  14
+0073    UGET    14   3      ; format
+0074    LEN     16  13
+0075    KSHORT  17  40
+0076    ISGE    17  16
+0077    JMP     16 => 0080
+0078    KSTR    16   5      ; ""%.40s"~"
+0079    JMP     17 => 0081
+0080 => KSTR    16   6      ; ""%s""
+0081 => UGET    17   5      ; gsub
+0082    MOV     19  13
+0083    KSTR    20   7      ; "%c"
+0084    UGET    21   6      ; ctlsub
+0085    CALL    17   0   4
+0086    CALLM   14   2   1
+0087    MOV     13  14
+0088    JMP     14 => 0126
+0089 => ISNEN    7   6      ; 9
+0090    JMP     14 => 0100
+0091    UGET    14   4      ; funck
+0092    MOV     16   0
+0093    MOV     17  12
+0094    CALL    14   2   3
+0095    MOV     13  14
+0096    ISNES   10   8      ; "TSETM "
+0097    JMP     14 => 0126
+0098    SUBVN   13  13   7  ; 4.5035996273705e+15
+0099    JMP     14 => 0126
+0100 => ISNEN    7   8      ; 12
+0101    JMP     14 => 0119
+0102    UGET    14   7      ; funcinfo
+0103    UGET    16   4      ; funck
+0104    MOV     18   0
+0105    UNM     19  12
+0106    SUBVN   19  19   1  ; 1
+0107    CALL    16   0   3
+0108    CALLM   14   2   0
+0109    TGETS   15  14   9  ; "ffid"
+0110    ISF         15
+0111    JMP     16 => 0117
+0112    UGET    15   8      ; vmdef
+0113    TGETS   15  15  10  ; "ffnames"
+0114    TGETS   16  14   9  ; "ffid"
+0115    TGETV   13  15  16
+0116    JMP     15 => 0126
+0117 => TGETS   13  14  11  ; "loc"
+0118    JMP     14 => 0126
+0119 => ISNEN    7   9      ; 5
+0120    JMP     14 => 0126
+0121    UGET    14   9      ; funcuvname
+0122    MOV     16   0
+0123    MOV     17  12
+0124    CALL    14   2   3
+0125    MOV     13  14
+0126 => ISNEN    5   9      ; 5
+0127    JMP     14 => 0140
+0128    UGET    14   9      ; funcuvname
+0129    MOV     16   0
+0130    MOV     17   8
+0131    CALL    14   2   3
+0132    ISF         13
+0133    JMP     15 => 0139
+0134    MOV     15  14
+0135    KSTR    16  12      ; " ; "
+0136    MOV     17  13
+0137    CAT     13  15  17
+0138    JMP     15 => 0140
+0139 => MOV     13  14
+0140 => ISEQN    6   2      ; 0
+0141    JMP     14 => 0159
+0142    KSHORT  14  24
+0143    BSHR    14   3  14
+0144    ISF         13
+0145    JMP     15 => 0153
+0146    UGET    15   3      ; format
+0147    KSTR    17  13      ; "%s%3d %3d  ; %s\n"
+0148    MOV     18  11
+0149    MOV     19  14
+0150    MOV     20  12
+0151    MOV     21  13
+0152    CALLT   15   6
+0153 => UGET    15   3      ; format
+0154    KSTR    17  14      ; "%s%3d %3d\n"
+0155    MOV     18  11
+0156    MOV     19  14
+0157    MOV     20  12
+0158    CALLT   15   5
+0159 => ISF         13
+0160    JMP     14 => 0167
+0161    UGET    14   3      ; format
+0162    KSTR    16  15      ; "%s%3d      ; %s\n"
+0163    MOV     17  11
+0164    MOV     18  12
+0165    MOV     19  13
+0166    CALLT   14   5
+0167 => ISNEN    7  10      ; 7
+0168    JMP     14 => 0173
+0169    KSHORT  14 32767
+0170    ISGE    14  12
+0171    JMP     14 => 0173
+0172    SUBVN   12  12  11  ; 65536
+0173 => UGET    14   3      ; format
+0174    KSTR    16  16      ; "%s%3d\n"
+0175    MOV     17  11
+0176    MOV     18  12
+0177    CALLT   14   4
+
+-- BYTECODE -- ref_jit_bc.lua:114-122
+0001    TNEW     1   0
+0002    KSHORT   2   1
+0003    KNUM     3   0      ; 1000000000
+0004    KSHORT   4   1
+0005    FORI     2 => 0024
+0006 => UGET     6   0      ; funcbc
+0007    MOV      8   0
+0008    MOV      9   5
+0009    CALL     6   3   3
+0010    IST          6
+0011    JMP      8 => 0013
+0012    JMP      2 => 0024
+0013 => KSHORT   8 1920
+0014    BAND     8   7   8
+0015    ISNEN    8   1      ; 1664
+0016    JMP      8 => 0023
+0017    KSHORT   8  16
+0018    BSHR     8   6   8
+0019    ADDVV    8   5   8
+0020    SUBVN    8   8   2  ; 32767
+0021    KPRI     9   2
+0022    TSETV    9   1   8
+0023 => FORL     2 => 0006
+0024 => RET1     1   2
+
+-- BYTECODE -- ref_jit_bc.lua:125-144
+0001    IST          1
+0002    JMP      3 => 0004
+0003    UGET     1   0      ; stdout
+0004 => UGET     3   1      ; funcinfo
+0005    MOV      5   0
+0006    CALL     3   2   2
+0007    ISF          2
+0008    JMP      4 => 0034
+0009    TGETS    4   3   0  ; "children"
+0010    ISF          4
+0011    JMP      5 => 0034
+0012    KSHORT   4  -1
+0013    KNUM     5   0      ; -1000000000
+0014    KSHORT   6  -1
+0015    FORI     4 => 0034
+0016 => UGET     8   2      ; funck
+0017    MOV     10   0
+0018    MOV     11   7
+0019    CALL     8   2   3
+0020    IST          8
+0021    JMP      9 => 0023
+0022    JMP      4 => 0034
+0023 => GGET     9   1      ; "type"
+0024    MOV     11   8
+0025    CALL     9   2   2
+0026    ISNES    9   2      ; "proto"
+0027    JMP      9 => 0033
+0028    UGET     9   3      ; bcdump
+0029    MOV     11   8
+0030    MOV     12   1
+0031    KPRI    13   2
+0032    CALL     9   1   4
+0033 => FORL     4 => 0016
+0034 => MOV      6   1
+0035    TGETS    4   1   3  ; "write"
+0036    UGET     7   4      ; format
+0037    KSTR     9   4      ; "-- BYTECODE -- %s-%d\n"
+0038    TGETS   10   3   5  ; "loc"
+0039    TGETS   11   3   6  ; "lastlinedefined"
+0040    CALL     7   0   4
+0041    CALLM    4   1   1
+0042    UGET     4   5      ; bctargets
+0043    MOV      6   0
+0044    CALL     4   2   2
+0045    KSHORT   5   1
+0046    KNUM     6   1      ; 1000000000
+0047    KSHORT   7   1
+0048    FORI     5 => 0065
+0049 => UGET     9   6      ; bcline
+0050    MOV     11   0
+0051    MOV     12   8
+0052    TGETV   13   4   8
+0053    ISF         13
+0054    JMP     14 => 0056
+0055    KSTR    13   7      ; "=>"
+0056 => CALL     9   2   4
+0057    IST          9
+0058    JMP     10 => 0060
+0059    JMP      5 => 0065
+0060 => MOV     12   1
+0061    TGETS   10   1   3  ; "write"
+0062    MOV     13   9
+0063    CALL    10   1   3
+0064    FORL     5 => 0049
+0065 => MOV      7   1
+0066    TGETS    5   1   3  ; "write"
+0067    KSTR     8   8      ; "\n"
+0068    CALL     5   1   3
+0069    MOV      7   1
+0070    TGETS    5   1   9  ; "flush"
+0071    CALL     5   1   2
+0072    RET0     0   1
+
+-- BYTECODE -- ref_jit_bc.lua:152-154
+0001    UGET     1   0      ; bcdump
+0002    MOV      3   0
+0003    UGET     4   1      ; out
+0004    CALLT    1   3
+
+-- BYTECODE -- ref_jit_bc.lua:157-164
+0001    UGET     0   0      ; active
+0002    ISF          0
+0003    JMP      1 => 0025
+0004    USETP    0   1      ; active
+0005    UGET     0   1      ; jit
+0006    TGETS    0   0   0  ; "attach"
+0007    UGET     2   2      ; h_list
+0008    CALL     0   1   2
+0009    UGET     0   3      ; out
+0010    ISF          0
+0011    JMP      1 => 0024
+0012    UGET     0   3      ; out
+0013    UGET     1   4      ; stdout
+0014    ISEQV    0   1
+0015    JMP      0 => 0024
+0016    UGET     0   3      ; out
+0017    UGET     1   5      ; stderr
+0018    ISEQV    0   1
+0019    JMP      0 => 0024
+0020    UGET     0   3      ; out
+0021    MOV      2   0
+0022    TGETS    0   0   1  ; "close"
+0023    CALL     0   1   2
+0024 => USETP    3   0      ; out
+0025 => RET0     0   1
+
+-- BYTECODE -- ref_jit_bc.lua:167-177
+0001    UGET     1   0      ; active
+0002    ISF          1
+0003    JMP      2 => 0006
+0004    UGET     1   1      ; bclistoff
+0005    CALL     1   1   1
+0006 => IST          0
+0007    JMP      1 => 0013
+0008    GGET     1   0      ; "os"
+0009    TGETS    1   1   1  ; "getenv"
+0010    KSTR     3   2      ; "LUAJIT_LISTFILE"
+0011    CALL     1   2   2
+0012    MOV      0   1
+0013 => ISF          0
+0014    JMP      1 => 0028
+0015    ISNES    0   3      ; "-"
+0016    JMP      1 => 0019
+0017    UGET     1   3      ; stdout
+0018    JMP      2 => 0026
+0019 => GGET     1   4      ; "assert"
+0020    GGET     3   5      ; "io"
+0021    TGETS    3   3   6  ; "open"
+0022    MOV      5   0
+0023    KSTR     6   7      ; "w"
+0024    CALL     3   0   3
+0025    CALLM    1   2   0
+0026 => USETV    2   1      ; out
+0027    JMP      1 => 0030
+0028 => UGET     1   4      ; stderr
+0029    USETV    2   1      ; out
+0030 => UGET     1   5      ; jit
+0031    TGETS    1   1   8  ; "attach"
+0032    UGET     3   6      ; h_list
+0033    KSTR     4   9      ; "bc"
+0034    CALL     1   1   3
+0035    USETP    0   2      ; active
+0036    RET0     0   1
+
+-- BYTECODE -- ref_jit_bc.lua:0-189
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "jit"
+0003    CALL     0   2   2
+0004    GGET     1   0      ; "require"
+0005    KSTR     3   2      ; "jit.util"
+0006    CALL     1   2   2
+0007    GGET     2   0      ; "require"
+0008    KSTR     4   3      ; "jit.vmdef"
+0009    CALL     2   2   2
+0010    GGET     3   4      ; "string"
+0011    TGETS    3   3   5  ; "sub"
+0012    GGET     4   4      ; "string"
+0013    TGETS    4   4   6  ; "gsub"
+0014    GGET     5   4      ; "string"
+0015    TGETS    5   5   7  ; "format"
+0016    GGET     6   4      ; "string"
+0017    TGETS    6   6   8  ; "byte"
+0018    TGETS    7   1   9  ; "funcinfo"
+0019    TGETS    8   1  10  ; "funcbc"
+0020    TGETS    9   1  11  ; "funck"
+0021    TGETS   10   1  12  ; "funcuvname"
+0022    TGETS   11   2  13  ; "bcnames"
+0023    GGET    12  14      ; "io"
+0024    TGETS   12  12  15  ; "stdout"
+0025    GGET    13  14      ; "io"
+0026    TGETS   13  13  16  ; "stderr"
+0027    FNEW    14  17      ; ref_jit_bc.lua:55
+0028    FNEW    15  18      ; ref_jit_bc.lua:64
+0029    FNEW    16  19      ; ref_jit_bc.lua:114
+0030    FNEW    17  20      ; ref_jit_bc.lua:125
+0031    KNIL    18  19
+0032    FNEW    20  21      ; ref_jit_bc.lua:152
+0033    FNEW    21  22      ; ref_jit_bc.lua:157
+0034    FNEW    22  23      ; ref_jit_bc.lua:167
+0035    TDUP    23  24
+0036    TSETS   15  23  25  ; "line"
+0037    TSETS   17  23  26  ; "dump"
+0038    TSETS   16  23  27  ; "targets"
+0039    TSETS   22  23  28  ; "on"
+0040    TSETS   21  23  29  ; "off"
+0041    TSETS   22  23  30  ; "start"
+0042    UCLO     0 => 0043
+0043 => RET1    23   2
+

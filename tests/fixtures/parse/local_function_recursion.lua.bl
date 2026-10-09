@@ -1,0 +1,60 @@
+-- BYTECODE -- local_function_recursion.lua:2-5
+0001    KSHORT   1   2
+0002    ISGE     0   1
+0003    JMP      1 => 0005
+0004    RET1     0   2
+0005 => UGET     1   0      ; fib
+0006    SUBVN    3   0   0  ; 1
+0007    CALL     1   2   2
+0008    UGET     2   0      ; fib
+0009    SUBVN    4   0   1  ; 2
+0010    CALL     2   2   2
+0011    ADDVV    1   1   2
+0012    RET1     1   2
+
+-- BYTECODE -- local_function_recursion.lua:7-7
+0001    KSHORT   1   1
+0002    ISGT     0   1
+0003    JMP      1 => 0006
+0004    KSHORT   1   1
+0005    JMP      2 => 0010
+0006 => UGET     1   0      ; fact
+0007    SUBVN    3   0   0  ; 1
+0008    CALL     1   2   2
+0009    MULVV    1   0   1
+0010 => RET1     1   2
+
+-- BYTECODE -- local_function_recursion.lua:8-8
+0001    ISNEN    0   0      ; 0
+0002    JMP      1 => 0005
+0003    KPRI     1   2
+0004    RET1     1   2
+0005 => GGET     1   0      ; "odd"
+0006    SUBVN    3   0   1  ; 1
+0007    CALLT    1   2
+
+-- BYTECODE -- local_function_recursion.lua:9-9
+0001    ISNEN    0   0      ; 0
+0002    JMP      1 => 0005
+0003    KPRI     1   1
+0004    RET1     1   2
+0005 => UGET     1   0      ; even
+0006    SUBVN    3   0   1  ; 1
+0007    CALLT    1   2
+
+-- BYTECODE -- local_function_recursion.lua:0-11
+0001    FNEW     0   0      ; local_function_recursion.lua:2
+0002    KPRI     1   0
+0003    FNEW     1   1      ; local_function_recursion.lua:7
+0004    FNEW     2   2      ; local_function_recursion.lua:8
+0005    FNEW     3   3      ; local_function_recursion.lua:9
+0006    GSET     3   4      ; "odd"
+0007    MOV      3   0
+0008    KSHORT   5  10
+0009    CALL     3   2   2
+0010    MOV      4   1
+0011    KSHORT   6   5
+0012    CALL     4   0   2
+0013    UCLO     0 => 0014
+0014 => RETM     3   1
+

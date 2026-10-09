@@ -1,0 +1,115 @@
+-- BYTECODE -- ext_safe_nav_ret.lua:2-2
+0001    ISEQP    0   0
+0002    JMP      1 => 0005
+0003    TGETS    1   0   0  ; "b"
+0004    JMP      2 => 0006
+0005 => KPRI     1   0
+0006 => RET1     1   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:3-3
+0001    ISEQP    0   0
+0002    JMP      1 => 0006
+0003    TGETS    1   0   0  ; "b"
+0004    CALL     1   2   1
+0005    JMP      2 => 0007
+0006 => KPRI     1   0
+0007 => RET1     1   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:4-4
+0001    ISEQP    0   0
+0002    JMP      1 => 0008
+0003    TGETS    1   0   0  ; "b"
+0004    MOV      2   1
+0005    TGETS    1   1   1  ; "c"
+0006    CALL     1   2   2
+0007    JMP      2 => 0009
+0008 => KPRI     1   0
+0009 => RET1     1   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:5-5
+0001    MOV      2   0
+0002    TGETS    1   0   0  ; "b"
+0003    ISEQP    1   0
+0004    JMP      3 => 0007
+0005    CALL     1   2   2
+0006    JMP      2 => 0008
+0007 => KPRI     1   0
+0008 => RET1     1   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:6-6
+0001    ISEQP    0   0
+0002    JMP      1 => 0006
+0003    TGETS    1   0   0  ; "b"
+0004    CALL     1   2   1
+0005    JMP      2 => 0007
+0006 => KPRI     1   0
+0007 => KSHORT   2   1
+0008    RET      1   3
+
+-- BYTECODE -- ext_safe_nav_ret.lua:7-7
+0001    KSHORT   1   1
+0002    ISEQP    0   0
+0003    JMP      2 => 0007
+0004    TGETS    2   0   0  ; "b"
+0005    CALL     2   2   1
+0006    JMP      3 => 0008
+0007 => KPRI     2   0
+0008 => RET      1   3
+
+-- BYTECODE -- ext_safe_nav_ret.lua:8-8
+0001    ISEQP    0   0
+0002    JMP      1 => 0007
+0003    TGETS    1   0   0  ; "b"
+0004    VARG     2   0   1
+0005    CALLM    1   2   0
+0006    JMP      2 => 0008
+0007 => KPRI     1   0
+0008 => RET1     1   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:9-9
+0001    ISEQP    0   0
+0002    JMP      1 => 0005
+0003    TGETS    1   0   0  ; "b"
+0004    JMP      2 => 0006
+0005 => KPRI     1   0
+0006 => RET1     1   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:10-10
+0001    ISEQP    0   0
+0002    JMP      1 => 0006
+0003    TGETS    1   0   0  ; "b"
+0004    CALL     1   2   1
+0005    JMP      2 => 0007
+0006 => KPRI     1   0
+0007 => RET1     1   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:11-11
+0001    UGET     0   0      ; u
+0002    RET1     0   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:11-11
+0001    KSHORT   1   1
+0002    FNEW     2   0      ; ext_safe_nav_ret.lua:11
+0003    ISEQP    0   0
+0004    JMP      3 => 0008
+0005    TGETS    3   0   1  ; "b"
+0006    CALL     3   2   1
+0007    JMP      4 => 0009
+0008 => KPRI     3   0
+0009 => UCLO     0 => 0010
+0010 => RET1     3   2
+
+-- BYTECODE -- ext_safe_nav_ret.lua:0-13
+0001    FNEW     0   0      ; ext_safe_nav_ret.lua:2
+0002    FNEW     1   1      ; ext_safe_nav_ret.lua:3
+0003    FNEW     2   2      ; ext_safe_nav_ret.lua:4
+0004    FNEW     3   3      ; ext_safe_nav_ret.lua:5
+0005    FNEW     4   4      ; ext_safe_nav_ret.lua:6
+0006    FNEW     5   5      ; ext_safe_nav_ret.lua:7
+0007    FNEW     6   6      ; ext_safe_nav_ret.lua:8
+0008    FNEW     7   7      ; ext_safe_nav_ret.lua:9
+0009    FNEW     8   8      ; ext_safe_nav_ret.lua:10
+0010    FNEW     9   9      ; ext_safe_nav_ret.lua:11
+0011    UCLO     0 => 0012
+0012 => RET1     0   2
+

@@ -1,0 +1,68 @@
+-- BYTECODE -- ref_lang_table.lua:0-33
+0001    TNEW     0   0
+0002    TNEW     1   0
+0003    KSHORT   2   1
+0004    KSHORT   3 100
+0005    KSHORT   4   1
+0006    FORI     2 => 0011
+0007 => TNEW     6   0
+0008    TSETV    6   0   5
+0009    TSETV    5   1   6
+0010    FORL     2 => 0007
+0011 => KSHORT   2   1
+0012    KSHORT   3 100
+0013    KSHORT   4   1
+0014    FORI     2 => 0035
+0015 => TGETV    6   0   5
+0016    GGET     7   0      ; "assert"
+0017    GGET     9   1      ; "type"
+0018    MOV     11   6
+0019    CALL     9   2   2
+0020    ISEQS    9   2      ; "table"
+0021    JMP      9 => 0024
+0022    KPRI     9   1
+0023    JMP     10 => 0025
+0024 => KPRI     9   2
+0025 => CALL     7   1   2
+0026    GGET     7   0      ; "assert"
+0027    TGETV    9   1   6
+0028    ISEQV    9   5
+0029    JMP      9 => 0032
+0030    KPRI     9   1
+0031    JMP     10 => 0033
+0032 => KPRI     9   2
+0033 => CALL     7   1   2
+0034    FORL     2 => 0015
+0035 => TNEW     0   0
+0036    TNEW     1   0
+0037    KSHORT   2   1
+0038    KSHORT   3 100
+0039    KSHORT   4   1
+0040    FORI     2 => 0048
+0041 => TNEW     6   0
+0042    TSETV    6   0   5
+0043    KSHORT   7  90
+0044    ISGE     7   5
+0045    JMP      7 => 0047
+0046    TSETV    5   1   6
+0047 => FORL     2 => 0041
+0048 => KSHORT   2   0
+0049    KSHORT   3   1
+0050    KSHORT   4 100
+0051    KSHORT   5   1
+0052    FORI     3 => 0059
+0053 => TGETV    7   0   6
+0054    TGETV    8   1   7
+0055    ISF          8
+0056    JMP      9 => 0058
+0057    ADDVN    2   2   0  ; 1
+0058 => FORL     3 => 0053
+0059 => GGET     3   0      ; "assert"
+0060    ISEQN    2   1      ; 10
+0061    JMP      5 => 0064
+0062    KPRI     5   1
+0063    JMP      6 => 0065
+0064 => KPRI     5   2
+0065 => CALL     3   1   2
+0066    RET0     0   1
+

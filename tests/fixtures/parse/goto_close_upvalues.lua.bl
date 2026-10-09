@@ -1,0 +1,64 @@
+-- BYTECODE -- goto_close_upvalues.lua:7-7
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- goto_close_upvalues.lua:2-13
+0001    KSHORT   0   0
+0002 => MOV      1   0
+0003    FNEW     2   0      ; goto_close_upvalues.lua:7
+0004    ADDVN    0   0   0  ; 1
+0005    KSHORT   3   3
+0006    ISGE     0   3
+0007    JMP      3 => 0009
+0008    UCLO     1 => 0002
+0009 => UCLO     1 => 0010
+0010 => KSHORT   1   5
+0011    ISGE     0   1
+0012    JMP      1 => 0015
+0013    ADDVN    0   0   0  ; 1
+0014    JMP      1 => 0010
+0015 => RET0     0   1
+
+-- BYTECODE -- goto_close_upvalues.lua:16-16
+0001    UGET     0   0      ; i
+0002    RET1     0   2
+
+-- BYTECODE -- goto_close_upvalues.lua:14-20
+0001    KSHORT   0   1
+0002    KSHORT   1  10
+0003    KSHORT   2   1
+0004    FORI     0 => 0011
+0005 => FNEW     4   0      ; goto_close_upvalues.lua:16
+0006    ISNEN    3   0      ; 5
+0007    JMP      5 => 0009
+0008    UCLO     0 => 0011
+0009 => UCLO     3 => 0010
+0010 => FORL     0 => 0005
+0011 => RET0     0   1
+
+-- BYTECODE -- goto_close_upvalues.lua:25-25
+0001    UGET     0   0      ; z
+0002    RET1     0   2
+
+-- BYTECODE -- goto_close_upvalues.lua:21-29
+0001    KSHORT   0   0
+0002 => MOV      1   0
+0003    FNEW     2   0      ; goto_close_upvalues.lua:25
+0004    ADDVN    0   0   0  ; 1
+0005    KSHORT   3   3
+0006    ISGE     0   3
+0007    JMP      3 => 0009
+0008    UCLO     1 => 0002
+0009 => UCLO     0 => 0010
+0010 => RET1     2   2
+
+-- BYTECODE -- goto_close_upvalues.lua:0-31
+0001    FNEW     0   0      ; goto_close_upvalues.lua:2
+0002    FNEW     1   1      ; goto_close_upvalues.lua:14
+0003    FNEW     2   2      ; goto_close_upvalues.lua:21
+0004    MOV      3   0
+0005    MOV      4   1
+0006    MOV      5   2
+0007    UCLO     0 => 0008
+0008 => RET      3   4
+

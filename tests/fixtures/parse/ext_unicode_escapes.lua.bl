@@ -1,0 +1,9 @@
+-- BYTECODE -- ext_unicode_escapes.lua:0-6
+0001    KSTR     0   0      ; "Hello"
+0002    KSTR     1   1      ; "Aé€😀􏿿"
+0003    KSTR     2   2      ; "\127߿ࠀ￿𐀀"
+0004    MOV      3   0
+0005    MOV      4   1
+0006    MOV      5   2
+0007    RET      3   4
+

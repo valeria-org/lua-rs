@@ -1,0 +1,23 @@
+-- BYTECODE -- kpri_and_ktypes.lua:9-9
+0001    RET0     0   1
+
+-- BYTECODE -- kpri_and_ktypes.lua:0-12
+0001    KPRI     0   2
+0002    KPRI     1   1
+0003    KPRI     2   0
+0004    KSHORT   3   0
+0005    KSHORT   4   0
+0006    UNM      4   4
+0007    KSTR     5   0      ; "x"
+0008    TNEW     6   0
+0009    FNEW     7   1      ; kpri_and_ktypes.lua:9
+0010    KPRI     8   2
+0011    GSET     8   0      ; "x"
+0012    KPRI     8   1
+0013    GSET     8   2      ; "y"
+0014    KPRI     8   0
+0015    GSET     8   3      ; "z"
+0016    TDUP     8   4
+0017    GSET     8   5      ; "t"
+0018    RET0     0   1
+

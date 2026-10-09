@@ -1,0 +1,1 @@
+[string "a = b..."]:2: ambiguous syntax (function call x new statement) near '('

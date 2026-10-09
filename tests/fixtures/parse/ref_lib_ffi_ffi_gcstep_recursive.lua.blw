@@ -1,0 +1,130 @@
+-- BYTECODE -- ref_lib_ffi_ffi_gcstep_recursive.lua:18-20
+0001    GGET     1   0      ; "tonumber"
+0002    UGET     2   0      ; ffi
+0003    TGETS    2   2   1  ; "cast"
+0004    KSTR     3   2      ; "uintptr_t"
+0005    UGET     4   0      ; ffi
+0006    TGETS    4   4   1  ; "cast"
+0007    KSTR     5   3      ; "void *"
+0008    MOV      6   0
+0009    CALL     4   0   3
+0010    CALLM    2   0   1
+0011    CALLMT   1   0
+
+-- BYTECODE -- ref_lib_ffi_ffi_gcstep_recursive.lua:22-27
+0001    UGET     1   0      ; Buffer
+0002    MOV      2   0
+0003    CALL     1   2   2
+0004    UGET     2   1      ; obj_to_id
+0005    MOV      3   1
+0006    CALL     2   2   2
+0007    UGET     3   2      ; nobj_obj_flags
+0008    KPRI     4   2
+0009    TSETV    4   3   2
+0010    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_gcstep_recursive.lua:29-32
+0001    UGET     1   0      ; ffi
+0002    TGETS    1   1   0  ; "cast"
+0003    KSTR     2   1      ; "void *"
+0004    KNUM     3   0      ; 3735928559
+0005    CALL     1   2   3
+0006    GGET     2   2      ; "obj_type_Buffer_push"
+0007    MOV      3   1
+0008    CALLT    2   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_gcstep_recursive.lua:34-39
+0001    UGET     1   0      ; obj_to_id
+0002    MOV      2   0
+0003    CALL     1   2   2
+0004    UGET     2   1      ; nobj_obj_flags
+0005    TGETV    2   2   1
+0006    IST          2
+0007    JMP      2 => 0010
+0008    KPRI     2   0
+0009    RET1     2   2
+0010 => UGET     2   1      ; nobj_obj_flags
+0011    KPRI     3   0
+0012    TSETV    3   2   1
+0013    TGETS    2   0   0  ; "buf"
+0014    RET1     2   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_gcstep_recursive.lua:43-49
+0001    GGET     1   0      ; "obj_type_Buffer_delete"
+0002    MOV      2   0
+0003    CALL     1   2   2
+0004    UGET     2   0      ; getmeta
+0005    KSTR     3   1      ; "Buffer_close"
+0006    CALL     2   1   2
+0007    ISF          1
+0008    JMP      2 => 0011
+0009    KPRI     2   0
+0010    TSETS    2   0   2  ; "buf"
+0011 => RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_gcstep_recursive.lua:0-67
+0001    GGET     0   0      ; "tonumber"
+0002    GGET     1   1      ; "arg"
+0003    TGETB    1   1   1
+0004    IST          1
+0005    JMP      2 => 0007
+0006    KSHORT   1 10000
+0007 => CALL     0   2   2
+0008    GGET     1   2      ; "require"
+0009    KSTR     2   3      ; "ffi"
+0010    CALL     1   2   2
+0011    TGETS    2   1   4  ; "cdef"
+0012    KSTR     3   5      ; "struct Buffer { void *buf; };\ntypedef s"~
+0013    CALL     2   1   2
+0014    TDUP     2   6
+0015    TNEW     3   0
+0016    TSETS    3   2   7  ; "__index"
+0017    TGETS    3   1   8  ; "typeof"
+0018    KSTR     4   9      ; "Buffer"
+0019    CALL     3   2   2
+0020    TNEW     4   0
+0021    FNEW     5  10      ; ref_lib_ffi_ffi_gcstep_recursive.lua:18
+0022    FNEW     6  11      ; ref_lib_ffi_ffi_gcstep_recursive.lua:22
+0023    GSET     6  12      ; "obj_type_Buffer_push"
+0024    FNEW     6  13      ; ref_lib_ffi_ffi_gcstep_recursive.lua:29
+0025    FNEW     7  14      ; ref_lib_ffi_ffi_gcstep_recursive.lua:34
+0026    GSET     7  15      ; "obj_type_Buffer_delete"
+0027    GGET     7  16      ; "debug"
+0028    TGETS    7   7  17  ; "getmetatable"
+0029    FNEW     8  18      ; ref_lib_ffi_ffi_gcstep_recursive.lua:43
+0030    TSETS    8   2  19  ; "__gc"
+0031    TGETS    9   2   7  ; "__index"
+0032    TSETS    8   9  20  ; "close"
+0033    TGETS    9   1  21  ; "metatype"
+0034    MOV     10   3
+0035    MOV     11   2
+0036    CALL     9   1   3
+0037    TNEW     9   0
+0038    KSHORT  10   1
+0039    KSHORT  11   2
+0040    KSHORT  12   1
+0041    FORI    10 => 0063
+0042 => TNEW     9   0
+0043    KSHORT  14   1
+0044    MOV     15   0
+0045    KSHORT  16   1
+0046    FORI    14 => 0052
+0047 => MOV     18   6
+0048    KSHORT  19   1
+0049    CALL    18   2   2
+0050    TSETV   18   9  17
+0051    FORL    14 => 0047
+0052 => KSHORT  14   1
+0053    MOV     15   0
+0054    KSHORT  16   1
+0055    FORI    14 => 0061
+0056 => TGETV   18   9  17
+0057    MOV     19  18
+0058    TGETS   18  18  20  ; "close"
+0059    CALL    18   1   2
+0060    FORL    14 => 0056
+0061 => KPRI     9   0
+0062    FORL    10 => 0042
+0063 => UCLO     0 => 0064
+0064 => RET0     0   1
+

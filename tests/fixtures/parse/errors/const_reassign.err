@@ -1,0 +1,1 @@
+[string "const x = 1..."]:2: attempt to assign to const variable 'x'

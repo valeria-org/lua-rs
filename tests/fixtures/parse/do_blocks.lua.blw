@@ -1,0 +1,34 @@
+-- BYTECODE -- do_blocks.lua:11-11
+0001    GGET     0   0      ; "d"
+0002    RET1     0   2
+
+-- BYTECODE -- do_blocks.lua:14-14
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- do_blocks.lua:20-20
+0001    UGET     0   0      ; y
+0002    UGET     1   1      ; z
+0003    ADDVV    0   0   1
+0004    RET1     0   2
+
+-- BYTECODE -- do_blocks.lua:0-23
+0001    KSHORT   0   1
+0002    KSHORT   0   2
+0003    MOV      1   0
+0004    GGET     2   0      ; "print"
+0005    MOV      3   1
+0006    CALL     2   1   2
+0007    FNEW     0   1      ; do_blocks.lua:11
+0008    KSHORT   1   1
+0009    KSHORT   0   1
+0010    FNEW     1   2      ; do_blocks.lua:14
+0011    UCLO     0 => 0012
+0012 => KSHORT   0   1
+0013    KSHORT   1   2
+0014    FNEW     2   3      ; do_blocks.lua:20
+0015    GSET     2   4      ; "h"
+0016    UCLO     1 => 0017
+0017 => UCLO     0 => 0018
+0018 => RET0     0   1
+

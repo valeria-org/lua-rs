@@ -1,0 +1,40 @@
+-- BYTECODE -- ref_lib_table_pack.lua:0-8
+0001    GGET     0   0      ; "table"
+0002    TGETS    0   0   1  ; "pack"
+0003    CALL     0   2   1
+0004    GGET     1   2      ; "assert"
+0005    GGET     2   3      ; "type"
+0006    MOV      3   0
+0007    CALL     2   2   2
+0008    ISEQS    2   0      ; "table"
+0009    JMP      2 => 0012
+0010    KPRI     2   1
+0011    JMP      3 => 0013
+0012 => KPRI     2   2
+0013 => CALL     1   1   2
+0014    GGET     1   2      ; "assert"
+0015    TGETS    2   0   4  ; "n"
+0016    ISEQN    2   0      ; 0
+0017    JMP      2 => 0020
+0018    KPRI     2   1
+0019    JMP      3 => 0021
+0020 => KPRI     2   2
+0021 => CALL     1   1   2
+0022    GGET     1   2      ; "assert"
+0023    TGETB    2   0   0
+0024    ISEQP    2   0
+0025    JMP      2 => 0028
+0026    KPRI     2   1
+0027    JMP      3 => 0029
+0028 => KPRI     2   2
+0029 => CALL     1   1   2
+0030    GGET     1   2      ; "assert"
+0031    TGETB    2   0   1
+0032    ISEQP    2   0
+0033    JMP      2 => 0036
+0034    KPRI     2   1
+0035    JMP      3 => 0037
+0036 => KPRI     2   2
+0037 => CALL     1   1   2
+0038    RET0     0   1
+

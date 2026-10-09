@@ -1,0 +1,39 @@
+-- BYTECODE -- ref_lib_ffi_ffi_tabov.lua:5-10
+0001    KSHORT   0   1
+0002    KNUM     1   0      ; 65536
+0003    KSHORT   2   1
+0004    FORI     0 => 0011
+0005 => USETV    0   3      ; last
+0006    UGET     4   1      ; ffi
+0007    TGETS    4   4   0  ; "typeof"
+0008    KSTR     6   1      ; "struct {}"
+0009    CALL     4   1   2
+0010    FORL     0 => 0005
+0011 => RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_tabov.lua:0-13
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "ffi"
+0003    CALL     0   2   2
+0004    KSHORT   1   0
+0005    GGET     2   2      ; "assert"
+0006    GGET     4   3      ; "pcall"
+0007    FNEW     6   4      ; ref_lib_ffi_ffi_tabov.lua:5
+0008    CALL     4   2   2
+0009    ISEQP    4   1
+0010    JMP      4 => 0013
+0011    KPRI     4   1
+0012    JMP      5 => 0014
+0013 => KPRI     4   2
+0014 => CALL     2   1   2
+0015    GGET     2   2      ; "assert"
+0016    KSHORT   4 20000
+0017    ISLT     4   1
+0018    JMP      4 => 0021
+0019    KPRI     4   1
+0020    JMP      5 => 0022
+0021 => KPRI     4   2
+0022 => CALL     2   1   2
+0023    UCLO     0 => 0024
+0024 => RET0     0   1
+

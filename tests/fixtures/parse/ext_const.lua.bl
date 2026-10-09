@@ -1,0 +1,72 @@
+-- BYTECODE -- ext_const.lua:7-7
+0001    UGET     0   0      ; a
+0002    UGET     1   1      ; b
+0003    ADDVV    0   0   1
+0004    RET1     0   2
+
+-- BYTECODE -- ext_const.lua:8-8
+0001    UGET     0   0      ; a
+0002    UGET     1   1      ; s
+0003    UGET     2   2      ; t
+0004    RET      0   4
+
+-- BYTECODE -- ext_const.lua:14-14
+0001    UGET     0   0      ; y
+0002    RET1     0   2
+
+-- BYTECODE -- ext_const.lua:25-25
+0001    UGET     0   0      ; r
+0002    RET1     0   2
+
+-- BYTECODE -- ext_const.lua:23-27
+0001    KSHORT   0   1
+0002    FNEW     1   0      ; ext_const.lua:25
+0003    UCLO     0 => 0004
+0004 => RET1     1   2
+
+-- BYTECODE -- ext_const.lua:32-32
+0001    GGET     0   0      ; "ff"
+0002    RET1     0   2
+
+-- BYTECODE -- ext_const.lua:0-33
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    KSHORT   2   3
+0004    KSTR     3   0      ; "str"
+0005    TDUP     4   1
+0006    KPRI     5   0
+0007    FNEW     6   2      ; ext_const.lua:7
+0008    FNEW     7   3      ; ext_const.lua:8
+0009    ADDVV    8   0   1
+0010    KSHORT   9   5
+0011    TSETB    9   4   1
+0012    KSHORT   9   6
+0013    TSETS    9   4   4  ; "x"
+0014    KSHORT   9  10
+0015    FNEW    10   5      ; ext_const.lua:14
+0016    UCLO     9 => 0017
+0017 => VARG     9   2   0
+0018    MOV     10   6
+0019    CALL    10   3   1
+0020    KSHORT  12   1
+0021    KSHORT  12   2
+0022    KSHORT  13   3
+0023    TSETS   13  12   4  ; "x"
+0024    GGET    13   6      ; "print"
+0025    MOV     15  12
+0026    CALL    13   1   2
+0027    MOV     13  12
+0028    FNEW    14   7      ; ext_const.lua:23
+0029    KSHORT  15   1
+0030    KSHORT  16   2
+0031    KSHORT  17   1
+0032    FORI    15 => 0038
+0033 => MOV     19  18
+0034    GGET    20   6      ; "print"
+0035    MOV     22  19
+0036    CALL    20   1   2
+0037    FORL    15 => 0033
+0038 => FNEW    15   8      ; ext_const.lua:32
+0039    UCLO     0 => 0040
+0040 => RET0     0   1
+

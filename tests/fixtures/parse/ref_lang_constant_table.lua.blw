@@ -1,0 +1,56 @@
+-- BYTECODE -- ref_lang_constant_table.lua:0-16
+0001    KPRI     0   0
+0002    TNEW     1   0
+0003    TNEW     2 2048
+0004    KPRI     3   2
+0005    TSETV    0   2   3
+0006    ISTC     3   1
+0007    JMP      3 => 0009
+0008    KSHORT   3   1
+0009 => KPRI     4   1
+0010    TSETV    3   2   4
+0011    GGET     3   0      ; "assert"
+0012    KPRI     4   2
+0013    TGETV    4   2   4
+0014    ISEQP    4   0
+0015    JMP      4 => 0018
+0016    KPRI     4   1
+0017    JMP      5 => 0019
+0018 => KPRI     4   2
+0019 => CALL     3   1   2
+0020    GGET     3   0      ; "assert"
+0021    KPRI     4   1
+0022    TGETV    4   2   4
+0023    ISEQV    4   1
+0024    JMP      4 => 0027
+0025    KPRI     4   1
+0026    JMP      5 => 0028
+0027 => KPRI     4   2
+0028 => CALL     3   1   2
+0029    TNEW     0   0
+0030    TDUP     1   1
+0031    ISTC     2   0
+0032    JMP      2 => 0034
+0033    KSHORT   2   1
+0034 => KPRI     3   1
+0035    TSETV    2   1   3
+0036    GGET     2   0      ; "assert"
+0037    KPRI     3   2
+0038    TGETV    3   1   3
+0039    ISEQP    3   0
+0040    JMP      3 => 0043
+0041    KPRI     3   1
+0042    JMP      4 => 0044
+0043 => KPRI     3   2
+0044 => CALL     2   1   2
+0045    GGET     2   0      ; "assert"
+0046    KPRI     3   1
+0047    TGETV    3   1   3
+0048    ISEQV    3   0
+0049    JMP      3 => 0052
+0050    KPRI     3   1
+0051    JMP      4 => 0053
+0052 => KPRI     3   2
+0053 => CALL     2   1   2
+0054    RET0     0   1
+

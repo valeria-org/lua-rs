@@ -1,0 +1,1 @@
+[string "r = a ? o:m() : 1"]:1: '<name>' expected near '1'

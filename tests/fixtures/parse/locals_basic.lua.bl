@@ -1,0 +1,30 @@
+-- BYTECODE -- locals_basic.lua:0-21
+0001    KNIL     0   2
+0002    KSHORT   3   1
+0003    KSHORT   4   2
+0004    KPRI     5   0
+0005    KSHORT   6   1
+0006    KSHORT   7   2
+0007    KSHORT   8   3
+0008    KNIL     8  10
+0009    KPRI    11   2
+0010    KPRI    12   1
+0011    KSTR    13   0      ; "str"
+0012    MOV     14   0
+0013    MOV     15   0
+0014    MOV     16   1
+0015    VARG    16   4   0
+0016    VARG    19   2   0
+0017    VARG    20   2   0
+0018    KPRI    21   0
+0019    LEN     22   0
+0020    KSHORT  23   1
+0021    GSET    23   1      ; "x"
+0022    KSHORT  23   1
+0023    KSHORT  24   2
+0024    GSET    24   2      ; "y"
+0025    GSET    23   1      ; "x"
+0026    GGET    23   1      ; "x"
+0027    GGET    23   2      ; "y"
+0028    RET0     0   1
+

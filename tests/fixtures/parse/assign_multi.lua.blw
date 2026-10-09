@@ -1,0 +1,98 @@
+-- BYTECODE -- assign_multi.lua:19-19
+0001    USETN    0   0      ; u ; 2
+0002    RET0     0   1
+
+-- BYTECODE -- assign_multi.lua:0-23
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    KSHORT   2   3
+0004    MOV      3   1
+0005    MOV      1   0
+0006    MOV      0   3
+0007    MOV      3   2
+0008    MOV      4   0
+0009    MOV      2   1
+0010    MOV      1   4
+0011    MOV      0   3
+0012    KSHORT   3   1
+0013    KNIL     4   5
+0014    MOV      2   5
+0015    MOV      1   4
+0016    MOV      0   3
+0017    GGET     3   0      ; "f"
+0018    CALL     3   4   1
+0019    MOV      2   5
+0020    MOV      1   4
+0021    MOV      0   3
+0022    KSHORT   3   1
+0023    KSHORT   4   2
+0024    KSHORT   5   3
+0025    MOV      1   4
+0026    MOV      0   3
+0027    GGET     3   0      ; "f"
+0028    CALL     3   2   1
+0029    GGET     4   1      ; "g"
+0030    CALL     4   2   1
+0031    MOV      1   4
+0032    MOV      0   3
+0033    GGET     3   0      ; "f"
+0034    CALL     3   2   1
+0035    GGET     4   1      ; "g"
+0036    CALL     4   3   1
+0037    MOV      2   5
+0038    MOV      1   4
+0039    MOV      0   3
+0040    GGET     3   0      ; "f"
+0041    CALL     3   2   1
+0042    GGET     4   1      ; "g"
+0043    CALL     4   1   1
+0044    MOV      0   3
+0045    TNEW     3   0
+0046    KSHORT   4   1
+0047    KSHORT   5   2
+0048    TSETS    5   3   3  ; "y"
+0049    TSETS    4   3   2  ; "x"
+0050    TGETB    4   3   2
+0051    TGETB    5   3   1
+0052    TSETB    5   3   2
+0053    TSETB    4   3   1
+0054    MOV      4   0
+0055    TGETS    0   3   4  ; "a"
+0056    TSETS    4   3   4  ; "a"
+0057    GGET     4   5      ; "g2"
+0058    GGET     5   6      ; "g1"
+0059    GSET     5   5      ; "g2"
+0060    GSET     4   6      ; "g1"
+0061    GGET     4   6      ; "g1"
+0062    TGETS    5   3   7  ; "z"
+0063    TSETS    0   3   7  ; "z"
+0064    GSET     5   6      ; "g1"
+0065    MOV      0   4
+0066    KSHORT   4   1
+0067    KSHORT   5   2
+0068    KNIL     6   9
+0069    GSET     9   8      ; "f2"
+0070    GSET     8   9      ; "e"
+0071    GSET     7  10      ; "d"
+0072    MOV      2   6
+0073    MOV      1   5
+0074    MOV      0   4
+0075    KSHORT   4   1
+0076    FNEW     5  11      ; assign_multi.lua:19
+0077    MOV      6   0
+0078    MOV      0   4
+0079    MOV      4   6
+0080    KSHORT   6   1
+0081    KSHORT   7   2
+0082    TSETV    7   3   1
+0083    TSETV    6   3   0
+0084    TGETS    6   0  12  ; "b"
+0085    GGET     7  10      ; "d"
+0086    TGETS    7   7   9  ; "e"
+0087    KSHORT   8   1
+0088    KSHORT   9   2
+0089    TSETS    9   7   0  ; "f"
+0090    TSETS    8   6  13  ; "c"
+0091    UCLO     0 => 0092
+0092 => RET0     0   1
+

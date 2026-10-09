@@ -1,0 +1,386 @@
+-- BYTECODE -- ref_lib_bit.lua:10-16
+0001    KSHORT   3   0
+0002    KSHORT   4   1
+0003    LEN      5   1
+0004    KSHORT   6   1
+0005    FORI     4 => 0014
+0006 => UGET     8   0      ; byte
+0007    MOV      9   1
+0008    MOV     10   7
+0009    CALL     8   2   3
+0010    MULVV    8   8   7
+0011    ADDVV    8   3   8
+0012    MODVN    3   8   0  ; 2147483629
+0013    FORL     4 => 0006
+0014 => ISEQV    3   2
+0015    JMP      4 => 0027
+0016    GGET     4   0      ; "error"
+0017    KSTR     5   1      ; "bit."
+0018    MOV      6   0
+0019    KSTR     7   2      ; " test failed (got "
+0020    MOV      8   3
+0021    KSTR     9   3      ; ", expected "
+0022    MOV     10   2
+0023    KSTR    11   4      ; ")"
+0024    CAT      5   5  11
+0025    KSHORT   6   0
+0026    CALL     4   1   3
+0027 => RET0     0   1
+
+-- BYTECODE -- ref_lib_bit.lua:18-26
+0001    UGET     2   0      ; bit
+0002    TGETV    2   2   0
+0003    KSTR     3   0      ; ""
+0004    UGET     4   1      ; pcall
+0005    MOV      5   2
+0006    CALL     4   2   2
+0007    IST          4
+0008    JMP      5 => 0021
+0009    UGET     4   1      ; pcall
+0010    MOV      5   2
+0011    KSTR     6   1      ; "z"
+0012    CALL     4   2   3
+0013    IST          4
+0014    JMP      5 => 0021
+0015    UGET     4   1      ; pcall
+0016    MOV      5   2
+0017    KPRI     6   2
+0018    CALL     4   2   3
+0019    ISF          4
+0020    JMP      5 => 0028
+0021 => GGET     4   2      ; "error"
+0022    KSTR     5   3      ; "bit."
+0023    MOV      6   0
+0024    KSTR     7   4      ; " fails to detect argument errors"
+0025    CAT      5   5   7
+0026    KSHORT   6   0
+0027    CALL     4   1   3
+0028 => UGET     4   2      ; ipairs
+0029    UGET     5   3      ; vb
+0030    CALL     4   4   2
+0031    JMP      7 => 0040
+0032 => MOV      9   3
+0033    KSTR    10   5      ; ","
+0034    UGET    11   4      ; tostring
+0035    MOV     12   2
+0036    MOV     13   8
+0037    CALL    12   0   2
+0038    CALLM   11   2   0
+0039    CAT      3   9  11
+0040 => ITERC    7   3   3
+0041    ITERL    7 => 0032
+0042    UGET     4   5      ; cksum
+0043    MOV      5   0
+0044    MOV      6   3
+0045    MOV      7   1
+0046    CALL     4   1   4
+0047    RET0     0   1
+
+-- BYTECODE -- ref_lib_bit.lua:28-38
+0001    UGET     2   0      ; bit
+0002    TGETV    2   2   0
+0003    KSTR     3   0      ; ""
+0004    UGET     4   1      ; pcall
+0005    MOV      5   2
+0006    CALL     4   2   2
+0007    IST          4
+0008    JMP      5 => 0021
+0009    UGET     4   1      ; pcall
+0010    MOV      5   2
+0011    KSTR     6   1      ; "z"
+0012    CALL     4   2   3
+0013    IST          4
+0014    JMP      5 => 0021
+0015    UGET     4   1      ; pcall
+0016    MOV      5   2
+0017    KPRI     6   2
+0018    CALL     4   2   3
+0019    ISF          4
+0020    JMP      5 => 0028
+0021 => GGET     4   2      ; "error"
+0022    KSTR     5   3      ; "bit."
+0023    MOV      6   0
+0024    KSTR     7   4      ; " fails to detect argument errors"
+0025    CAT      5   5   7
+0026    KSHORT   6   0
+0027    CALL     4   1   3
+0028 => UGET     4   2      ; ipairs
+0029    UGET     5   3      ; vb
+0030    CALL     4   4   2
+0031    JMP      7 => 0047
+0032 => UGET     9   2      ; ipairs
+0033    UGET    10   3      ; vb
+0034    CALL     9   4   2
+0035    JMP     12 => 0045
+0036 => MOV     14   3
+0037    KSTR    15   5      ; ","
+0038    UGET    16   4      ; tostring
+0039    MOV     17   2
+0040    MOV     18   8
+0041    MOV     19  13
+0042    CALL    17   0   3
+0043    CALLM   16   2   0
+0044    CAT      3  14  16
+0045 => ITERC   12   3   3
+0046    ITERL   12 => 0036
+0047 => ITERC    7   3   3
+0048    ITERL    7 => 0032
+0049    UGET     4   5      ; cksum
+0050    MOV      5   0
+0051    MOV      6   3
+0052    MOV      7   1
+0053    CALL     4   1   4
+0054    RET0     0   1
+
+-- BYTECODE -- ref_lib_bit.lua:40-50
+0001    UGET     4   0      ; bit
+0002    TGETV    4   4   0
+0003    KSTR     5   0      ; ""
+0004    UGET     6   1      ; pcall
+0005    MOV      7   4
+0006    CALL     6   2   2
+0007    IST          6
+0008    JMP      7 => 0028
+0009    UGET     6   1      ; pcall
+0010    MOV      7   4
+0011    KSTR     8   1      ; "z"
+0012    CALL     6   2   3
+0013    IST          6
+0014    JMP      7 => 0028
+0015    UGET     6   1      ; pcall
+0016    MOV      7   4
+0017    KPRI     8   2
+0018    CALL     6   2   3
+0019    IST          6
+0020    JMP      7 => 0028
+0021    UGET     6   1      ; pcall
+0022    MOV      7   4
+0023    KSHORT   8   1
+0024    KPRI     9   2
+0025    CALL     6   2   4
+0026    ISF          6
+0027    JMP      7 => 0035
+0028 => GGET     6   2      ; "error"
+0029    KSTR     7   3      ; "bit."
+0030    MOV      8   0
+0031    KSTR     9   4      ; " fails to detect argument errors"
+0032    CAT      7   7   9
+0033    KSHORT   8   0
+0034    CALL     6   1   3
+0035 => UGET     6   2      ; ipairs
+0036    UGET     7   3      ; vb
+0037    CALL     6   4   2
+0038    JMP      9 => 0053
+0039 => MOV     11   2
+0040    MOV     12   3
+0041    KSHORT  13   1
+0042    FORI    11 => 0053
+0043 => MOV     15   5
+0044    KSTR    16   5      ; ","
+0045    UGET    17   4      ; tostring
+0046    MOV     18   4
+0047    MOV     19  10
+0048    MOV     20  14
+0049    CALL    18   0   3
+0050    CALLM   17   2   0
+0051    CAT      5  15  17
+0052    FORL    11 => 0043
+0053 => ITERC    9   3   3
+0054    ITERL    9 => 0039
+0055    UGET     6   5      ; cksum
+0056    MOV      7   0
+0057    MOV      8   5
+0058    MOV      9   1
+0059    CALL     6   1   4
+0060    RET0     0   1
+
+-- BYTECODE -- ref_lib_bit.lua:52-54
+0001    UGET     2   0      ; check_binop_range
+0002    MOV      3   0
+0003    MOV      4   1
+0004    KSHORT   5   0
+0005    KSHORT   6  31
+0006    CALL     2   1   5
+0007    RET0     0   1
+
+-- BYTECODE -- ref_lib_bit.lua:0-99
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "bit"
+0003    CALL     0   2   2
+0004    GGET     1   2      ; "string"
+0005    TGETS    1   1   3  ; "byte"
+0006    GGET     2   4      ; "ipairs"
+0007    GGET     3   5      ; "tostring"
+0008    GGET     4   6      ; "pcall"
+0009    TDUP     5   7
+0010    FNEW     6   8      ; ref_lib_bit.lua:10
+0011    FNEW     7   9      ; ref_lib_bit.lua:18
+0012    FNEW     8  10      ; ref_lib_bit.lua:28
+0013    FNEW     9  11      ; ref_lib_bit.lua:40
+0014    FNEW    10  12      ; ref_lib_bit.lua:52
+0015    GGET    11  13      ; "assert"
+0016    KNUM    12   0      ; 2147483647
+0017    ISEQN   12   0      ; 2147483647
+0018    JMP     12 => 0021
+0019    KPRI    12   1
+0020    JMP     13 => 0022
+0021 => KPRI    12   2
+0022 => KSTR    13  14      ; "broken hex literals"
+0023    CALL    11   1   3
+0024    GGET    11  13      ; "assert"
+0025    KSHORT  12  -1
+0026    ISEQN   12   1      ; 4294967295
+0027    JMP     12 => 0033
+0028    KNUM    12   1      ; 4294967295
+0029    ISEQN   12   1      ; 4294967295
+0030    JMP     12 => 0033
+0031    KPRI    12   1
+0032    JMP     13 => 0034
+0033 => KPRI    12   2
+0034 => KSTR    13  14      ; "broken hex literals"
+0035    CALL    11   1   3
+0036    GGET    11  13      ; "assert"
+0037    MOV     12   3
+0038    KSHORT  13  -1
+0039    CALL    12   2   2
+0040    ISEQS   12  15      ; "-1"
+0041    JMP     12 => 0044
+0042    KPRI    12   1
+0043    JMP     13 => 0045
+0044 => KPRI    12   2
+0045 => KSTR    13  16      ; "broken tostring()"
+0046    CALL    11   1   3
+0047    GGET    11  13      ; "assert"
+0048    MOV     12   3
+0049    KNUM    13   1      ; 4294967295
+0050    CALL    12   2   2
+0051    ISEQS   12  15      ; "-1"
+0052    JMP     12 => 0060
+0053    MOV     12   3
+0054    KNUM    13   1      ; 4294967295
+0055    CALL    12   2   2
+0056    ISEQS   12  17      ; "4294967295"
+0057    JMP     12 => 0060
+0058    KPRI    12   1
+0059    JMP     13 => 0061
+0060 => KPRI    12   2
+0061 => KSTR    13  16      ; "broken tostring()"
+0062    CALL    11   1   3
+0063    GGET    11  13      ; "assert"
+0064    TGETS   12   0  18  ; "tobit"
+0065    KSHORT  13   1
+0066    CALL    12   2   2
+0067    ISEQN   12   2      ; 1
+0068    JMP     12 => 0071
+0069    KPRI    12   1
+0070    JMP     13 => 0072
+0071 => KPRI    12   2
+0072 => CALL    11   1   2
+0073    GGET    11  13      ; "assert"
+0074    TGETS   12   0  19  ; "band"
+0075    KSHORT  13   1
+0076    CALL    12   2   2
+0077    ISEQN   12   2      ; 1
+0078    JMP     12 => 0081
+0079    KPRI    12   1
+0080    JMP     13 => 0082
+0081 => KPRI    12   2
+0082 => CALL    11   1   2
+0083    GGET    11  13      ; "assert"
+0084    TGETS   12   0  20  ; "bxor"
+0085    KSHORT  13   1
+0086    KSHORT  14   2
+0087    CALL    12   2   3
+0088    ISEQN   12   3      ; 3
+0089    JMP     12 => 0092
+0090    KPRI    12   1
+0091    JMP     13 => 0093
+0092 => KPRI    12   2
+0093 => CALL    11   1   2
+0094    GGET    11  13      ; "assert"
+0095    TGETS   12   0  21  ; "bor"
+0096    KSHORT  13   1
+0097    KSHORT  14   2
+0098    KSHORT  15   4
+0099    KSHORT  16   8
+0100    KSHORT  17  16
+0101    KSHORT  18  32
+0102    KSHORT  19  64
+0103    KSHORT  20 128
+0104    CALL    12   2   9
+0105    ISEQN   12   4      ; 255
+0106    JMP     12 => 0109
+0107    KPRI    12   1
+0108    JMP     13 => 0110
+0109 => KPRI    12   2
+0110 => CALL    11   1   2
+0111    MOV     11   7
+0112    KSTR    12  18      ; "tobit"
+0113    KNUM    13   5      ; 277312
+0114    CALL    11   1   3
+0115    MOV     11   7
+0116    KSTR    12  22      ; "bnot"
+0117    KNUM    13   6      ; 287870
+0118    CALL    11   1   3
+0119    MOV     11   7
+0120    KSTR    12  23      ; "bswap"
+0121    KNUM    13   7      ; 307611
+0122    CALL    11   1   3
+0123    MOV     11   8
+0124    KSTR    12  19      ; "band"
+0125    KNUM    13   8      ; 41206764
+0126    CALL    11   1   3
+0127    MOV     11   8
+0128    KSTR    12  21      ; "bor"
+0129    KNUM    13   9      ; 51253663
+0130    CALL    11   1   3
+0131    MOV     11   8
+0132    KSTR    12  20      ; "bxor"
+0133    KNUM    13  10      ; 79322427
+0134    CALL    11   1   3
+0135    MOV     11  10
+0136    KSTR    12  24      ; "lshift"
+0137    KNUM    13  11      ; 325260344
+0138    CALL    11   1   3
+0139    MOV     11  10
+0140    KSTR    12  25      ; "rshift"
+0141    KNUM    13  12      ; 139061800
+0142    CALL    11   1   3
+0143    MOV     11  10
+0144    KSTR    12  26      ; "arshift"
+0145    KNUM    13  13      ; 111364720
+0146    CALL    11   1   3
+0147    MOV     11  10
+0148    KSTR    12  27      ; "rol"
+0149    KNUM    13  14      ; 302401155
+0150    CALL    11   1   3
+0151    MOV     11  10
+0152    KSTR    12  28      ; "ror"
+0153    KNUM    13  15      ; 302316761
+0154    CALL    11   1   3
+0155    MOV     11   9
+0156    KSTR    12  29      ; "tohex"
+0157    KNUM    13  16      ; 47880306
+0158    KSHORT  14  -8
+0159    KSHORT  15   8
+0160    CALL    11   1   5
+0161    TGETS   11   0  18  ; "tobit"
+0162    KNUM    12  17      ; 2.2517998136853e+15
+0163    KSHORT  13   1
+0164    KSHORT  14 100
+0165    KSHORT  15   1
+0166    FORI    13 => 0178
+0167 => GGET    17  13      ; "assert"
+0168    MOV     18  11
+0169    MODVN   19  12  18  ; 4294967296
+0170    CALL    18   2   2
+0171    ISEQN   18   3      ; 3
+0172    JMP     18 => 0175
+0173    KPRI    18   1
+0174    JMP     19 => 0176
+0175 => KPRI    18   2
+0176 => CALL    17   1   2
+0177    FORL    13 => 0167
+0178 => UCLO     0 => 0179
+0179 => RET0     0   1
+

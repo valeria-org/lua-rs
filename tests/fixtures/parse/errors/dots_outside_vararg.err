@@ -1,0 +1,1 @@
+[string "function f() return ... end"]:1: cannot use '...' outside a vararg function near '...'

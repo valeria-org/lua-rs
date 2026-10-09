@@ -1,0 +1,482 @@
+-- BYTECODE -- ref_lib_ffi_istype.lua:0-89
+0001    GGET     0   0      ; "require"
+0002    KSTR     2   1      ; "ffi"
+0003    CALL     0   2   2
+0004    TGETS    1   0   2  ; "typeof"
+0005    KSTR     3   3      ; "void"
+0006    CALL     1   2   2
+0007    GGET     2   4      ; "assert"
+0008    TGETS    4   0   5  ; "istype"
+0009    MOV      6   1
+0010    MOV      7   1
+0011    CALL     4   0   3
+0012    CALLM    2   1   0
+0013    GGET     2   4      ; "assert"
+0014    TGETS    4   0   5  ; "istype"
+0015    KSTR     6   6      ; "const void"
+0016    MOV      7   1
+0017    CALL     4   0   3
+0018    CALLM    2   1   0
+0019    GGET     2   4      ; "assert"
+0020    TGETS    4   0   5  ; "istype"
+0021    KSTR     6   3      ; "void"
+0022    KSTR     7   3      ; "void"
+0023    CALL     4   2   3
+0024    ISEQP    4   1
+0025    JMP      4 => 0028
+0026    KPRI     4   1
+0027    JMP      5 => 0029
+0028 => KPRI     4   2
+0029 => CALL     2   1   2
+0030    GGET     2   4      ; "assert"
+0031    TGETS    4   0   5  ; "istype"
+0032    KSTR     6   7      ; "double"
+0033    KNUM     7   0      ; 1.5
+0034    CALL     4   2   3
+0035    ISEQP    4   1
+0036    JMP      4 => 0039
+0037    KPRI     4   1
+0038    JMP      5 => 0040
+0039 => KPRI     4   2
+0040 => CALL     2   1   2
+0041    TGETS    1   0   2  ; "typeof"
+0042    KSTR     3   8      ; "int8_t"
+0043    CALL     1   2   2
+0044    TGETS    2   0   2  ; "typeof"
+0045    KSTR     4   9      ; "uint8_t"
+0046    CALL     2   2   2
+0047    TGETS    3   0   2  ; "typeof"
+0048    KSTR     5  10      ; "int32_t"
+0049    CALL     3   2   2
+0050    GGET     4   4      ; "assert"
+0051    TGETS    6   0   5  ; "istype"
+0052    MOV      8   3
+0053    MOV      9   3
+0054    CALL     6   2   3
+0055    ISEQP    6   2
+0056    JMP      6 => 0059
+0057    KPRI     6   1
+0058    JMP      7 => 0060
+0059 => KPRI     6   2
+0060 => CALL     4   1   2
+0061    GGET     4   4      ; "assert"
+0062    TGETS    6   0   5  ; "istype"
+0063    KSTR     8  11      ; "const int32_t"
+0064    MOV      9   3
+0065    CALL     6   2   3
+0066    ISEQP    6   2
+0067    JMP      6 => 0070
+0068    KPRI     6   1
+0069    JMP      7 => 0071
+0070 => KPRI     6   2
+0071 => CALL     4   1   2
+0072    GGET     4   4      ; "assert"
+0073    TGETS    6   0   5  ; "istype"
+0074    KSTR     8  12      ; "bool"
+0075    MOV      9   2
+0076    CALL     6   2   3
+0077    ISEQP    6   1
+0078    JMP      6 => 0081
+0079    KPRI     6   1
+0080    JMP      7 => 0082
+0081 => KPRI     6   2
+0082 => CALL     4   1   2
+0083    GGET     4   4      ; "assert"
+0084    TGETS    6   0   5  ; "istype"
+0085    MOV      8   1
+0086    MOV      9   2
+0087    CALL     6   2   3
+0088    ISEQP    6   1
+0089    JMP      6 => 0092
+0090    KPRI     6   1
+0091    JMP      7 => 0093
+0092 => KPRI     6   2
+0093 => CALL     4   1   2
+0094    GGET     4   4      ; "assert"
+0095    TGETS    6   0   5  ; "istype"
+0096    MOV      8   3
+0097    MOV      9   2
+0098    CALL     6   2   3
+0099    ISEQP    6   1
+0100    JMP      6 => 0103
+0101    KPRI     6   1
+0102    JMP      7 => 0104
+0103 => KPRI     6   2
+0104 => CALL     4   1   2
+0105    GGET     4   4      ; "assert"
+0106    TGETS    6   0   5  ; "istype"
+0107    MOV      8   2
+0108    MOV      9   3
+0109    CALL     6   2   3
+0110    ISEQP    6   1
+0111    JMP      6 => 0114
+0112    KPRI     6   1
+0113    JMP      7 => 0115
+0114 => KPRI     6   2
+0115 => CALL     4   1   2
+0116    GGET     4   4      ; "assert"
+0117    TGETS    6   0   5  ; "istype"
+0118    KSTR     8   7      ; "double"
+0119    MOV      9   3
+0120    CALL     6   2   3
+0121    ISEQP    6   1
+0122    JMP      6 => 0125
+0123    KPRI     6   1
+0124    JMP      7 => 0126
+0125 => KPRI     6   2
+0126 => CALL     4   1   2
+0127    GGET     4   4      ; "assert"
+0128    TGETS    6   0   5  ; "istype"
+0129    KSTR     8  13      ; "int64_t"
+0130    TGETS    9   0   2  ; "typeof"
+0131    KSTR    11  14      ; "long long"
+0132    CALL     9   0   2
+0133    CALLM    6   0   1
+0134    CALLM    4   1   0
+0135    GGET     4   4      ; "assert"
+0136    TGETS    6   0   5  ; "istype"
+0137    KSTR     8  14      ; "long long"
+0138    TGETS    9   0   2  ; "typeof"
+0139    KSTR    11  13      ; "int64_t"
+0140    CALL     9   0   2
+0141    CALLM    6   0   1
+0142    CALLM    4   1   0
+0143    TGETS    1   0   2  ; "typeof"
+0144    KSTR     3  15      ; "int *"
+0145    CALL     1   2   2
+0146    MOV      2   1
+0147    CALL     2   2   1
+0148    GGET     3   4      ; "assert"
+0149    TGETS    5   0   5  ; "istype"
+0150    MOV      7   1
+0151    MOV      8   1
+0152    CALL     5   2   3
+0153    ISEQP    5   2
+0154    JMP      5 => 0157
+0155    KPRI     5   1
+0156    JMP      6 => 0158
+0157 => KPRI     5   2
+0158 => CALL     3   1   2
+0159    GGET     3   4      ; "assert"
+0160    TGETS    5   0   5  ; "istype"
+0161    MOV      7   1
+0162    MOV      8   2
+0163    CALL     5   2   3
+0164    ISEQP    5   2
+0165    JMP      5 => 0168
+0166    KPRI     5   1
+0167    JMP      6 => 0169
+0168 => KPRI     5   2
+0169 => CALL     3   1   2
+0170    GGET     3   4      ; "assert"
+0171    TGETS    5   0   5  ; "istype"
+0172    MOV      7   2
+0173    MOV      8   1
+0174    CALL     5   2   3
+0175    ISEQP    5   2
+0176    JMP      5 => 0179
+0177    KPRI     5   1
+0178    JMP      6 => 0180
+0179 => KPRI     5   2
+0180 => CALL     3   1   2
+0181    GGET     3   4      ; "assert"
+0182    TGETS    5   0   5  ; "istype"
+0183    KSTR     7  16      ; "const int *"
+0184    MOV      8   1
+0185    CALL     5   2   3
+0186    ISEQP    5   2
+0187    JMP      5 => 0190
+0188    KPRI     5   1
+0189    JMP      6 => 0191
+0190 => KPRI     5   2
+0191 => CALL     3   1   2
+0192    GGET     3   4      ; "assert"
+0193    TGETS    5   0   5  ; "istype"
+0194    KSTR     7  17      ; "const int * const"
+0195    MOV      8   1
+0196    CALL     5   2   3
+0197    ISEQP    5   2
+0198    JMP      5 => 0201
+0199    KPRI     5   1
+0200    JMP      6 => 0202
+0201 => KPRI     5   2
+0202 => CALL     3   1   2
+0203    GGET     3   4      ; "assert"
+0204    TGETS    5   0   5  ; "istype"
+0205    KSTR     7  18      ; "unsigned int *"
+0206    MOV      8   1
+0207    CALL     5   2   3
+0208    ISEQP    5   2
+0209    JMP      5 => 0212
+0210    KPRI     5   1
+0211    JMP      6 => 0213
+0212 => KPRI     5   2
+0213 => CALL     3   1   2
+0214    GGET     3   4      ; "assert"
+0215    TGETS    5   0   5  ; "istype"
+0216    KSTR     7  19      ; "char *"
+0217    MOV      8   1
+0218    CALL     5   2   3
+0219    ISEQP    5   1
+0220    JMP      5 => 0223
+0221    KPRI     5   1
+0222    JMP      6 => 0224
+0223 => KPRI     5   2
+0224 => CALL     3   1   2
+0225    GGET     3   4      ; "assert"
+0226    TGETS    5   0   5  ; "istype"
+0227    KSTR     7  20      ; "void *"
+0228    MOV      8   1
+0229    CALL     5   2   3
+0230    ISEQP    5   1
+0231    JMP      5 => 0234
+0232    KPRI     5   1
+0233    JMP      6 => 0235
+0234 => KPRI     5   2
+0235 => CALL     3   1   2
+0236    TGETS    1   0  21  ; "cdef"
+0237    KSTR     3  22      ; "typedef int istype_arr_t[10];\ntypedef c"~
+0238    CALL     1   1   2
+0239    TGETS    1   0   2  ; "typeof"
+0240    KSTR     3  23      ; "istype_arr_t"
+0241    CALL     1   2   2
+0242    TGETS    2   0   2  ; "typeof"
+0243    KSTR     4  24      ; "istype_carr_t"
+0244    CALL     2   2   2
+0245    GGET     3   4      ; "assert"
+0246    TGETS    5   0   5  ; "istype"
+0247    MOV      7   1
+0248    MOV      8   1
+0249    CALL     5   2   3
+0250    ISEQP    5   2
+0251    JMP      5 => 0254
+0252    KPRI     5   1
+0253    JMP      6 => 0255
+0254 => KPRI     5   2
+0255 => CALL     3   1   2
+0256    GGET     3   4      ; "assert"
+0257    TGETS    5   0   5  ; "istype"
+0258    KSTR     7  25      ; "int[10]"
+0259    MOV      8   1
+0260    CALL     5   2   3
+0261    ISEQP    5   2
+0262    JMP      5 => 0265
+0263    KPRI     5   1
+0264    JMP      6 => 0266
+0265 => KPRI     5   2
+0266 => CALL     3   1   2
+0267    GGET     3   4      ; "assert"
+0268    TGETS    5   0   5  ; "istype"
+0269    KSTR     7  26      ; "int[11]"
+0270    MOV      8   1
+0271    CALL     5   2   3
+0272    ISEQP    5   1
+0273    JMP      5 => 0276
+0274    KPRI     5   1
+0275    JMP      6 => 0277
+0276 => KPRI     5   2
+0277 => CALL     3   1   2
+0278    GGET     3   4      ; "assert"
+0279    TGETS    5   0   5  ; "istype"
+0280    KSTR     7  27      ; "int[]"
+0281    MOV      8   1
+0282    CALL     5   2   3
+0283    ISEQP    5   1
+0284    JMP      5 => 0287
+0285    KPRI     5   1
+0286    JMP      6 => 0288
+0287 => KPRI     5   2
+0288 => CALL     3   1   2
+0289    GGET     3   4      ; "assert"
+0290    TGETS    5   0   5  ; "istype"
+0291    KSTR     7  15      ; "int *"
+0292    MOV      8   1
+0293    CALL     5   2   3
+0294    ISEQP    5   1
+0295    JMP      5 => 0298
+0296    KPRI     5   1
+0297    JMP      6 => 0299
+0298 => KPRI     5   2
+0299 => CALL     3   1   2
+0300    GGET     3   4      ; "assert"
+0301    TGETS    5   0   5  ; "istype"
+0302    KSTR     7  28      ; "const int[10]"
+0303    MOV      8   1
+0304    CALL     5   2   3
+0305    ISEQP    5   2
+0306    JMP      5 => 0309
+0307    KPRI     5   1
+0308    JMP      6 => 0310
+0309 => KPRI     5   2
+0310 => CALL     3   1   2
+0311    GGET     3   4      ; "assert"
+0312    TGETS    5   0   5  ; "istype"
+0313    KSTR     7  29      ; "volatile int[10]"
+0314    MOV      8   1
+0315    CALL     5   2   3
+0316    ISEQP    5   2
+0317    JMP      5 => 0320
+0318    KPRI     5   1
+0319    JMP      6 => 0321
+0320 => KPRI     5   2
+0321 => CALL     3   1   2
+0322    GGET     3   4      ; "assert"
+0323    TGETS    5   0   5  ; "istype"
+0324    MOV      7   2
+0325    MOV      8   1
+0326    CALL     5   2   3
+0327    ISEQP    5   2
+0328    JMP      5 => 0331
+0329    KPRI     5   1
+0330    JMP      6 => 0332
+0331 => KPRI     5   2
+0332 => CALL     3   1   2
+0333    TGETS    3   0   2  ; "typeof"
+0334    KSTR     5  30      ; "istype_struct_t"
+0335    CALL     3   2   2
+0336    TGETS    4   0   2  ; "typeof"
+0337    KSTR     6  31      ; "istype_struct_t *"
+0338    CALL     4   2   2
+0339    GGET     5   4      ; "assert"
+0340    TGETS    7   0   5  ; "istype"
+0341    MOV      9   3
+0342    MOV     10   3
+0343    CALL     7   2   3
+0344    ISEQP    7   2
+0345    JMP      7 => 0348
+0346    KPRI     7   1
+0347    JMP      8 => 0349
+0348 => KPRI     7   2
+0349 => CALL     5   1   2
+0350    GGET     5   4      ; "assert"
+0351    TGETS    7   0   5  ; "istype"
+0352    KSTR     9  32      ; "const istype_struct_t"
+0353    MOV     10   3
+0354    CALL     7   2   3
+0355    ISEQP    7   2
+0356    JMP      7 => 0359
+0357    KPRI     7   1
+0358    JMP      8 => 0360
+0359 => KPRI     7   2
+0360 => CALL     5   1   2
+0361    GGET     5   4      ; "assert"
+0362    TGETS    7   0   5  ; "istype"
+0363    KSTR     9  33      ; "struct { int x; }"
+0364    MOV     10   3
+0365    CALL     7   2   3
+0366    ISEQP    7   1
+0367    JMP      7 => 0370
+0368    KPRI     7   1
+0369    JMP      8 => 0371
+0370 => KPRI     7   2
+0371 => CALL     5   1   2
+0372    GGET     5   4      ; "assert"
+0373    TGETS    7   0   5  ; "istype"
+0374    MOV      9   3
+0375    MOV     10   4
+0376    CALL     7   2   3
+0377    ISEQP    7   2
+0378    JMP      7 => 0381
+0379    KPRI     7   1
+0380    JMP      8 => 0382
+0381 => KPRI     7   2
+0382 => CALL     5   1   2
+0383    GGET     5   4      ; "assert"
+0384    TGETS    7   0   5  ; "istype"
+0385    MOV      9   4
+0386    MOV     10   3
+0387    CALL     7   2   3
+0388    ISEQP    7   1
+0389    JMP      7 => 0392
+0390    KPRI     7   1
+0391    JMP      8 => 0393
+0392 => KPRI     7   2
+0393 => CALL     5   1   2
+0394    TGETS    1   0   2  ; "typeof"
+0395    KSTR     3  34      ; "int"
+0396    CALL     1   2   2
+0397    TNEW     2   0
+0398    KSHORT   3   1
+0399    KSHORT   4 200
+0400    KSHORT   5   1
+0401    FORI     3 => 0406
+0402 => MOV      7   1
+0403    CALL     7   2   1
+0404    TSETV    7   2   6
+0405    FORL     3 => 0402
+0406 => TGETS    3   0  35  ; "new"
+0407    KSTR     5   9      ; "uint8_t"
+0408    CALL     3   2   2
+0409    TSETB    3   2 100
+0410    KSHORT   3   0
+0411    KSHORT   4   1
+0412    KSHORT   5 200
+0413    KSHORT   6   1
+0414    FORI     4 => 0423
+0415 => TGETS    8   0   5  ; "istype"
+0416    KSTR    10  34      ; "int"
+0417    TGETV   11   2   7
+0418    CALL     8   2   3
+0419    IST          8
+0420    JMP      8 => 0422
+0421    ADDVV    3   3   7
+0422 => FORL     4 => 0415
+0423 => GGET     4   4      ; "assert"
+0424    ISEQN    3   1      ; 100
+0425    JMP      6 => 0428
+0426    KPRI     6   1
+0427    JMP      7 => 0429
+0428 => KPRI     6   2
+0429 => CALL     4   1   2
+0430    KSHORT   3   0
+0431    KSHORT   4   1
+0432    KSHORT   5 200
+0433    KSHORT   6   1
+0434    FORI     4 => 0443
+0435 => TGETS    8   0   5  ; "istype"
+0436    MOV     10   1
+0437    TGETV   11   2   7
+0438    CALL     8   2   3
+0439    IST          8
+0440    JMP      8 => 0442
+0441    ADDVV    3   3   7
+0442 => FORL     4 => 0435
+0443 => GGET     4   4      ; "assert"
+0444    ISEQN    3   1      ; 100
+0445    JMP      6 => 0448
+0446    KPRI     6   1
+0447    JMP      7 => 0449
+0448 => KPRI     6   2
+0449 => CALL     4   1   2
+0450    KSHORT   4   1
+0451    KSHORT   5 200
+0452    KSHORT   6   1
+0453    FORI     4 => 0456
+0454 => TSETV    1   2   7
+0455    FORL     4 => 0454
+0456 => TGETS    4   0   2  ; "typeof"
+0457    KSTR     6   9      ; "uint8_t"
+0458    CALL     4   2   2
+0459    TSETB    4   2 100
+0460    KSHORT   3   0
+0461    KSHORT   4   1
+0462    KSHORT   5 200
+0463    KSHORT   6   1
+0464    FORI     4 => 0473
+0465 => TGETS    8   0   5  ; "istype"
+0466    TGETV   10   2   7
+0467    MOV     11   1
+0468    CALL     8   2   3
+0469    IST          8
+0470    JMP      8 => 0472
+0471    ADDVV    3   3   7
+0472 => FORL     4 => 0465
+0473 => GGET     4   4      ; "assert"
+0474    ISEQN    3   1      ; 100
+0475    JMP      6 => 0478
+0476    KPRI     6   1
+0477    JMP      7 => 0479
+0478 => KPRI     6   2
+0479 => CALL     4   1   2
+0480    RET0     0   1
+

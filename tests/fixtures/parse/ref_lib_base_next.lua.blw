@@ -1,0 +1,62 @@
+-- BYTECODE -- ref_lib_base_next.lua:4-4
+0001    GGET     0   0      ; "next"
+0002    GGET     1   1      ; "_G"
+0003    KSHORT   2   1
+0004    CALL     0   1   3
+0005    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_next.lua:11-11
+0001    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_next.lua:12-14
+0001    MOV      1   0
+0002    UGET     2   0      ; t
+0003    KPRI     3   0
+0004    ISNEXT   4 => 0015
+0005 => UGET     6   1      ; r
+0006    UGET     7   1      ; r
+0007    LEN      7   7
+0008    ADDVN    7   7   0  ; 1
+0009    TSETV    4   6   7
+0010    ISNEN    5   1      ; 5
+0011    JMP      6 => 0015
+0012    UGET     6   2      ; f
+0013    UGET     7   3      ; dummy
+0014    CALL     6   1   2
+0015 => ITERN    4   3   3
+0016    ITERL    4 => 0005
+0017    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_next.lua:0-18
+0001    GGET     0   0      ; "pcall"
+0002    GGET     1   1      ; "next"
+0003    GGET     2   2      ; "_G"
+0004    KSHORT   3   1
+0005    CALL     0   3   4
+0006    GGET     2   3      ; "assert"
+0007    NOT      3   0
+0008    CALL     2   1   2
+0009    GGET     2   0      ; "pcall"
+0010    FNEW     3   4      ; ref_lib_base_next.lua:4
+0011    CALL     2   3   2
+0012    GGET     4   3      ; "assert"
+0013    NOT      5   2
+0014    CALL     4   1   2
+0015    TDUP     0   5
+0016    TNEW     1   0
+0017    FNEW     2   6      ; ref_lib_base_next.lua:11
+0018    FNEW     3   7      ; ref_lib_base_next.lua:12
+0019    MOV      4   3
+0020    GGET     5   1      ; "next"
+0021    CALL     4   1   2
+0022    GGET     4   3      ; "assert"
+0023    LEN      5   1
+0024    ISEQN    5   0      ; 5
+0025    JMP      5 => 0028
+0026    KPRI     5   1
+0027    JMP      6 => 0029
+0028 => KPRI     5   2
+0029 => CALL     4   1   2
+0030    UCLO     0 => 0031
+0031 => RET0     0   1
+

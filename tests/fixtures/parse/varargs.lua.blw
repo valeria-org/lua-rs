@@ -1,0 +1,207 @@
+-- BYTECODE -- varargs.lua:2-2
+0001    VARG     0   0   0
+0002    RETM     0   0
+
+-- BYTECODE -- varargs.lua:3-3
+0001    VARG     0   3   0
+0002    MOV      2   0
+0003    MOV      3   1
+0004    RET      2   3
+
+-- BYTECODE -- varargs.lua:4-4
+0001    TNEW     0   3
+0002    VARG     1   0   0
+0003    TSETM    1   0      ; 1
+0004    RET1     0   2
+
+-- BYTECODE -- varargs.lua:5-5
+0001    TDUP     0   0
+0002    VARG     1   0   0
+0003    TSETM    1   0      ; 3
+0004    RET1     0   2
+
+-- BYTECODE -- varargs.lua:6-6
+0001    TDUP     0   0
+0002    VARG     1   2   0
+0003    TSETB    1   0   1
+0004    RET1     0   2
+
+-- BYTECODE -- varargs.lua:7-7
+0001    GGET     0   0      ; "select"
+0002    KSTR     1   1      ; "#"
+0003    VARG     2   0   0
+0004    CALLMT   0   1
+
+-- BYTECODE -- varargs.lua:8-8
+0001    GGET     0   0      ; "select"
+0002    KSHORT   1   2
+0003    VARG     2   0   0
+0004    CALLMT   0   1
+
+-- BYTECODE -- varargs.lua:9-9
+0001    GGET     2   0      ; "print"
+0002    MOV      3   0
+0003    MOV      4   1
+0004    VARG     5   0   2
+0005    CALLM    2   1   2
+0006    RET0     0   1
+
+-- BYTECODE -- varargs.lua:10-10
+0001    VARG     0   2   0
+0002    RET1     0   2
+
+-- BYTECODE -- varargs.lua:11-11
+0001    VARG     0   6   0
+0002    RET0     0   1
+
+-- BYTECODE -- varargs.lua:12-12
+0001    VARG     0   3   0
+0002    GSET     1   0      ; "b"
+0003    GSET     0   1      ; "a"
+0004    RET0     0   1
+
+-- BYTECODE -- varargs.lua:13-13
+0001    VARG     0   2   0
+0002    GSET     0   0      ; "a"
+0003    RET0     0   1
+
+-- BYTECODE -- varargs.lua:14-14
+0001    GGET     0   0      ; "t"
+0002    GGET     1   0      ; "t"
+0003    VARG     2   3   0
+0004    TSETB    3   1   2
+0005    TSETB    2   0   1
+0006    RET0     0   1
+
+-- BYTECODE -- varargs.lua:15-15
+0001    VARG     0   2   0
+0002    RET1     0   2
+
+-- BYTECODE -- varargs.lua:16-16
+0001    VARG     0   2   0
+0002    RET0     0   1
+
+-- BYTECODE -- varargs.lua:17-17
+0001    GGET     0   0      ; "f"
+0002    VARG     1   2   0
+0003    KSHORT   2   1
+0004    CALL     0   1   3
+0005    RET0     0   1
+
+-- BYTECODE -- varargs.lua:18-18
+0001    GGET     0   0      ; "f"
+0002    KSHORT   1   1
+0003    VARG     2   0   0
+0004    CALLM    0   1   1
+0005    RET0     0   1
+
+-- BYTECODE -- varargs.lua:19-19
+0001    VARG     0   2   0
+0002    VARG     1   0   0
+0003    RETM     0   1
+
+-- BYTECODE -- varargs.lua:20-20
+0001    KSHORT   0   1
+0002    VARG     1   2   0
+0003    RET0     0   1
+
+-- BYTECODE -- varargs.lua:21-21
+0001    VARG     0   2   0
+0002    KSHORT   1   2
+0003    KPRI     2   0
+0004    RET0     0   1
+
+-- BYTECODE -- varargs.lua:22-22
+0001    TDUP     0   2
+0002    GGET     1   0      ; "select"
+0003    KSTR     2   1      ; "#"
+0004    VARG     3   0   0
+0005    CALLM    1   2   1
+0006    TSETS    1   0   3  ; "n"
+0007    VARG     1   0   0
+0008    TSETM    1   0      ; 1
+0009    RET1     0   2
+
+-- BYTECODE -- varargs.lua:23-23
+0001    VARG     0   2   0
+0002    ISF          0
+0003    JMP      1 => 0005
+0004    KSHORT   0   1
+0005 => RET1     0   2
+
+-- BYTECODE -- varargs.lua:24-24
+0001    TNEW     0   3
+0002    VARG     1   0   0
+0003    TSETM    1   0      ; 1
+0004    LEN      0   0
+0005    RET1     0   2
+
+-- BYTECODE -- varargs.lua:25-25
+0001    VARG     0   0   0
+0002    RETM     0   0
+
+-- BYTECODE -- varargs.lua:25-25
+0001    FNEW     0   0      ; varargs.lua:25
+0002    MOV      1   0
+0003    VARG     2   0   0
+0004    UCLO     0 => 0005
+0005 => CALLMT   1   0
+
+-- BYTECODE -- varargs.lua:26-26
+0001    KSHORT   0   1
+0002    GGET     1   0      ; "select"
+0003    KSTR     2   1      ; "#"
+0004    VARG     3   0   0
+0005    CALLM    1   2   1
+0006    KSHORT   2   1
+0007    FORI     0 => 0013
+0008 => GGET     4   0      ; "select"
+0009    MOV      5   3
+0010    VARG     6   0   0
+0011    CALLM    4   2   1
+0012    FORL     0 => 0008
+0013 => RET0     0   1
+
+-- BYTECODE -- varargs.lua:27-27
+0001    GGET     0   0      ; "x"
+0002    GGET     1   0      ; "x"
+0003    VARG     2   3   0
+0004    TSETS    3   1   2  ; "z"
+0005    TSETS    2   0   1  ; "y"
+0006    RET0     0   1
+
+-- BYTECODE -- varargs.lua:0-31
+0001    FNEW     0   0      ; varargs.lua:2
+0002    FNEW     1   1      ; varargs.lua:3
+0003    FNEW     2   2      ; varargs.lua:4
+0004    FNEW     3   3      ; varargs.lua:5
+0005    FNEW     4   4      ; varargs.lua:6
+0006    FNEW     5   5      ; varargs.lua:7
+0007    FNEW     6   6      ; varargs.lua:8
+0008    FNEW     7   7      ; varargs.lua:9
+0009    FNEW     8   8      ; varargs.lua:10
+0010    FNEW     9   9      ; varargs.lua:11
+0011    FNEW    10  10      ; varargs.lua:12
+0012    FNEW    11  11      ; varargs.lua:13
+0013    FNEW    12  12      ; varargs.lua:14
+0014    FNEW    13  13      ; varargs.lua:15
+0015    FNEW    14  14      ; varargs.lua:16
+0016    FNEW    15  15      ; varargs.lua:17
+0017    FNEW    16  16      ; varargs.lua:18
+0018    FNEW    17  17      ; varargs.lua:19
+0019    FNEW    18  18      ; varargs.lua:20
+0020    FNEW    19  19      ; varargs.lua:21
+0021    FNEW    20  20      ; varargs.lua:22
+0022    FNEW    21  21      ; varargs.lua:23
+0023    FNEW    22  22      ; varargs.lua:24
+0024    FNEW    23  23      ; varargs.lua:25
+0025    FNEW    24  24      ; varargs.lua:26
+0026    FNEW    25  25      ; varargs.lua:27
+0027    VARG    26   3   0
+0028    GGET    28  26      ; "print"
+0029    VARG    29   0   0
+0030    CALLM   28   1   0
+0031    VARG    28   0   0
+0032    UCLO     0 => 0033
+0033 => RETM    28   0
+

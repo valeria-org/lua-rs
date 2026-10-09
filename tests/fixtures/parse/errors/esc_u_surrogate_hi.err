@@ -1,0 +1,1 @@
+[string "x = "\u{DFFF}""]:1: invalid escape sequence near '"'

@@ -1,0 +1,474 @@
+-- BYTECODE -- ref_lib_ffi_ffi_parse_struct.lua:0-260
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "ffi"
+0003    CALL     0   2   2
+0004    GGET     1   2      ; "dofile"
+0005    KSTR     2   3      ; "../common/ffi_util.inc"
+0006    CALL     1   1   2
+0007    GGET     1   4      ; "checkfail"
+0008    TDUP     2   5
+0009    CALL     1   1   2
+0010    TGETS    1   0   6  ; "cdef"
+0011    KSTR     2   7      ; "struct foo; typedef struct foo foo_t;"
+0012    CALL     1   1   2
+0013    GGET     1   8      ; "assert"
+0014    TGETS    2   0   9  ; "sizeof"
+0015    KSTR     3  10      ; "struct foo"
+0016    CALL     2   2   2
+0017    ISEQP    2   0
+0018    JMP      2 => 0021
+0019    KPRI     2   1
+0020    JMP      3 => 0022
+0021 => KPRI     2   2
+0022 => CALL     1   1   2
+0023    GGET     1   8      ; "assert"
+0024    TGETS    2   0   9  ; "sizeof"
+0025    KSTR     3  11      ; "foo_t"
+0026    CALL     2   2   2
+0027    ISEQP    2   0
+0028    JMP      2 => 0031
+0029    KPRI     2   1
+0030    JMP      3 => 0032
+0031 => KPRI     2   2
+0032 => CALL     1   1   2
+0033    TGETS    1   0   6  ; "cdef"
+0034    KSTR     2  12      ; "struct foo { int x,y; };"
+0035    CALL     1   1   2
+0036    GGET     1   8      ; "assert"
+0037    TGETS    2   0   9  ; "sizeof"
+0038    KSTR     3  10      ; "struct foo"
+0039    CALL     2   2   2
+0040    ISEQN    2   0      ; 8
+0041    JMP      2 => 0044
+0042    KPRI     2   1
+0043    JMP      3 => 0045
+0044 => KPRI     2   2
+0045 => CALL     1   1   2
+0046    GGET     1   8      ; "assert"
+0047    TGETS    2   0   9  ; "sizeof"
+0048    KSTR     3  11      ; "foo_t"
+0049    CALL     2   2   2
+0050    ISEQN    2   0      ; 8
+0051    JMP      2 => 0054
+0052    KPRI     2   1
+0053    JMP      3 => 0055
+0054 => KPRI     2   2
+0055 => CALL     1   1   2
+0056    GGET     1   8      ; "assert"
+0057    TGETS    2   0   9  ; "sizeof"
+0058    TGETS    3   0  13  ; "typeof"
+0059    KSTR     4  10      ; "struct foo"
+0060    CALL     3   0   2
+0061    CALLM    2   2   0
+0062    ISEQN    2   0      ; 8
+0063    JMP      2 => 0066
+0064    KPRI     2   1
+0065    JMP      3 => 0067
+0066 => KPRI     2   2
+0067 => CALL     1   1   2
+0068    GGET     1   8      ; "assert"
+0069    TGETS    2   0   9  ; "sizeof"
+0070    TGETS    3   0  13  ; "typeof"
+0071    KSTR     4  11      ; "foo_t"
+0072    CALL     3   0   2
+0073    CALLM    2   2   0
+0074    ISEQN    2   0      ; 8
+0075    JMP      2 => 0078
+0076    KPRI     2   1
+0077    JMP      3 => 0079
+0078 => KPRI     2   2
+0079 => CALL     1   1   2
+0080    TGETS    1   0   6  ; "cdef"
+0081    KSTR     2  14      ; "struct foo;"
+0082    CALL     1   1   2
+0083    GGET     1  15      ; "fails"
+0084    TGETS    2   0   6  ; "cdef"
+0085    KSTR     3  16      ; "struct foo {};"
+0086    CALL     1   1   3
+0087    GGET     1  15      ; "fails"
+0088    TGETS    2   0   6  ; "cdef"
+0089    KSTR     3  17      ; "union foo;"
+0090    CALL     1   1   3
+0091    GGET     1  15      ; "fails"
+0092    TGETS    2   0   6  ; "cdef"
+0093    KSTR     3  18      ; "union foo {};"
+0094    CALL     1   1   3
+0095    GGET     1  15      ; "fails"
+0096    TGETS    2   0   6  ; "cdef"
+0097    KSTR     3  19      ; "enum foo;"
+0098    CALL     1   1   3
+0099    GGET     1  15      ; "fails"
+0100    TGETS    2   0   6  ; "cdef"
+0101    KSTR     3  20      ; "enum foo { ZZZ1 };"
+0102    CALL     1   1   3
+0103    TGETS    1   0   9  ; "sizeof"
+0104    KSTR     2  21      ; "void *"
+0105    CALL     1   2   2
+0106    TGETS    2   0  22  ; "arch"
+0107    ISNES    2  23      ; "x86"
+0108    JMP      2 => 0116
+0109    TGETS    2   0  24  ; "abi"
+0110    KSTR     3  25      ; "win"
+0111    CALL     2   2   2
+0112    IST          2
+0113    JMP      2 => 0116
+0114    KSHORT   2   4
+0115    JMP      3 => 0117
+0116 => KSHORT   2   8
+0117 => GGET     3  26      ; "checktypes"
+0118    TDUP     4  27
+0119    MULVN    5   1   1  ; 4
+0120    TSETB    5   4  28
+0121    TSETB    1   4  29
+0122    TSETB    2   4  53
+0123    ADDVN    5   2   0  ; 8
+0124    TSETB    5   4  55
+0125    TSETB    2   4  56
+0126    TSETB    2   4  59
+0127    ADDVN    5   2   0  ; 8
+0128    TSETB    5   4  61
+0129    TSETB    2   4  62
+0130    TSETB    2   4  65
+0131    ADDVN    5   2   2  ; 16
+0132    TSETB    5   4  67
+0133    TSETB    2   4  68
+0134    CALL     3   1   2
+0135    GGET     3  26      ; "checktypes"
+0136    TDUP     4  28
+0137    TSETB    1   4  25
+0138    TSETB    1   4  26
+0139    TSETB    2   4  50
+0140    TSETB    2   4  53
+0141    TSETB    2   4  56
+0142    TSETB    2   4  59
+0143    TSETB    2   4  62
+0144    TSETB    2   4  65
+0145    CALL     3   1   2
+0146    KPRI     3   0
+0147    TGETS    4   0  13  ; "typeof"
+0148    KSTR     5  29      ; "struct { int a; char b; short c; int d; "~
+0149    CALL     4   2   2
+0150    MOV      3   4
+0151    GGET     4   8      ; "assert"
+0152    TGETS    5   0  30  ; "offsetof"
+0153    MOV      6   3
+0154    KSTR     7  31      ; "a"
+0155    CALL     5   2   3
+0156    ISEQN    5   3      ; 0
+0157    JMP      5 => 0160
+0158    KPRI     5   1
+0159    JMP      6 => 0161
+0160 => KPRI     5   2
+0161 => CALL     4   1   2
+0162    GGET     4   8      ; "assert"
+0163    TGETS    5   0  30  ; "offsetof"
+0164    MOV      6   3
+0165    KSTR     7  32      ; "b"
+0166    CALL     5   2   3
+0167    ISEQN    5   1      ; 4
+0168    JMP      5 => 0171
+0169    KPRI     5   1
+0170    JMP      6 => 0172
+0171 => KPRI     5   2
+0172 => CALL     4   1   2
+0173    GGET     4   8      ; "assert"
+0174    TGETS    5   0  30  ; "offsetof"
+0175    MOV      6   3
+0176    KSTR     7  33      ; "c"
+0177    CALL     5   2   3
+0178    ISEQN    5   4      ; 6
+0179    JMP      5 => 0182
+0180    KPRI     5   1
+0181    JMP      6 => 0183
+0182 => KPRI     5   2
+0183 => CALL     4   1   2
+0184    GGET     4   8      ; "assert"
+0185    TGETS    5   0  30  ; "offsetof"
+0186    MOV      6   3
+0187    KSTR     7  34      ; "d"
+0188    CALL     5   2   3
+0189    ISEQN    5   0      ; 8
+0190    JMP      5 => 0193
+0191    KPRI     5   1
+0192    JMP      6 => 0194
+0193 => KPRI     5   2
+0194 => CALL     4   1   2
+0195    TGETS    4   0  13  ; "typeof"
+0196    KSTR     5  35      ; "struct { char a; struct { char x; short "~
+0197    CALL     4   2   2
+0198    MOV      3   4
+0199    GGET     4   8      ; "assert"
+0200    TGETS    5   0  30  ; "offsetof"
+0201    MOV      6   3
+0202    KSTR     7  31      ; "a"
+0203    CALL     5   2   3
+0204    ISEQN    5   3      ; 0
+0205    JMP      5 => 0208
+0206    KPRI     5   1
+0207    JMP      6 => 0209
+0208 => KPRI     5   2
+0209 => CALL     4   1   2
+0210    GGET     4   8      ; "assert"
+0211    TGETS    5   0  30  ; "offsetof"
+0212    MOV      6   3
+0213    KSTR     7  36      ; "x"
+0214    CALL     5   2   3
+0215    ISEQN    5   5      ; 2
+0216    JMP      5 => 0219
+0217    KPRI     5   1
+0218    JMP      6 => 0220
+0219 => KPRI     5   2
+0220 => CALL     4   1   2
+0221    GGET     4   8      ; "assert"
+0222    TGETS    5   0  30  ; "offsetof"
+0223    MOV      6   3
+0224    KSTR     7  37      ; "y"
+0225    CALL     5   2   3
+0226    ISEQN    5   1      ; 4
+0227    JMP      5 => 0230
+0228    KPRI     5   1
+0229    JMP      6 => 0231
+0230 => KPRI     5   2
+0231 => CALL     4   1   2
+0232    GGET     4   8      ; "assert"
+0233    TGETS    5   0  30  ; "offsetof"
+0234    MOV      6   3
+0235    KSTR     7  38      ; "z"
+0236    CALL     5   2   3
+0237    ISEQN    5   4      ; 6
+0238    JMP      5 => 0241
+0239    KPRI     5   1
+0240    JMP      6 => 0242
+0241 => KPRI     5   2
+0242 => CALL     4   1   2
+0243    GGET     4   8      ; "assert"
+0244    TGETS    5   0  30  ; "offsetof"
+0245    MOV      6   3
+0246    KSTR     7  33      ; "c"
+0247    CALL     5   2   3
+0248    ISEQN    5   0      ; 8
+0249    JMP      5 => 0252
+0250    KPRI     5   1
+0251    JMP      6 => 0253
+0252 => KPRI     5   2
+0253 => CALL     4   1   2
+0254    TGETS    4   0  13  ; "typeof"
+0255    KSTR     5  39      ; "struct { char a; struct { short b; struc"~
+0256    CALL     4   2   2
+0257    MOV      3   4
+0258    GGET     4   8      ; "assert"
+0259    TGETS    5   0  30  ; "offsetof"
+0260    MOV      6   3
+0261    KSTR     7  31      ; "a"
+0262    CALL     5   2   3
+0263    ISEQN    5   3      ; 0
+0264    JMP      5 => 0267
+0265    KPRI     5   1
+0266    JMP      6 => 0268
+0267 => KPRI     5   2
+0268 => CALL     4   1   2
+0269    GGET     4   8      ; "assert"
+0270    TGETS    5   0  30  ; "offsetof"
+0271    MOV      6   3
+0272    KSTR     7  32      ; "b"
+0273    CALL     5   2   3
+0274    ISEQN    5   1      ; 4
+0275    JMP      5 => 0278
+0276    KPRI     5   1
+0277    JMP      6 => 0279
+0278 => KPRI     5   2
+0279 => CALL     4   1   2
+0280    GGET     4   8      ; "assert"
+0281    TGETS    5   0  30  ; "offsetof"
+0282    MOV      6   3
+0283    KSTR     7  33      ; "c"
+0284    CALL     5   2   3
+0285    ISEQN    5   0      ; 8
+0286    JMP      5 => 0289
+0287    KPRI     5   1
+0288    JMP      6 => 0290
+0289 => KPRI     5   2
+0290 => CALL     4   1   2
+0291    TGETS    4   0  13  ; "typeof"
+0292    KSTR     5  40      ; "struct { int a; double b; }"
+0293    CALL     4   2   2
+0294    MOV      3   4
+0295    GGET     4   8      ; "assert"
+0296    TGETS    5   0  30  ; "offsetof"
+0297    MOV      6   3
+0298    KSTR     7  31      ; "a"
+0299    CALL     5   2   3
+0300    ISEQN    5   3      ; 0
+0301    JMP      5 => 0304
+0302    KPRI     5   1
+0303    JMP      6 => 0305
+0304 => KPRI     5   2
+0305 => CALL     4   1   2
+0306    GGET     4   8      ; "assert"
+0307    TGETS    5   0  30  ; "offsetof"
+0308    MOV      6   3
+0309    KSTR     7  32      ; "b"
+0310    CALL     5   2   3
+0311    ISEQV    5   2
+0312    JMP      5 => 0315
+0313    KPRI     5   1
+0314    JMP      6 => 0316
+0315 => KPRI     5   2
+0316 => CALL     4   1   2
+0317    GGET     3   4      ; "checkfail"
+0318    TDUP     4  41
+0319    CALL     3   1   2
+0320    GGET     3  26      ; "checktypes"
+0321    TDUP     4  42
+0322    CALL     3   1   2
+0323    GGET     3  26      ; "checktypes"
+0324    TDUP     4  43
+0325    CALL     3   1   2
+0326    TGETS    3   0   6  ; "cdef"
+0327    KSTR     4  44      ; "    struct foo_packorig { char a; int b;"~
+0328    CALL     3   1   2
+0329    GGET     3   8      ; "assert"
+0330    TGETS    4   0   9  ; "sizeof"
+0331    KSTR     5  45      ; "struct foo_packorig"
+0332    CALL     4   2   2
+0333    ISEQN    4   6      ; 12
+0334    JMP      4 => 0337
+0335    KPRI     4   1
+0336    JMP      5 => 0338
+0337 => KPRI     4   2
+0338 => CALL     3   1   2
+0339    GGET     3   8      ; "assert"
+0340    TGETS    4   0   9  ; "sizeof"
+0341    KSTR     5  46      ; "struct foo_pack1"
+0342    CALL     4   2   2
+0343    ISEQN    4   7      ; 7
+0344    JMP      4 => 0347
+0345    KPRI     4   1
+0346    JMP      5 => 0348
+0347 => KPRI     4   2
+0348 => CALL     3   1   2
+0349    GGET     3   8      ; "assert"
+0350    TGETS    4   0   9  ; "sizeof"
+0351    KSTR     5  47      ; "struct foo_pack2"
+0352    CALL     4   2   2
+0353    ISEQN    4   0      ; 8
+0354    JMP      4 => 0357
+0355    KPRI     4   1
+0356    JMP      5 => 0358
+0357 => KPRI     4   2
+0358 => CALL     3   1   2
+0359    GGET     3   8      ; "assert"
+0360    TGETS    4   0   9  ; "sizeof"
+0361    KSTR     5  48      ; "struct foo_pack4"
+0362    CALL     4   2   2
+0363    ISEQN    4   6      ; 12
+0364    JMP      4 => 0367
+0365    KPRI     4   1
+0366    JMP      5 => 0368
+0367 => KPRI     4   2
+0368 => CALL     3   1   2
+0369    GGET     3   8      ; "assert"
+0370    TGETS    4   0   9  ; "sizeof"
+0371    KSTR     5  49      ; "struct foo_pack8"
+0372    CALL     4   2   2
+0373    ISEQN    4   6      ; 12
+0374    JMP      4 => 0377
+0375    KPRI     4   1
+0376    JMP      5 => 0378
+0377 => KPRI     4   2
+0378 => CALL     3   1   2
+0379    GGET     3   8      ; "assert"
+0380    TGETS    4   0   9  ; "sizeof"
+0381    KSTR     5  50      ; "struct foo_packdef"
+0382    CALL     4   2   2
+0383    ISEQN    4   6      ; 12
+0384    JMP      4 => 0387
+0385    KPRI     4   1
+0386    JMP      5 => 0388
+0387 => KPRI     4   2
+0388 => CALL     3   1   2
+0389    GGET     3   8      ; "assert"
+0390    TGETS    4   0   9  ; "sizeof"
+0391    KSTR     5  51      ; "struct foo_packpush"
+0392    CALL     4   2   2
+0393    ISEQN    4   6      ; 12
+0394    JMP      4 => 0397
+0395    KPRI     4   1
+0396    JMP      5 => 0398
+0397 => KPRI     4   2
+0398 => CALL     3   1   2
+0399    GGET     3   8      ; "assert"
+0400    TGETS    4   0   9  ; "sizeof"
+0401    KSTR     5  52      ; "struct foo_packpush1"
+0402    CALL     4   2   2
+0403    ISEQN    4   7      ; 7
+0404    JMP      4 => 0407
+0405    KPRI     4   1
+0406    JMP      5 => 0408
+0407 => KPRI     4   2
+0408 => CALL     3   1   2
+0409    GGET     3   8      ; "assert"
+0410    TGETS    4   0   9  ; "sizeof"
+0411    KSTR     5  53      ; "struct foo_packpop"
+0412    CALL     4   2   2
+0413    ISEQN    4   6      ; 12
+0414    JMP      4 => 0417
+0415    KPRI     4   1
+0416    JMP      5 => 0418
+0417 => KPRI     4   2
+0418 => CALL     3   1   2
+0419    GGET     3   8      ; "assert"
+0420    TGETS    4   0   9  ; "sizeof"
+0421    KSTR     5  54      ; "struct foo_packpush2"
+0422    CALL     4   2   2
+0423    ISEQN    4   0      ; 8
+0424    JMP      4 => 0427
+0425    KPRI     4   1
+0426    JMP      5 => 0428
+0427 => KPRI     4   2
+0428 => CALL     3   1   2
+0429    GGET     3   8      ; "assert"
+0430    TGETS    4   0   9  ; "sizeof"
+0431    KSTR     5  55      ; "struct foo_packpop2"
+0432    CALL     4   2   2
+0433    ISEQN    4   6      ; 12
+0434    JMP      4 => 0437
+0435    KPRI     4   1
+0436    JMP      5 => 0438
+0437 => KPRI     4   2
+0438 => CALL     3   1   2
+0439    TGETS    3   0   6  ; "cdef"
+0440    KSTR     4  56      ; "    #pragma pack(2)\n    struct foo_pack"~
+0441    CALL     3   1   2
+0442    GGET     3   8      ; "assert"
+0443    TGETS    4   0   9  ; "sizeof"
+0444    KSTR     5  57      ; "struct foo_packalign8"
+0445    CALL     4   2   2
+0446    ISEQN    4   4      ; 6
+0447    JMP      4 => 0450
+0448    KPRI     4   1
+0449    JMP      5 => 0451
+0450 => KPRI     4   2
+0451 => CALL     3   1   2
+0452    GGET     3   8      ; "assert"
+0453    TGETS    4   0   9  ; "sizeof"
+0454    KSTR     5  58      ; "struct foo_packintalign8"
+0455    CALL     4   2   2
+0456    ISEQN    4   4      ; 6
+0457    JMP      4 => 0460
+0458    KPRI     4   1
+0459    JMP      5 => 0461
+0460 => KPRI     4   2
+0461 => CALL     3   1   2
+0462    GGET     3   8      ; "assert"
+0463    TGETS    4   0   9  ; "sizeof"
+0464    KSTR     5  59      ; "struct foo_packintalign1"
+0465    CALL     4   2   2
+0466    ISEQN    4   8      ; 5
+0467    JMP      4 => 0470
+0468    KPRI     4   1
+0469    JMP      5 => 0471
+0470 => KPRI     4   2
+0471 => CALL     3   1   2
+0472    RET0     0   1
+

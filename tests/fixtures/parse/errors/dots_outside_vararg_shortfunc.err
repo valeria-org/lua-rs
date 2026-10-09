@@ -1,0 +1,1 @@
+[string "f = x -> ..."]:1: cannot use '...' outside a vararg function near '...'

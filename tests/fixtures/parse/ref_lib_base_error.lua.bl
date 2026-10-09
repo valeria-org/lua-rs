@@ -1,0 +1,171 @@
+-- BYTECODE -- ref_lib_base_error.lua:21-24
+0001    KPRI     0   0
+0002    GGET     1   0      ; "debug"
+0003    TGETS    1   1   1  ; "getinfo"
+0004    KSHORT   3   1
+0005    KSTR     4   2      ; "l"
+0006    CALL     1   2   3
+0007    TGETS    1   1   3  ; "currentline"
+0008    USETV    0   1      ; line
+0009    GGET     1   4      ; "error"
+0010    KSTR     3   5      ; "emsg"
+0011    CALL     1   1   2
+0012    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_error.lua:24-27
+0001    GGET     1   0      ; "assert"
+0002    GGET     3   1      ; "debug"
+0003    TGETS    3   3   2  ; "getlocal"
+0004    KSHORT   5   3
+0005    KSHORT   6   1
+0006    CALL     3   2   3
+0007    ISEQS    3   3      ; "x"
+0008    JMP      3 => 0011
+0009    KPRI     3   1
+0010    JMP      4 => 0012
+0011 => KPRI     3   2
+0012 => CALL     1   1   2
+0013    MOV      1   0
+0014    KSTR     2   4      ; "xp"
+0015    CAT      1   1   2
+0016    RET1     1   2
+
+-- BYTECODE -- ref_lib_base_error.lua:35-35
+0001    GGET     0   0      ; "error"
+0002    KSTR     2   1      ; "emsg"
+0003    KSHORT   3   2
+0004    CALL     0   1   3
+0005    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_error.lua:34-37
+0001    FNEW     0   0      ; ref_lib_base_error.lua:35
+0002    GGET     1   1      ; "debug"
+0003    TGETS    1   1   2  ; "getinfo"
+0004    KSHORT   3   1
+0005    KSTR     4   3      ; "l"
+0006    CALL     1   2   3
+0007    TGETS    1   1   4  ; "currentline"
+0008    USETV    0   1      ; line
+0009    MOV      1   0
+0010    CALL     1   1   1
+0011    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_error.lua:37-40
+0001    GGET     1   0      ; "assert"
+0002    GGET     3   1      ; "debug"
+0003    TGETS    3   3   2  ; "getlocal"
+0004    KSHORT   5   4
+0005    KSHORT   6   1
+0006    CALL     3   2   3
+0007    ISEQS    3   3      ; "f"
+0008    JMP      3 => 0011
+0009    KPRI     3   1
+0010    JMP      4 => 0012
+0011 => KPRI     3   2
+0012 => CALL     1   1   2
+0013    MOV      1   0
+0014    KSTR     2   4      ; "xp2"
+0015    CAT      1   1   2
+0016    RET1     1   2
+
+-- BYTECODE -- ref_lib_base_error.lua:0-44
+0001    GGET     0   0      ; "pcall"
+0002    GGET     2   1      ; "error"
+0003    CALL     0   3   2
+0004    GGET     2   2      ; "assert"
+0005    ISEQP    0   1
+0006    JMP      4 => 0009
+0007    KPRI     4   1
+0008    JMP      5 => 0010
+0009 => KPRI     4   2
+0010 => CALL     2   1   2
+0011    GGET     2   2      ; "assert"
+0012    ISEQP    1   0
+0013    JMP      4 => 0016
+0014    KPRI     4   1
+0015    JMP      5 => 0017
+0016 => KPRI     4   2
+0017 => CALL     2   1   2
+0018    GGET     0   0      ; "pcall"
+0019    GGET     2   1      ; "error"
+0020    KSTR     3   3      ; "emsg"
+0021    KSHORT   4   0
+0022    CALL     0   3   4
+0023    GGET     2   2      ; "assert"
+0024    ISEQP    0   1
+0025    JMP      4 => 0028
+0026    KPRI     4   1
+0027    JMP      5 => 0029
+0028 => KPRI     4   2
+0029 => CALL     2   1   2
+0030    GGET     2   2      ; "assert"
+0031    ISEQS    1   3      ; "emsg"
+0032    JMP      4 => 0035
+0033    KPRI     4   1
+0034    JMP      5 => 0036
+0035 => KPRI     4   2
+0036 => CALL     2   1   2
+0037    GGET     0   0      ; "pcall"
+0038    GGET     2   1      ; "error"
+0039    KSTR     3   3      ; "emsg"
+0040    CALL     0   3   3
+0041    GGET     2   2      ; "assert"
+0042    ISEQP    0   1
+0043    JMP      4 => 0046
+0044    KPRI     4   1
+0045    JMP      5 => 0047
+0046 => KPRI     4   2
+0047 => CALL     2   1   2
+0048    GGET     2   2      ; "assert"
+0049    ISEQS    1   3      ; "emsg"
+0050    JMP      4 => 0053
+0051    KPRI     4   1
+0052    JMP      5 => 0054
+0053 => KPRI     4   2
+0054 => CALL     2   1   2
+0055    KPRI     0   0
+0056    GGET     1   4      ; "xpcall"
+0057    FNEW     3   5      ; ref_lib_base_error.lua:21
+0058    FNEW     4   6      ; ref_lib_base_error.lua:24
+0059    CALL     1   3   3
+0060    GGET     3   2      ; "assert"
+0061    ISEQP    1   1
+0062    JMP      5 => 0065
+0063    KPRI     5   1
+0064    JMP      6 => 0066
+0065 => KPRI     5   2
+0066 => CALL     3   1   2
+0067    GGET     3   2      ; "assert"
+0068    MOV      7   2
+0069    TGETS    5   2   7  ; "find"
+0070    KSTR     8   8      ; "^.-:"
+0071    MOV      9   0
+0072    KSTR    10   9      ; ": emsgxp$"
+0073    CAT      8   8  10
+0074    CALL     5   0   3
+0075    CALLM    3   1   0
+0076    UCLO     0 => 0077
+0077 => KPRI     0   0
+0078    GGET     1   4      ; "xpcall"
+0079    FNEW     3  10      ; ref_lib_base_error.lua:34
+0080    FNEW     4  11      ; ref_lib_base_error.lua:37
+0081    CALL     1   3   3
+0082    GGET     3   2      ; "assert"
+0083    ISEQP    1   1
+0084    JMP      5 => 0087
+0085    KPRI     5   1
+0086    JMP      6 => 0088
+0087 => KPRI     5   2
+0088 => CALL     3   1   2
+0089    GGET     3   2      ; "assert"
+0090    MOV      7   2
+0091    TGETS    5   2   7  ; "find"
+0092    KSTR     8   8      ; "^.-:"
+0093    MOV      9   0
+0094    KSTR    10  12      ; ": emsgxp2$"
+0095    CAT      8   8  10
+0096    CALL     5   0   3
+0097    CALLM    3   1   0
+0098    UCLO     0 => 0099
+0099 => RET0     0   1
+

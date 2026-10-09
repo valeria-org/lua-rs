@@ -1,0 +1,28 @@
+-- BYTECODE -- line_info_multi.lua:23-28
+0001    RET1     0   2
+
+-- BYTECODE -- line_info_multi.lua:0-39
+0001    KSHORT   0   3
+0002    GGET     1   0      ; "f"
+0003    MOV      3   0
+0004    GGET     4   1      ; "b"
+0005    CALL     1   2   3
+0006    TDUP     2   2
+0007    MOV      3   0
+0008    MOV      4   1
+0009    MOV      5   2
+0010    CAT      3   3   5
+0011    GGET     4   3      ; "t"
+0012    TGETS    4   4   4  ; "x"
+0013    KSHORT   5   1
+0014    TSETS    5   4   5  ; "y"
+0015    FNEW     4   6      ; line_info_multi.lua:23
+0016    ISF          0
+0017    JMP      5 => 0019
+0018    KSHORT   1   1
+0019 => GGET     5   7      ; "o"
+0020    MOV      7   5
+0021    TGETS    5   5   8  ; "m"
+0022    CALL     5   1   2
+0023    RET0     0   1
+

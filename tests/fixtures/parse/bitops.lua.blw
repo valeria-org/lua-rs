@@ -1,0 +1,90 @@
+-- BYTECODE -- bitops.lua:0-44
+0001    VARG     0   3   0
+0002    KPRI     2   0
+0003    BAND     2   0   1
+0004    BOR      2   0   1
+0005    BXOR     2   0   1
+0006    BSHL     2   0   1
+0007    BSHR     2   0   1
+0008    BSAR     2   0   1
+0009    BNOT     2   0
+0010    KSHORT   3   1
+0011    BAND     2   0   3
+0012    KSHORT   3   1
+0013    BAND     2   3   0
+0014    KSHORT   3 255
+0015    BOR      2   0   3
+0016    KSHORT   3   1
+0017    BXOR     2   0   3
+0018    KSHORT   3   2
+0019    BSHL     2   0   3
+0020    KSHORT   3   2
+0021    BSHL     2   3   0
+0022    KSHORT   3   3
+0023    BSHR     2   0   3
+0024    KSHORT   3   4
+0025    BSAR     2   0   3
+0026    KSHORT   2  15
+0027    KSHORT   2 255
+0028    KSHORT   2 240
+0029    KSHORT   2  16
+0030    KSHORT   2  16
+0031    KSHORT   2 -16
+0032    KNUM     2   0      ; 268435440
+0033    KSHORT   2  -1
+0034    KSHORT   2 -256
+0035    KSHORT   2   5
+0036    KSHORT   2   0
+0037    KNUM     2   1      ; -2147483648
+0038    KSHORT   2   1
+0039    KSHORT   2   2
+0040    KSHORT   2   1
+0041    KSHORT   2   0
+0042    KSHORT   2   2
+0043    KSHORT   2   0
+0044    KSHORT   2   1
+0045    KSHORT   3   0
+0046    DIVVN    3   3   2  ; 0
+0047    KSHORT   4   0
+0048    BOR      2   3   4
+0049    KSHORT   2  12
+0050    KSHORT   2   1
+0051    KSHORT   2  32
+0052    BAND     3   0   1
+0053    BXOR     4   0   1
+0054    BOR      2   3   4
+0055    KSHORT   3   1
+0056    KSTR     4   0      ; "x"
+0057    CAT      3   3   4
+0058    BSHL     2   0   3
+0059    KSHORT   3   1
+0060    BAND     3   1   3
+0061    ISEQV    0   3
+0062    JMP      3 => 0065
+0063    KPRI     2   1
+0064    JMP      3 => 0066
+0065 => KPRI     2   2
+0066 => UNM      3   0
+0067    BAND     2   3   1
+0068    BNOT     3   0
+0069    ADDVN    2   3   3  ; 1
+0070    ADDVN    3   0   3  ; 1
+0071    BNOT     2   3
+0072    KCDATA   3   1
+0073    KSHORT   4  40
+0074    BSHL     2   3   4
+0075    KCDATA   3   2
+0076    KSHORT   4  15
+0077    BAND     2   3   4
+0078    KCDATA   3   3
+0079    BNOT     2   3
+0080    KCDATA   3   4
+0081    KSHORT   4   2
+0082    BOR      2   3   4
+0083    KSHORT   2   0
+0084    KSHORT   2  15
+0085    KSHORT   2  -1
+0086    KNUM     2   1      ; -2147483648
+0087    KSHORT   2   5
+0088    RET0     0   1
+

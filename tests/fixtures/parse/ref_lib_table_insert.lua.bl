@@ -1,0 +1,71 @@
+-- BYTECODE -- ref_lib_table_insert.lua:0-18
+0001    GGET     0   0      ; "table"
+0002    TGETS    0   0   1  ; "insert"
+0003    GGET     1   2      ; "assert"
+0004    TNEW     2   0
+0005    KSHORT   3   1
+0006    KSHORT   4 100
+0007    KSHORT   5   1
+0008    FORI     3 => 0011
+0009 => TSETV    6   2   6
+0010    FORL     3 => 0009
+0011 => KSHORT   3   1
+0012    KSHORT   4 100
+0013    KSHORT   5   1
+0014    FORI     3 => 0020
+0015 => MOV      7   0
+0016    MOV      9   2
+0017    MOV     10   6
+0018    CALL     7   1   3
+0019    FORL     3 => 0015
+0020 => MOV      3   1
+0021    LEN      5   2
+0022    ISNEN    5   0      ; 200
+0023    JMP      5 => 0030
+0024    TGETB    5   2 100
+0025    ISNEN    5   1      ; 100
+0026    JMP      5 => 0030
+0027    TGETB    5   2 200
+0028    ISEQN    5   1      ; 100
+0029    JMP      5 => 0032
+0030 => KPRI     5   1
+0031    JMP      6 => 0033
+0032 => KPRI     5   2
+0033 => CALL     3   1   2
+0034    TNEW     2   0
+0035    KSHORT   3   1
+0036    KSHORT   4 200
+0037    KSHORT   5   1
+0038    FORI     3 => 0041
+0039 => TSETV    6   2   6
+0040    FORL     3 => 0039
+0041 => KSHORT   3 101
+0042    KSHORT   4 200
+0043    KSHORT   5   1
+0044    FORI     3 => 0051
+0045 => MOV      7   0
+0046    MOV      9   2
+0047    MOV     10   6
+0048    MOV     11   6
+0049    CALL     7   1   4
+0050    FORL     3 => 0045
+0051 => MOV      3   1
+0052    LEN      5   2
+0053    ISNEN    5   2      ; 300
+0054    JMP      5 => 0065
+0055    TGETB    5   2 101
+0056    ISNEN    5   3      ; 101
+0057    JMP      5 => 0065
+0058    TGETB    5   2 200
+0059    ISNEN    5   0      ; 200
+0060    JMP      5 => 0065
+0061    KSHORT   5 300
+0062    TGETV    5   2   5
+0063    ISEQN    5   0      ; 200
+0064    JMP      5 => 0067
+0065 => KPRI     5   1
+0066    JMP      6 => 0068
+0067 => KPRI     5   2
+0068 => CALL     3   1   2
+0069    RET0     0   1
+

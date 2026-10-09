@@ -1,0 +1,334 @@
+-- BYTECODE -- ref_lib_base_pairs.lua:29-32
+0001    ADDVN    1   1   0  ; 1
+0002    TGETV    2   0   1
+0003    ISF          2
+0004    JMP      3 => 0009
+0005    MOV      2   1
+0006    TGETV    3   0   1
+0007    ADDVN    3   3   1  ; 2
+0008    RET      2   3
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lib_base_pairs.lua:33-35
+0001    UGET     1   0      ; iter
+0002    MOV      2   0
+0003    KSHORT   3   0
+0004    RET      1   4
+
+-- BYTECODE -- ref_lib_base_pairs.lua:58-64
+0001    KSHORT   1   0
+0002    GGET     2   0      ; "pairs"
+0003    MOV      4   0
+0004    CALL     2   4   2
+0005    ISNEXT   5 => 0007
+0006 => ADDVN    1   1   0  ; 1
+0007 => ITERN    5   3   3
+0008    ITERL    5 => 0006
+0009    RET1     1   2
+
+-- BYTECODE -- ref_lib_base_pairs.lua:0-74
+0001    TNEW     0   0
+0002    KSHORT   1   1
+0003    KSHORT   2  10
+0004    KSHORT   3   1
+0005    FORI     1 => 0009
+0006 => ADDVN    5   4   0  ; 100
+0007    TSETV    5   0   4
+0008    FORL     1 => 0006
+0009 => KSHORT   1   0
+0010    KSHORT   2   0
+0011    KSHORT   3   1
+0012    KSHORT   4 100
+0013    KSHORT   5   1
+0014    FORI     3 => 0024
+0015 => GGET     7   0      ; "ipairs"
+0016    MOV      9   0
+0017    CALL     7   4   2
+0018    JMP     10 => 0021
+0019 => ADDVV    1   1  10
+0020    ADDVV    2   2  11
+0021 => ITERC   10   3   3
+0022    ITERL   10 => 0019
+0023    FORL     3 => 0015
+0024 => GGET     3   1      ; "assert"
+0025    ISEQN    1   1      ; 5500
+0026    JMP      5 => 0029
+0027    KPRI     5   1
+0028    JMP      6 => 0030
+0029 => KPRI     5   2
+0030 => CALL     3   1   2
+0031    GGET     3   1      ; "assert"
+0032    ISEQN    2   2      ; 105500
+0033    JMP      5 => 0036
+0034    KPRI     5   1
+0035    JMP      6 => 0037
+0036 => KPRI     5   2
+0037 => CALL     3   1   2
+0038    KSHORT   3   0
+0039    KSHORT   2   0
+0040    MOV      1   3
+0041    KSHORT   3   1
+0042    KSHORT   4 100
+0043    KSHORT   5   1
+0044    FORI     3 => 0054
+0045 => GGET     7   2      ; "pairs"
+0046    MOV      9   0
+0047    CALL     7   4   2
+0048    ISNEXT  10 => 0051
+0049 => ADDVV    1   1  10
+0050    ADDVV    2   2  11
+0051 => ITERN   10   3   3
+0052    ITERL   10 => 0049
+0053    FORL     3 => 0045
+0054 => GGET     3   1      ; "assert"
+0055    ISEQN    1   1      ; 5500
+0056    JMP      5 => 0059
+0057    KPRI     5   1
+0058    JMP      6 => 0060
+0059 => KPRI     5   2
+0060 => CALL     3   1   2
+0061    GGET     3   1      ; "assert"
+0062    ISEQN    2   2      ; 105500
+0063    JMP      5 => 0066
+0064    KPRI     5   1
+0065    JMP      6 => 0067
+0066 => KPRI     5   2
+0067 => CALL     3   1   2
+0068    GGET     0   3      ; "setmetatable"
+0069    TNEW     2   0
+0070    TNEW     3   0
+0071    CALL     0   2   3
+0072    KSHORT   1   1
+0073    KSHORT   2  10
+0074    KSHORT   3   1
+0075    FORI     1 => 0079
+0076 => ADDVN    5   4   0  ; 100
+0077    TSETV    5   0   4
+0078    FORL     1 => 0076
+0079 => KSHORT   1   0
+0080    KSHORT   2   0
+0081    KSHORT   3   1
+0082    KSHORT   4 100
+0083    KSHORT   5   1
+0084    FORI     3 => 0094
+0085 => GGET     7   0      ; "ipairs"
+0086    MOV      9   0
+0087    CALL     7   4   2
+0088    JMP     10 => 0091
+0089 => ADDVV    1   1  10
+0090    ADDVV    2   2  11
+0091 => ITERC   10   3   3
+0092    ITERL   10 => 0089
+0093    FORL     3 => 0085
+0094 => GGET     3   1      ; "assert"
+0095    ISEQN    1   1      ; 5500
+0096    JMP      5 => 0099
+0097    KPRI     5   1
+0098    JMP      6 => 0100
+0099 => KPRI     5   2
+0100 => CALL     3   1   2
+0101    GGET     3   1      ; "assert"
+0102    ISEQN    2   2      ; 105500
+0103    JMP      5 => 0106
+0104    KPRI     5   1
+0105    JMP      6 => 0107
+0106 => KPRI     5   2
+0107 => CALL     3   1   2
+0108    KSHORT   3   0
+0109    KSHORT   2   0
+0110    MOV      1   3
+0111    KSHORT   3   1
+0112    KSHORT   4 100
+0113    KSHORT   5   1
+0114    FORI     3 => 0124
+0115 => GGET     7   2      ; "pairs"
+0116    MOV      9   0
+0117    CALL     7   4   2
+0118    ISNEXT  10 => 0121
+0119 => ADDVV    1   1  10
+0120    ADDVV    2   2  11
+0121 => ITERN   10   3   3
+0122    ITERL   10 => 0119
+0123    FORL     3 => 0115
+0124 => GGET     3   1      ; "assert"
+0125    ISEQN    1   1      ; 5500
+0126    JMP      5 => 0129
+0127    KPRI     5   1
+0128    JMP      6 => 0130
+0129 => KPRI     5   2
+0130 => CALL     3   1   2
+0131    GGET     3   1      ; "assert"
+0132    ISEQN    2   2      ; 105500
+0133    JMP      5 => 0136
+0134    KPRI     5   1
+0135    JMP      6 => 0137
+0136 => KPRI     5   2
+0137 => CALL     3   1   2
+0138    FNEW     0   4      ; ref_lib_base_pairs.lua:29
+0139    FNEW     1   5      ; ref_lib_base_pairs.lua:33
+0140    GGET     2   3      ; "setmetatable"
+0141    TNEW     4   0
+0142    TDUP     5   6
+0143    TSETS    1   5   7  ; "__pairs"
+0144    TSETS    1   5   8  ; "__ipairs"
+0145    CALL     2   2   3
+0146    KSHORT   3   1
+0147    KSHORT   4  10
+0148    KSHORT   5   1
+0149    FORI     3 => 0153
+0150 => ADDVN    7   6   0  ; 100
+0151    TSETV    7   2   6
+0152    FORL     3 => 0150
+0153 => KSHORT   3   0
+0154    KSHORT   4   0
+0155    KSHORT   5   1
+0156    KSHORT   6 100
+0157    KSHORT   7   1
+0158    FORI     5 => 0168
+0159 => GGET     9   0      ; "ipairs"
+0160    MOV     11   2
+0161    CALL     9   4   2
+0162    JMP     12 => 0165
+0163 => ADDVV    3   3  12
+0164    ADDVV    4   4  13
+0165 => ITERC   12   3   3
+0166    ITERL   12 => 0163
+0167    FORL     5 => 0159
+0168 => GGET     5   1      ; "assert"
+0169    ISEQN    3   1      ; 5500
+0170    JMP      7 => 0173
+0171    KPRI     7   1
+0172    JMP      8 => 0174
+0173 => KPRI     7   2
+0174 => CALL     5   1   2
+0175    GGET     5   1      ; "assert"
+0176    ISEQN    4   3      ; 107500
+0177    JMP      7 => 0180
+0178    KPRI     7   1
+0179    JMP      8 => 0181
+0180 => KPRI     7   2
+0181 => CALL     5   1   2
+0182    KSHORT   5   0
+0183    KSHORT   4   0
+0184    MOV      3   5
+0185    KSHORT   5   1
+0186    KSHORT   6 100
+0187    KSHORT   7   1
+0188    FORI     5 => 0198
+0189 => GGET     9   2      ; "pairs"
+0190    MOV     11   2
+0191    CALL     9   4   2
+0192    ISNEXT  12 => 0195
+0193 => ADDVV    3   3  12
+0194    ADDVV    4   4  13
+0195 => ITERN   12   3   3
+0196    ITERL   12 => 0193
+0197    FORL     5 => 0189
+0198 => GGET     5   1      ; "assert"
+0199    ISEQN    3   1      ; 5500
+0200    JMP      7 => 0203
+0201    KPRI     7   1
+0202    JMP      8 => 0204
+0203 => KPRI     7   2
+0204 => CALL     5   1   2
+0205    GGET     5   1      ; "assert"
+0206    ISEQN    4   3      ; 107500
+0207    JMP      7 => 0210
+0208    KPRI     7   1
+0209    JMP      8 => 0211
+0210 => KPRI     7   2
+0211 => CALL     5   1   2
+0212    UCLO     0 => 0213
+0213 => KSHORT   0   0
+0214    GGET     1   2      ; "pairs"
+0215    GGET     3   9      ; "_G"
+0216    CALL     1   4   2
+0217    ISNEXT   4 => 0228
+0218 => GGET     6   1      ; "assert"
+0219    GGET     8   9      ; "_G"
+0220    TGETV    8   8   4
+0221    ISEQV    8   5
+0222    JMP      8 => 0225
+0223    KPRI     8   1
+0224    JMP      9 => 0226
+0225 => KPRI     8   2
+0226 => CALL     6   1   2
+0227    ADDVN    0   0   4  ; 1
+0228 => ITERN    4   3   3
+0229    ITERL    4 => 0218
+0230    GGET     1   1      ; "assert"
+0231    KSHORT   3  35
+0232    ISLE     3   0
+0233    JMP      3 => 0236
+0234    KPRI     3   1
+0235    JMP      4 => 0237
+0236 => KPRI     3   2
+0237 => CALL     1   1   2
+0238    FNEW     0  10      ; ref_lib_base_pairs.lua:58
+0239    GGET     1   1      ; "assert"
+0240    MOV      3   0
+0241    TDUP     5  11
+0242    CALL     3   2   2
+0243    ISEQN    3   5      ; 5
+0244    JMP      3 => 0247
+0245    KPRI     3   1
+0246    JMP      4 => 0248
+0247 => KPRI     3   2
+0248 => CALL     1   1   2
+0249    GGET     1   1      ; "assert"
+0250    MOV      3   0
+0251    TDUP     5  12
+0252    CALL     3   2   2
+0253    ISEQN    3   6      ; 6
+0254    JMP      3 => 0257
+0255    KPRI     3   1
+0256    JMP      4 => 0258
+0257 => KPRI     3   2
+0258 => CALL     1   1   2
+0259    GGET     1   1      ; "assert"
+0260    MOV      3   0
+0261    TDUP     5  13
+0262    CALL     3   2   2
+0263    ISEQN    3   7      ; 3
+0264    JMP      3 => 0267
+0265    KPRI     3   1
+0266    JMP      4 => 0268
+0267 => KPRI     3   2
+0268 => CALL     1   1   2
+0269    GGET     1   1      ; "assert"
+0270    MOV      3   0
+0271    TDUP     5  14
+0272    CALL     3   2   2
+0273    ISEQN    3   8      ; 4
+0274    JMP      3 => 0277
+0275    KPRI     3   1
+0276    JMP      4 => 0278
+0277 => KPRI     3   2
+0278 => CALL     1   1   2
+0279    GGET     1   1      ; "assert"
+0280    MOV      3   0
+0281    TDUP     5  15
+0282    CALL     3   2   2
+0283    ISEQN    3   9      ; 8
+0284    JMP      3 => 0287
+0285    KPRI     3   1
+0286    JMP      4 => 0288
+0287 => KPRI     3   2
+0288 => CALL     1   1   2
+0289    TDUP     1  16
+0290    KPRI     2   0
+0291    TSETS    2   1  17  ; "bar"
+0292    KPRI     2   0
+0293    TSETS    2   1  18  ; "boo"
+0294    GGET     2   1      ; "assert"
+0295    MOV      4   0
+0296    MOV      6   1
+0297    CALL     4   2   2
+0298    ISEQN    4  10      ; 2
+0299    JMP      4 => 0302
+0300    KPRI     4   1
+0301    JMP      5 => 0303
+0302 => KPRI     4   2
+0303 => CALL     2   1   2
+0304    RET0     0   1
+

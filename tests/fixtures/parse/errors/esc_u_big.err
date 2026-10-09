@@ -1,0 +1,1 @@
+[string "x = "\u{110000}""]:1: invalid escape sequence near '"'

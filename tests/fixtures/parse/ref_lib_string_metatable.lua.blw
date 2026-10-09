@@ -1,0 +1,16 @@
+-- BYTECODE -- ref_lib_string_metatable.lua:0-4
+0001    GGET     0   0      ; "assert"
+0002    GGET     1   1      ; "debug"
+0003    TGETS    1   1   2  ; "getmetatable"
+0004    KSTR     2   3      ; ""
+0005    CALL     1   2   2
+0006    TGETS    1   1   4  ; "__index"
+0007    GGET     2   5      ; "string"
+0008    ISEQV    1   2
+0009    JMP      1 => 0012
+0010    KPRI     1   1
+0011    JMP      2 => 0013
+0012 => KPRI     1   2
+0013 => CALL     0   1   2
+0014    RET0     0   1
+

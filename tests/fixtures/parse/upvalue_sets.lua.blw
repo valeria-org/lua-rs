@@ -1,0 +1,43 @@
+-- BYTECODE -- upvalue_sets.lua:16-16
+0001    UGET     0   0      ; u
+0002    RET1     0   2
+
+-- BYTECODE -- upvalue_sets.lua:4-17
+0001    USETV    0   0      ; u
+0002    USETN    0   0      ; u ; 1
+0003    USETS    0   0      ; u ; "str"
+0004    USETP    0   0      ; u
+0005    USETP    0   2      ; u
+0006    USETP    0   1      ; u
+0007    USETN    0   1      ; u ; 1.5
+0008    TNEW     1   0
+0009    USETV    0   1      ; u
+0010    UGET     1   0      ; u
+0011    USETV    0   1      ; u
+0012    UGET     1   1      ; s
+0013    KSTR     2   1      ; "y"
+0014    CAT      1   1   2
+0015    USETV    1   1      ; s
+0016    UGET     1   1      ; s
+0017    UGET     2   0      ; u
+0018    USETV    1   2      ; s
+0019    USETV    0   1      ; u
+0020    FNEW     1   2      ; upvalue_sets.lua:16
+0021    USETV    0   1      ; u
+0022    RET0     0   1
+
+-- BYTECODE -- upvalue_sets.lua:18-22
+0001    UGET     0   0      ; u
+0002    UGET     0   1      ; s
+0003    RET1     0   2
+
+-- BYTECODE -- upvalue_sets.lua:0-24
+0001    KSHORT   0   1
+0002    KSTR     1   0      ; "x"
+0003    FNEW     2   1      ; upvalue_sets.lua:4
+0004    FNEW     3   2      ; upvalue_sets.lua:18
+0005    MOV      4   2
+0006    MOV      5   3
+0007    UCLO     0 => 0008
+0008 => RET      4   3
+

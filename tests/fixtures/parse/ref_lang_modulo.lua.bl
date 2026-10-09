@@ -1,0 +1,109 @@
+-- BYTECODE -- ref_lang_modulo.lua:0-47
+0001    GGET     0   0      ; "assert"
+0002    GGET     1   1      ; "math"
+0003    TGETS    1   1   2  ; "floor"
+0004    KSHORT   2  -5
+0005    KSHORT   3   5
+0006    KSHORT   4   1
+0007    FORI     2 => 0029
+0008 => KSHORT   6  -5
+0009    KSHORT   7   5
+0010    KSHORT   8   1
+0011    FORI     6 => 0028
+0012 => ISEQN    9   0      ; 0
+0013    JMP     10 => 0027
+0014    MOV     10   0
+0015    MODVV   12   5   9
+0016    MOV     13   1
+0017    DIVVV   15   5   9
+0018    CALL    13   2   2
+0019    MULVV   13  13   9
+0020    SUBVV   13   5  13
+0021    ISEQV   12  13
+0022    JMP     12 => 0025
+0023    KPRI    12   1
+0024    JMP     13 => 0026
+0025 => KPRI    12   2
+0026 => CALL    10   1   2
+0027 => FORL     6 => 0012
+0028 => FORL     2 => 0008
+0029 => KSHORT   2  -5
+0030    KSHORT   3   5
+0031    KNUM     4   1      ; 0.25
+0032    FORI     2 => 0054
+0033 => KSHORT   6  -5
+0034    KSHORT   7   5
+0035    KNUM     8   1      ; 0.25
+0036    FORI     6 => 0053
+0037 => ISEQN    9   0      ; 0
+0038    JMP     10 => 0052
+0039    MOV     10   0
+0040    MODVV   12   5   9
+0041    MOV     13   1
+0042    DIVVV   15   5   9
+0043    CALL    13   2   2
+0044    MULVV   13  13   9
+0045    SUBVV   13   5  13
+0046    ISEQV   12  13
+0047    JMP     12 => 0050
+0048    KPRI    12   1
+0049    JMP     13 => 0051
+0050 => KPRI    12   2
+0051 => CALL    10   1   2
+0052 => FORL     6 => 0037
+0053 => FORL     2 => 0033
+0054 => KSHORT   2   0
+0055    KSHORT   3 -100
+0056    KSHORT   4 123
+0057    KSHORT   5   1
+0058    FORI     3 => 0062
+0059 => MODVN    7   6   2  ; 17
+0060    ADDVV    2   2   7
+0061    FORL     3 => 0059
+0062 => MOV      3   0
+0063    ISEQN    2   3      ; 1777
+0064    JMP      5 => 0067
+0065    KPRI     5   1
+0066    JMP      6 => 0068
+0067 => KPRI     5   2
+0068 => CALL     3   1   2
+0069    KSHORT   2   0
+0070    KSHORT   3 -100
+0071    KSHORT   4 123
+0072    KSHORT   5   1
+0073    FORI     3 => 0079
+0074 => ISEQN    6   0      ; 0
+0075    JMP      7 => 0078
+0076    MODNV    7   6   4  ; 85
+0077    ADDVV    2   2   7
+0078 => FORL     3 => 0074
+0079 => MOV      3   0
+0080    ISEQN    2   5      ; 2059
+0081    JMP      5 => 0084
+0082    KPRI     5   1
+0083    JMP      6 => 0085
+0084 => KPRI     5   2
+0085 => CALL     3   1   2
+0086    KSHORT   2   1
+0087    MODVN    2   2   0  ; 0
+0088    MOV      3   0
+0089    ISNEV    2   2
+0090    JMP      5 => 0093
+0091    KPRI     5   1
+0092    JMP      6 => 0094
+0093 => KPRI     5   2
+0094 => CALL     3   1   2
+0095    MOV      3   1
+0096    KSHORT   5   0
+0097    DIVVN    5   5   0  ; 0
+0098    CALL     3   2   2
+0099    MOV      2   3
+0100    MOV      3   0
+0101    ISNEV    2   2
+0102    JMP      5 => 0105
+0103    KPRI     5   1
+0104    JMP      6 => 0106
+0105 => KPRI     5   2
+0106 => CALL     3   1   2
+0107    RET0     0   1
+

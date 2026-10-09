@@ -1,0 +1,89 @@
+-- BYTECODE -- upvalue_loops.lua:4-4
+0001    UGET     0   0      ; i
+0002    RET1     0   2
+
+-- BYTECODE -- upvalue_loops.lua:7-7
+0001    UGET     0   0      ; k
+0002    UGET     1   1      ; v
+0003    RET      0   3
+
+-- BYTECODE -- upvalue_loops.lua:12-12
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- upvalue_loops.lua:17-17
+0001    UGET     0   0      ; y
+0002    RET1     0   2
+
+-- BYTECODE -- upvalue_loops.lua:22-22
+0001    UGET     0   0      ; z
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; z
+0004    UGET     0   0      ; z
+0005    RET1     0   2
+
+-- BYTECODE -- upvalue_loops.lua:27-27
+0001    UGET     0   0      ; a
+0002    RET1     0   2
+
+-- BYTECODE -- upvalue_loops.lua:0-29
+0001    TNEW     0   0
+0002    KSHORT   1   1
+0003    KSHORT   2  10
+0004    KSHORT   3   1
+0005    FORI     1 => 0010
+0006 => FNEW     5   0      ; upvalue_loops.lua:4
+0007    TSETV    5   0   4
+0008    UCLO     4 => 0009
+0009 => FORL     1 => 0006
+0010 => GGET     1   1      ; "pairs"
+0011    TDUP     3   2
+0012    CALL     1   4   2
+0013    ISNEXT   4 => 0017
+0014 => FNEW     6   3      ; upvalue_loops.lua:7
+0015    TSETV    6   0   4
+0016    UCLO     4 => 0017
+0017 => ITERN    4   3   3
+0018    ITERL    4 => 0014
+0019    KSHORT   1   0
+0020 => KSHORT   2  10
+0021    ISGE     1   2
+0022    JMP      2 => 0031
+0023    LOOP     2 => 0031
+0024    MOV      2   1
+0025    LEN      3   0
+0026    ADDVN    3   3   0  ; 1
+0027    FNEW     4   4      ; upvalue_loops.lua:12
+0028    TSETV    4   0   3
+0029    ADDVN    1   1   0  ; 1
+0030    UCLO     2 => 0020
+0031 => LOOP     2 => 0043
+0032    MOV      2   1
+0033    LEN      3   0
+0034    ADDVN    3   3   0  ; 1
+0035    FNEW     4   5      ; upvalue_loops.lua:17
+0036    TSETV    4   0   3
+0037    SUBVN    1   1   0  ; 1
+0038    KSHORT   3   0
+0039    ISGE     2   3
+0040    JMP      3 => 0042
+0041    UCLO     2 => 0043
+0042 => UCLO     2 => 0031
+0043 => KSHORT   2   1
+0044    FNEW     3   7      ; upvalue_loops.lua:22
+0045    TSETS    3   0   6  ; "z"
+0046    UCLO     2 => 0047
+0047 => KSHORT   2   1
+0048    KSHORT   3   3
+0049    KSHORT   4   1
+0050    FORI     2 => 0059
+0051 => MOV      6   5
+0052    ISNEN    6   1      ; 2
+0053    JMP      7 => 0055
+0054    UCLO     2 => 0059
+0055 => FNEW     7   8      ; upvalue_loops.lua:27
+0056    TSETV    7   0   6
+0057    UCLO     6 => 0058
+0058 => FORL     2 => 0051
+0059 => RET0     0   1
+

@@ -1,0 +1,2 @@
+[string "x = 1 "a\tb\nc\65""]:1: unexpected symbol near '"a	b
+cA"'

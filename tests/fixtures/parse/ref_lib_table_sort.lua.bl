@@ -1,0 +1,129 @@
+-- BYTECODE -- ref_lib_table_sort.lua:22-22
+0001    TGETB    2   0   1
+0002    TGETB    3   1   1
+0003    ISLT     2   3
+0004    JMP      2 => 0007
+0005    KPRI     2   1
+0006    JMP      3 => 0008
+0007 => KPRI     2   2
+0008 => RET1     2   2
+
+-- BYTECODE -- ref_lib_table_sort.lua:0-28
+0001    KSHORT   0 1000
+0002    GGET     1   0      ; "math"
+0003    TGETS    1   1   1  ; "randomseed"
+0004    KSHORT   3  42
+0005    CALL     1   1   2
+0006    TNEW     1   0
+0007    KSHORT   2   1
+0008    MOV      3   0
+0009    KSHORT   4   1
+0010    FORI     2 => 0017
+0011 => GGET     6   0      ; "math"
+0012    TGETS    6   6   2  ; "random"
+0013    MOV      8   0
+0014    CALL     6   2   2
+0015    TSETV    6   1   5
+0016    FORL     2 => 0011
+0017 => GGET     2   3      ; "table"
+0018    TGETS    2   2   4  ; "sort"
+0019    MOV      4   1
+0020    CALL     2   1   2
+0021    KSHORT   2   2
+0022    MOV      3   0
+0023    KSHORT   4   1
+0024    FORI     2 => 0036
+0025 => GGET     6   5      ; "assert"
+0026    SUBVN    8   5   0  ; 1
+0027    TGETV    8   1   8
+0028    TGETV    9   1   5
+0029    ISLE     8   9
+0030    JMP      8 => 0033
+0031    KPRI     8   1
+0032    JMP      9 => 0034
+0033 => KPRI     8   2
+0034 => CALL     6   1   2
+0035    FORL     2 => 0025
+0036 => GGET     1   0      ; "math"
+0037    TGETS    1   1   1  ; "randomseed"
+0038    KSHORT   3  42
+0039    CALL     1   1   2
+0040    TNEW     1   0
+0041    KSHORT   2   1
+0042    MOV      3   0
+0043    KSHORT   4   1
+0044    FORI     2 => 0054
+0045 => GGET     6   0      ; "math"
+0046    TGETS    6   6   2  ; "random"
+0047    KSHORT   8   1
+0048    DIVVN    9   0   1  ; 10
+0049    CALL     6   2   3
+0050    KSTR     7   6      ; ""
+0051    CAT      6   6   7
+0052    TSETV    6   1   5
+0053    FORL     2 => 0045
+0054 => GGET     2   3      ; "table"
+0055    TGETS    2   2   4  ; "sort"
+0056    MOV      4   1
+0057    CALL     2   1   2
+0058    KSHORT   2   2
+0059    MOV      3   0
+0060    KSHORT   4   1
+0061    FORI     2 => 0073
+0062 => GGET     6   5      ; "assert"
+0063    SUBVN    8   5   0  ; 1
+0064    TGETV    8   1   8
+0065    TGETV    9   1   5
+0066    ISLE     8   9
+0067    JMP      8 => 0070
+0068    KPRI     8   1
+0069    JMP      9 => 0071
+0070 => KPRI     8   2
+0071 => CALL     6   1   2
+0072    FORL     2 => 0062
+0073 => GGET     1   0      ; "math"
+0074    TGETS    1   1   1  ; "randomseed"
+0075    KSHORT   3  42
+0076    CALL     1   1   2
+0077    TDUP     1   8
+0078    FNEW     2   7      ; ref_lib_table_sort.lua:22
+0079    TSETS    2   1   9  ; "__lt"
+0080    TNEW     2   0
+0081    KSHORT   3   1
+0082    MOV      4   0
+0083    KSHORT   5   1
+0084    FORI     3 => 0096
+0085 => GGET     7  10      ; "setmetatable"
+0086    TNEW     9   3
+0087    GGET    10   0      ; "math"
+0088    TGETS   10  10   2  ; "random"
+0089    MOV     12   0
+0090    CALL    10   0   2
+0091    TSETM   10   2      ; 1
+0092    MOV     10   1
+0093    CALL     7   2   3
+0094    TSETV    7   2   6
+0095    FORL     3 => 0085
+0096 => GGET     3   3      ; "table"
+0097    TGETS    3   3   4  ; "sort"
+0098    MOV      5   2
+0099    CALL     3   1   2
+0100    KSHORT   3   2
+0101    MOV      4   0
+0102    KSHORT   5   1
+0103    FORI     3 => 0117
+0104 => GGET     7   5      ; "assert"
+0105    SUBVN    9   6   0  ; 1
+0106    TGETV    9   2   9
+0107    TGETB    9   9   1
+0108    TGETV   10   2   6
+0109    TGETB   10  10   1
+0110    ISLE     9  10
+0111    JMP      9 => 0114
+0112    KPRI     9   1
+0113    JMP     10 => 0115
+0114 => KPRI     9   2
+0115 => CALL     7   1   2
+0116    FORL     3 => 0104
+0117 => RET0     0   1
+

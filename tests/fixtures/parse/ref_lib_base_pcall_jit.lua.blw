@@ -1,0 +1,208 @@
+-- BYTECODE -- ref_lib_base_pcall_jit.lua:3-3
+0001    MULVV    1   0   0
+0002    RET1     1   2
+
+-- BYTECODE -- ref_lib_base_pcall_jit.lua:24-26
+0001    KSHORT   1 150
+0002    ISGT     1   0
+0003    JMP      1 => 0008
+0004    GGET     1   0      ; "error"
+0005    KSTR     2   1      ; "test"
+0006    KSHORT   3   0
+0007    CALL     1   1   3
+0008 => RET1     0   2
+
+-- BYTECODE -- ref_lib_base_pcall_jit.lua:41-44
+0001    KSHORT   1 150
+0002    ISGT     1   0
+0003    JMP      1 => 0006
+0004    MULVV    1   0   0
+0005    RET1     1   2
+0006 => RET1     0   2
+
+-- BYTECODE -- ref_lib_base_pcall_jit.lua:55-61
+0001    KSHORT   1 150
+0002    ISGT     1   0
+0003    JMP      1 => 0013
+0004    KSHORT   1 175
+0005    ISGT     1   0
+0006    JMP      1 => 0011
+0007    GGET     1   0      ; "error"
+0008    KSTR     2   1      ; "test"
+0009    KSHORT   3   0
+0010    CALL     1   1   3
+0011 => MULVV    1   0   0
+0012    RET1     1   2
+0013 => RET1     0   2
+
+-- BYTECODE -- ref_lib_base_pcall_jit.lua:0-75
+0001    FNEW     0   0      ; ref_lib_base_pcall_jit.lua:3
+0002    KSHORT   1   0
+0003    KSHORT   2   1
+0004    KSHORT   3 100
+0005    KSHORT   4   1
+0006    FORI     2 => 0022
+0007 => GGET     6   1      ; "pcall"
+0008    GGET     7   1      ; "pcall"
+0009    GGET     8   1      ; "pcall"
+0010    MOV      9   0
+0011    MOV     10   5
+0012    CALL     6   5   5
+0013    ISF          6
+0014    JMP     10 => 0022
+0015    ISF          7
+0016    JMP     10 => 0022
+0017    IST          8
+0018    JMP     10 => 0020
+0019    JMP      2 => 0022
+0020 => ADDVV    1   1   9
+0021    FORL     2 => 0007
+0022 => GGET     2   2      ; "assert"
+0023    ISEQN    1   0      ; 338350
+0024    JMP      3 => 0027
+0025    KPRI     3   1
+0026    JMP      4 => 0028
+0027 => KPRI     3   2
+0028 => CALL     2   1   2
+0029    KSHORT   0   0
+0030    KSHORT   1   1
+0031    KSHORT   2 100
+0032    KSHORT   3   1
+0033    FORI     1 => 0050
+0034 => GGET     5   1      ; "pcall"
+0035    GGET     6   1      ; "pcall"
+0036    GGET     7   1      ; "pcall"
+0037    GGET     8   3      ; "math"
+0038    TGETS    8   8   4  ; "sqrt"
+0039    MULVV    9   4   4
+0040    CALL     5   5   5
+0041    ISF          5
+0042    JMP      9 => 0050
+0043    ISF          6
+0044    JMP      9 => 0050
+0045    IST          7
+0046    JMP      9 => 0048
+0047    JMP      1 => 0050
+0048 => ADDVV    0   0   8
+0049    FORL     1 => 0034
+0050 => GGET     1   2      ; "assert"
+0051    ISEQN    0   1      ; 5050
+0052    JMP      2 => 0055
+0053    KPRI     2   1
+0054    JMP      3 => 0056
+0055 => KPRI     2   2
+0056 => CALL     1   1   2
+0057    FNEW     0   5      ; ref_lib_base_pcall_jit.lua:24
+0058    KSHORT   1   0
+0059    KSHORT   2   1
+0060    KSHORT   3 200
+0061    KSHORT   4   1
+0062    FORI     2 => 0092
+0063 => GGET     6   1      ; "pcall"
+0064    GGET     7   1      ; "pcall"
+0065    GGET     8   1      ; "pcall"
+0066    MOV      9   0
+0067    MOV     10   5
+0068    CALL     6   5   5
+0069    ISF          6
+0070    JMP     10 => 0075
+0071    ISF          7
+0072    JMP     10 => 0075
+0073    IST          8
+0074    JMP     10 => 0090
+0075 => GGET    10   2      ; "assert"
+0076    ISFC    11   6
+0077    JMP     11 => 0081
+0078    ISFC    11   7
+0079    JMP     11 => 0081
+0080    NOT     11   8
+0081 => CALL    10   1   2
+0082    GGET    10   2      ; "assert"
+0083    ISEQS    9   6      ; "test"
+0084    JMP     11 => 0087
+0085    KPRI    11   1
+0086    JMP     12 => 0088
+0087 => KPRI    11   2
+0088 => CALL    10   1   2
+0089    JMP      2 => 0092
+0090 => ADDVV    1   1   9
+0091    FORL     2 => 0063
+0092 => GGET     2   2      ; "assert"
+0093    ISEQN    1   2      ; 11175
+0094    JMP      3 => 0097
+0095    KPRI     3   1
+0096    JMP      4 => 0098
+0097 => KPRI     3   2
+0098 => CALL     2   1   2
+0099    FNEW     0   7      ; ref_lib_base_pcall_jit.lua:41
+0100    KSHORT   1   0
+0101    KSHORT   2   1
+0102    KSHORT   3 200
+0103    KSHORT   4   1
+0104    FORI     2 => 0120
+0105 => GGET     6   1      ; "pcall"
+0106    GGET     7   1      ; "pcall"
+0107    GGET     8   1      ; "pcall"
+0108    MOV      9   0
+0109    MOV     10   5
+0110    CALL     6   5   5
+0111    ISF          6
+0112    JMP     10 => 0120
+0113    ISF          7
+0114    JMP     10 => 0120
+0115    IST          8
+0116    JMP     10 => 0118
+0117    JMP      2 => 0120
+0118 => ADDVV    1   1   9
+0119    FORL     2 => 0105
+0120 => GGET     2   2      ; "assert"
+0121    ISEQN    1   3      ; 1584100
+0122    JMP      3 => 0125
+0123    KPRI     3   1
+0124    JMP      4 => 0126
+0125 => KPRI     3   2
+0126 => CALL     2   1   2
+0127    FNEW     0   8      ; ref_lib_base_pcall_jit.lua:55
+0128    KSHORT   1   0
+0129    KSHORT   2   1
+0130    KSHORT   3 200
+0131    KSHORT   4   1
+0132    FORI     2 => 0162
+0133 => GGET     6   1      ; "pcall"
+0134    GGET     7   1      ; "pcall"
+0135    GGET     8   1      ; "pcall"
+0136    MOV      9   0
+0137    MOV     10   5
+0138    CALL     6   5   5
+0139    ISF          6
+0140    JMP     10 => 0145
+0141    ISF          7
+0142    JMP     10 => 0145
+0143    IST          8
+0144    JMP     10 => 0160
+0145 => GGET    10   2      ; "assert"
+0146    ISFC    11   6
+0147    JMP     11 => 0151
+0148    ISFC    11   7
+0149    JMP     11 => 0151
+0150    NOT     11   8
+0151 => CALL    10   1   2
+0152    GGET    10   2      ; "assert"
+0153    ISEQS    9   6      ; "test"
+0154    JMP     11 => 0157
+0155    KPRI    11   1
+0156    JMP     12 => 0158
+0157 => KPRI    11   2
+0158 => CALL    10   1   2
+0159    JMP     10 => 0161
+0160 => ADDVV    1   1   9
+0161 => FORL     2 => 0133
+0162 => GGET     2   2      ; "assert"
+0163    ISEQN    1   4      ; 668575
+0164    JMP      3 => 0167
+0165    KPRI     3   1
+0166    JMP      4 => 0168
+0167 => KPRI     3   2
+0168 => CALL     2   1   2
+0169    RET0     0   1
+

@@ -1,0 +1,54 @@
+-- BYTECODE -- cdata_literals.lua:0-27
+0001    KPRI     0   0
+0002    KCDATA   0   0
+0003    KCDATA   0   1
+0004    KCDATA   0   2
+0005    KCDATA   0   3
+0006    KCDATA   0   4
+0007    KCDATA   0   5
+0008    KCDATA   0   6
+0009    KCDATA   0   7
+0010    KCDATA   0   8
+0011    KCDATA   0   9
+0012    KCDATA   0  10
+0013    KCDATA   0  11
+0014    KCDATA   0  12
+0015    KCDATA   0  13
+0016    KCDATA   1  14
+0017    KCDATA   2  15
+0018    ADDVV    0   1   2
+0019    KCDATA   1  16
+0020    ADDVN    0   1   0  ; 1
+0021    KCDATA   0  17
+0022    TNEW     1   4
+0023    KCDATA   2  18
+0024    TSETB    2   1   1
+0025    KCDATA   2  19
+0026    TSETB    2   1   2
+0027    KCDATA   2  20
+0028    TSETB    2   1   3
+0029    MOV      0   1
+0030    TDUP     1  21
+0031    KCDATA   2  22
+0032    TSETS    2   1  23  ; "a"
+0033    MOV      0   1
+0034    GGET     1  24      ; "f"
+0035    KCDATA   3  25
+0036    CALL     1   2   2
+0037    MOV      0   1
+0038    KCDATA   1  26
+0039    KCDATA   2  27
+0040    ISEQV    1   2
+0041    JMP      1 => 0044
+0042    KPRI     0   1
+0043    JMP      1 => 0045
+0044 => KPRI     0   2
+0045 => KCDATA   1  28
+0046    ISNEV    0   1
+0047    JMP      1 => 0048
+0048 => KCDATA   1  29
+0049    KCDATA   2  30
+0050    KCDATA   3  31
+0051    KCDATA   4  32
+0052    RET1     4   2
+

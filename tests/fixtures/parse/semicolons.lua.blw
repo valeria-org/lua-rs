@@ -1,0 +1,23 @@
+-- BYTECODE -- semicolons.lua:0-8
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    ISF          0
+0004    JMP      2 => 0007
+0005    GGET     2   0      ; "f"
+0006    CALL     2   1   1
+0007 => KSHORT   2   1
+0008    KSHORT   3   2
+0009    KSHORT   4   1
+0010    FORI     2 => 0014
+0011 => GGET     6   1      ; "g"
+0012    CALL     6   1   1
+0013    FORL     2 => 0011
+0014 => GGET     2   0      ; "f"
+0015    CALL     2   1   1
+0016    GGET     2   1      ; "g"
+0017    CALL     2   1   1
+0018    KSHORT   0   1
+0019    KSHORT   1   2
+0020    KSHORT   2   3
+0021    RET1     0   2
+

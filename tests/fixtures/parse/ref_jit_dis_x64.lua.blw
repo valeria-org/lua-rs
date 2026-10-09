@@ -1,0 +1,22 @@
+-- BYTECODE -- ref_jit_dis_x64.lua:0-18
+0001    GGET     0   0      ; "require"
+0002    GGET     1   1      ; "string"
+0003    TGETS    1   1   2  ; "match"
+0004    VARG     2   2   0
+0005    KSTR     3   3      ; ".*%."
+0006    CALL     1   2   3
+0007    IST          1
+0008    JMP      2 => 0010
+0009    KSTR     1   4      ; ""
+0010 => KSTR     2   5      ; "dis_x86"
+0011    CAT      1   1   2
+0012    CALL     0   2   2
+0013    TDUP     1   7
+0014    TGETS    2   0   6  ; "create64"
+0015    TSETS    2   1   8  ; "create"
+0016    TGETS    2   0   9  ; "disass64"
+0017    TSETS    2   1  10  ; "disass"
+0018    TGETS    2   0  11  ; "regname64"
+0019    TSETS    2   1  12  ; "regname"
+0020    RET1     1   2
+

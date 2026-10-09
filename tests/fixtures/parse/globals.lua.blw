@@ -1,0 +1,39 @@
+-- BYTECODE -- globals.lua:0-14
+0001    KSHORT   0   1
+0002    GSET     0   0      ; "foo"
+0003    KSTR     0   1      ; "x"
+0004    GSET     0   2      ; "bar"
+0005    GGET     0   0      ; "foo"
+0006    GSET     0   3      ; "baz"
+0007    GGET     0   2      ; "bar"
+0008    GSET     0   0      ; "foo"
+0009    KPRI     0   0
+0010    GSET     0   4      ; "qux"
+0011    KSHORT   0   1
+0012    KSHORT   1   2
+0013    KSHORT   2   3
+0014    GSET     2   5      ; "c"
+0015    GSET     1   6      ; "b"
+0016    GSET     0   7      ; "a"
+0017    GGET     0   6      ; "b"
+0018    GGET     1   7      ; "a"
+0019    GSET     1   6      ; "b"
+0020    GSET     0   7      ; "a"
+0021    GGET     0   8      ; "print"
+0022    GGET     1   0      ; "foo"
+0023    GGET     2   2      ; "bar"
+0024    GGET     3   3      ; "baz"
+0025    CALL     0   1   4
+0026    GGET     0   9      ; "_G"
+0027    KSHORT   1   1
+0028    TSETS    1   0   1  ; "x"
+0029    GGET     0   9      ; "_G"
+0030    KSHORT   1   2
+0031    TSETS    1   0  10  ; "y z"
+0032    GGET     0   9      ; "_G"
+0033    TGETS    1   0   7  ; "a"
+0034    TGETS    1   1   6  ; "b"
+0035    KSHORT   2   4
+0036    TSETS    2   1   5  ; "c"
+0037    RET0     0   1
+

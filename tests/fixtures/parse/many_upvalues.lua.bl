@@ -1,0 +1,198 @@
+-- BYTECODE -- many_upvalues.lua:61-63
+0001    UGET     0   0      ; u0
+0002    UGET     1   1      ; u1
+0003    ADDVV    0   0   1
+0004    UGET     1   2      ; u2
+0005    ADDVV    0   0   1
+0006    UGET     1   3      ; u3
+0007    ADDVV    0   0   1
+0008    UGET     1   4      ; u4
+0009    ADDVV    0   0   1
+0010    UGET     1   5      ; u5
+0011    ADDVV    0   0   1
+0012    UGET     1   6      ; u6
+0013    ADDVV    0   0   1
+0014    UGET     1   7      ; u7
+0015    ADDVV    0   0   1
+0016    UGET     1   8      ; u8
+0017    ADDVV    0   0   1
+0018    UGET     1   9      ; u9
+0019    ADDVV    0   0   1
+0020    UGET     1  10      ; u10
+0021    ADDVV    0   0   1
+0022    UGET     1  11      ; u11
+0023    ADDVV    0   0   1
+0024    UGET     1  12      ; u12
+0025    ADDVV    0   0   1
+0026    UGET     1  13      ; u13
+0027    ADDVV    0   0   1
+0028    UGET     1  14      ; u14
+0029    ADDVV    0   0   1
+0030    UGET     1  15      ; u15
+0031    ADDVV    0   0   1
+0032    UGET     1  16      ; u16
+0033    ADDVV    0   0   1
+0034    UGET     1  17      ; u17
+0035    ADDVV    0   0   1
+0036    UGET     1  18      ; u18
+0037    ADDVV    0   0   1
+0038    UGET     1  19      ; u19
+0039    ADDVV    0   0   1
+0040    UGET     1  20      ; u20
+0041    ADDVV    0   0   1
+0042    UGET     1  21      ; u21
+0043    ADDVV    0   0   1
+0044    UGET     1  22      ; u22
+0045    ADDVV    0   0   1
+0046    UGET     1  23      ; u23
+0047    ADDVV    0   0   1
+0048    UGET     1  24      ; u24
+0049    ADDVV    0   0   1
+0050    UGET     1  25      ; u25
+0051    ADDVV    0   0   1
+0052    UGET     1  26      ; u26
+0053    ADDVV    0   0   1
+0054    UGET     1  27      ; u27
+0055    ADDVV    0   0   1
+0056    UGET     1  28      ; u28
+0057    ADDVV    0   0   1
+0058    UGET     1  29      ; u29
+0059    ADDVV    0   0   1
+0060    UGET     1  30      ; u30
+0061    ADDVV    0   0   1
+0062    UGET     1  31      ; u31
+0063    ADDVV    0   0   1
+0064    UGET     1  32      ; u32
+0065    ADDVV    0   0   1
+0066    UGET     1  33      ; u33
+0067    ADDVV    0   0   1
+0068    UGET     1  34      ; u34
+0069    ADDVV    0   0   1
+0070    UGET     1  35      ; u35
+0071    ADDVV    0   0   1
+0072    UGET     1  36      ; u36
+0073    ADDVV    0   0   1
+0074    UGET     1  37      ; u37
+0075    ADDVV    0   0   1
+0076    UGET     1  38      ; u38
+0077    ADDVV    0   0   1
+0078    UGET     1  39      ; u39
+0079    ADDVV    0   0   1
+0080    UGET     1  40      ; u40
+0081    ADDVV    0   0   1
+0082    UGET     1  41      ; u41
+0083    ADDVV    0   0   1
+0084    UGET     1  42      ; u42
+0085    ADDVV    0   0   1
+0086    UGET     1  43      ; u43
+0087    ADDVV    0   0   1
+0088    UGET     1  44      ; u44
+0089    ADDVV    0   0   1
+0090    UGET     1  45      ; u45
+0091    ADDVV    0   0   1
+0092    UGET     1  46      ; u46
+0093    ADDVV    0   0   1
+0094    UGET     1  47      ; u47
+0095    ADDVV    0   0   1
+0096    UGET     1  48      ; u48
+0097    ADDVV    0   0   1
+0098    UGET     1  49      ; u49
+0099    ADDVV    0   0   1
+0100    UGET     1  50      ; u50
+0101    ADDVV    0   0   1
+0102    UGET     1  51      ; u51
+0103    ADDVV    0   0   1
+0104    UGET     1  52      ; u52
+0105    ADDVV    0   0   1
+0106    UGET     1  53      ; u53
+0107    ADDVV    0   0   1
+0108    UGET     1  54      ; u54
+0109    ADDVV    0   0   1
+0110    UGET     1  55      ; u55
+0111    ADDVV    0   0   1
+0112    UGET     1  56      ; u56
+0113    ADDVV    0   0   1
+0114    UGET     1  57      ; u57
+0115    ADDVV    0   0   1
+0116    UGET     1  58      ; u58
+0117    ADDVV    0   0   1
+0118    UGET     1  59      ; u59
+0119    ADDVV    0   0   1
+0120    RET1     0   2
+
+-- BYTECODE -- many_upvalues.lua:65-65
+0001    UGET     0   0      ; u0
+0002    UGET     1   1      ; u59
+0003    RET      0   3
+
+-- BYTECODE -- many_upvalues.lua:64-66
+0001    FNEW     0   0      ; many_upvalues.lua:65
+0002    UCLO     0 => 0003
+0003 => RET1     0   2
+
+-- BYTECODE -- many_upvalues.lua:0-67
+0001    KSHORT   0   0
+0002    KSHORT   1   1
+0003    KSHORT   2   2
+0004    KSHORT   3   3
+0005    KSHORT   4   4
+0006    KSHORT   5   5
+0007    KSHORT   6   6
+0008    KSHORT   7   7
+0009    KSHORT   8   8
+0010    KSHORT   9   9
+0011    KSHORT  10  10
+0012    KSHORT  11  11
+0013    KSHORT  12  12
+0014    KSHORT  13  13
+0015    KSHORT  14  14
+0016    KSHORT  15  15
+0017    KSHORT  16  16
+0018    KSHORT  17  17
+0019    KSHORT  18  18
+0020    KSHORT  19  19
+0021    KSHORT  20  20
+0022    KSHORT  21  21
+0023    KSHORT  22  22
+0024    KSHORT  23  23
+0025    KSHORT  24  24
+0026    KSHORT  25  25
+0027    KSHORT  26  26
+0028    KSHORT  27  27
+0029    KSHORT  28  28
+0030    KSHORT  29  29
+0031    KSHORT  30  30
+0032    KSHORT  31  31
+0033    KSHORT  32  32
+0034    KSHORT  33  33
+0035    KSHORT  34  34
+0036    KSHORT  35  35
+0037    KSHORT  36  36
+0038    KSHORT  37  37
+0039    KSHORT  38  38
+0040    KSHORT  39  39
+0041    KSHORT  40  40
+0042    KSHORT  41  41
+0043    KSHORT  42  42
+0044    KSHORT  43  43
+0045    KSHORT  44  44
+0046    KSHORT  45  45
+0047    KSHORT  46  46
+0048    KSHORT  47  47
+0049    KSHORT  48  48
+0050    KSHORT  49  49
+0051    KSHORT  50  50
+0052    KSHORT  51  51
+0053    KSHORT  52  52
+0054    KSHORT  53  53
+0055    KSHORT  54  54
+0056    KSHORT  55  55
+0057    KSHORT  56  56
+0058    KSHORT  57  57
+0059    KSHORT  58  58
+0060    KSHORT  59  59
+0061    FNEW    60   0      ; many_upvalues.lua:61
+0062    FNEW    61   1      ; many_upvalues.lua:64
+0063    UCLO     0 => 0064
+0064 => RET0     0   1
+
