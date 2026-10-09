@@ -132,6 +132,7 @@ struct Inner {
     freetop: u32,
 }
 
+#[derive(Clone, Copy)]
 enum Slot {
     Arr(u32),
     Node(u32),
@@ -171,10 +172,15 @@ impl Inner {
 
     #[inline]
     fn find_int(&self, key: i32) -> Option<u32> {
+        self.find_num(key as f64)
+    }
+
+    /// Node of a number key (never matches NaN).
+    #[inline]
+    fn find_num(&self, k: f64) -> Option<u32> {
         if self.node.is_empty() {
             return None;
         }
-        let k = key as f64;
         let mut n = self.mainpos_num(k);
         loop {
             let nd = &self.node[n as usize];
@@ -238,16 +244,30 @@ impl Inner {
 
     #[inline]
     fn get(&self, key: Value) -> Value {
-        let n = match key {
-            Value::Str(s) => self.find_str(s),
+        self.slot(key).map_or(Value::Nil, |s| self.read(s))
+    }
+
+    /// Existing slot of `key`: its array slot or hash node, if any.
+    #[inline]
+    fn slot(&self, key: Value) -> Option<Slot> {
+        match key {
+            Value::Str(s) => self.find_str(s).map(Slot::Node),
             Value::Num(x) => match num2int_check(x) {
-                Some(k) => return self.get_int(k),
-                None => self.find_generic(key),
+                Some(k) if (k as u32) < self.asize() => Some(Slot::Arr(k as u32)),
+                Some(k) => self.find_int(k).map(Slot::Node),
+                None => self.find_num(x).map(Slot::Node),
             },
             Value::Nil => None,
-            _ => self.find_generic(key),
-        };
-        n.map_or(Value::Nil, |n| self.node[n as usize].val)
+            _ => self.find_generic(key).map(Slot::Node),
+        }
+    }
+
+    #[inline]
+    fn read(&self, slot: Slot) -> Value {
+        match slot {
+            Slot::Arr(i) => self.array[i as usize],
+            Slot::Node(n) => self.node[n as usize].val,
+        }
     }
 
     #[inline]
@@ -750,19 +770,26 @@ impl Table {
             false
         }
     }
+    /// Store fast path of the interpreter for any key: store `val` into the existing slot of
+    /// `key` if its old value is not nil or `nil_ok()` (no `__newindex`) holds, and clear the
+    /// metamethod cache. Returns false, storing nothing, otherwise.
+    #[inline(never)]
+    pub fn store(&self, key: Value, val: Value, nil_ok: impl FnOnce() -> bool) -> bool {
+        let t = self.inner();
+        let Some(s) = t.slot(key) else { return false };
+        if !t.read(s).is_nil() || nil_ok() {
+            // SAFETY: as in `store_array`; the slot still exists.
+            unsafe { (&mut *self.inner.get()).write(s, val) };
+            self.nomm.set(0);
+            true
+        } else {
+            false
+        }
+    }
+
     /// True if `key` has a slot (array slot or existing hash node), even if its value is nil.
     pub fn has_slot(&self, key: Value) -> bool {
-        let t = self.inner();
-        match key {
-            Value::Str(s) => t.find_str(s).is_some(),
-            Value::Num(x) => match num2int_check(x) {
-                Some(k) if (k as u32) < t.asize() => true,
-                Some(k) => t.find_int(k).is_some(),
-                None => t.find_generic(key).is_some(),
-            },
-            Value::Nil => false,
-            _ => t.find_generic(key).is_some(),
-        }
+        self.inner().slot(key).is_some()
     }
 
     // -- Setters --
@@ -798,25 +825,11 @@ impl Table {
     /// no slot (VM fast paths: store only if `get` found a non-nil value).
     pub fn set_existing(&self, key: Value, val: Value) -> bool {
         self.nomm.set(0);
-        self.mutate(|t| {
-            let slot = match key {
-                Value::Str(s) => t.find_str(s).map(Slot::Node),
-                Value::Num(x) => match num2int_check(x) {
-                    Some(k) if (k as u32) < t.asize() => Some(Slot::Arr(k as u32)),
-                    Some(k) => t.find_int(k).map(Slot::Node),
-                    None => t.find_generic(key).map(Slot::Node),
-                },
-                Value::Nil => None,
-                _ => t.find_generic(key).map(Slot::Node),
-            };
-            match slot {
-                Some(s) => {
-                    t.write(s, val);
-                    true
-                }
-                None => false,
-            }
-        })
+        let Some(s) = self.inner().slot(key) else { return false };
+        // SAFETY: short-lived exclusive access; the size does not change, so there is
+        // nothing to report to the GC.
+        unsafe { (&mut *self.inner.get()).write(s, val) };
+        true
     }
 
     // -- Length, traversal, sizing --

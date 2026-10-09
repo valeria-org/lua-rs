@@ -793,10 +793,11 @@ impl Vm {
                             let done = match *pk {
                                 Value::Num(n) => {
                                     let k = num2int(n);
-                                    k as f64 == n && t.store_array(k as u32, v, no_newindex!(t))
+                                    (k as f64 == n && t.store_array(k as u32, v, no_newindex!(t)))
+                                        || t.store(Value::Num(n), v, no_newindex!(t))
                                 }
                                 Value::Str(s) => t.store_str(s, v, no_newindex!(t)),
-                                _ => false,
+                                k => t.store(k, v, no_newindex!(t)),
                             };
                             if done {
                                 continue;
@@ -859,23 +860,50 @@ impl Vm {
                         if let Value::Func(f) = get!(a) {
                             match &*f {
                                 Function::Lua { proto: cpt, .. } => {
-                                    // Fast path of `precall` for a fixed-arg Lua function
-                                    // (BC_FUNCF) without call hook or stack growth.
-                                    let nbase = slot + 2;
-                                    let ntop = nbase + cpt.framesize as usize;
-                                    if !cpt.is_vararg()
-                                        && self.rt.hook.mask & hook::LUA_MASKCALL == 0
-                                        && ntop <= th.max_stack()
-                                    {
-                                        save!();
-                                        for i in nbase + nargs..nbase + cpt.numparams as usize {
-                                            th.set(i, Value::Nil);
+                                    // Fast path of `precall` for Lua functions (BC_FUNCF /
+                                    // BC_FUNCV) without call hook or stack growth.
+                                    let nres = ins.b() as i32 - 1;
+                                    let cbase = slot + 2;
+                                    let np = cpt.numparams as usize;
+                                    if self.rt.hook.mask & hook::LUA_MASKCALL == 0 {
+                                        if !cpt.is_vararg() {
+                                            let ntop = cbase + cpt.framesize as usize;
+                                            if ntop <= th.max_stack() {
+                                                save!();
+                                                for i in cbase + nargs..cbase + np {
+                                                    th.set(i, Value::Nil);
+                                                }
+                                                let mut nf = Frame::new(FrameKind::Lua, f, cbase as u32, nres);
+                                                nf.pc = 1;
+                                                th.push_frame(nf);
+                                                th.set_top(ntop);
+                                                continue 'reload;
+                                            }
+                                        } else {
+                                            // Move the function and fixed parameters above the
+                                            // varargs.
+                                            let nbase = cbase + nargs + 2;
+                                            let ntop = nbase + cpt.framesize as usize;
+                                            if ntop <= th.max_stack() {
+                                                save!();
+                                                th.set(nbase - 2, Value::Func(f));
+                                                th.set(nbase - 1, Value::Nil);
+                                                for i in 0..np {
+                                                    if i < nargs {
+                                                        th.set(nbase + i, th.get(cbase + i));
+                                                        th.set(cbase + i, Value::Nil);
+                                                    } else {
+                                                        th.set(nbase + i, Value::Nil);
+                                                    }
+                                                }
+                                                let mut nf = Frame::new(FrameKind::Lua, f, nbase as u32, nres);
+                                                nf.vdelta = (nargs + 2) as u32;
+                                                nf.pc = 1;
+                                                th.push_frame(nf);
+                                                th.set_top(ntop);
+                                                continue 'reload;
+                                            }
                                         }
-                                        let mut nf = Frame::new(FrameKind::Lua, f, nbase as u32, ins.b() as i32 - 1);
-                                        nf.pc = 1;
-                                        th.push_frame(nf);
-                                        th.set_top(ntop);
-                                        continue 'reload;
                                     }
                                 }
                                 Function::Native { .. } => {

@@ -13,7 +13,13 @@ use crate::udata::Userdata;
 /// `PartialEq` is Lua raw equality (`lj_obj_equal`): numbers compare with `==` (so NaN ≠ NaN,
 /// -0 == 0), everything else by identity. Interned strings make identity equal to content
 /// equality.
+///
+/// `repr(C, u64)`: an 8-byte tag followed by an 8-byte payload, with no padding between them.
+/// The compiler then copies values as two aligned words. With the default layout (byte tag,
+/// `Bool` payload at offset 1) it copies them with overlapping unaligned moves, which defeat
+/// store-to-load forwarding when the interpreter reads back a value it just stored.
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[repr(C, u64)]
 pub enum Value {
     #[default]
     Nil,

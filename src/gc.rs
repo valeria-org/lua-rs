@@ -352,10 +352,77 @@ impl ObjRef {
     }
 }
 
+/// Cells of at most this many bytes are recycled through the heap's free lists.
+const POOL_MAX: usize = 256;
+/// Size-class granularity and alignment of pooled cells.
+const POOL_GRAIN: usize = 16;
+const POOL_CLASSES: usize = POOL_MAX / POOL_GRAIN;
+
+/// Size class of a cell layout, if it is pooled.
+#[inline]
+fn pool_class(l: Layout) -> Option<usize> {
+    (l.size() <= POOL_MAX && l.align() <= POOL_GRAIN).then(|| l.size().max(1).div_ceil(POOL_GRAIN) - 1)
+}
+
+#[inline]
+fn class_layout(c: usize) -> Layout {
+    // SAFETY: non-zero multiple of the power-of-two alignment, far below `isize::MAX`.
+    unsafe { Layout::from_size_align_unchecked((c + 1) * POOL_GRAIN, POOL_GRAIN) }
+}
+
+/// Free cells of the pooled size classes, linked through their first word. Allocation-heavy
+/// code frees and reallocates cells of the same few sizes at a high rate, which the system
+/// allocator handles poorly in bulk (sweeps free thousands of cells at once).
+struct Pool {
+    head: [*mut u8; POOL_CLASSES],
+    count: [usize; POOL_CLASSES],
+}
+
+impl Pool {
+    #[inline]
+    fn take(&mut self, c: usize) -> *mut u8 {
+        let p = self.head[c];
+        if p.is_null() {
+            // SAFETY: the class layout has a non-zero size.
+            let p = unsafe { alloc::alloc(class_layout(c)) };
+            if p.is_null() {
+                alloc::handle_alloc_error(class_layout(c));
+            }
+            return p;
+        }
+        // SAFETY: free cells store the next free cell of their class in their first word.
+        self.head[c] = unsafe { *(p as *mut *mut u8) };
+        self.count[c] -= 1;
+        p
+    }
+
+    #[inline]
+    fn give(&mut self, c: usize, p: *mut u8) {
+        // SAFETY: `p` is a dead cell of class `c` (at least one aligned word).
+        unsafe { *(p as *mut *mut u8) = self.head[c] };
+        self.head[c] = p;
+        self.count[c] += 1;
+    }
+
+    /// Return free cells to the system allocator until at most `keep` remain in total.
+    fn trim(&mut self, keep: usize) {
+        let mut total: usize = self.count.iter().sum();
+        for c in (0..POOL_CLASSES).rev() {
+            while total > keep && self.count[c] > 0 {
+                let p = self.take(c);
+                // SAFETY: allocated with the class layout by `take`.
+                unsafe { alloc::dealloc(p, class_layout(c)) };
+                total -= 1;
+            }
+        }
+    }
+}
+
 /// List of all heap objects plus byte accounting.
 pub struct Heap {
     objects: Vec<NonNull<GcBox<dyn Trace>>>,
     total: usize,
+    pool: Pool,
 }
 
 impl Default for Heap {
@@ -366,20 +433,53 @@ impl Default for Heap {
 
 impl Heap {
     pub fn new() -> Heap {
-        Heap { objects: Vec::new(), total: 0 }
+        Heap {
+            objects: Vec::new(),
+            total: 0,
+            pool: Pool { head: [std::ptr::null_mut(); POOL_CLASSES], count: [0; POOL_CLASSES] },
+        }
     }
 
     /// Allocate and register an object. Never collects.
     pub fn alloc<T: GcObject>(&mut self, value: T) -> Gc<T> {
         let size = value.size();
-        let raw = Box::into_raw(Box::new(GcBox { header: GcHeader { flags: Cell::new(0), kind: T::KIND }, value }));
-        // SAFETY: Box::into_raw never returns null. Ownership moves to the object list and is
-        // released exactly once by `sweep` or `Drop for Heap`.
+        let layout = Layout::new::<GcBox<T>>();
+        let raw = match pool_class(layout) {
+            Some(c) => self.pool.take(c),
+            None => {
+                // SAFETY: `GcBox` contains a header, so the layout has a non-zero size.
+                let p = unsafe { alloc::alloc(layout) };
+                if p.is_null() {
+                    alloc::handle_alloc_error(layout);
+                }
+                p
+            }
+        } as *mut GcBox<T>;
+        // SAFETY: `raw` is a fresh, suitably sized and aligned allocation. Ownership moves to
+        // the object list and is released exactly once by `sweep` or `Drop for Heap`.
+        unsafe { raw.write(GcBox { header: GcHeader { flags: Cell::new(0), kind: T::KIND }, value }) };
+        // SAFETY: allocation failure was handled above.
         let ptr = unsafe { NonNull::new_unchecked(raw) };
         let dynp: NonNull<GcBox<dyn Trace>> = ptr;
         self.objects.push(dynp);
         self.total += size;
         Gc { ptr }
+    }
+
+    /// Drop the object in cell `p` and release the cell.
+    ///
+    /// # Safety
+    /// `p` must come from `alloc` and not be used afterwards.
+    unsafe fn free(pool: &mut Pool, p: NonNull<GcBox<dyn Trace>>) {
+        // SAFETY: `p` is a live, initialized cell (caller contract).
+        let layout = unsafe { Layout::for_value(p.as_ref()) };
+        // SAFETY: as above; the object is dropped exactly once.
+        unsafe { std::ptr::drop_in_place(p.as_ptr()) };
+        match pool_class(layout) {
+            Some(c) => pool.give(c, p.as_ptr() as *mut u8),
+            // SAFETY: allocated by `alloc` with this exact layout.
+            None => unsafe { alloc::dealloc(p.as_ptr() as *mut u8, layout) },
+        }
     }
 
     /// Bytes in use, including pending size deltas reported through `account`.
@@ -403,8 +503,10 @@ impl Heap {
     /// Returns the new total.
     pub fn sweep(&mut self) -> usize {
         let mut live = 0usize;
+        let before = self.objects.len();
+        let pool = &mut self.pool;
         self.objects.retain(|&p| {
-            // SAFETY: every pointer in the list is a live boxed GcBox created by `alloc`.
+            // SAFETY: every pointer in the list is a live cell created by `alloc`.
             let b = unsafe { &*p.as_ptr() };
             let flags = b.header.flags.get();
             if flags & (GC_MARKED | GC_FIXED) != 0 {
@@ -412,11 +514,15 @@ impl Heap {
                 live += b.value.size();
                 true
             } else {
-                // SAFETY: unreachable object, removed from the list; created by Box::into_raw.
-                drop(unsafe { Box::from_raw(p.as_ptr()) });
+                // SAFETY: unreachable object, removed from the list.
+                unsafe { Heap::free(pool, p) };
                 false
             }
         });
+        // The program will likely allocate about as many cells until the next collection as
+        // this one freed: keep that many (or as many as are live), release the rest.
+        let freed = before - self.objects.len();
+        self.pool.trim(freed.max(self.objects.len()));
         take_debt();
         self.total = live;
         live
@@ -426,10 +532,11 @@ impl Heap {
 impl Drop for Heap {
     fn drop(&mut self) {
         for &p in &self.objects {
-            // SAFETY: each pointer was created by Box::into_raw in `alloc` and is freed once.
-            drop(unsafe { Box::from_raw(p.as_ptr()) });
+            // SAFETY: each pointer was created by `alloc` and is freed once.
+            unsafe { Heap::free(&mut self.pool, p) };
         }
         self.objects.clear();
+        self.pool.trim(0);
         take_debt();
     }
 }
