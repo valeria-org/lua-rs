@@ -1,0 +1,970 @@
+-- BYTECODE -- ref_lang_meta_comp_jit.lua:5-9
+0001    UGET     3   0      ; x
+0002    ISEQV    3   0
+0003    JMP      3 => 0008
+0004    GGET     3   0      ; "error"
+0005    KSTR     4   1      ; "bad x"
+0006    KSHORT   5   2
+0007    CALL     3   1   3
+0008 => UGET     3   1      ; ax
+0009    ISEQV    3   1
+0010    JMP      3 => 0015
+0011    GGET     3   0      ; "error"
+0012    KSTR     4   2      ; "bad ax"
+0013    KSHORT   5   2
+0014    CALL     3   1   3
+0015 => UGET     3   2      ; bx
+0016    ISEQV    3   2
+0017    JMP      3 => 0022
+0018    GGET     3   0      ; "error"
+0019    KSTR     4   3      ; "bad bx"
+0020    KSHORT   5   2
+0021    CALL     3   1   3
+0022 => RET0     0   1
+
+-- BYTECODE -- ref_lang_meta_comp_jit.lua:11-11
+0001    USETV    0   0      ; ax
+0002    USETV    1   1      ; bx
+0003    UGET     2   2      ; lt
+0004    RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_comp_jit.lua:12-12
+0001    USETV    0   0      ; ax
+0002    USETV    1   1      ; bx
+0003    UGET     2   2      ; le
+0004    RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_comp_jit.lua:74-74
+0001    TGETB    2   0   1
+0002    TGETB    3   1   1
+0003    ISLT     2   3
+0004    JMP      2 => 0007
+0005    KPRI     2   1
+0006    JMP      3 => 0008
+0007 => KPRI     2   2
+0008 => RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_comp_jit.lua:75-75
+0001    TGETB    2   0   1
+0002    TGETB    3   1   1
+0003    ISLT     2   3
+0004    JMP      2 => 0007
+0005    KPRI     2   1
+0006    JMP      3 => 0008
+0007 => KPRI     2   2
+0008 => RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_comp_jit.lua:83-87
+0001    KPRI     0   0
+0002    KSHORT   1   1
+0003    KSHORT   2 100
+0004    KSHORT   3   1
+0005    FORI     1 => 0014
+0006 => UGET     5   0      ; t1
+0007    UGET     6   1      ; t2
+0008    ISLT     5   6
+0009    JMP      5 => 0012
+0010    KPRI     0   1
+0011    JMP      5 => 0013
+0012 => KPRI     0   2
+0013 => FORL     1 => 0006
+0014 => RET1     0   2
+
+-- BYTECODE -- ref_lang_meta_comp_jit.lua:93-97
+0001    KPRI     0   0
+0002    KSHORT   1   1
+0003    KSHORT   2 100
+0004    KSHORT   3   1
+0005    FORI     1 => 0014
+0006 => UGET     5   0      ; t1
+0007    UGET     6   1      ; t2
+0008    ISLE     5   6
+0009    JMP      5 => 0012
+0010    KPRI     0   1
+0011    JMP      5 => 0013
+0012 => KPRI     0   2
+0013 => FORL     1 => 0006
+0014 => RET1     0   2
+
+-- BYTECODE -- ref_lang_meta_comp_jit.lua:0-105
+0001    KPRI     0   1
+0002    KPRI     1   1
+0003    TNEW     2   0
+0004    TNEW     3   0
+0005    KNIL     4   6
+0006    FNEW     7   0      ; ref_lang_meta_comp_jit.lua:5
+0007    TDUP     8   2
+0008    FNEW     9   1      ; ref_lang_meta_comp_jit.lua:11
+0009    TSETS    9   8   3  ; "__lt"
+0010    FNEW     9   4      ; ref_lang_meta_comp_jit.lua:12
+0011    TSETS    9   8   5  ; "__le"
+0012    GGET     9   6      ; "setmetatable"
+0013    MOV     10   2
+0014    MOV     11   8
+0015    CALL     9   2   3
+0016    MOV      2   9
+0017    GGET     9   6      ; "setmetatable"
+0018    MOV     10   3
+0019    MOV     11   8
+0020    CALL     9   2   3
+0021    MOV      3   9
+0022    KPRI     9   1
+0023    KPRI     1   1
+0024    MOV      0   9
+0025    KSHORT   4   0
+0026    KSHORT   9   1
+0027    KSHORT  10 100
+0028    KSHORT  11   1
+0029    FORI     9 => 0036
+0030 => ISGE     2   3
+0031    JMP     13 => 0034
+0032    KSHORT   4   2
+0033    JMP     13 => 0035
+0034 => KSHORT   4   1
+0035 => FORL     9 => 0030
+0036 => MOV      9   7
+0037    KSHORT  10   1
+0038    MOV     11   2
+0039    MOV     12   3
+0040    CALL     9   1   4
+0041    KSHORT   4   0
+0042    KSHORT   9   1
+0043    KSHORT  10 100
+0044    KSHORT  11   1
+0045    FORI     9 => 0052
+0046 => ISGT     2   3
+0047    JMP     13 => 0050
+0048    KSHORT   4   2
+0049    JMP     13 => 0051
+0050 => KSHORT   4   1
+0051 => FORL     9 => 0046
+0052 => MOV      9   7
+0053    KSHORT  10   1
+0054    MOV     11   2
+0055    MOV     12   3
+0056    CALL     9   1   4
+0057    KSHORT   4   0
+0058    KSHORT   9   1
+0059    KSHORT  10 100
+0060    KSHORT  11   1
+0061    FORI     9 => 0068
+0062 => ISGE     3   2
+0063    JMP     13 => 0066
+0064    KSHORT   4   2
+0065    JMP     13 => 0067
+0066 => KSHORT   4   1
+0067 => FORL     9 => 0062
+0068 => MOV      9   7
+0069    KSHORT  10   1
+0070    MOV     11   3
+0071    MOV     12   2
+0072    CALL     9   1   4
+0073    KSHORT   4   0
+0074    KSHORT   9   1
+0075    KSHORT  10 100
+0076    KSHORT  11   1
+0077    FORI     9 => 0084
+0078 => ISGT     3   2
+0079    JMP     13 => 0082
+0080    KSHORT   4   2
+0081    JMP     13 => 0083
+0082 => KSHORT   4   1
+0083 => FORL     9 => 0078
+0084 => MOV      9   7
+0085    KSHORT  10   1
+0086    MOV     11   3
+0087    MOV     12   2
+0088    CALL     9   1   4
+0089    KSHORT   4   0
+0090    KSHORT   9   1
+0091    KSHORT  10 100
+0092    KSHORT  11   1
+0093    FORI     9 => 0100
+0094 => ISLT     2   3
+0095    JMP     13 => 0098
+0096    KSHORT   4   2
+0097    JMP     13 => 0099
+0098 => KSHORT   4   1
+0099 => FORL     9 => 0094
+0100 => MOV      9   7
+0101    KSHORT  10   2
+0102    MOV     11   2
+0103    MOV     12   3
+0104    CALL     9   1   4
+0105    KSHORT   4   0
+0106    KSHORT   9   1
+0107    KSHORT  10 100
+0108    KSHORT  11   1
+0109    FORI     9 => 0116
+0110 => ISLE     2   3
+0111    JMP     13 => 0114
+0112    KSHORT   4   2
+0113    JMP     13 => 0115
+0114 => KSHORT   4   1
+0115 => FORL     9 => 0110
+0116 => MOV      9   7
+0117    KSHORT  10   2
+0118    MOV     11   2
+0119    MOV     12   3
+0120    CALL     9   1   4
+0121    KSHORT   4   0
+0122    KSHORT   9   1
+0123    KSHORT  10 100
+0124    KSHORT  11   1
+0125    FORI     9 => 0132
+0126 => ISLT     3   2
+0127    JMP     13 => 0130
+0128    KSHORT   4   2
+0129    JMP     13 => 0131
+0130 => KSHORT   4   1
+0131 => FORL     9 => 0126
+0132 => MOV      9   7
+0133    KSHORT  10   2
+0134    MOV     11   3
+0135    MOV     12   2
+0136    CALL     9   1   4
+0137    KSHORT   4   0
+0138    KSHORT   9   1
+0139    KSHORT  10 100
+0140    KSHORT  11   1
+0141    FORI     9 => 0148
+0142 => ISLE     3   2
+0143    JMP     13 => 0146
+0144    KSHORT   4   2
+0145    JMP     13 => 0147
+0146 => KSHORT   4   1
+0147 => FORL     9 => 0142
+0148 => MOV      9   7
+0149    KSHORT  10   2
+0150    MOV     11   3
+0151    MOV     12   2
+0152    CALL     9   1   4
+0153    KPRI     9   1
+0154    KPRI     1   2
+0155    MOV      0   9
+0156    KSHORT   4   0
+0157    KSHORT   9   1
+0158    KSHORT  10 100
+0159    KSHORT  11   1
+0160    FORI     9 => 0167
+0161 => ISGE     2   3
+0162    JMP     13 => 0165
+0163    KSHORT   4   2
+0164    JMP     13 => 0166
+0165 => KSHORT   4   1
+0166 => FORL     9 => 0161
+0167 => MOV      9   7
+0168    KSHORT  10   1
+0169    MOV     11   2
+0170    MOV     12   3
+0171    CALL     9   1   4
+0172    KSHORT   4   0
+0173    KSHORT   9   1
+0174    KSHORT  10 100
+0175    KSHORT  11   1
+0176    FORI     9 => 0183
+0177 => ISGT     2   3
+0178    JMP     13 => 0181
+0179    KSHORT   4   2
+0180    JMP     13 => 0182
+0181 => KSHORT   4   1
+0182 => FORL     9 => 0177
+0183 => MOV      9   7
+0184    KSHORT  10   2
+0185    MOV     11   2
+0186    MOV     12   3
+0187    CALL     9   1   4
+0188    KSHORT   4   0
+0189    KSHORT   9   1
+0190    KSHORT  10 100
+0191    KSHORT  11   1
+0192    FORI     9 => 0199
+0193 => ISGE     3   2
+0194    JMP     13 => 0197
+0195    KSHORT   4   2
+0196    JMP     13 => 0198
+0197 => KSHORT   4   1
+0198 => FORL     9 => 0193
+0199 => MOV      9   7
+0200    KSHORT  10   1
+0201    MOV     11   3
+0202    MOV     12   2
+0203    CALL     9   1   4
+0204    KSHORT   4   0
+0205    KSHORT   9   1
+0206    KSHORT  10 100
+0207    KSHORT  11   1
+0208    FORI     9 => 0215
+0209 => ISGT     3   2
+0210    JMP     13 => 0213
+0211    KSHORT   4   2
+0212    JMP     13 => 0214
+0213 => KSHORT   4   1
+0214 => FORL     9 => 0209
+0215 => MOV      9   7
+0216    KSHORT  10   2
+0217    MOV     11   3
+0218    MOV     12   2
+0219    CALL     9   1   4
+0220    KSHORT   4   0
+0221    KSHORT   9   1
+0222    KSHORT  10 100
+0223    KSHORT  11   1
+0224    FORI     9 => 0231
+0225 => ISLT     2   3
+0226    JMP     13 => 0229
+0227    KSHORT   4   2
+0228    JMP     13 => 0230
+0229 => KSHORT   4   1
+0230 => FORL     9 => 0225
+0231 => MOV      9   7
+0232    KSHORT  10   2
+0233    MOV     11   2
+0234    MOV     12   3
+0235    CALL     9   1   4
+0236    KSHORT   4   0
+0237    KSHORT   9   1
+0238    KSHORT  10 100
+0239    KSHORT  11   1
+0240    FORI     9 => 0247
+0241 => ISLE     2   3
+0242    JMP     13 => 0245
+0243    KSHORT   4   2
+0244    JMP     13 => 0246
+0245 => KSHORT   4   1
+0246 => FORL     9 => 0241
+0247 => MOV      9   7
+0248    KSHORT  10   1
+0249    MOV     11   2
+0250    MOV     12   3
+0251    CALL     9   1   4
+0252    KSHORT   4   0
+0253    KSHORT   9   1
+0254    KSHORT  10 100
+0255    KSHORT  11   1
+0256    FORI     9 => 0263
+0257 => ISLT     3   2
+0258    JMP     13 => 0261
+0259    KSHORT   4   2
+0260    JMP     13 => 0262
+0261 => KSHORT   4   1
+0262 => FORL     9 => 0257
+0263 => MOV      9   7
+0264    KSHORT  10   2
+0265    MOV     11   3
+0266    MOV     12   2
+0267    CALL     9   1   4
+0268    KSHORT   4   0
+0269    KSHORT   9   1
+0270    KSHORT  10 100
+0271    KSHORT  11   1
+0272    FORI     9 => 0279
+0273 => ISLE     3   2
+0274    JMP     13 => 0277
+0275    KSHORT   4   2
+0276    JMP     13 => 0278
+0277 => KSHORT   4   1
+0278 => FORL     9 => 0273
+0279 => MOV      9   7
+0280    KSHORT  10   1
+0281    MOV     11   3
+0282    MOV     12   2
+0283    CALL     9   1   4
+0284    KPRI     9   2
+0285    KPRI     1   1
+0286    MOV      0   9
+0287    KSHORT   4   0
+0288    KSHORT   9   1
+0289    KSHORT  10 100
+0290    KSHORT  11   1
+0291    FORI     9 => 0298
+0292 => ISGE     2   3
+0293    JMP     13 => 0296
+0294    KSHORT   4   2
+0295    JMP     13 => 0297
+0296 => KSHORT   4   1
+0297 => FORL     9 => 0292
+0298 => MOV      9   7
+0299    KSHORT  10   2
+0300    MOV     11   2
+0301    MOV     12   3
+0302    CALL     9   1   4
+0303    KSHORT   4   0
+0304    KSHORT   9   1
+0305    KSHORT  10 100
+0306    KSHORT  11   1
+0307    FORI     9 => 0314
+0308 => ISGT     2   3
+0309    JMP     13 => 0312
+0310    KSHORT   4   2
+0311    JMP     13 => 0313
+0312 => KSHORT   4   1
+0313 => FORL     9 => 0308
+0314 => MOV      9   7
+0315    KSHORT  10   1
+0316    MOV     11   2
+0317    MOV     12   3
+0318    CALL     9   1   4
+0319    KSHORT   4   0
+0320    KSHORT   9   1
+0321    KSHORT  10 100
+0322    KSHORT  11   1
+0323    FORI     9 => 0330
+0324 => ISGE     3   2
+0325    JMP     13 => 0328
+0326    KSHORT   4   2
+0327    JMP     13 => 0329
+0328 => KSHORT   4   1
+0329 => FORL     9 => 0324
+0330 => MOV      9   7
+0331    KSHORT  10   2
+0332    MOV     11   3
+0333    MOV     12   2
+0334    CALL     9   1   4
+0335    KSHORT   4   0
+0336    KSHORT   9   1
+0337    KSHORT  10 100
+0338    KSHORT  11   1
+0339    FORI     9 => 0346
+0340 => ISGT     3   2
+0341    JMP     13 => 0344
+0342    KSHORT   4   2
+0343    JMP     13 => 0345
+0344 => KSHORT   4   1
+0345 => FORL     9 => 0340
+0346 => MOV      9   7
+0347    KSHORT  10   1
+0348    MOV     11   3
+0349    MOV     12   2
+0350    CALL     9   1   4
+0351    KSHORT   4   0
+0352    KSHORT   9   1
+0353    KSHORT  10 100
+0354    KSHORT  11   1
+0355    FORI     9 => 0362
+0356 => ISLT     2   3
+0357    JMP     13 => 0360
+0358    KSHORT   4   2
+0359    JMP     13 => 0361
+0360 => KSHORT   4   1
+0361 => FORL     9 => 0356
+0362 => MOV      9   7
+0363    KSHORT  10   1
+0364    MOV     11   2
+0365    MOV     12   3
+0366    CALL     9   1   4
+0367    KSHORT   4   0
+0368    KSHORT   9   1
+0369    KSHORT  10 100
+0370    KSHORT  11   1
+0371    FORI     9 => 0378
+0372 => ISLE     2   3
+0373    JMP     13 => 0376
+0374    KSHORT   4   2
+0375    JMP     13 => 0377
+0376 => KSHORT   4   1
+0377 => FORL     9 => 0372
+0378 => MOV      9   7
+0379    KSHORT  10   2
+0380    MOV     11   2
+0381    MOV     12   3
+0382    CALL     9   1   4
+0383    KSHORT   4   0
+0384    KSHORT   9   1
+0385    KSHORT  10 100
+0386    KSHORT  11   1
+0387    FORI     9 => 0394
+0388 => ISLT     3   2
+0389    JMP     13 => 0392
+0390    KSHORT   4   2
+0391    JMP     13 => 0393
+0392 => KSHORT   4   1
+0393 => FORL     9 => 0388
+0394 => MOV      9   7
+0395    KSHORT  10   1
+0396    MOV     11   3
+0397    MOV     12   2
+0398    CALL     9   1   4
+0399    KSHORT   4   0
+0400    KSHORT   9   1
+0401    KSHORT  10 100
+0402    KSHORT  11   1
+0403    FORI     9 => 0410
+0404 => ISLE     3   2
+0405    JMP     13 => 0408
+0406    KSHORT   4   2
+0407    JMP     13 => 0409
+0408 => KSHORT   4   1
+0409 => FORL     9 => 0404
+0410 => MOV      9   7
+0411    KSHORT  10   2
+0412    MOV     11   3
+0413    MOV     12   2
+0414    CALL     9   1   4
+0415    KPRI     9   2
+0416    KPRI     1   2
+0417    MOV      0   9
+0418    KSHORT   4   0
+0419    KSHORT   9   1
+0420    KSHORT  10 100
+0421    KSHORT  11   1
+0422    FORI     9 => 0429
+0423 => ISGE     2   3
+0424    JMP     13 => 0427
+0425    KSHORT   4   2
+0426    JMP     13 => 0428
+0427 => KSHORT   4   1
+0428 => FORL     9 => 0423
+0429 => MOV      9   7
+0430    KSHORT  10   2
+0431    MOV     11   2
+0432    MOV     12   3
+0433    CALL     9   1   4
+0434    KSHORT   4   0
+0435    KSHORT   9   1
+0436    KSHORT  10 100
+0437    KSHORT  11   1
+0438    FORI     9 => 0445
+0439 => ISGT     2   3
+0440    JMP     13 => 0443
+0441    KSHORT   4   2
+0442    JMP     13 => 0444
+0443 => KSHORT   4   1
+0444 => FORL     9 => 0439
+0445 => MOV      9   7
+0446    KSHORT  10   2
+0447    MOV     11   2
+0448    MOV     12   3
+0449    CALL     9   1   4
+0450    KSHORT   4   0
+0451    KSHORT   9   1
+0452    KSHORT  10 100
+0453    KSHORT  11   1
+0454    FORI     9 => 0461
+0455 => ISGE     3   2
+0456    JMP     13 => 0459
+0457    KSHORT   4   2
+0458    JMP     13 => 0460
+0459 => KSHORT   4   1
+0460 => FORL     9 => 0455
+0461 => MOV      9   7
+0462    KSHORT  10   2
+0463    MOV     11   3
+0464    MOV     12   2
+0465    CALL     9   1   4
+0466    KSHORT   4   0
+0467    KSHORT   9   1
+0468    KSHORT  10 100
+0469    KSHORT  11   1
+0470    FORI     9 => 0477
+0471 => ISGT     3   2
+0472    JMP     13 => 0475
+0473    KSHORT   4   2
+0474    JMP     13 => 0476
+0475 => KSHORT   4   1
+0476 => FORL     9 => 0471
+0477 => MOV      9   7
+0478    KSHORT  10   2
+0479    MOV     11   3
+0480    MOV     12   2
+0481    CALL     9   1   4
+0482    KSHORT   4   0
+0483    KSHORT   9   1
+0484    KSHORT  10 100
+0485    KSHORT  11   1
+0486    FORI     9 => 0493
+0487 => ISLT     2   3
+0488    JMP     13 => 0491
+0489    KSHORT   4   2
+0490    JMP     13 => 0492
+0491 => KSHORT   4   1
+0492 => FORL     9 => 0487
+0493 => MOV      9   7
+0494    KSHORT  10   1
+0495    MOV     11   2
+0496    MOV     12   3
+0497    CALL     9   1   4
+0498    KSHORT   4   0
+0499    KSHORT   9   1
+0500    KSHORT  10 100
+0501    KSHORT  11   1
+0502    FORI     9 => 0509
+0503 => ISLE     2   3
+0504    JMP     13 => 0507
+0505    KSHORT   4   2
+0506    JMP     13 => 0508
+0507 => KSHORT   4   1
+0508 => FORL     9 => 0503
+0509 => MOV      9   7
+0510    KSHORT  10   1
+0511    MOV     11   2
+0512    MOV     12   3
+0513    CALL     9   1   4
+0514    KSHORT   4   0
+0515    KSHORT   9   1
+0516    KSHORT  10 100
+0517    KSHORT  11   1
+0518    FORI     9 => 0525
+0519 => ISLT     3   2
+0520    JMP     13 => 0523
+0521    KSHORT   4   2
+0522    JMP     13 => 0524
+0523 => KSHORT   4   1
+0524 => FORL     9 => 0519
+0525 => MOV      9   7
+0526    KSHORT  10   1
+0527    MOV     11   3
+0528    MOV     12   2
+0529    CALL     9   1   4
+0530    KSHORT   4   0
+0531    KSHORT   9   1
+0532    KSHORT  10 100
+0533    KSHORT  11   1
+0534    FORI     9 => 0541
+0535 => ISLE     3   2
+0536    JMP     13 => 0539
+0537    KSHORT   4   2
+0538    JMP     13 => 0540
+0539 => KSHORT   4   1
+0540 => FORL     9 => 0535
+0541 => MOV      9   7
+0542    KSHORT  10   1
+0543    MOV     11   3
+0544    MOV     12   2
+0545    CALL     9   1   4
+0546    KPRI     9   0
+0547    TSETS    9   8   5  ; "__le"
+0548    KPRI     0   1
+0549    KSHORT   4   0
+0550    KSHORT   9   1
+0551    KSHORT  10 100
+0552    KSHORT  11   1
+0553    FORI     9 => 0560
+0554 => ISGE     2   3
+0555    JMP     13 => 0558
+0556    KSHORT   4   2
+0557    JMP     13 => 0559
+0558 => KSHORT   4   1
+0559 => FORL     9 => 0554
+0560 => MOV      9   7
+0561    KSHORT  10   1
+0562    MOV     11   2
+0563    MOV     12   3
+0564    CALL     9   1   4
+0565    KSHORT   4   0
+0566    KSHORT   9   1
+0567    KSHORT  10 100
+0568    KSHORT  11   1
+0569    FORI     9 => 0576
+0570 => ISGT     2   3
+0571    JMP     13 => 0574
+0572    KSHORT   4   2
+0573    JMP     13 => 0575
+0574 => KSHORT   4   1
+0575 => FORL     9 => 0570
+0576 => MOV      9   7
+0577    KSHORT  10   2
+0578    MOV     11   3
+0579    MOV     12   2
+0580    CALL     9   1   4
+0581    KSHORT   4   0
+0582    KSHORT   9   1
+0583    KSHORT  10 100
+0584    KSHORT  11   1
+0585    FORI     9 => 0592
+0586 => ISGE     3   2
+0587    JMP     13 => 0590
+0588    KSHORT   4   2
+0589    JMP     13 => 0591
+0590 => KSHORT   4   1
+0591 => FORL     9 => 0586
+0592 => MOV      9   7
+0593    KSHORT  10   1
+0594    MOV     11   3
+0595    MOV     12   2
+0596    CALL     9   1   4
+0597    KSHORT   4   0
+0598    KSHORT   9   1
+0599    KSHORT  10 100
+0600    KSHORT  11   1
+0601    FORI     9 => 0608
+0602 => ISGT     3   2
+0603    JMP     13 => 0606
+0604    KSHORT   4   2
+0605    JMP     13 => 0607
+0606 => KSHORT   4   1
+0607 => FORL     9 => 0602
+0608 => MOV      9   7
+0609    KSHORT  10   2
+0610    MOV     11   2
+0611    MOV     12   3
+0612    CALL     9   1   4
+0613    KSHORT   4   0
+0614    KSHORT   9   1
+0615    KSHORT  10 100
+0616    KSHORT  11   1
+0617    FORI     9 => 0624
+0618 => ISLT     2   3
+0619    JMP     13 => 0622
+0620    KSHORT   4   2
+0621    JMP     13 => 0623
+0622 => KSHORT   4   1
+0623 => FORL     9 => 0618
+0624 => MOV      9   7
+0625    KSHORT  10   2
+0626    MOV     11   2
+0627    MOV     12   3
+0628    CALL     9   1   4
+0629    KSHORT   4   0
+0630    KSHORT   9   1
+0631    KSHORT  10 100
+0632    KSHORT  11   1
+0633    FORI     9 => 0640
+0634 => ISLE     2   3
+0635    JMP     13 => 0638
+0636    KSHORT   4   2
+0637    JMP     13 => 0639
+0638 => KSHORT   4   1
+0639 => FORL     9 => 0634
+0640 => MOV      9   7
+0641    KSHORT  10   1
+0642    MOV     11   3
+0643    MOV     12   2
+0644    CALL     9   1   4
+0645    KSHORT   4   0
+0646    KSHORT   9   1
+0647    KSHORT  10 100
+0648    KSHORT  11   1
+0649    FORI     9 => 0656
+0650 => ISLT     3   2
+0651    JMP     13 => 0654
+0652    KSHORT   4   2
+0653    JMP     13 => 0655
+0654 => KSHORT   4   1
+0655 => FORL     9 => 0650
+0656 => MOV      9   7
+0657    KSHORT  10   2
+0658    MOV     11   3
+0659    MOV     12   2
+0660    CALL     9   1   4
+0661    KSHORT   4   0
+0662    KSHORT   9   1
+0663    KSHORT  10 100
+0664    KSHORT  11   1
+0665    FORI     9 => 0672
+0666 => ISLE     3   2
+0667    JMP     13 => 0670
+0668    KSHORT   4   2
+0669    JMP     13 => 0671
+0670 => KSHORT   4   1
+0671 => FORL     9 => 0666
+0672 => MOV      9   7
+0673    KSHORT  10   1
+0674    MOV     11   2
+0675    MOV     12   3
+0676    CALL     9   1   4
+0677    KPRI     0   2
+0678    KSHORT   4   0
+0679    KSHORT   9   1
+0680    KSHORT  10 100
+0681    KSHORT  11   1
+0682    FORI     9 => 0689
+0683 => ISGE     2   3
+0684    JMP     13 => 0687
+0685    KSHORT   4   2
+0686    JMP     13 => 0688
+0687 => KSHORT   4   1
+0688 => FORL     9 => 0683
+0689 => MOV      9   7
+0690    KSHORT  10   2
+0691    MOV     11   2
+0692    MOV     12   3
+0693    CALL     9   1   4
+0694    KSHORT   4   0
+0695    KSHORT   9   1
+0696    KSHORT  10 100
+0697    KSHORT  11   1
+0698    FORI     9 => 0705
+0699 => ISGT     2   3
+0700    JMP     13 => 0703
+0701    KSHORT   4   2
+0702    JMP     13 => 0704
+0703 => KSHORT   4   1
+0704 => FORL     9 => 0699
+0705 => MOV      9   7
+0706    KSHORT  10   1
+0707    MOV     11   3
+0708    MOV     12   2
+0709    CALL     9   1   4
+0710    KSHORT   4   0
+0711    KSHORT   9   1
+0712    KSHORT  10 100
+0713    KSHORT  11   1
+0714    FORI     9 => 0721
+0715 => ISGE     3   2
+0716    JMP     13 => 0719
+0717    KSHORT   4   2
+0718    JMP     13 => 0720
+0719 => KSHORT   4   1
+0720 => FORL     9 => 0715
+0721 => MOV      9   7
+0722    KSHORT  10   2
+0723    MOV     11   3
+0724    MOV     12   2
+0725    CALL     9   1   4
+0726    KSHORT   4   0
+0727    KSHORT   9   1
+0728    KSHORT  10 100
+0729    KSHORT  11   1
+0730    FORI     9 => 0737
+0731 => ISGT     3   2
+0732    JMP     13 => 0735
+0733    KSHORT   4   2
+0734    JMP     13 => 0736
+0735 => KSHORT   4   1
+0736 => FORL     9 => 0731
+0737 => MOV      9   7
+0738    KSHORT  10   1
+0739    MOV     11   2
+0740    MOV     12   3
+0741    CALL     9   1   4
+0742    KSHORT   4   0
+0743    KSHORT   9   1
+0744    KSHORT  10 100
+0745    KSHORT  11   1
+0746    FORI     9 => 0753
+0747 => ISLT     2   3
+0748    JMP     13 => 0751
+0749    KSHORT   4   2
+0750    JMP     13 => 0752
+0751 => KSHORT   4   1
+0752 => FORL     9 => 0747
+0753 => MOV      9   7
+0754    KSHORT  10   1
+0755    MOV     11   2
+0756    MOV     12   3
+0757    CALL     9   1   4
+0758    KSHORT   4   0
+0759    KSHORT   9   1
+0760    KSHORT  10 100
+0761    KSHORT  11   1
+0762    FORI     9 => 0769
+0763 => ISLE     2   3
+0764    JMP     13 => 0767
+0765    KSHORT   4   2
+0766    JMP     13 => 0768
+0767 => KSHORT   4   1
+0768 => FORL     9 => 0763
+0769 => MOV      9   7
+0770    KSHORT  10   2
+0771    MOV     11   3
+0772    MOV     12   2
+0773    CALL     9   1   4
+0774    KSHORT   4   0
+0775    KSHORT   9   1
+0776    KSHORT  10 100
+0777    KSHORT  11   1
+0778    FORI     9 => 0785
+0779 => ISLT     3   2
+0780    JMP     13 => 0783
+0781    KSHORT   4   2
+0782    JMP     13 => 0784
+0783 => KSHORT   4   1
+0784 => FORL     9 => 0779
+0785 => MOV      9   7
+0786    KSHORT  10   1
+0787    MOV     11   3
+0788    MOV     12   2
+0789    CALL     9   1   4
+0790    KSHORT   4   0
+0791    KSHORT   9   1
+0792    KSHORT  10 100
+0793    KSHORT  11   1
+0794    FORI     9 => 0801
+0795 => ISLE     3   2
+0796    JMP     13 => 0799
+0797    KSHORT   4   2
+0798    JMP     13 => 0800
+0799 => KSHORT   4   1
+0800 => FORL     9 => 0795
+0801 => MOV      9   7
+0802    KSHORT  10   2
+0803    MOV     11   2
+0804    MOV     12   3
+0805    CALL     9   1   4
+0806    UCLO     0 => 0807
+0807 => TDUP     0   8
+0808    FNEW     1   7      ; ref_lang_meta_comp_jit.lua:74
+0809    TSETS    1   0   3  ; "__lt"
+0810    TDUP     1  10
+0811    FNEW     2   9      ; ref_lang_meta_comp_jit.lua:75
+0812    TSETS    2   1   3  ; "__lt"
+0813    GGET     2   6      ; "setmetatable"
+0814    TDUP     3  11
+0815    MOV      4   0
+0816    CALL     2   2   3
+0817    GGET     3   6      ; "setmetatable"
+0818    TDUP     4  12
+0819    MOV      5   1
+0820    CALL     3   2   3
+0821    KPRI     4   0
+0822    KSHORT   5   1
+0823    KSHORT   6 100
+0824    KSHORT   7   1
+0825    FORI     5 => 0832
+0826 => ISLE     2   2
+0827    JMP      9 => 0830
+0828    KPRI     4   1
+0829    JMP      9 => 0831
+0830 => KPRI     4   2
+0831 => FORL     5 => 0826
+0832 => GGET     5  13      ; "assert"
+0833    ISEQP    4   2
+0834    JMP      6 => 0837
+0835    KPRI     6   1
+0836    JMP      7 => 0838
+0837 => KPRI     6   2
+0838 => CALL     5   1   2
+0839    GGET     4  14      ; "pcall"
+0840    FNEW     5  15      ; ref_lang_meta_comp_jit.lua:83
+0841    CALL     4   3   2
+0842    GGET     6  16      ; "table"
+0843    TGETS    6   6  17  ; "pack"
+0844    ISF          6
+0845    JMP      7 => 0856
+0846    GGET     6  13      ; "assert"
+0847    ISFC     7   4
+0848    JMP      7 => 0854
+0849    ISEQP    5   2
+0850    JMP      7 => 0853
+0851    KPRI     7   1
+0852    JMP      8 => 0854
+0853 => KPRI     7   2
+0854 => CALL     6   1   2
+0855    JMP      6 => 0859
+0856 => GGET     6  13      ; "assert"
+0857    NOT      7   4
+0858    CALL     6   1   2
+0859 => GGET     6  14      ; "pcall"
+0860    FNEW     7  18      ; ref_lang_meta_comp_jit.lua:93
+0861    CALL     6   3   2
+0862    GGET     8  16      ; "table"
+0863    TGETS    8   8  17  ; "pack"
+0864    ISF          8
+0865    JMP      9 => 0876
+0866    GGET     8  13      ; "assert"
+0867    ISFC     9   6
+0868    JMP      9 => 0874
+0869    ISEQP    7   2
+0870    JMP      9 => 0873
+0871    KPRI     9   1
+0872    JMP     10 => 0874
+0873 => KPRI     9   2
+0874 => CALL     8   1   2
+0875    JMP      8 => 0879
+0876 => GGET     8  13      ; "assert"
+0877    NOT      9   6
+0878    CALL     8   1   2
+0879 => UCLO     0 => 0880
+0880 => RET0     0   1
+

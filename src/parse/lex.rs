@@ -803,3 +803,31 @@ pub fn init_reserved(vm: &mut Vm) {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::debug_shortname;
+
+    #[test]
+    fn shortname_forms() {
+        // Reference: luajit -e 'error("x")' style prefixes via loadstring(..., name).
+        assert_eq!(debug_shortname(b"=stdin", 1), b"stdin");
+        let long_eq = [b'='; 80];
+        assert_eq!(debug_shortname(&long_eq, 1).len(), 59);
+        assert_eq!(debug_shortname(b"@foo/bar.lua", 1), b"foo/bar.lua");
+        let mut long_at = b"@".to_vec();
+        long_at.extend((0..70).map(|i| b'a' + (i % 26) as u8));
+        let s = debug_shortname(&long_at, 1);
+        assert_eq!(&s[..3], b"...");
+        assert_eq!(s.len(), 3 + 56);
+        assert_eq!(&s[3..], &long_at[long_at.len() - 56..]);
+        assert_eq!(debug_shortname(b"return 1", 1), b"[string \"return 1\"]");
+        assert_eq!(debug_shortname(b"a\nb", 1), b"[string \"a...\"]");
+        assert_eq!(debug_shortname(b"name", !0), b"[builtin:name]");
+        let long = [b'x'; 60];
+        let mut want = b"[string \"".to_vec();
+        want.extend_from_slice(&[b'x'; 45]);
+        want.extend_from_slice(b"...\"]");
+        assert_eq!(debug_shortname(&long, 1), want);
+    }
+}

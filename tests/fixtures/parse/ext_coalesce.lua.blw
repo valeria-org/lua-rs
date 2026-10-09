@@ -1,0 +1,166 @@
+-- BYTECODE -- ext_coalesce.lua:0-29
+0001    VARG     0   4   0
+0002    KPRI     3   0
+0003    MOV      4   0
+0004    ISNEP    4   0
+0005    JMP      5 => 0007
+0006    MOV      4   1
+0007 => MOV      3   4
+0008    MOV      4   0
+0009    ISNEP    4   0
+0010    JMP      5 => 0012
+0011    MOV      4   1
+0012 => ISNEP    4   0
+0013    JMP      5 => 0015
+0014    MOV      4   2
+0015 => MOV      3   4
+0016    MOV      4   0
+0017    ISNEP    4   0
+0018    JMP      5 => 0020
+0019    KSHORT   4   1
+0020 => MOV      3   4
+0021    KPRI     4   0
+0022    ISNEP    4   0
+0023    JMP      5 => 0025
+0024    MOV      4   0
+0025 => MOV      3   4
+0026    KSHORT   4   1
+0027    ISNEP    4   0
+0028    JMP      5 => 0030
+0029    MOV      4   0
+0030 => MOV      3   4
+0031    KPRI     4   1
+0032    ISNEP    4   0
+0033    JMP      5 => 0035
+0034    MOV      4   0
+0035 => MOV      3   4
+0036    MOV      4   0
+0037    ISNEP    4   0
+0038    JMP      5 => 0040
+0039    KPRI     4   0
+0040 => MOV      3   4
+0041    TGETS    4   0   0  ; "x"
+0042    ISNEP    4   0
+0043    JMP      5 => 0045
+0044    TGETS    4   1   1  ; "y"
+0045 => ISNEP    4   0
+0046    JMP      5 => 0048
+0047    KSTR     4   2      ; "default"
+0048 => MOV      3   4
+0049    MOV      4   0
+0050    ISNEP    4   0
+0051    JMP      5 => 0053
+0052    MOV      4   1
+0053 => ISTC     3   4
+0054    JMP      5 => 0056
+0055    MOV      3   2
+0056 => ISTC     4   0
+0057    JMP      4 => 0059
+0058    MOV      4   1
+0059 => ISNEP    4   0
+0060    JMP      5 => 0062
+0061    MOV      4   2
+0062 => MOV      3   4
+0063    ISFC     4   0
+0064    JMP      4 => 0066
+0065    MOV      4   1
+0066 => ISNEP    4   0
+0067    JMP      5 => 0069
+0068    MOV      4   2
+0069 => MOV      3   4
+0070    MOV      4   0
+0071    ISNEP    4   0
+0072    JMP      5 => 0074
+0073    MOV      4   1
+0074 => ADDVN    3   4   0  ; 1
+0075    MOV      4   1
+0076    ISNEP    4   0
+0077    JMP      5 => 0079
+0078    KSHORT   4   0
+0079 => ADDVV    3   0   4
+0080    MOV      4   0
+0081    ISNEP    4   0
+0082    JMP      5 => 0085
+0083    GGET     4   3      ; "f"
+0084    CALL     4   2   1
+0085 => MOV      3   4
+0086    GGET     4   3      ; "f"
+0087    CALL     4   2   1
+0088    ISNEP    4   0
+0089    JMP      5 => 0092
+0090    GGET     4   4      ; "g"
+0091    CALL     4   2   1
+0092 => MOV      3   4
+0093    ISEQP    0   0
+0094    JMP      4 => 0097
+0095    TGETS    4   0   5  ; "b"
+0096    JMP      5 => 0098
+0097 => KPRI     4   0
+0098 => ISNEP    4   0
+0099    JMP      5 => 0101
+0100    MOV      4   2
+0101 => MOV      3   4
+0102    MOV      4   0
+0103    ISNEP    4   0
+0104    JMP      5 => 0106
+0105    TNEW     4   0
+0106 => MOV      3   4
+0107    TNEW     4   3
+0108    MOV      5   0
+0109    ISNEP    5   0
+0110    JMP      6 => 0112
+0111    MOV      5   1
+0112 => TSETB    5   4   1
+0113    MOV      3   4
+0114    GGET     4   3      ; "f"
+0115    MOV      5   0
+0116    ISNEP    5   0
+0117    JMP      6 => 0119
+0118    MOV      5   1
+0119 => MOV      6   2
+0120    ISNEP    6   0
+0121    JMP      7 => 0123
+0122    KSHORT   6   1
+0123 => CALL     4   1   3
+0124    MOV      4   0
+0125    ISNEP    4   0
+0126    JMP      5 => 0128
+0127    MOV      4   1
+0128 => ISF          4
+0129    JMP      5 => 0130
+0130 => MOV      4   0
+0131    ISNEP    4   0
+0132    JMP      5 => 0134
+0133    MOV      4   1
+0134 => ISNEV    4   2
+0135    JMP      4 => 0136
+0136 => MOV      4   0
+0137    ISNEP    4   0
+0138    JMP      5 => 0140
+0139    MOV      4   1
+0140 => ISF          4
+0141    JMP      5 => 0145
+0142    LOOP     4 => 0145
+0143    JMP      4 => 0145
+0144    JMP      4 => 0136
+0145 => MOV      4   0
+0146    ISNEP    4   0
+0147    JMP      5 => 0155
+0148    MOV      4   1
+0149    ISNEP    4   0
+0150    JMP      5 => 0155
+0151    MOV      4   2
+0152    ISNEP    4   0
+0153    JMP      5 => 0155
+0154    KSHORT   4   1
+0155 => MOV      5   4
+0156    ISNEP    5   0
+0157    JMP      6 => 0159
+0158    KSHORT   5   2
+0159 => MOV      4   5
+0160    MOV      5   0
+0161    ISNEP    5   0
+0162    JMP      6 => 0164
+0163    MOV      5   1
+0164 => RET1     5   2
+

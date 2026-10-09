@@ -1,0 +1,76 @@
+-- BYTECODE -- upvalues.lua:4-6
+0001    UGET     0   0      ; a
+0002    UGET     1   1      ; b
+0003    ADDVV    0   0   1
+0004    RET1     0   2
+
+-- BYTECODE -- upvalues.lua:7-10
+0001    UGET     0   0      ; c
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; c
+0004    UGET     0   0      ; c
+0005    RET1     0   2
+
+-- BYTECODE -- upvalues.lua:17-17
+0001    UGET     0   0      ; x
+0002    UGET     1   1      ; y
+0003    ADDVV    0   0   1
+0004    UGET     1   2      ; z
+0005    ADDVV    0   0   1
+0006    UGET     1   3      ; a
+0007    ADDVV    0   0   1
+0008    UGET     1   4      ; c
+0009    ADDVV    0   0   1
+0010    RET1     0   2
+
+-- BYTECODE -- upvalues.lua:15-18
+0001    UGET     0   0      ; x
+0002    UGET     1   1      ; y
+0003    ADDVV    0   0   1
+0004    FNEW     1   0      ; upvalues.lua:17
+0005    UCLO     0 => 0006
+0006 => RET1     1   2
+
+-- BYTECODE -- upvalues.lua:13-21
+0001    KSHORT   0   2
+0002    FNEW     1   0      ; upvalues.lua:15
+0003    UGET     2   0      ; x
+0004    ADDVN    2   2   0  ; 1
+0005    USETV    0   2      ; x
+0006    UCLO     0 => 0007
+0007 => RET1     1   2
+
+-- BYTECODE -- upvalues.lua:11-23
+0001    KSHORT   0   1
+0002    FNEW     1   0      ; upvalues.lua:13
+0003    UCLO     0 => 0004
+0004 => RET1     1   2
+
+-- BYTECODE -- upvalues.lua:27-27
+0001    UGET     0   0      ; imm
+0002    UGET     1   1      ; mut
+0003    RET      0   3
+
+-- BYTECODE -- upvalues.lua:28-28
+0001    USETV    0   0      ; imm
+0002    RET0     0   1
+
+-- BYTECODE -- upvalues.lua:0-30
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    KSHORT   2   3
+0004    FNEW     3   0      ; upvalues.lua:4
+0005    FNEW     4   1      ; upvalues.lua:7
+0006    FNEW     5   2      ; upvalues.lua:11
+0007    KSTR     6   3      ; "immutable"
+0008    KSTR     7   4      ; "mutable"
+0009    KSTR     7   5      ; "changed"
+0010    FNEW     8   6      ; upvalues.lua:27
+0011    FNEW     9   7      ; upvalues.lua:28
+0012    MOV     10   3
+0013    MOV     11   4
+0014    MOV     12   5
+0015    MOV     13   8
+0016    UCLO     0 => 0017
+0017 => RET     10   5
+

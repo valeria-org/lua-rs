@@ -1,0 +1,162 @@
+-- BYTECODE -- ref_lib_math_random.lua:24-24
+0001    KSHORT   0   0
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lib_math_random.lua:38-38
+0001    KPRI     0   1
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lib_math_random.lua:0-48
+0001    GGET     0   0      ; "math"
+0002    TGETS    0   0   1  ; "random"
+0003    KSHORT   1  10
+0004    KSHORT   2 100
+0005    GGET     3   0      ; "math"
+0006    TGETS    3   3   2  ; "min"
+0007    GGET     4   0      ; "math"
+0008    TGETS    4   4   3  ; "max"
+0009    KSHORT   5   1
+0010    MOV      6   1
+0011    KSHORT   7   1
+0012    FORI     5 => 0078
+0013 => GGET     9   0      ; "math"
+0014    TGETS    9   9   4  ; "randomseed"
+0015    MOV     10   8
+0016    CALL     9   1   2
+0017    GGET     9   0      ; "math"
+0018    TGETS    9   9   5  ; "huge"
+0019    GGET    10   0      ; "math"
+0020    TGETS   10  10   5  ; "huge"
+0021    UNM     10  10
+0022    KSHORT  11   0
+0023    KSHORT  12   1
+0024    MOV     13   2
+0025    KSHORT  14   1
+0026    FORI    12 => 0052
+0027 => MOV     16   0
+0028    CALL    16   2   1
+0029    GGET    17   6      ; "assert"
+0030    KSHORT  18   0
+0031    ISGT    18  16
+0032    JMP     18 => 0036
+0033    KSHORT  18   1
+0034    ISLT    16  18
+0035    JMP     18 => 0038
+0036 => KPRI    18   1
+0037    JMP     19 => 0039
+0038 => KPRI    18   2
+0039 => CALL    17   1   2
+0040    ADDVV   11  11  16
+0041    MOV     17   3
+0042    MOV     18   9
+0043    MOV     19  16
+0044    CALL    17   2   3
+0045    MOV      9  17
+0046    MOV     17   4
+0047    MOV     18  10
+0048    MOV     19  16
+0049    CALL    17   2   3
+0050    MOV     10  17
+0051    FORL    12 => 0027
+0052 => GGET    12   6      ; "assert"
+0053    MULVV   13   9   2
+0054    KSHORT  14  15
+0055    ISGE    13  14
+0056    JMP     13 => 0062
+0057    SUBNV   13  10   0  ; 1
+0058    MULVV   13  13   2
+0059    KSHORT  14  15
+0060    ISLT    13  14
+0061    JMP     13 => 0064
+0062 => KPRI    13   1
+0063    JMP     14 => 0065
+0064 => KPRI    13   2
+0065 => CALL    12   1   2
+0066    GGET    12   6      ; "assert"
+0067    MULVN   13   2   1  ; 0.45
+0068    ISGE    13  11
+0069    JMP     13 => 0073
+0070    MULVN   13   2   2  ; 0.55
+0071    ISLT    11  13
+0072    JMP     13 => 0075
+0073 => KPRI    13   1
+0074    JMP     14 => 0076
+0075 => KPRI    13   2
+0076 => CALL    12   1   2
+0077    FORL     5 => 0013
+0078 => GGET     2   0      ; "math"
+0079    TGETS    2   2   4  ; "randomseed"
+0080    KSHORT   3   1
+0081    CALL     2   1   2
+0082    GGET     2   7      ; "setmetatable"
+0083    TNEW     3   0
+0084    TDUP     4   9
+0085    FNEW     5   8      ; ref_lib_math_random.lua:24
+0086    TSETS    5   4  10  ; "__index"
+0087    CALL     2   2   3
+0088    KSHORT   3   1
+0089    KSHORT   4 100
+0090    KSHORT   5   1
+0091    FORI     3 => 0099
+0092 => MOV      7   0
+0093    KSHORT   8  10
+0094    CALL     7   2   2
+0095    TGETV    8   2   7
+0096    ADDVN    8   8   0  ; 1
+0097    TSETV    8   2   7
+0098    FORL     3 => 0092
+0099 => KSHORT   3   1
+0100    KSHORT   4  10
+0101    KSHORT   5   1
+0102    FORI     3 => 0109
+0103 => GGET     7   6      ; "assert"
+0104    TGETV    8   2   6
+0105    CALL     7   1   2
+0106    KPRI     7   0
+0107    TSETV    7   2   6
+0108    FORL     3 => 0103
+0109 => GGET     3   6      ; "assert"
+0110    GGET     4  11      ; "next"
+0111    MOV      5   2
+0112    CALL     4   2   2
+0113    NOT      4   4
+0114    CALL     3   1   2
+0115    GGET     2   0      ; "math"
+0116    TGETS    2   2   4  ; "randomseed"
+0117    KSHORT   3   1
+0118    CALL     2   1   2
+0119    GGET     2   7      ; "setmetatable"
+0120    TNEW     3   0
+0121    TDUP     4  13
+0122    FNEW     5  12      ; ref_lib_math_random.lua:38
+0123    TSETS    5   4  10  ; "__index"
+0124    CALL     2   2   3
+0125    KSHORT   3   1
+0126    KSHORT   4 120
+0127    KSHORT   5   1
+0128    FORI     3 => 0136
+0129 => MOV      7   0
+0130    KSHORT   8  -3
+0131    KSHORT   9  11
+0132    CALL     7   2   3
+0133    KPRI     8   2
+0134    TSETV    8   2   7
+0135    FORL     3 => 0129
+0136 => KSHORT   3  -3
+0137    KSHORT   4  11
+0138    KSHORT   5   1
+0139    FORI     3 => 0146
+0140 => GGET     7   6      ; "assert"
+0141    TGETV    8   2   6
+0142    CALL     7   1   2
+0143    KPRI     7   0
+0144    TSETV    7   2   6
+0145    FORL     3 => 0140
+0146 => GGET     3   6      ; "assert"
+0147    GGET     4  11      ; "next"
+0148    MOV      5   2
+0149    CALL     4   2   2
+0150    NOT      4   4
+0151    CALL     3   1   2
+0152    RET0     0   1
+

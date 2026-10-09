@@ -177,8 +177,8 @@ fn bcdump(pt: Gc<Proto>, out: &mut Vec<u8>) {
             }
         }
     }
-    for pc in 1..n {
-        bcline(&pt, pc, target[pc], out);
+    for (pc, &t) in target.iter().enumerate().take(n).skip(1) {
+        bcline(&pt, pc, t, out);
     }
     out.push(b'\n');
 }

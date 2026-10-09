@@ -1,0 +1,128 @@
+-- BYTECODE -- call_adjust.lua:0-30
+0001    GGET     0   0      ; "f"
+0002    CALL     0   2   1
+0003    GGET     1   0      ; "f"
+0004    CALL     1   3   1
+0005    GGET     3   0      ; "f"
+0006    CALL     3   2   1
+0007    KSHORT   4   1
+0008    KPRI     5   0
+0009    KSHORT   6   1
+0010    GGET     7   0      ; "f"
+0011    CALL     7   3   1
+0012    GGET     9   0      ; "f"
+0013    CALL     9   2   1
+0014    GGET    10   0      ; "f"
+0015    CALL    10   2   1
+0016    GGET    11   0      ; "f"
+0017    CALL    11   1   1
+0018    GGET    11   0      ; "f"
+0019    MOV     12   5
+0020    CALL    12   0   1
+0021    CALLM   11   1   0
+0022    GGET    11   0      ; "f"
+0023    MOV     12   5
+0024    CALL    12   2   1
+0025    MOV     13   6
+0026    CALL    13   0   1
+0027    CALLM   11   1   1
+0028    GGET    11   0      ; "f"
+0029    KSHORT  12   1
+0030    MOV     13   5
+0031    CALL    13   0   1
+0032    CALLM   11   1   1
+0033    GGET    11   0      ; "f"
+0034    MOV     12   5
+0035    CALL    12   2   1
+0036    KSHORT  13   1
+0037    CALL    11   1   3
+0038    GGET    11   0      ; "f"
+0039    MOV     12   5
+0040    CALL    12   2   1
+0041    CALL    11   1   2
+0042    TNEW    11   3
+0043    GGET    12   0      ; "f"
+0044    CALL    12   0   1
+0045    TSETM   12   0      ; 1
+0046    TNEW    12   3
+0047    GGET    13   0      ; "f"
+0048    CALL    13   2   1
+0049    TSETB   13  12   1
+0050    GGET    13   0      ; "f"
+0051    CALL    13   0   1
+0052    TSETM   13   1      ; 2
+0053    TNEW    13   3
+0054    GGET    14   0      ; "f"
+0055    CALL    14   2   1
+0056    TSETB   14  13   1
+0057    GGET    14   0      ; "f"
+0058    CALL    14   2   1
+0059    LEN     14  14
+0060    GGET    15   0      ; "f"
+0061    CALL    15   2   1
+0062    MOV     16   5
+0063    CALL    16   2   1
+0064    ADDVV   15  15  16
+0065    GGET    16   0      ; "f"
+0066    CALL    16   2   1
+0067    CALL    16   1   1
+0068    GGET    16   0      ; "f"
+0069    CALL    16   2   1
+0070    CALL    16   2   1
+0071    CALL    16   1   1
+0072    GGET    16   0      ; "f"
+0073    CALL    16   2   1
+0074    KSHORT  17   1
+0075    TSETS   17  16   1  ; "x"
+0076    GGET    16   0      ; "f"
+0077    CALL    16   2   1
+0078    KSHORT  17   2
+0079    TSETB   17  16   1
+0080    GGET    16   0      ; "f"
+0081    CALL    16   2   1
+0082    MOV     17  16
+0083    TGETS   16  16   2  ; "m"
+0084    CALL    16   1   2
+0085    GGET    16   3      ; "o"
+0086    MOV     17  16
+0087    TGETS   16  16   2  ; "m"
+0088    CALL    16   2   2
+0089    MOV     17  16
+0090    TGETS   16  16   4  ; "n"
+0091    CALL    16   2   2
+0092    MOV     17  16
+0093    TGETS   16  16   5  ; "p"
+0094    CALL    16   1   2
+0095    GGET    16   0      ; "f"
+0096    KSTR    17   6      ; "str"
+0097    CALL    16   2   2
+0098    MOV     17  16
+0099    TGETS   16  16   2  ; "m"
+0100    TDUP    18   7
+0101    CALL    16   1   3
+0102    GGET    16   0      ; "f"
+0103    TDUP    17   8
+0104    CALL    16   2   2
+0105    KSTR    17   9      ; "s"
+0106    CALL    16   1   2
+0107    GGET    16   0      ; "f"
+0108    KSTR    17  10      ; "long"
+0109    CALL    16   1   2
+0110    GGET    16   0      ; "f"
+0111    KSTR    17  11      ; "long2"
+0112    CALL    16   1   2
+0113    GGET    16  12      ; "print"
+0114    GGET    17   0      ; "f"
+0115    KSHORT  18   1
+0116    KSHORT  19   2
+0117    KSHORT  20   3
+0118    CALL    17   0   4
+0119    CALLM   16   1   0
+0120    MOV     16   5
+0121    CALL    16   2   1
+0122    MOV     17   5
+0123    CALL    17   2   1
+0124    MOV     18   5
+0125    CALL    18   4   1
+0126    RET0     0   1
+

@@ -1,0 +1,106 @@
+-- BYTECODE -- ref_lib_ffi_err.lua:4-6
+0001    KCDATA   0   0
+0002    TGETS    0   0   1  ; "foo"
+0003    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_err.lua:13-13
+0001    GGET     0   0      ; "rawget"
+0002    KSTR     1   1      ; "x"
+0003    CALLT    0   2
+
+-- BYTECODE -- ref_lib_ffi_err.lua:12-15
+0001    GGET     0   0      ; "setmetatable"
+0002    TNEW     1   0
+0003    TDUP     2   2
+0004    FNEW     3   1      ; ref_lib_ffi_err.lua:13
+0005    TSETS    3   2   3  ; "__index"
+0006    CALL     0   2   3
+0007    TGETB    1   0   1
+0008    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_err.lua:26-30
+0001    UGET     0   0      ; point
+0002    TDUP     1   0
+0003    CALL     0   2   2
+0004    ADDVV    1   0   0
+0005    ADDVN    2   0   0  ; 5
+0006    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_err.lua:0-36
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "ffi"
+0003    CALL     0   2   2
+0004    GGET     1   2      ; "xpcall"
+0005    FNEW     2   3      ; ref_lib_ffi_err.lua:4
+0006    GGET     3   4      ; "debug"
+0007    TGETS    3   3   5  ; "traceback"
+0008    CALL     1   3   3
+0009    GGET     3   6      ; "assert"
+0010    ISEQP    1   1
+0011    JMP      4 => 0014
+0012    KPRI     4   1
+0013    JMP      5 => 0015
+0014 => KPRI     4   2
+0015 => CALL     3   1   2
+0016    GGET     3   6      ; "assert"
+0017    GGET     4   7      ; "string"
+0018    TGETS    4   4   8  ; "find"
+0019    MOV      5   2
+0020    KSTR     6   9      ; "__index"
+0021    CALL     4   2   3
+0022    NOT      4   4
+0023    CALL     3   1   2
+0024    GGET     1   2      ; "xpcall"
+0025    FNEW     2  10      ; ref_lib_ffi_err.lua:12
+0026    GGET     3   4      ; "debug"
+0027    TGETS    3   3   5  ; "traceback"
+0028    CALL     1   3   3
+0029    GGET     3   6      ; "assert"
+0030    ISEQP    1   1
+0031    JMP      4 => 0034
+0032    KPRI     4   1
+0033    JMP      5 => 0035
+0034 => KPRI     4   2
+0035 => CALL     3   1   2
+0036    GGET     3   6      ; "assert"
+0037    GGET     4   7      ; "string"
+0038    TGETS    4   4   8  ; "find"
+0039    MOV      5   2
+0040    KSTR     6   9      ; "__index"
+0041    CALL     4   0   3
+0042    CALLM    3   1   0
+0043    TGETS    1   0  11  ; "cdef"
+0044    KSTR     2  12      ; "typedef struct { int x; int y; } ffi_err"~
+0045    CALL     1   1   2
+0046    TGETS    1   0  13  ; "metatype"
+0047    KSTR     2  14      ; "ffi_err_point"
+0048    TDUP     3  17
+0049    TGETS    4   0  15  ; "C"
+0050    TGETS    4   4  16  ; "ffi_err_strchr"
+0051    TSETS    4   3  18  ; "__add"
+0052    CALL     1   2   3
+0053    FNEW     2  19      ; ref_lib_ffi_err.lua:26
+0054    GGET     3   2      ; "xpcall"
+0055    MOV      4   2
+0056    GGET     5   4      ; "debug"
+0057    TGETS    5   5   5  ; "traceback"
+0058    CALL     3   3   3
+0059    GGET     5   4      ; "debug"
+0060    TGETS    5   5  20  ; "getinfo"
+0061    MOV      6   2
+0062    CALL     5   2   2
+0063    TGETS    5   5  21  ; "linedefined"
+0064    ADDVN    5   5   0  ; 3
+0065    GGET     6   6      ; "assert"
+0066    GGET     7   7      ; "string"
+0067    TGETS    7   7  22  ; "match"
+0068    MOV      8   4
+0069    KSTR     9  23      ; "traceback:[^:]*:"
+0070    MOV     10   5
+0071    KSTR    11  24      ; ":"
+0072    CAT      9   9  11
+0073    CALL     7   0   3
+0074    CALLM    6   1   0
+0075    UCLO     1 => 0076
+0076 => RET0     0   1
+

@@ -1,0 +1,115 @@
+-- BYTECODE -- ext_compound.lua:31-31
+0001    UGET     0   0      ; u
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; u
+0004    UGET     0   0      ; u
+0005    RET1     0   2
+
+-- BYTECODE -- ext_compound.lua:32-32
+0001    UGET     1   0      ; u
+0002    MOV      2   0
+0003    CAT      1   1   2
+0004    USETV    0   1      ; u
+0005    RET0     0   1
+
+-- BYTECODE -- ext_compound.lua:0-39
+0001    KSHORT   0   1
+0002    KSHORT   1   2
+0003    ADDVN    0   0   0  ; 1
+0004    SUBVN    0   0   1  ; 2
+0005    MULVN    0   0   2  ; 3
+0006    DIVVN    0   0   3  ; 4
+0007    MODVN    0   0   4  ; 5
+0008    MOV      2   0
+0009    KSTR     3   0      ; "x"
+0010    CAT      0   2   3
+0011    KSHORT   2 255
+0012    BAND     0   0   2
+0013    KSHORT   2 256
+0014    BOR      0   0   2
+0015    KSHORT   2   7
+0016    BXOR     0   0   2
+0017    KSHORT   2   1
+0018    BSHL     0   0   2
+0019    KSHORT   2   2
+0020    BSHR     0   0   2
+0021    KSHORT   2   3
+0022    BSAR     0   0   2
+0023    ADDVV    0   0   1
+0024    MULVN    2   1   1  ; 2
+0025    ADDVV    0   0   2
+0026    MOV      2   0
+0027    MOV      3   1
+0028    KSTR     4   1      ; "y"
+0029    CAT      0   2   4
+0030    GGET     2   2      ; "g"
+0031    ADDVN    2   2   0  ; 1
+0032    GSET     2   2      ; "g"
+0033    GGET     2   2      ; "g"
+0034    KSTR     3   3      ; "s"
+0035    CAT      2   2   3
+0036    GSET     2   2      ; "g"
+0037    GGET     2   2      ; "g"
+0038    KSHORT   3   1
+0039    BXOR     2   2   3
+0040    GSET     2   2      ; "g"
+0041    TDUP     2   4
+0042    TGETS    3   2   0  ; "x"
+0043    ADDVN    3   3   0  ; 1
+0044    TSETS    3   2   0  ; "x"
+0045    TGETB    3   2   1
+0046    ADDVN    3   3   1  ; 2
+0047    TSETB    3   2   1
+0048    TGETV    3   2   0
+0049    ADDVN    3   3   2  ; 3
+0050    TSETV    3   2   0
+0051    TGETS    3   2   5  ; "k"
+0052    SUBVN    3   3   3  ; 4
+0053    TSETS    3   2   5  ; "k"
+0054    TGETS    3   2   0  ; "x"
+0055    TGETS    4   3   1  ; "y"
+0056    MULVN    4   4   4  ; 5
+0057    TSETS    4   3   1  ; "y"
+0058    GGET     3   6      ; "f"
+0059    CALL     3   2   1
+0060    TGETV    4   2   3
+0061    ADDVN    4   4   0  ; 1
+0062    TSETV    4   2   3
+0063    TGETS    3   2   0  ; "x"
+0064    KSTR     4   7      ; "z"
+0065    CAT      3   3   4
+0066    TSETS    3   2   0  ; "x"
+0067    TGETV    3   2   0
+0068    KSTR     4   7      ; "z"
+0069    CAT      3   3   4
+0070    TSETV    3   2   0
+0071    KSHORT   3   0
+0072    FNEW     4   8      ; ext_compound.lua:31
+0073    FNEW     5   9      ; ext_compound.lua:32
+0074    KSHORT   6   1
+0075    KSHORT   7  10
+0076    KSHORT   8   1
+0077    FORI     6 => 0080
+0078 => ADDVV    0   0   9
+0079    FORL     6 => 0078
+0080 => ADDVV    0   0   0
+0081    TGETS    6   2   0  ; "x"
+0082    TGETS    7   2   0  ; "x"
+0083    ADDVV    6   6   7
+0084    TSETS    6   2   0  ; "x"
+0085    KNUM     6   5      ; 1.5
+0086    TGETV    7   2   6
+0087    ADDVN    7   7   0  ; 1
+0088    TSETV    7   2   6
+0089    KPRI     6   2
+0090    TGETV    7   2   6
+0091    ADDVN    7   7   0  ; 1
+0092    TSETV    7   2   6
+0093    GGET     6   6      ; "f"
+0094    CALL     6   2   1
+0095    TGETS    7   6   0  ; "x"
+0096    ADDVN    7   7   0  ; 1
+0097    TSETS    7   6   0  ; "x"
+0098    UCLO     0 => 0099
+0099 => RET0     0   1
+

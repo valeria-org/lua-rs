@@ -1,0 +1,85 @@
+-- BYTECODE -- indexing.lua:0-43
+0001    VARG     0   3   0
+0002    KPRI     2   0
+0003    TGETS    2   0   0  ; "x"
+0004    TGETS    2   0   0  ; "x"
+0005    TGETB    2   0   1
+0006    TGETB    2   0 255
+0007    KSHORT   3 256
+0008    TGETV    2   0   3
+0009    KSHORT   3  -1
+0010    TGETV    2   0   3
+0011    TGETB    2   0   0
+0012    KNUM     3   0      ; 1.5
+0013    TGETV    2   0   3
+0014    TGETV    2   0   1
+0015    ADDVN    3   1   1  ; 1
+0016    TGETV    2   0   3
+0017    KPRI     3   2
+0018    TGETV    2   0   3
+0019    KPRI     3   0
+0020    TGETV    2   0   3
+0021    TGETS    3   0   0  ; "x"
+0022    TGETS    3   3   1  ; "y"
+0023    TGETS    2   3   2  ; "z"
+0024    TGETB    3   0   1
+0025    TGETB    3   3   2
+0026    TGETB    2   3   3
+0027    TGETV    3   0   1
+0028    TGETV    2   3   1
+0029    TGETS    2   0   3  ; "with space"
+0030    TGETS    2   0   4  ; ""
+0031    GGET     3   5      ; "f"
+0032    CALL     3   2   1
+0033    TGETV    2   0   3
+0034    KCDATA   3   6
+0035    TGETV    2   0   3
+0036    KSHORT   3   1
+0037    TSETS    3   0   0  ; "x"
+0038    KSHORT   3   2
+0039    TSETB    3   0   1
+0040    KSHORT   3 256
+0041    KSHORT   4   3
+0042    TSETV    4   0   3
+0043    KSHORT   3   4
+0044    TSETV    3   0   1
+0045    KSHORT   3   5
+0046    TSETS    3   0   1  ; "y"
+0047    KNUM     3   0      ; 1.5
+0048    KSHORT   4   6
+0049    TSETV    4   0   3
+0050    TGETS    3   0   0  ; "x"
+0051    KSHORT   4   7
+0052    TSETS    4   3   1  ; "y"
+0053    TGETV    3   0   1
+0054    KSHORT   4   8
+0055    TSETB    4   3   1
+0056    KPRI     3   2
+0057    KSHORT   4   9
+0058    TSETV    4   0   3
+0059    TSETS    1   0   0  ; "x"
+0060    TSETB    1   0   1
+0061    TSETV    1   0   1
+0062    KSTR     3   8      ; "str"
+0063    TSETS    3   0   7  ; "a"
+0064    KPRI     3   0
+0065    TSETS    3   0   9  ; "b"
+0066    KPRI     3   2
+0067    TSETS    3   0  10  ; "c"
+0068    KNUM     3   0      ; 1.5
+0069    TSETS    3   0  11  ; "d"
+0070    TNEW     3   0
+0071    TSETS    3   0  12  ; "e"
+0072    KSHORT   3   0
+0073    UNM      3   3
+0074    KSHORT   4   1
+0075    TSETV    4   0   3
+0076    GGET     3  13      ; "gt"
+0077    KSHORT   4   1
+0078    TSETS    4   3   0  ; "x"
+0079    GGET     3  13      ; "gt"
+0080    GGET     4  13      ; "gt"
+0081    TGETB    4   4   2
+0082    TSETB    4   3   1
+0083    RET0     0   1
+

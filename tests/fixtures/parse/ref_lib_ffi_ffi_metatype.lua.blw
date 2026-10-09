@@ -1,0 +1,1162 @@
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:13-15
+0001    UGET     2   0      ; ffi
+0002    TGETS    2   2   0  ; "cast"
+0003    KSTR     3   1      ; "void *"
+0004    MOV      4   0
+0005    CALL     2   2   3
+0006    UGET     3   0      ; ffi
+0007    TGETS    3   3   0  ; "cast"
+0008    KSTR     4   1      ; "void *"
+0009    MOV      5   1
+0010    CALL     3   2   3
+0011    ISEQV    2   3
+0012    JMP      2 => 0015
+0013    KPRI     2   1
+0014    JMP      3 => 0016
+0015 => KPRI     2   2
+0016 => RET1     2   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:20-20
+0001    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:24-24
+0001    UGET     0   0      ; ffi
+0002    TGETS    0   0   0  ; "metatype"
+0003    KSTR     1   1      ; "idx1_t"
+0004    TNEW     2   0
+0005    CALL     0   1   3
+0006    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:30-30
+0001    TGETS    1   0   0  ; "bar"
+0002    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:39-39
+0001    KSHORT   1  42
+0002    TSETS    1   0   0  ; "bar"
+0003    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:45-45
+0001    KSHORT   1  42
+0002    TSETS    1   0   0  ; "bar"
+0003    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:51-54
+0001    GGET     4   0      ; "assert"
+0002    ISNEP    2   0
+0003    JMP      5 => 0006
+0004    ISEQP    3   0
+0005    JMP      5 => 0008
+0006 => KPRI     5   1
+0007    JMP      6 => 0009
+0008 => KPRI     5   2
+0009 => CALL     4   1   2
+0010    MOV      4   0
+0011    USETV    1   1      ; uk
+0012    USETV    0   4      ; uc
+0013    KSHORT   4  99
+0014    RET1     4   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:55-55
+0001    MOV      3   0
+0002    MOV      4   1
+0003    USETV    2   2      ; uv
+0004    USETV    1   4      ; uk
+0005    USETV    0   3      ; uc
+0006    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:78-78
+0001    KSHORT   1  11
+0002    TSETB    1   0   0
+0003    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:86-86
+0001    MOV      2   0
+0002    USETV    1   1      ; uk
+0003    USETV    0   2      ; uc
+0004    KSHORT   2  99
+0005    RET1     2   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:88-88
+0001    MOV      3   0
+0002    MOV      4   1
+0003    USETV    2   2      ; uv
+0004    USETV    1   4      ; uk
+0005    USETV    0   3      ; uc
+0006    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:109-109
+0001    UGET     2   0      ; tp
+0002    TGETS    3   0   0  ; "x"
+0003    TGETS    4   1   0  ; "x"
+0004    ADDVV    3   3   4
+0005    TGETS    4   0   1  ; "y"
+0006    TGETS    5   1   1  ; "y"
+0007    ADDVV    4   4   5
+0008    CALLT    2   3
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:110-110
+0001    UGET     2   0      ; tp
+0002    TGETS    3   0   0  ; "x"
+0003    TGETS    4   1   0  ; "x"
+0004    SUBVV    3   3   4
+0005    TGETS    4   0   1  ; "y"
+0006    TGETS    5   1   1  ; "y"
+0007    SUBVV    4   4   5
+0008    CALLT    2   3
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:111-111
+0001    UGET     2   0      ; tp
+0002    TGETS    3   0   0  ; "x"
+0003    MULVV    3   3   1
+0004    TGETS    4   0   1  ; "y"
+0005    MULVV    4   4   1
+0006    CALLT    2   3
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:112-112
+0001    UGET     2   0      ; tp
+0002    TGETS    3   1   0  ; "x"
+0003    MULVV    3   3   0
+0004    TGETS    4   1   1  ; "y"
+0005    MULVV    4   4   0
+0006    CALLT    2   3
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:113-113
+0001    KSHORT   1  99
+0002    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:114-114
+0001    KSHORT   1   2
+0002    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:115-115
+0001    TGETS    1   0   0  ; "x"
+0002    TGETS    2   0   1  ; "y"
+0003    ADDVV    1   1   2
+0004    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:116-116
+0001    KSTR     1   0      ; "foo"
+0002    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:117-117
+0001    TSETS    2   0   0  ; "y"
+0002    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:119-119
+0001    TGETS    1   0   0  ; "x"
+0002    TGETS    2   0   1  ; "y"
+0003    SUBVV    1   1   2
+0004    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:153-153
+0001    UGET     1   0      ; q
+0002    TGETB    1   1   0
+0003    UGET     2   0      ; q
+0004    TGETB    2   2   0
+0005    ADDVV    1   1   2
+0006    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:180-180
+0001    UGET     1   0      ; count
+0002    ADDVN    1   1   0  ; 1
+0003    USETV    0   1      ; count
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:216-218
+0001    UGET     2   0      ; ffi
+0002    TGETS    2   2   0  ; "new"
+0003    MOV      3   0
+0004    ISTC     4   1
+0005    JMP      4 => 0007
+0006    KSHORT   4  -1
+0007 => CALLT    2   3
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:219-219
+0001    ADDVN    1   0   0  ; 1
+0002    RET1     1   2
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:224-224
+0001    UGET     0   0      ; tp
+0002    KSHORT   1   1
+0003    TSETS    1   0   0  ; "Z42"
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:225-225
+0001    UGET     0   0      ; tp
+0002    KSHORT   1   1
+0003    TSETS    1   0   0  ; "Z39"
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:227-227
+0001    UGET     0   0      ; tp
+0002    KSHORT   1   1
+0003    TSETS    1   0   0  ; "x"
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:232-232
+0001    UGET     0   0      ; o
+0002    KSHORT   1   1
+0003    TSETS    1   0   0  ; "Z42"
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:233-233
+0001    UGET     0   0      ; o
+0002    KSHORT   1   1
+0003    TSETS    1   0   0  ; "Z39"
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_ffi_metatype.lua:0-246
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "ffi"
+0003    CALL     0   2   2
+0004    GGET     1   2      ; "dofile"
+0005    KSTR     2   3      ; "../common/ffi_util.inc"
+0006    CALL     1   1   2
+0007    TGETS    1   0   4  ; "cdef"
+0008    KSTR     2   5      ; "typedef struct { int x; } idx1_t;\ntyped"~
+0009    CALL     1   1   2
+0010    FNEW     1   6      ; ref_lib_ffi_ffi_metatype.lua:13
+0011    TNEW     2   0
+0012    TGETS    3   0   7  ; "metatype"
+0013    KSTR     4   8      ; "idx1_t"
+0014    TDUP     5  12
+0015    TDUP     6   9
+0016    FNEW     7  10      ; ref_lib_ffi_ffi_metatype.lua:20
+0017    TSETS    7   6  11  ; "method"
+0018    TSETS    6   5  13  ; "__index"
+0019    TSETS    2   5  14  ; "__newindex"
+0020    CALL     3   2   3
+0021    GGET     4  15      ; "fails"
+0022    FNEW     5  16      ; ref_lib_ffi_ffi_metatype.lua:24
+0023    CALL     4   1   2
+0024    MOV      4   3
+0025    KSHORT   5 1234
+0026    CALL     4   2   2
+0027    GGET     5  17      ; "assert"
+0028    TGETS    6   4  18  ; "foo"
+0029    ISEQN    6   0      ; 99
+0030    JMP      6 => 0033
+0031    KPRI     6   1
+0032    JMP      7 => 0034
+0033 => KPRI     6   2
+0034 => CALL     5   1   2
+0035    GGET     5  17      ; "assert"
+0036    TGETS    6   4  19  ; "x"
+0037    ISEQN    6   1      ; 1234
+0038    JMP      6 => 0041
+0039    KPRI     6   1
+0040    JMP      7 => 0042
+0041 => KPRI     6   2
+0042 => CALL     5   1   2
+0043    GGET     5  15      ; "fails"
+0044    FNEW     6  20      ; ref_lib_ffi_ffi_metatype.lua:30
+0045    MOV      7   4
+0046    CALL     5   1   3
+0047    GGET     5  17      ; "assert"
+0048    MOV      7   4
+0049    TGETS    6   4  11  ; "method"
+0050    KSHORT   8 123
+0051    CALL     6   2   3
+0052    ISEQN    6   2      ; 123
+0053    JMP      6 => 0056
+0054    KPRI     6   1
+0055    JMP      7 => 0057
+0056 => KPRI     6   2
+0057 => CALL     5   1   2
+0058    KSHORT   5  42
+0059    TSETS    5   4  21  ; "bar"
+0060    GGET     5  17      ; "assert"
+0061    TGETS    6   2  21  ; "bar"
+0062    ISEQN    6   3      ; 42
+0063    JMP      6 => 0066
+0064    KPRI     6   1
+0065    JMP      7 => 0067
+0066 => KPRI     6   2
+0067 => CALL     5   1   2
+0068    TGETS    5   0  22  ; "new"
+0069    KSTR     6  23      ; "const idx1_t"
+0070    KSHORT   7 9876
+0071    CALL     5   2   3
+0072    GGET     6  17      ; "assert"
+0073    TGETS    7   5  18  ; "foo"
+0074    ISEQN    7   0      ; 99
+0075    JMP      7 => 0078
+0076    KPRI     7   1
+0077    JMP      8 => 0079
+0078 => KPRI     7   2
+0079 => CALL     6   1   2
+0080    GGET     6  17      ; "assert"
+0081    TGETS    7   5  19  ; "x"
+0082    ISEQN    7   4      ; 9876
+0083    JMP      7 => 0086
+0084    KPRI     7   1
+0085    JMP      8 => 0087
+0086 => KPRI     7   2
+0087 => CALL     6   1   2
+0088    GGET     6  15      ; "fails"
+0089    FNEW     7  24      ; ref_lib_ffi_ffi_metatype.lua:39
+0090    MOV      8   5
+0091    CALL     6   1   3
+0092    TGETS    6   0  22  ; "new"
+0093    KSTR     7  25      ; "const idx1_t *"
+0094    MOV      8   5
+0095    CALL     6   2   3
+0096    GGET     7  17      ; "assert"
+0097    TGETS    8   6  18  ; "foo"
+0098    ISEQN    8   0      ; 99
+0099    JMP      8 => 0102
+0100    KPRI     8   1
+0101    JMP      9 => 0103
+0102 => KPRI     8   2
+0103 => CALL     7   1   2
+0104    GGET     7  17      ; "assert"
+0105    TGETS    8   6  19  ; "x"
+0106    ISEQN    8   4      ; 9876
+0107    JMP      8 => 0110
+0108    KPRI     8   1
+0109    JMP      9 => 0111
+0110 => KPRI     8   2
+0111 => CALL     7   1   2
+0112    GGET     7  15      ; "fails"
+0113    FNEW     8  26      ; ref_lib_ffi_ffi_metatype.lua:45
+0114    MOV      9   6
+0115    CALL     7   1   3
+0116    KNIL     2   4
+0117    TGETS    5   0   7  ; "metatype"
+0118    KSTR     6  27      ; "idx2_t"
+0119    TDUP     7  29
+0120    FNEW     8  28      ; ref_lib_ffi_ffi_metatype.lua:51
+0121    TSETS    8   7  13  ; "__index"
+0122    FNEW     8  30      ; ref_lib_ffi_ffi_metatype.lua:55
+0123    TSETS    8   7  14  ; "__newindex"
+0124    CALL     5   2   3
+0125    MOV      6   5
+0126    KSHORT   7 1234
+0127    CALL     6   2   2
+0128    GGET     7  17      ; "assert"
+0129    TGETS    8   6  18  ; "foo"
+0130    ISEQN    8   0      ; 99
+0131    JMP      8 => 0134
+0132    KPRI     8   1
+0133    JMP      9 => 0135
+0134 => KPRI     8   2
+0135 => CALL     7   1   2
+0136    GGET     7  17      ; "assert"
+0137    MOV      8   1
+0138    MOV      9   2
+0139    MOV     10   6
+0140    CALL     8   2   3
+0141    ISF          8
+0142    JMP      9 => 0150
+0143    ISNES    3  18      ; "foo"
+0144    JMP      8 => 0147
+0145    ISEQP    4   0
+0146    JMP      8 => 0149
+0147 => KPRI     8   1
+0148    JMP      9 => 0150
+0149 => KPRI     8   2
+0150 => CALL     7   1   2
+0151    KNIL     7   8
+0152    KPRI     4   0
+0153    MOV      3   8
+0154    MOV      2   7
+0155    GGET     7  17      ; "assert"
+0156    TGETS    8   6  19  ; "x"
+0157    ISEQN    8   1      ; 1234
+0158    JMP      8 => 0161
+0159    KPRI     8   1
+0160    JMP      9 => 0162
+0161 => KPRI     8   2
+0162 => CALL     7   1   2
+0163    GGET     7  17      ; "assert"
+0164    ISNEP    2   0
+0165    JMP      8 => 0170
+0166    ISNEP    3   0
+0167    JMP      8 => 0170
+0168    ISEQP    4   0
+0169    JMP      8 => 0172
+0170 => KPRI     8   1
+0171    JMP      9 => 0173
+0172 => KPRI     8   2
+0173 => CALL     7   1   2
+0174    KNIL     7   8
+0175    KPRI     4   0
+0176    MOV      3   8
+0177    MOV      2   7
+0178    KSHORT   7  42
+0179    TSETS    7   6  21  ; "bar"
+0180    GGET     7  17      ; "assert"
+0181    MOV      8   1
+0182    MOV      9   2
+0183    MOV     10   6
+0184    CALL     8   2   3
+0185    ISF          8
+0186    JMP      9 => 0194
+0187    ISNES    3  21      ; "bar"
+0188    JMP      8 => 0191
+0189    ISEQN    4   3      ; 42
+0190    JMP      8 => 0193
+0191 => KPRI     8   1
+0192    JMP      9 => 0194
+0193 => KPRI     8   2
+0194 => CALL     7   1   2
+0195    KNIL     7   8
+0196    KPRI     4   0
+0197    MOV      3   8
+0198    MOV      2   7
+0199    KSHORT   7  11
+0200    TSETB    7   6  10
+0201    GGET     7  17      ; "assert"
+0202    MOV      8   1
+0203    MOV      9   2
+0204    MOV     10   6
+0205    CALL     8   2   3
+0206    ISF          8
+0207    JMP      9 => 0215
+0208    ISNEN    3   5      ; 10
+0209    JMP      8 => 0212
+0210    ISEQN    4   6      ; 11
+0211    JMP      8 => 0214
+0212 => KPRI     8   1
+0213    JMP      9 => 0215
+0214 => KPRI     8   2
+0215 => CALL     7   1   2
+0216    KNIL     7   8
+0217    KPRI     4   0
+0218    MOV      3   8
+0219    MOV      2   7
+0220    TGETS    7   0  22  ; "new"
+0221    KSTR     8  31      ; "idx2_t *"
+0222    MOV      9   6
+0223    CALL     7   2   3
+0224    GGET     8  17      ; "assert"
+0225    TGETS    9   7  18  ; "foo"
+0226    ISEQN    9   0      ; 99
+0227    JMP      9 => 0230
+0228    KPRI     9   1
+0229    JMP     10 => 0231
+0230 => KPRI     9   2
+0231 => CALL     8   1   2
+0232    GGET     8  17      ; "assert"
+0233    MOV      9   1
+0234    MOV     10   2
+0235    MOV     11   7
+0236    CALL     9   2   3
+0237    ISF          9
+0238    JMP     10 => 0246
+0239    ISNES    3  18      ; "foo"
+0240    JMP      9 => 0243
+0241    ISEQP    4   0
+0242    JMP      9 => 0245
+0243 => KPRI     9   1
+0244    JMP     10 => 0246
+0245 => KPRI     9   2
+0246 => CALL     8   1   2
+0247    KNIL     8   9
+0248    KPRI     4   0
+0249    MOV      3   9
+0250    MOV      2   8
+0251    GGET     8  17      ; "assert"
+0252    TGETS    9   7  19  ; "x"
+0253    ISEQN    9   1      ; 1234
+0254    JMP      9 => 0257
+0255    KPRI     9   1
+0256    JMP     10 => 0258
+0257 => KPRI     9   2
+0258 => CALL     8   1   2
+0259    GGET     8  17      ; "assert"
+0260    ISNEP    2   0
+0261    JMP      9 => 0266
+0262    ISNEP    3   0
+0263    JMP      9 => 0266
+0264    ISEQP    4   0
+0265    JMP      9 => 0268
+0266 => KPRI     9   1
+0267    JMP     10 => 0269
+0268 => KPRI     9   2
+0269 => CALL     8   1   2
+0270    KNIL     8   9
+0271    KPRI     4   0
+0272    MOV      3   9
+0273    MOV      2   8
+0274    GGET     8  17      ; "assert"
+0275    MOV      9   1
+0276    TGETB   10   7   0
+0277    MOV     11   7
+0278    CALL     9   0   3
+0279    CALLM    8   1   0
+0280    GGET     8  17      ; "assert"
+0281    ISNEP    2   0
+0282    JMP      9 => 0287
+0283    ISNEP    3   0
+0284    JMP      9 => 0287
+0285    ISEQP    4   0
+0286    JMP      9 => 0289
+0287 => KPRI     9   1
+0288    JMP     10 => 0290
+0289 => KPRI     9   2
+0290 => CALL     8   1   2
+0291    KNIL     8   9
+0292    KPRI     4   0
+0293    MOV      3   9
+0294    MOV      2   8
+0295    GGET     8  15      ; "fails"
+0296    FNEW     9  32      ; ref_lib_ffi_ffi_metatype.lua:78
+0297    MOV     10   7
+0298    CALL     8   1   3
+0299    UCLO     2 => 0300
+0300 => KNIL     2   4
+0301    TNEW     5   0
+0302    TNEW     6   0
+0303    TGETS    7   0   7  ; "metatype"
+0304    KSTR     8  33      ; "idx3_t"
+0305    TDUP     9  37
+0306    GGET    10  34      ; "setmetatable"
+0307    MOV     11   5
+0308    TDUP    12  36
+0309    FNEW    13  35      ; ref_lib_ffi_ffi_metatype.lua:86
+0310    TSETS   13  12  13  ; "__index"
+0311    CALL    10   2   3
+0312    TSETS   10   9  13  ; "__index"
+0313    GGET    10  34      ; "setmetatable"
+0314    MOV     11   6
+0315    TDUP    12  39
+0316    FNEW    13  38      ; ref_lib_ffi_ffi_metatype.lua:88
+0317    TSETS   13  12  14  ; "__newindex"
+0318    CALL    10   2   3
+0319    TSETS   10   9  14  ; "__newindex"
+0320    CALL     7   2   3
+0321    MOV      8   7
+0322    KSHORT   9 1234
+0323    CALL     8   2   2
+0324    GGET     9  17      ; "assert"
+0325    TGETS   10   8  18  ; "foo"
+0326    ISEQN   10   0      ; 99
+0327    JMP     10 => 0330
+0328    KPRI    10   1
+0329    JMP     11 => 0331
+0330 => KPRI    10   2
+0331 => CALL     9   1   2
+0332    GGET     9  17      ; "assert"
+0333    ISNEV    2   5
+0334    JMP     10 => 0339
+0335    ISNES    3  18      ; "foo"
+0336    JMP     10 => 0339
+0337    ISEQP    4   0
+0338    JMP     10 => 0341
+0339 => KPRI    10   1
+0340    JMP     11 => 0342
+0341 => KPRI    10   2
+0342 => CALL     9   1   2
+0343    KNIL     9  10
+0344    KPRI     4   0
+0345    MOV      3  10
+0346    MOV      2   9
+0347    GGET     9  17      ; "assert"
+0348    TGETS   10   8  19  ; "x"
+0349    ISEQN   10   1      ; 1234
+0350    JMP     10 => 0353
+0351    KPRI    10   1
+0352    JMP     11 => 0354
+0353 => KPRI    10   2
+0354 => CALL     9   1   2
+0355    GGET     9  17      ; "assert"
+0356    ISNEP    2   0
+0357    JMP     10 => 0362
+0358    ISNEP    3   0
+0359    JMP     10 => 0362
+0360    ISEQP    4   0
+0361    JMP     10 => 0364
+0362 => KPRI    10   1
+0363    JMP     11 => 0365
+0364 => KPRI    10   2
+0365 => CALL     9   1   2
+0366    KSHORT   9  42
+0367    TSETS    9   8  21  ; "bar"
+0368    GGET     9  17      ; "assert"
+0369    ISNEV    2   6
+0370    JMP     10 => 0375
+0371    ISNES    3  21      ; "bar"
+0372    JMP     10 => 0375
+0373    ISEQN    4   3      ; 42
+0374    JMP     10 => 0377
+0375 => KPRI    10   1
+0376    JMP     11 => 0378
+0377 => KPRI    10   2
+0378 => CALL     9   1   2
+0379    KNIL     9  10
+0380    KPRI     4   0
+0381    MOV      3  10
+0382    MOV      2   9
+0383    KSHORT   9  11
+0384    TSETB    9   8  10
+0385    GGET     9  17      ; "assert"
+0386    ISNEV    2   6
+0387    JMP     10 => 0392
+0388    ISNEN    3   5      ; 10
+0389    JMP     10 => 0392
+0390    ISEQN    4   6      ; 11
+0391    JMP     10 => 0394
+0392 => KPRI    10   1
+0393    JMP     11 => 0395
+0394 => KPRI    10   2
+0395 => CALL     9   1   2
+0396    KNIL     9  10
+0397    KPRI     4   0
+0398    MOV      3  10
+0399    MOV      2   9
+0400    UCLO     2 => 0401
+0401 => KPRI     2   0
+0402    TGETS    3   0   7  ; "metatype"
+0403    KSTR     4  40      ; "arith_t"
+0404    TDUP     5  42
+0405    FNEW     6  41      ; ref_lib_ffi_ffi_metatype.lua:109
+0406    TSETS    6   5  43  ; "__add"
+0407    FNEW     6  44      ; ref_lib_ffi_ffi_metatype.lua:110
+0408    TSETS    6   5  45  ; "__sub"
+0409    FNEW     6  46      ; ref_lib_ffi_ffi_metatype.lua:111
+0410    TSETS    6   5  47  ; "__mul"
+0411    FNEW     6  48      ; ref_lib_ffi_ffi_metatype.lua:112
+0412    TSETS    6   5  49  ; "__div"
+0413    GGET     6  34      ; "setmetatable"
+0414    TNEW     7   0
+0415    TDUP     8  51
+0416    FNEW     9  50      ; ref_lib_ffi_ffi_metatype.lua:113
+0417    TSETS    9   8  52  ; "__call"
+0418    CALL     6   2   3
+0419    TSETS    6   5  53  ; "__concat"
+0420    FNEW     6  54      ; ref_lib_ffi_ffi_metatype.lua:114
+0421    TSETS    6   5  55  ; "__len"
+0422    FNEW     6  56      ; ref_lib_ffi_ffi_metatype.lua:115
+0423    TSETS    6   5  52  ; "__call"
+0424    FNEW     6  57      ; ref_lib_ffi_ffi_metatype.lua:116
+0425    TSETS    6   5  58  ; "__tostring"
+0426    FNEW     6  59      ; ref_lib_ffi_ffi_metatype.lua:117
+0427    TSETS    6   5  14  ; "__newindex"
+0428    TDUP     6  61
+0429    FNEW     7  60      ; ref_lib_ffi_ffi_metatype.lua:119
+0430    TSETS    7   6  62  ; "diff"
+0431    TSETS    6   5  13  ; "__index"
+0432    CALL     3   2   3
+0433    MOV      2   3
+0434    MOV      3   2
+0435    KSHORT   4  10
+0436    KSHORT   5  20
+0437    CALL     3   2   3
+0438    MOV      4   2
+0439    KSHORT   5   1
+0440    KSHORT   6   2
+0441    CALL     4   2   3
+0442    ADDVV    5   3   4
+0443    GGET     6  17      ; "assert"
+0444    TGETS    7   5  19  ; "x"
+0445    ISNEN    7   6      ; 11
+0446    JMP      7 => 0450
+0447    TGETS    7   5  63  ; "y"
+0448    ISEQN    7   7      ; 22
+0449    JMP      7 => 0452
+0450 => KPRI     7   1
+0451    JMP      8 => 0453
+0452 => KPRI     7   2
+0453 => CALL     6   1   2
+0454    GGET     6  17      ; "assert"
+0455    MOV      8   5
+0456    TGETS    7   5  62  ; "diff"
+0457    CALL     7   2   2
+0458    ISEQN    7   8      ; -11
+0459    JMP      7 => 0462
+0460    KPRI     7   1
+0461    JMP      8 => 0463
+0462 => KPRI     7   2
+0463 => CALL     6   1   2
+0464    GGET     6  17      ; "assert"
+0465    MOV      7   5
+0466    CALL     7   2   1
+0467    ISEQN    7   9      ; 33
+0468    JMP      7 => 0471
+0469    KPRI     7   1
+0470    JMP      8 => 0472
+0471 => KPRI     7   2
+0472 => CALL     6   1   2
+0473    SUBVV    6   3   4
+0474    GGET     7  17      ; "assert"
+0475    TGETS    8   6  19  ; "x"
+0476    ISNEN    8  10      ; 9
+0477    JMP      8 => 0481
+0478    TGETS    8   6  63  ; "y"
+0479    ISEQN    8  11      ; 18
+0480    JMP      8 => 0483
+0481 => KPRI     8   1
+0482    JMP      9 => 0484
+0483 => KPRI     8   2
+0484 => CALL     7   1   2
+0485    GGET     7  17      ; "assert"
+0486    MOV      9   6
+0487    TGETS    8   6  62  ; "diff"
+0488    CALL     8   2   2
+0489    ISEQN    8  12      ; -9
+0490    JMP      8 => 0493
+0491    KPRI     8   1
+0492    JMP      9 => 0494
+0493 => KPRI     8   2
+0494 => CALL     7   1   2
+0495    GGET     7  17      ; "assert"
+0496    MOV      8   6
+0497    CALL     8   2   1
+0498    ISEQN    8  13      ; 27
+0499    JMP      8 => 0502
+0500    KPRI     8   1
+0501    JMP      9 => 0503
+0502 => KPRI     8   2
+0503 => CALL     7   1   2
+0504    MULVN    7   3  14  ; 3
+0505    GGET     8  17      ; "assert"
+0506    TGETS    9   7  19  ; "x"
+0507    ISNEN    9  15      ; 30
+0508    JMP      9 => 0512
+0509    TGETS    9   7  63  ; "y"
+0510    ISEQN    9  16      ; 60
+0511    JMP      9 => 0514
+0512 => KPRI     9   1
+0513    JMP     10 => 0515
+0514 => KPRI     9   2
+0515 => CALL     8   1   2
+0516    KCDATA   8  64
+0517    DIVVV    8   8   3
+0518    GGET     9  17      ; "assert"
+0519    TGETS   10   8  19  ; "x"
+0520    ISNEN   10  15      ; 30
+0521    JMP     10 => 0525
+0522    TGETS   10   8  63  ; "y"
+0523    ISEQN   10  16      ; 60
+0524    JMP     10 => 0527
+0525 => KPRI    10   1
+0526    JMP     11 => 0528
+0527 => KPRI    10   2
+0528 => CALL     9   1   2
+0529    GGET     9  17      ; "assert"
+0530    KSHORT  10   1
+0531    MOV     11   5
+0532    CAT     10  10  11
+0533    ISEQN   10   0      ; 99
+0534    JMP     10 => 0537
+0535    KPRI    10   1
+0536    JMP     11 => 0538
+0537 => KPRI    10   2
+0538 => CALL     9   1   2
+0539    GGET     9  17      ; "assert"
+0540    MOV     10   5
+0541    KSHORT  11   1
+0542    CAT     10  10  11
+0543    ISEQN   10   0      ; 99
+0544    JMP     10 => 0547
+0545    KPRI    10   1
+0546    JMP     11 => 0548
+0547 => KPRI    10   2
+0548 => CALL     9   1   2
+0549    GGET     9  17      ; "assert"
+0550    MOV     10   5
+0551    MOV     11   6
+0552    CAT     10  10  11
+0553    ISEQN   10   0      ; 99
+0554    JMP     10 => 0557
+0555    KPRI    10   1
+0556    JMP     11 => 0558
+0557 => KPRI    10   2
+0558 => CALL     9   1   2
+0559    GGET     9  17      ; "assert"
+0560    GGET    10  65      ; "tostring"
+0561    MOV     11   5
+0562    CALL    10   2   2
+0563    ISEQS   10  18      ; "foo"
+0564    JMP     10 => 0567
+0565    KPRI    10   1
+0566    JMP     11 => 0568
+0567 => KPRI    10   2
+0568 => CALL     9   1   2
+0569    GGET     9  17      ; "assert"
+0570    GGET    10  65      ; "tostring"
+0571    TGETS   11   0  66  ; "cast"
+0572    KSTR    12  67      ; "arith_t *"
+0573    MOV     13   5
+0574    CALL    11   0   3
+0575    CALLM   10   2   0
+0576    ISEQS   10  18      ; "foo"
+0577    JMP     10 => 0580
+0578    KPRI    10   1
+0579    JMP     11 => 0581
+0580 => KPRI    10   2
+0581 => CALL     9   1   2
+0582    KSHORT   9  42
+0583    TSETS    9   5  18  ; "foo"
+0584    GGET     9  17      ; "assert"
+0585    TGETS   10   5  63  ; "y"
+0586    ISEQN   10   3      ; 42
+0587    JMP     10 => 0590
+0588    KPRI    10   1
+0589    JMP     11 => 0591
+0590 => KPRI    10   2
+0591 => CALL     9   1   2
+0592    TGETS    9   0  22  ; "new"
+0593    KSTR    10  67      ; "arith_t *"
+0594    MOV     11   3
+0595    CALL     9   2   3
+0596    ADDVV   10   9   9
+0597    GGET    11  17      ; "assert"
+0598    TGETS   12  10  19  ; "x"
+0599    ISNEN   12  17      ; 20
+0600    JMP     12 => 0604
+0601    TGETS   12  10  63  ; "y"
+0602    ISEQN   12  18      ; 40
+0603    JMP     12 => 0606
+0604 => KPRI    12   1
+0605    JMP     13 => 0607
+0606 => KPRI    12   2
+0607 => CALL    11   1   2
+0608    TGETB   11   9   0
+0609    TGETB   12   9   0
+0610    ADDVV   11  11  12
+0611    GGET    12  17      ; "assert"
+0612    TGETS   13  11  19  ; "x"
+0613    ISNEN   13  17      ; 20
+0614    JMP     13 => 0618
+0615    TGETS   13  11  63  ; "y"
+0616    ISEQN   13  18      ; 40
+0617    JMP     13 => 0620
+0618 => KPRI    13   1
+0619    JMP     14 => 0621
+0620 => KPRI    13   2
+0621 => CALL    12   1   2
+0622    GGET    12  17      ; "assert"
+0623    MOV     13   9
+0624    CALL    13   2   1
+0625    ISEQN   13  15      ; 30
+0626    JMP     13 => 0629
+0627    KPRI    13   1
+0628    JMP     14 => 0630
+0629 => KPRI    13   2
+0630 => CALL    12   1   2
+0631    TGETS   12   0  22  ; "new"
+0632    KSTR    13  68      ; "arith_t &"
+0633    MOV     14   3
+0634    CALL    12   2   3
+0635    GGET    13  15      ; "fails"
+0636    FNEW    14  69      ; ref_lib_ffi_ffi_metatype.lua:153
+0637    MOV     15  12
+0638    CALL    13   1   3
+0639    ADDVV   13  12  12
+0640    GGET    14  17      ; "assert"
+0641    TGETS   15  13  19  ; "x"
+0642    ISNEN   15  17      ; 20
+0643    JMP     15 => 0647
+0644    TGETS   15  13  63  ; "y"
+0645    ISEQN   15  18      ; 40
+0646    JMP     15 => 0649
+0647 => KPRI    15   1
+0648    JMP     16 => 0650
+0649 => KPRI    15   2
+0650 => CALL    14   1   2
+0651    KSHORT  14   0
+0652    KSHORT  15   1
+0653    KSHORT  16 100
+0654    KSHORT  17   1
+0655    FORI    15 => 0661
+0656 => MOV     20   3
+0657    TGETS   19   3  62  ; "diff"
+0658    CALL    19   2   2
+0659    MOV     14  19
+0660    FORL    15 => 0656
+0661 => GGET    15  17      ; "assert"
+0662    ISEQN   14  19      ; -10
+0663    JMP     16 => 0666
+0664    KPRI    16   1
+0665    JMP     17 => 0667
+0666 => KPRI    16   2
+0667 => CALL    15   1   2
+0668    KSHORT  15   1
+0669    KSHORT  16 100
+0670    KSHORT  17   1
+0671    FORI    15 => 0674
+0672 => TSETS   18   5  18  ; "foo"
+0673    FORL    15 => 0672
+0674 => GGET    15  17      ; "assert"
+0675    TGETS   16   5  63  ; "y"
+0676    ISEQN   16  20      ; 100
+0677    JMP     16 => 0680
+0678    KPRI    16   1
+0679    JMP     17 => 0681
+0680 => KPRI    16   2
+0681 => CALL    15   1   2
+0682    MOV     15   2
+0683    KSHORT  16   1
+0684    KSHORT  17   3
+0685    CALL    15   2   3
+0686    KSHORT  16   1
+0687    KSHORT  17 100
+0688    KSHORT  18   1
+0689    FORI    16 => 0692
+0690 => ADDVV   15  15   3
+0691    FORL    16 => 0690
+0692 => GGET    16  17      ; "assert"
+0693    TGETS   17  15  19  ; "x"
+0694    ISNEN   17  21      ; 1001
+0695    JMP     17 => 0699
+0696    TGETS   17  15  63  ; "y"
+0697    ISEQN   17  22      ; 2003
+0698    JMP     17 => 0701
+0699 => KPRI    17   1
+0700    JMP     18 => 0702
+0701 => KPRI    17   2
+0702 => CALL    16   1   2
+0703    KSHORT  16   0
+0704    KSHORT  17   1
+0705    KSHORT  18 100
+0706    KSHORT  19   1
+0707    FORI    17 => 0711
+0708 => LEN     21   3
+0709    ADDVV   16  16  21
+0710    FORL    17 => 0708
+0711 => GGET    17  17      ; "assert"
+0712    ISEQN   16  23      ; 200
+0713    JMP     18 => 0716
+0714    KPRI    18   1
+0715    JMP     19 => 0717
+0716 => KPRI    18   2
+0717 => CALL    17   1   2
+0718    KSHORT  17   0
+0719    KSHORT  18   1
+0720    KSHORT  19 100
+0721    KSHORT  20   1
+0722    FORI    18 => 0727
+0723 => MOV     22   9
+0724    CALL    22   2   1
+0725    ADDVV   17  17  22
+0726    FORL    18 => 0723
+0727 => GGET    18  17      ; "assert"
+0728    ISEQN   17  24      ; 3000
+0729    JMP     19 => 0732
+0730    KPRI    19   1
+0731    JMP     20 => 0733
+0732 => KPRI    19   2
+0733 => CALL    18   1   2
+0734    UCLO     2 => 0735
+0735 => KSHORT   2   0
+0736    TGETS    3   0   7  ; "metatype"
+0737    KSTR     4  70      ; "gc_t"
+0738    TDUP     5  72
+0739    FNEW     6  71      ; ref_lib_ffi_ffi_metatype.lua:180
+0740    TSETS    6   5  73  ; "__gc"
+0741    CALL     3   2   3
+0742    MOV      4   3
+0743    CALL     4   2   1
+0744    KPRI     4   0
+0745    GGET     5  74      ; "collectgarbage"
+0746    CALL     5   1   1
+0747    GGET     5  17      ; "assert"
+0748    ISEQN    2  25      ; 1
+0749    JMP      6 => 0752
+0750    KPRI     6   1
+0751    JMP      7 => 0753
+0752 => KPRI     6   2
+0753 => CALL     5   1   2
+0754    MOV      5   3
+0755    CALL     5   2   1
+0756    MOV      6   3
+0757    CALL     6   2   1
+0758    KPRI     5   0
+0759    GGET     7  74      ; "collectgarbage"
+0760    CALL     7   1   1
+0761    GGET     7  17      ; "assert"
+0762    ISEQN    2  26      ; 2
+0763    JMP      8 => 0766
+0764    KPRI     8   1
+0765    JMP      9 => 0767
+0766 => KPRI     8   2
+0767 => CALL     7   1   2
+0768    KPRI     6   0
+0769    GGET     7  74      ; "collectgarbage"
+0770    CALL     7   1   1
+0771    GGET     7  17      ; "assert"
+0772    ISEQN    2  14      ; 3
+0773    JMP      8 => 0776
+0774    KPRI     8   1
+0775    JMP      9 => 0777
+0776 => KPRI     8   2
+0777 => CALL     7   1   2
+0778    KPRI     7   0
+0779    KSHORT   8   1
+0780    KSHORT   9 100
+0781    KSHORT  10   1
+0782    FORI     8 => 0787
+0783 => MOV     12   3
+0784    CALL    12   2   1
+0785    MOV      7  12
+0786    FORL     8 => 0783
+0787 => KPRI     7   0
+0788    GGET     8  74      ; "collectgarbage"
+0789    CALL     8   1   1
+0790    GGET     8  17      ; "assert"
+0791    ISEQN    2  27      ; 103
+0792    JMP      9 => 0795
+0793    KPRI     9   1
+0794    JMP     10 => 0796
+0795 => KPRI     9   2
+0796 => CALL     8   1   2
+0797    TNEW     8   0
+0798    KSHORT   9   1
+0799    KSHORT  10 100
+0800    KSHORT  11   1
+0801    FORI     9 => 0806
+0802 => MOV     13   3
+0803    CALL    13   2   1
+0804    TSETV   13   8  12
+0805    FORL     9 => 0802
+0806 => KSHORT   9   1
+0807    KSHORT  10 100
+0808    KSHORT  11   1
+0809    FORI     9 => 0815
+0810 => TGETS   13   0  75  ; "gc"
+0811    TGETV   14   8  12
+0812    KPRI    15   0
+0813    CALL    13   1   3
+0814    FORL     9 => 0810
+0815 => KPRI     8   0
+0816    GGET     9  74      ; "collectgarbage"
+0817    CALL     9   1   1
+0818    GGET     9  17      ; "assert"
+0819    ISEQN    2  27      ; 103
+0820    JMP     10 => 0823
+0821    KPRI    10   1
+0822    JMP     11 => 0824
+0823 => KPRI    10   2
+0824 => CALL     9   1   2
+0825    UCLO     2 => 0826
+0826 => TGETS    2   0   7  ; "metatype"
+0827    KSTR     3  76      ; "struct {\n  static const int Z42 = 42;\n"~
+0828    TDUP     4  78
+0829    FNEW     5  77      ; ref_lib_ffi_ffi_metatype.lua:216
+0830    TSETS    5   4  79  ; "__new"
+0831    TDUP     5  81
+0832    FNEW     6  80      ; ref_lib_ffi_ffi_metatype.lua:219
+0833    TSETS    6   5  82  ; "test"
+0834    TSETS    5   4  13  ; "__index"
+0835    CALL     2   2   3
+0836    GGET     3  17      ; "assert"
+0837    TGETS    4   2  83  ; "Z42"
+0838    ISEQN    4   3      ; 42
+0839    JMP      4 => 0842
+0840    KPRI     4   1
+0841    JMP      5 => 0843
+0842 => KPRI     4   2
+0843 => CALL     3   1   2
+0844    GGET     3  17      ; "assert"
+0845    TGETS    4   2  84  ; "Z39"
+0846    ISEQN    4  28      ; 39
+0847    JMP      4 => 0850
+0848    KPRI     4   1
+0849    JMP      5 => 0851
+0850 => KPRI     4   2
+0851 => CALL     3   1   2
+0852    GGET     3  17      ; "assert"
+0853    TGETS    4   2  82  ; "test"
+0854    KSHORT   5  99
+0855    CALL     4   2   2
+0856    ISEQN    4  20      ; 100
+0857    JMP      4 => 0860
+0858    KPRI     4   1
+0859    JMP      5 => 0861
+0860 => KPRI     4   2
+0861 => CALL     3   1   2
+0862    GGET     3  15      ; "fails"
+0863    FNEW     4  85      ; ref_lib_ffi_ffi_metatype.lua:224
+0864    CALL     3   1   2
+0865    GGET     3  15      ; "fails"
+0866    FNEW     4  86      ; ref_lib_ffi_ffi_metatype.lua:225
+0867    CALL     3   1   2
+0868    GGET     3  17      ; "assert"
+0869    TGETS    4   2  19  ; "x"
+0870    ISEQS    4  87      ; "hello"
+0871    JMP      4 => 0874
+0872    KPRI     4   1
+0873    JMP      5 => 0875
+0874 => KPRI     4   2
+0875 => CALL     3   1   2
+0876    GGET     3  15      ; "fails"
+0877    FNEW     4  88      ; ref_lib_ffi_ffi_metatype.lua:227
+0878    CALL     3   1   2
+0879    MOV      3   2
+0880    CALL     3   2   1
+0881    GGET     4  17      ; "assert"
+0882    TGETS    5   3  83  ; "Z42"
+0883    ISEQN    5   3      ; 42
+0884    JMP      5 => 0887
+0885    KPRI     5   1
+0886    JMP      6 => 0888
+0887 => KPRI     5   2
+0888 => CALL     4   1   2
+0889    GGET     4  17      ; "assert"
+0890    TGETS    5   3  84  ; "Z39"
+0891    ISEQN    5  28      ; 39
+0892    JMP      5 => 0895
+0893    KPRI     5   1
+0894    JMP      6 => 0896
+0895 => KPRI     5   2
+0896 => CALL     4   1   2
+0897    GGET     4  17      ; "assert"
+0898    TGETS    5   3  82  ; "test"
+0899    KSHORT   6  55
+0900    CALL     5   2   2
+0901    ISEQN    5  29      ; 56
+0902    JMP      5 => 0905
+0903    KPRI     5   1
+0904    JMP      6 => 0906
+0905 => KPRI     5   2
+0906 => CALL     4   1   2
+0907    GGET     4  15      ; "fails"
+0908    FNEW     5  89      ; ref_lib_ffi_ffi_metatype.lua:232
+0909    CALL     4   1   2
+0910    GGET     4  15      ; "fails"
+0911    FNEW     5  90      ; ref_lib_ffi_ffi_metatype.lua:233
+0912    CALL     4   1   2
+0913    GGET     4  17      ; "assert"
+0914    TGETS    5   3  19  ; "x"
+0915    ISEQN    5  30      ; -1
+0916    JMP      5 => 0919
+0917    KPRI     5   1
+0918    JMP      6 => 0920
+0919 => KPRI     5   2
+0920 => CALL     4   1   2
+0921    KSHORT   4   5
+0922    TSETS    4   3  19  ; "x"
+0923    GGET     4  17      ; "assert"
+0924    TGETS    5   3  19  ; "x"
+0925    ISEQN    5  31      ; 5
+0926    JMP      5 => 0929
+0927    KPRI     5   1
+0928    JMP      6 => 0930
+0929 => KPRI     5   2
+0930 => CALL     4   1   2
+0931    UCLO     2 => 0932
+0932 => TGETS    2   0  22  ; "new"
+0933    KSTR     3  91      ; "struct { int x; }"
+0934    KSHORT   4  99
+0935    CALL     2   2   3
+0936    TGETS    3   0   7  ; "metatype"
+0937    KSTR     4  92      ; "struct { }"
+0938    TDUP     5  93
+0939    TSETS    2   5  13  ; "__index"
+0940    CALL     3   2   3
+0941    MOV      4   3
+0942    CALL     4   2   1
+0943    GGET     5  17      ; "assert"
+0944    TGETS    6   4  19  ; "x"
+0945    ISEQN    6   0      ; 99
+0946    JMP      6 => 0949
+0947    KPRI     6   1
+0948    JMP      7 => 0950
+0949 => KPRI     6   2
+0950 => CALL     5   1   2
+0951    UCLO     0 => 0952
+0952 => RET0     0   1
+

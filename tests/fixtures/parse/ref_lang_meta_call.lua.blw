@@ -1,0 +1,353 @@
+-- BYTECODE -- ref_lang_meta_call.lua:2-4
+0001    MOV      3   0
+0002    MOV      4   1
+0003    MOV      5   2
+0004    RET      3   4
+
+-- BYTECODE -- ref_lang_meta_call.lua:42-42
+0001    RET1     0   2
+
+-- BYTECODE -- ref_lang_meta_call.lua:47-47
+0001    RET1     1   2
+
+-- BYTECODE -- ref_lang_meta_call.lua:53-53
+0001    SUBNV    2   1   0  ; 100
+0002    RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_call.lua:64-64
+0001    SUBNV    1   0   0  ; 100
+0002    RET1     1   2
+
+-- BYTECODE -- ref_lang_meta_call.lua:78-78
+0001    SUBNV    2   1   0  ; 100
+0002    TSETV    2   0   1
+0003    RET0     0   1
+
+-- BYTECODE -- ref_lang_meta_call.lua:0-82
+0001    FNEW     0   0      ; ref_lang_meta_call.lua:2
+0002    TDUP     1   1
+0003    TSETS    0   1   2  ; "__call"
+0004    GGET     2   3      ; "setmetatable"
+0005    TNEW     3   0
+0006    MOV      4   1
+0007    CALL     2   2   3
+0008    MOV      3   2
+0009    CALL     3   4   1
+0010    GGET     6   4      ; "assert"
+0011    ISNEV    3   2
+0012    JMP      7 => 0017
+0013    ISNEP    4   0
+0014    JMP      7 => 0017
+0015    ISEQP    5   0
+0016    JMP      7 => 0019
+0017 => KPRI     7   1
+0018    JMP      8 => 0020
+0019 => KPRI     7   2
+0020 => CALL     6   1   2
+0021    MOV      6   2
+0022    KSTR     7   5      ; "foo"
+0023    CALL     6   4   2
+0024    GGET     9   4      ; "assert"
+0025    ISNEV    6   2
+0026    JMP     10 => 0031
+0027    ISNES    7   5      ; "foo"
+0028    JMP     10 => 0031
+0029    ISEQP    8   0
+0030    JMP     10 => 0033
+0031 => KPRI    10   1
+0032    JMP     11 => 0034
+0033 => KPRI    10   2
+0034 => CALL     9   1   2
+0035    MOV      9   2
+0036    KSTR    10   5      ; "foo"
+0037    KSTR    11   6      ; "bar"
+0038    CALL     9   4   3
+0039    GGET    12   4      ; "assert"
+0040    ISNEV    9   2
+0041    JMP     13 => 0046
+0042    ISNES   10   5      ; "foo"
+0043    JMP     13 => 0046
+0044    ISEQS   11   6      ; "bar"
+0045    JMP     13 => 0048
+0046 => KPRI    13   1
+0047    JMP     14 => 0049
+0048 => KPRI    13   2
+0049 => CALL    12   1   2
+0050    GGET     2   7      ; "newproxy"
+0051    KPRI     3   2
+0052    CALL     2   2   2
+0053    GGET     3   8      ; "getmetatable"
+0054    MOV      4   2
+0055    CALL     3   2   2
+0056    TSETS    0   3   2  ; "__call"
+0057    MOV      3   2
+0058    CALL     3   4   1
+0059    GGET     6   4      ; "assert"
+0060    ISNEV    3   2
+0061    JMP      7 => 0066
+0062    ISNEP    4   0
+0063    JMP      7 => 0066
+0064    ISEQP    5   0
+0065    JMP      7 => 0068
+0066 => KPRI     7   1
+0067    JMP      8 => 0069
+0068 => KPRI     7   2
+0069 => CALL     6   1   2
+0070    MOV      6   2
+0071    KSTR     7   5      ; "foo"
+0072    CALL     6   4   2
+0073    GGET     9   4      ; "assert"
+0074    ISNEV    6   2
+0075    JMP     10 => 0080
+0076    ISNES    7   5      ; "foo"
+0077    JMP     10 => 0080
+0078    ISEQP    8   0
+0079    JMP     10 => 0082
+0080 => KPRI    10   1
+0081    JMP     11 => 0083
+0082 => KPRI    10   2
+0083 => CALL     9   1   2
+0084    MOV      9   2
+0085    KSTR    10   5      ; "foo"
+0086    KSTR    11   6      ; "bar"
+0087    CALL     9   4   3
+0088    GGET    12   4      ; "assert"
+0089    ISNEV    9   2
+0090    JMP     13 => 0095
+0091    ISNES   10   5      ; "foo"
+0092    JMP     13 => 0095
+0093    ISEQS   11   6      ; "bar"
+0094    JMP     13 => 0097
+0095 => KPRI    13   1
+0096    JMP     14 => 0098
+0097 => KPRI    13   2
+0098 => CALL    12   1   2
+0099    GGET     2   9      ; "debug"
+0100    TGETS    2   2   3  ; "setmetatable"
+0101    KSHORT   3   0
+0102    MOV      4   1
+0103    CALL     2   1   3
+0104    KSHORT   2  42
+0105    CALL     2   4   1
+0106    GGET     5   4      ; "assert"
+0107    ISNEN    2   0      ; 42
+0108    JMP      6 => 0113
+0109    ISNEP    3   0
+0110    JMP      6 => 0113
+0111    ISEQP    4   0
+0112    JMP      6 => 0115
+0113 => KPRI     6   1
+0114    JMP      7 => 0116
+0115 => KPRI     6   2
+0116 => CALL     5   1   2
+0117    KSHORT   5  42
+0118    KSTR     6   5      ; "foo"
+0119    CALL     5   4   2
+0120    GGET     8   4      ; "assert"
+0121    ISNEN    5   0      ; 42
+0122    JMP      9 => 0127
+0123    ISNES    6   5      ; "foo"
+0124    JMP      9 => 0127
+0125    ISEQP    7   0
+0126    JMP      9 => 0129
+0127 => KPRI     9   1
+0128    JMP     10 => 0130
+0129 => KPRI     9   2
+0130 => CALL     8   1   2
+0131    KSHORT   8  42
+0132    KSTR     9   5      ; "foo"
+0133    KSTR    10   6      ; "bar"
+0134    CALL     8   4   3
+0135    GGET    11   4      ; "assert"
+0136    ISNEN    8   0      ; 42
+0137    JMP     12 => 0142
+0138    ISNES    9   5      ; "foo"
+0139    JMP     12 => 0142
+0140    ISEQS   10   6      ; "bar"
+0141    JMP     12 => 0144
+0142 => KPRI    12   1
+0143    JMP     13 => 0145
+0144 => KPRI    12   2
+0145 => CALL    11   1   2
+0146    GGET    11   9      ; "debug"
+0147    TGETS   11  11   3  ; "setmetatable"
+0148    KSHORT  12   0
+0149    KPRI    13   0
+0150    CALL    11   1   3
+0151    GGET     2   3      ; "setmetatable"
+0152    TNEW     3   0
+0153    TDUP     4  11
+0154    FNEW     5  10      ; ref_lang_meta_call.lua:42
+0155    TSETS    5   4   2  ; "__call"
+0156    CALL     2   2   3
+0157    GGET     3   3      ; "setmetatable"
+0158    TNEW     4   0
+0159    TDUP     5  12
+0160    TSETS    2   5  13  ; "__add"
+0161    CALL     3   2   3
+0162    ADDVV    4   3   3
+0163    KPRI     5   0
+0164    GGET     6   4      ; "assert"
+0165    ISNEV    4   2
+0166    JMP      7 => 0169
+0167    ISEQP    5   0
+0168    JMP      7 => 0171
+0169 => KPRI     7   1
+0170    JMP      8 => 0172
+0171 => KPRI     7   2
+0172 => CALL     6   1   2
+0173    GGET     6   8      ; "getmetatable"
+0174    MOV      7   2
+0175    CALL     6   2   2
+0176    FNEW     7  14      ; ref_lang_meta_call.lua:47
+0177    TSETS    7   6   2  ; "__call"
+0178    ADDVV    6   3   3
+0179    KPRI     7   0
+0180    GGET     8   4      ; "assert"
+0181    ISNEV    6   3
+0182    JMP      9 => 0185
+0183    ISEQP    7   0
+0184    JMP      9 => 0187
+0185 => KPRI     9   1
+0186    JMP     10 => 0188
+0187 => KPRI     9   2
+0188 => CALL     8   1   2
+0189    GGET     2   3      ; "setmetatable"
+0190    TNEW     3   0
+0191    TDUP     4  16
+0192    FNEW     5  15      ; ref_lang_meta_call.lua:53
+0193    TSETS    5   4   2  ; "__call"
+0194    CALL     2   2   3
+0195    KSHORT   3   1
+0196    KSHORT   4 100
+0197    KSHORT   5   1
+0198    FORI     3 => 0211
+0199 => GGET     7   4      ; "assert"
+0200    MOV      8   2
+0201    MOV      9   6
+0202    CALL     8   2   2
+0203    SUBNV    9   6   1  ; 100
+0204    ISEQV    8   9
+0205    JMP      8 => 0208
+0206    KPRI     8   1
+0207    JMP      9 => 0209
+0208 => KPRI     8   2
+0209 => CALL     7   1   2
+0210    FORL     3 => 0199
+0211 => GGET     2   3      ; "setmetatable"
+0212    TNEW     3   0
+0213    TDUP     4  17
+0214    GGET     5  18      ; "rawget"
+0215    TSETS    5   4   2  ; "__call"
+0216    CALL     2   2   3
+0217    KSHORT   3   1
+0218    KSHORT   4 100
+0219    KSHORT   5   1
+0220    FORI     3 => 0224
+0221 => SUBNV    7   6   1  ; 100
+0222    TSETV    7   2   6
+0223    FORL     3 => 0221
+0224 => KSHORT   3   1
+0225    KSHORT   4 100
+0226    KSHORT   5   1
+0227    FORI     3 => 0240
+0228 => GGET     7   4      ; "assert"
+0229    MOV      8   2
+0230    MOV      9   6
+0231    CALL     8   2   2
+0232    SUBNV    9   6   1  ; 100
+0233    ISEQV    8   9
+0234    JMP      8 => 0237
+0235    KPRI     8   1
+0236    JMP      9 => 0238
+0237 => KPRI     8   2
+0238 => CALL     7   1   2
+0239    FORL     3 => 0228
+0240 => GGET     2   9      ; "debug"
+0241    TGETS    2   2   3  ; "setmetatable"
+0242    KSHORT   3   0
+0243    TDUP     4  20
+0244    FNEW     5  19      ; ref_lang_meta_call.lua:64
+0245    TSETS    5   4   2  ; "__call"
+0246    CALL     2   1   3
+0247    KSHORT   2   1
+0248    KSHORT   3 100
+0249    KSHORT   4   1
+0250    FORI     2 => 0262
+0251 => GGET     6   4      ; "assert"
+0252    MOV      7   5
+0253    CALL     7   2   1
+0254    SUBNV    8   5   1  ; 100
+0255    ISEQV    7   8
+0256    JMP      7 => 0259
+0257    KPRI     7   1
+0258    JMP      8 => 0260
+0259 => KPRI     7   2
+0260 => CALL     6   1   2
+0261    FORL     2 => 0251
+0262 => GGET     2   9      ; "debug"
+0263    TGETS    2   2   3  ; "setmetatable"
+0264    KSHORT   3   0
+0265    KPRI     4   0
+0266    CALL     2   1   3
+0267    GGET     2   3      ; "setmetatable"
+0268    TNEW     3   0
+0269    TDUP     4  21
+0270    GGET     5  22      ; "pcall"
+0271    TSETS    5   4  23  ; "__newindex"
+0272    GGET     5  24      ; "rawset"
+0273    TSETS    5   4   2  ; "__call"
+0274    CALL     2   2   3
+0275    KSHORT   3   1
+0276    KSHORT   4 100
+0277    KSHORT   5   1
+0278    FORI     3 => 0282
+0279 => SUBNV    7   6   1  ; 100
+0280    TSETV    7   2   6
+0281    FORL     3 => 0279
+0282 => KSHORT   3   1
+0283    KSHORT   4 100
+0284    KSHORT   5   1
+0285    FORI     3 => 0296
+0286 => GGET     7   4      ; "assert"
+0287    TGETV    8   2   6
+0288    SUBNV    9   6   1  ; 100
+0289    ISEQV    8   9
+0290    JMP      8 => 0293
+0291    KPRI     8   1
+0292    JMP      9 => 0294
+0293 => KPRI     8   2
+0294 => CALL     7   1   2
+0295    FORL     3 => 0286
+0296 => GGET     2   3      ; "setmetatable"
+0297    TNEW     3   0
+0298    TDUP     4  25
+0299    GGET     5  22      ; "pcall"
+0300    TSETS    5   4  26  ; "__index"
+0301    GGET     5  24      ; "rawset"
+0302    TSETS    5   4  23  ; "__newindex"
+0303    FNEW     5  27      ; ref_lang_meta_call.lua:78
+0304    TSETS    5   4   2  ; "__call"
+0305    CALL     2   2   3
+0306    KSHORT   3   1
+0307    KSHORT   4 100
+0308    KSHORT   5   1
+0309    FORI     3 => 0326
+0310 => GGET     7   4      ; "assert"
+0311    TGETV    8   2   6
+0312    ISNEP    8   2
+0313    JMP      8 => 0321
+0314    GGET     8  18      ; "rawget"
+0315    MOV      9   2
+0316    MOV     10   6
+0317    CALL     8   2   3
+0318    SUBNV    9   6   1  ; 100
+0319    ISEQV    8   9
+0320    JMP      8 => 0323
+0321 => KPRI     8   1
+0322    JMP      9 => 0324
+0323 => KPRI     8   2
+0324 => CALL     7   1   2
+0325    FORL     3 => 0310
+0326 => RET0     0   1
+

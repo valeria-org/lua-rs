@@ -1,0 +1,56 @@
+-- BYTECODE -- ref_lang_meta_framegap.lua:2-11
+0001    KSHORT   2 200
+0002    ISGE     2   1
+0003    JMP      2 => 0012
+0004    KSHORT   2   1
+0005    KSHORT   3  10
+0006    KSHORT   4   1
+0007    FORI     2 => 0009
+0008 => FORL     2 => 0008
+0009 => ADDVN    2   1   0  ; 3
+0010    RET1     2   2
+0011    JMP      2 => 0020
+0012 => KSHORT   2 100
+0013    ISGE     2   1
+0014    JMP      2 => 0018
+0015    ADDVN    2   1   1  ; 2
+0016    RET1     2   2
+0017    JMP      2 => 0020
+0018 => ADDVN    2   1   2  ; 1
+0019    RET1     2   2
+0020 => RET0     0   1
+
+-- BYTECODE -- ref_lang_meta_framegap.lua:13-17
+0001    ADDVV    2   0   1
+0002    RET1     2   2
+0003    KNIL     2  12
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lang_meta_framegap.lua:0-25
+0001    GGET     0   0      ; "setmetatable"
+0002    TNEW     1   0
+0003    TDUP     2   2
+0004    FNEW     3   1      ; ref_lang_meta_framegap.lua:2
+0005    TSETS    3   2   3  ; "__add"
+0006    CALL     0   2   3
+0007    FNEW     1   4      ; ref_lang_meta_framegap.lua:13
+0008    KSHORT   2   0
+0009    KSHORT   3   1
+0010    KSHORT   4 300
+0011    KSHORT   5   1
+0012    FORI     3 => 0019
+0013 => MOV      7   1
+0014    MOV      8   0
+0015    MOV      9   6
+0016    CALL     7   2   3
+0017    MOV      2   7
+0018    FORL     3 => 0013
+0019 => GGET     3   5      ; "assert"
+0020    ISEQN    2   0      ; 303
+0021    JMP      4 => 0024
+0022    KPRI     4   1
+0023    JMP      5 => 0025
+0024 => KPRI     4   2
+0025 => CALL     3   1   2
+0026    RET0     0   1
+

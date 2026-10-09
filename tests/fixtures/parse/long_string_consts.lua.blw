@@ -1,0 +1,24 @@
+-- BYTECODE -- long_string_consts.lua:0-16
+0001    KPRI     0   0
+0002    KSTR     0   0      ; "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"~
+0003    KSTR     0   1      ; "abcdefghijabcdefghijabcdefghijabcdefghij"
+0004    KSTR     0   2      ; "abcdefghijabcdefghijabcdefghijabcdefghij"~
+0005    KSTR     0   3      ; "abcdefghijabcdefghijabcdefghijabcdefghi"
+0006    KSTR     0   4      ; "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"~
+0007    KSTR     0   5      ; "ctl\001\002\003\031\127 chars"
+0008    KSTR     0   6      ; "nl\nnl\rcr\ttab"
+0009    KSTR     0   7      ; "\000\000\000"
+0010    KSTR     0   8      ; "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\n"
+0011    KSTR     0   9      ; "utf8 äöü 😀"
+0012    KSTR     0  10      ; "éééééééééééééééééééé"~
+0013    KSHORT   1   1
+0014    GSET     1  11      ; "gkey_kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"~
+0015    GGET     1  12      ; "t"
+0016    TGETS    0   1  13  ; "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"~
+0017    ISEQS    0  14      ; "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"~
+0018    JMP      1 => 0021
+0019    KPRI     0   1
+0020    JMP      1 => 0022
+0021 => KPRI     0   2
+0022 => RET0     0   1
+

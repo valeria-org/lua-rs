@@ -1,0 +1,26 @@
+-- BYTECODE -- bitops_unop.lua:0-16
+0001    VARG     0   2   0
+0002    BNOT     1   0
+0003    BNOT     2   0
+0004    BNOT     1   2
+0005    UNM      2   0
+0006    BNOT     1   2
+0007    BNOT     2   0
+0008    UNM      1   2
+0009    LEN      2   0
+0010    BNOT     1   2
+0011    BNOT     2   0
+0012    NOT      1   2
+0013    BNOT     1   0
+0014    TGETS    2   0   0  ; "y"
+0015    BNOT     1   2
+0016    GGET     2   1      ; "f"
+0017    CALL     2   2   1
+0018    BNOT     1   2
+0019    KSTR     2   2      ; "5"
+0020    BNOT     1   2
+0021    KSHORT   1  -7
+0022    KNUM     1   0      ; 2147483647
+0023    BNOT     2   0
+0024    RET1     2   2
+

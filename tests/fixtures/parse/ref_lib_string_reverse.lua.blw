@@ -1,0 +1,56 @@
+-- BYTECODE -- ref_lib_string_reverse.lua:0-14
+0001    GGET     0   0      ; "string"
+0002    TGETS    0   0   1  ; "reverse"
+0003    KPRI     1   0
+0004    KSHORT   2   1
+0005    KSHORT   3 100
+0006    KSHORT   4   1
+0007    FORI     2 => 0013
+0008 => MOV      6   0
+0009    KSTR     7   2      ; "abc"
+0010    CALL     6   2   2
+0011    MOV      1   6
+0012    FORL     2 => 0008
+0013 => GGET     2   3      ; "assert"
+0014    ISEQS    1   4      ; "cba"
+0015    JMP      3 => 0018
+0016    KPRI     3   1
+0017    JMP      4 => 0019
+0018 => KPRI     3   2
+0019 => CALL     2   1   2
+0020    KSTR     2   5      ; "abcd"
+0021    KSHORT   3   1
+0022    KSHORT   4 100
+0023    KSHORT   5   1
+0024    FORI     3 => 0030
+0025 => MOV      7   0
+0026    MOV      8   2
+0027    CALL     7   2   2
+0028    MOV      1   7
+0029    FORL     3 => 0025
+0030 => GGET     3   3      ; "assert"
+0031    ISEQS    1   6      ; "dcba"
+0032    JMP      4 => 0035
+0033    KPRI     4   1
+0034    JMP      5 => 0036
+0035 => KPRI     4   2
+0036 => CALL     3   1   2
+0037    KSHORT   2 1234
+0038    KSHORT   3   1
+0039    KSHORT   4 100
+0040    KSHORT   5   1
+0041    FORI     3 => 0047
+0042 => MOV      7   0
+0043    MOV      8   2
+0044    CALL     7   2   2
+0045    MOV      1   7
+0046    FORL     3 => 0042
+0047 => GGET     3   3      ; "assert"
+0048    ISEQS    1   7      ; "4321"
+0049    JMP      4 => 0052
+0050    KPRI     4   1
+0051    JMP      5 => 0053
+0052 => KPRI     4   2
+0053 => CALL     3   1   2
+0054    RET0     0   1
+

@@ -1,0 +1,10 @@
+-- BYTECODE -- eol_crlf_lines.lua:9-11
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- eol_crlf_lines.lua:0-13
+0001    KSHORT   0   1
+0002    FNEW     1   0      ; eol_crlf_lines.lua:9
+0003    UCLO     0 => 0004
+0004 => RET1     1   2
+

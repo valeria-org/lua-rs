@@ -1,0 +1,117 @@
+-- BYTECODE -- break_continue.lua:19-19
+0001    UGET     0   0      ; v
+0002    RET1     0   2
+
+-- BYTECODE -- break_continue.lua:24-24
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- break_continue.lua:29-29
+0001    UGET     0   0      ; y
+0002    RET1     0   2
+
+-- BYTECODE -- break_continue.lua:0-49
+0001    KSHORT   0   1
+0002    KSHORT   1  10
+0003    KSHORT   2   1
+0004    FORI     0 => 0015
+0005 => ISNEN    3   0      ; 2
+0006    JMP      4 => 0008
+0007    JMP      3 => 0014
+0008 => ISNEN    3   1      ; 8
+0009    JMP      4 => 0011
+0010    JMP      0 => 0015
+0011 => GGET     4   0      ; "print"
+0012    MOV      5   3
+0013    CALL     4   1   2
+0014 => FORL     0 => 0005
+0015 => KSHORT   0   0
+0016 => KSHORT   1  10
+0017    ISGE     0   1
+0018    JMP      1 => 0029
+0019    LOOP     1 => 0029
+0020    ADDVN    0   0   2  ; 1
+0021    MODVN    1   0   0  ; 2
+0022    ISNEN    1   3      ; 0
+0023    JMP      1 => 0025
+0024    JMP      1 => 0016
+0025 => GGET     1   0      ; "print"
+0026    MOV      2   0
+0027    CALL     1   1   2
+0028    JMP      1 => 0016
+0029 => LOOP     1 => 0037
+0030    SUBVN    0   0   2  ; 1
+0031    ISNEN    0   4      ; 5
+0032    JMP      1 => 0034
+0033    JMP      1 => 0034
+0034 => KSHORT   1   0
+0035    ISGT     0   1
+0036    JMP      1 => 0029
+0037 => GGET     1   1      ; "pairs"
+0038    GGET     2   2      ; "t"
+0039    CALL     1   4   2
+0040    ISNEXT   4 => 0049
+0041 => IST          5
+0042    JMP      6 => 0044
+0043    UCLO     4 => 0049
+0044 => FNEW     6   3      ; break_continue.lua:19
+0045    ISF          4
+0046    JMP      7 => 0048
+0047    UCLO     1 => 0051
+0048 => UCLO     4 => 0049
+0049 => ITERN    4   3   3
+0050    ITERL    4 => 0041
+0051 => KSHORT   1   1
+0052    KSHORT   2   3
+0053    KSHORT   3   1
+0054    FORI     1 => 0062
+0055 => MOV      5   4
+0056    FNEW     6   4      ; break_continue.lua:24
+0057    ISF          5
+0058    JMP      7 => 0060
+0059    UCLO     4 => 0061
+0060 => UCLO     5 => 0061
+0061 => FORL     1 => 0055
+0062 => LOOP     1 => 0070
+0063    KSHORT   1   1
+0064    FNEW     2   5      ; break_continue.lua:29
+0065    ISF          0
+0066    JMP      3 => 0068
+0067    JMP      3 => 0068
+0068 => UCLO     1 => 0070
+0069    UCLO     1 => 0062
+0070 => KSHORT   1   1
+0071    GSET     1   6      ; "continue"
+0072    GGET     1   6      ; "continue"
+0073    KSHORT   2   2
+0074    TSETS    2   1   7  ; "x"
+0075    KSHORT   1   3
+0076    GGET     2   0      ; "print"
+0077    MOV      3   1
+0078    CALL     2   1   2
+0079    ADDVN    1   1   2  ; 1
+0080    MOV      2   1
+0081    CALL     2   1   1
+0082    KSHORT   2   1
+0083    KSHORT   3   2
+0084    KSHORT   4   1
+0085    FORI     2 => 0088
+0086 => JMP      5 => 0087
+0087 => FORL     2 => 0086
+0088 => KSHORT   2   1
+0089    KSHORT   3   2
+0090    KSHORT   4   1
+0091    FORI     2 => 0103
+0092 => KSHORT   6   1
+0093    KSHORT   7   2
+0094    KSHORT   8   1
+0095    FORI     6 => 0101
+0096 => ISF          9
+0097    JMP     10 => 0102
+0098    JMP      9 => 0100
+0099    JMP      6 => 0102
+0100 => FORL     6 => 0096
+0101 => JMP      5 => 0102
+0102 => FORL     2 => 0092
+0103 => RET0     0   1
+

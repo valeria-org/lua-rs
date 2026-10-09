@@ -1,0 +1,79 @@
+-- BYTECODE -- ref_lib_ffi_ffi_parse_basic.lua:0-132
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "ffi"
+0003    CALL     0   2   2
+0004    GGET     1   2      ; "dofile"
+0005    KSTR     2   3      ; "../common/ffi_util.inc"
+0006    CALL     1   1   2
+0007    GGET     1   4      ; "checkfail"
+0008    TDUP     2   5
+0009    CALL     1   1   2
+0010    GGET     1   6      ; "checktypes"
+0011    TDUP     2   7
+0012    CALL     1   1   2
+0013    GGET     1   6      ; "checktypes"
+0014    TDUP     2   8
+0015    CALL     1   1   2
+0016    GGET     1   6      ; "checktypes"
+0017    TDUP     2   9
+0018    CALL     1   1   2
+0019    TGETS    1   0  10  ; "abi"
+0020    KSTR     2  11      ; "32bit"
+0021    CALL     1   2   2
+0022    IST          1
+0023    JMP      2 => 0029
+0024    TGETS    1   0  10  ; "abi"
+0025    KSTR     2  12      ; "win"
+0026    CALL     1   2   2
+0027    ISF          1
+0028    JMP      2 => 0031
+0029 => KSHORT   1   4
+0030    JMP      2 => 0032
+0031 => KSHORT   1   8
+0032 => TGETS    2   0  10  ; "abi"
+0033    KSTR     3  11      ; "32bit"
+0034    CALL     2   2   2
+0035    ISF          2
+0036    JMP      3 => 0039
+0037    KSHORT   2   4
+0038    JMP      3 => 0040
+0039 => KSHORT   2   8
+0040 => TGETS    3   0  10  ; "abi"
+0041    KSTR     4  12      ; "win"
+0042    CALL     3   2   2
+0043    ISF          3
+0044    JMP      4 => 0047
+0045    KSHORT   3   2
+0046    JMP      4 => 0048
+0047 => KSHORT   3   4
+0048 => GGET     4   6      ; "checktypes"
+0049    TDUP     5  13
+0050    TSETB    1   5   1
+0051    TSETB    1   5   2
+0052    TSETB    1   5   4
+0053    TSETB    1   5   5
+0054    TSETB    1   5   7
+0055    TSETB    1   5   8
+0056    TSETB    2   5  10
+0057    TSETB    2   5  11
+0058    TSETB    2   5  13
+0059    TSETB    2   5  14
+0060    CALL     4   1   2
+0061    GGET     4   6      ; "checktypes"
+0062    TDUP     5  14
+0063    TSETB    2   5   1
+0064    TSETB    2   5   2
+0065    TSETB    2   5   4
+0066    TSETB    2   5   5
+0067    TSETB    3   5   7
+0068    TSETB    3   5   8
+0069    TSETB    2   5  34
+0070    TSETB    2   5  35
+0071    TSETB    2   5  37
+0072    TSETB    2   5  38
+0073    CALL     4   1   2
+0074    GGET     4   6      ; "checktypes"
+0075    TDUP     5  15
+0076    CALL     4   1   2
+0077    RET0     0   1
+

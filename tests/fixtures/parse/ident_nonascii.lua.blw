@@ -1,0 +1,8 @@
+-- BYTECODE -- ident_nonascii.lua:0-5
+0001    KSHORT   0   1
+0002    ADDVN    1   0   0  ; 1
+0003    GSET     1   0      ; "Ã¶Ã¼"
+0004    TDUP     1   1
+0005    TGETS    2   1   2  ; "Ã©tÃ©"
+0006    RET1     2   2
+

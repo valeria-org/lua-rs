@@ -1,0 +1,142 @@
+-- BYTECODE -- if_stmt.lua:0-25
+0001    VARG     0   4   0
+0002    ISF          0
+0003    JMP      3 => 0007
+0004    GGET     3   0      ; "print"
+0005    KSHORT   4   1
+0006    CALL     3   1   2
+0007 => ISF          0
+0008    JMP      3 => 0013
+0009    GGET     3   0      ; "print"
+0010    KSHORT   4   1
+0011    CALL     3   1   2
+0012    JMP      3 => 0016
+0013 => GGET     3   0      ; "print"
+0014    KSHORT   4   2
+0015    CALL     3   1   2
+0016 => ISF          0
+0017    JMP      3 => 0022
+0018    GGET     3   0      ; "print"
+0019    KSHORT   4   1
+0020    CALL     3   1   2
+0021    JMP      3 => 0027
+0022 => ISF          1
+0023    JMP      3 => 0027
+0024    GGET     3   0      ; "print"
+0025    KSHORT   4   2
+0026    CALL     3   1   2
+0027 => ISF          0
+0028    JMP      3 => 0033
+0029    GGET     3   0      ; "print"
+0030    KSHORT   4   1
+0031    CALL     3   1   2
+0032    JMP      3 => 0048
+0033 => ISF          1
+0034    JMP      3 => 0039
+0035    GGET     3   0      ; "print"
+0036    KSHORT   4   2
+0037    CALL     3   1   2
+0038    JMP      3 => 0048
+0039 => ISF          2
+0040    JMP      3 => 0045
+0041    GGET     3   0      ; "print"
+0042    KSHORT   4   3
+0043    CALL     3   1   2
+0044    JMP      3 => 0048
+0045 => GGET     3   0      ; "print"
+0046    KSHORT   4   4
+0047    CALL     3   1   2
+0048 => IST          0
+0049    JMP      3 => 0053
+0050    GGET     3   0      ; "print"
+0051    KSHORT   4   5
+0052    CALL     3   1   2
+0053 => ISF          0
+0054    JMP      3 => 0060
+0055    ISF          1
+0056    JMP      3 => 0060
+0057    GGET     3   0      ; "print"
+0058    KSHORT   4   6
+0059    CALL     3   1   2
+0060 => IST          0
+0061    JMP      3 => 0064
+0062    ISF          1
+0063    JMP      3 => 0067
+0064 => GGET     3   0      ; "print"
+0065    KSHORT   4   7
+0066    CALL     3   1   2
+0067 => ISF          0
+0068    JMP      3 => 0071
+0069    IST          1
+0070    JMP      3 => 0073
+0071 => ISF          2
+0072    JMP      3 => 0076
+0073 => GGET     3   0      ; "print"
+0074    KSHORT   4   8
+0075    CALL     3   1   2
+0076 => IST          0
+0077    JMP      3 => 0080
+0078    ISF          1
+0079    JMP      3 => 0085
+0080 => ISF          2
+0081    JMP      3 => 0085
+0082    GGET     3   0      ; "print"
+0083    KSHORT   4   9
+0084    CALL     3   1   2
+0085 => GGET     3   0      ; "print"
+0086    KSHORT   4  10
+0087    CALL     3   1   2
+0088    JMP      3 => 0089
+0089 => JMP      3 => 0093
+0090    GGET     3   0      ; "print"
+0091    KSHORT   4  11
+0092    CALL     3   1   2
+0093 => JMP      3 => 0094
+0094 => JMP      3 => 0098
+0095    GGET     3   0      ; "print"
+0096    KSHORT   4  12
+0097    CALL     3   1   2
+0098 => GGET     3   0      ; "print"
+0099    KSHORT   4  13
+0100    CALL     3   1   2
+0101    GGET     3   0      ; "print"
+0102    KSHORT   4  14
+0103    CALL     3   1   2
+0104    ISF          0
+0105    JMP      3 => 0107
+0106    JMP      3 => 0110
+0107 => GGET     3   0      ; "print"
+0108    KSHORT   4  15
+0109    CALL     3   1   2
+0110 => ISF          0
+0111    JMP      3 => 0113
+0112    JMP      3 => 0116
+0113 => ISF          1
+0114    JMP      3 => 0116
+0115    JMP      3 => 0116
+0116 => ISNEP    0   0
+0117    JMP      3 => 0120
+0118    KSHORT   3   1
+0119    GSET     3   1      ; "x"
+0120 => ISEQV    0   1
+0121    JMP      3 => 0124
+0122    KSHORT   3   2
+0123    GSET     3   1      ; "x"
+0124 => ISF          0
+0125    JMP      3 => 0130
+0126    KSHORT   3   1
+0127    GGET     4   0      ; "print"
+0128    MOV      5   3
+0129    CALL     4   1   2
+0130 => ISF          0
+0131    JMP      3 => 0133
+0132    RET0     0   1
+0133 => ISF          1
+0134    JMP      3 => 0137
+0135    KSHORT   3   1
+0136    RET1     3   2
+0137 => GGET     3   0      ; "print"
+0138    KSTR     4   2      ; "end"
+0139    CALL     3   1   2
+0140    RET0     0   1
+

@@ -859,19 +859,16 @@ impl<'a> Parser<'a> {
     /// Discharge an expression to a specific register. Ignore branches.
     fn expr_toreg_nobranch(&mut self, e: &mut ExpDesc, reg: u32) -> R {
         self.expr_discharge(e)?;
-        let ins;
-        match e.k {
-            K::KStr => ins = ins_ad(bc!(KSTR), reg, self.const_str(e)),
-            K::KNum => {
-                ins = match num2int_check(e.nval) {
-                    Some(k) if checki16(k) => ins_ad(bc!(KSHORT), reg, k as u16 as u32),
-                    _ => ins_ad(bc!(KNUM), reg, self.const_num(e)),
-                };
-            }
+        let ins = match e.k {
+            K::KStr => ins_ad(bc!(KSTR), reg, self.const_str(e)),
+            K::KNum => match num2int_check(e.nval) {
+                Some(k) if checki16(k) => ins_ad(bc!(KSHORT), reg, k as u16 as u32),
+                _ => ins_ad(bc!(KNUM), reg, self.const_num(e)),
+            },
             K::KCData => {
                 self.fsm().flags |= PROTO_FFI;
                 let cd = e.cdata.expect("cdata expression without cdata");
-                ins = ins_ad(bc!(KCDATA), reg, self.const_gc_new(KSlot::CData(cd)));
+                ins_ad(bc!(KCDATA), reg, self.const_gc_new(KSlot::CData(cd)))
             }
             K::Relocable => {
                 setbc_a(self.insm(e.info), reg);
@@ -885,7 +882,7 @@ impl<'a> Parser<'a> {
                     e.k = K::NonReloc;
                     return Ok(());
                 }
-                ins = ins_ad(bc!(MOV), reg, e.info);
+                ins_ad(bc!(MOV), reg, e.info)
             }
             K::KNil => {
                 self.bcemit_nil(reg, 1)?;
@@ -893,12 +890,12 @@ impl<'a> Parser<'a> {
                 e.k = K::NonReloc;
                 return Ok(());
             }
-            K::KFalse | K::KTrue => ins = ins_ad(bc!(KPRI), reg, e.k as u32),
+            K::KFalse | K::KTrue => ins_ad(bc!(KPRI), reg, e.k as u32),
             _ => {
                 debug_assert!(e.k == K::Void || e.k == K::Jmp, "bad expr type {:?}", e.k);
                 return Ok(());
             }
-        }
+        };
         self.bcemit_ins(ins)?;
         e.info = reg;
         e.k = K::NonReloc;
@@ -974,8 +971,7 @@ impl<'a> Parser<'a> {
 
     /// Emit store for LHS expression.
     fn bcemit_store(&mut self, var: &ExpDesc, e: &mut ExpDesc) -> R {
-        let ins;
-        match var.k {
+        let ins = match var.k {
             K::Local => {
                 debug_assert!(self.vstack[var.aux as usize].info & VSTACK_CONST == 0, "unchecked const assignment");
                 self.vstack[var.aux as usize].info |= VSTACK_VAR_RW;
@@ -986,7 +982,7 @@ impl<'a> Parser<'a> {
                 debug_assert!(self.vstack[var.aux as usize].info & VSTACK_CONST == 0, "unchecked const assignment");
                 self.vstack[var.aux as usize].info |= VSTACK_VAR_RW;
                 self.expr_toval(e)?;
-                ins = if e.k <= K::KTrue {
+                if e.k <= K::KTrue {
                     ins_ad(bc!(USETP), var.info, e.k as u32)
                 } else if e.k == K::KStr {
                     ins_ad(bc!(USETS), var.info, self.const_str(e))
@@ -995,17 +991,17 @@ impl<'a> Parser<'a> {
                 } else {
                     let r = self.expr_toanyreg(e)?;
                     ins_ad(bc!(USETV), var.info, r)
-                };
+                }
             }
             K::Global => {
                 let ra = self.expr_toanyreg(e)?;
-                ins = ins_ad(bc!(GSET), ra, self.const_str(var));
+                ins_ad(bc!(GSET), ra, self.const_str(var))
             }
             _ => {
                 debug_assert!(var.k == K::Indexed, "bad expr type {:?}", var.k);
                 let ra = self.expr_toanyreg(e)?;
                 let rc = var.aux;
-                ins = if (rc as i32) < 0 {
+                if (rc as i32) < 0 {
                     ins_abc(bc!(TSETS), ra, var.info, !rc)
                 } else if rc > BCMAX_C {
                     ins_abc(bc!(TSETB), ra, var.info, rc - (BCMAX_C + 1))
@@ -1017,9 +1013,9 @@ impl<'a> Parser<'a> {
                         self.bcreg_free(rc);
                     }
                     ins_abc(bc!(TSETV), ra, var.info, rc)
-                };
+                }
             }
-        }
+        };
         self.bcemit_ins(ins)?;
         self.expr_free(e);
         Ok(())
@@ -1206,9 +1202,7 @@ impl<'a> Parser<'a> {
                 b = self.const_num(e1);
                 b <= BCMAX_B
             } {
-                let t = b;
-                b = c;
-                c = t;
+                std::mem::swap(&mut b, &mut c);
                 o -= bc!(ADDVV) - bc!(ADDNV);
             } else {
                 b = self.expr_toanyreg(e1)?;
@@ -1233,15 +1227,13 @@ impl<'a> Parser<'a> {
     fn bcemit_comp(&mut self, opr: u32, eret: &mut ExpDesc, eother: &mut ExpDesc) -> R {
         self.expr_toval(eret)?;
         // e1/e2 may be swapped; `swapped` tracks whether e1 is `eother`.
-        let ins;
-        let swapped;
-        if opr == OPR_EQ || opr == OPR_NE {
+        let (ins, swapped) = if opr == OPR_EQ || opr == OPR_NE {
             let op = if opr == OPR_EQ { bc!(ISEQV) } else { bc!(ISNEV) };
-            swapped = eret.isk(); // Need constant in 2nd arg.
+            let swapped = eret.isk(); // Need constant in 2nd arg.
             let (e1, e2) = if swapped { (&mut *eother, &mut *eret) } else { (&mut *eret, &mut *eother) };
             let ra = self.expr_toanyreg(e1)?; // First arg must be in a reg.
             self.expr_toval(e2)?;
-            ins = match e2.k {
+            let ins = match e2.k {
                 K::KNil | K::KFalse | K::KTrue => ins_ad(op + (bc!(ISEQP) - bc!(ISEQV)), ra, e2.k as u32),
                 K::KStr => ins_ad(op + (bc!(ISEQS) - bc!(ISEQV)), ra, self.const_str(e2)),
                 K::KNum => ins_ad(op + (bc!(ISEQN) - bc!(ISEQV)), ra, self.const_num(e2)),
@@ -1250,23 +1242,23 @@ impl<'a> Parser<'a> {
                     ins_ad(op, ra, rd)
                 }
             };
+            (ins, swapped)
         } else {
             let mut op = opr - OPR_LT + bc!(ISLT);
             let (ra, rd);
-            if (op - bc!(ISLT)) & 1 != 0 {
+            let swapped = (op - bc!(ISLT)) & 1 != 0;
+            if swapped {
                 // GT -> LT, GE -> LE
-                swapped = true;
                 op = ((op - bc!(ISLT)) ^ 3) + bc!(ISLT);
                 self.expr_toval(eother)?;
                 ra = self.expr_toanyreg(eother)?;
                 rd = self.expr_toanyreg(eret)?;
             } else {
-                swapped = false;
                 rd = self.expr_toanyreg(eother)?;
                 ra = self.expr_toanyreg(eret)?;
             }
-            ins = ins_ad(op, ra, rd);
-        }
+            (ins_ad(op, ra, rd), swapped)
+        };
         // Using expr_free might cause asserts if the order is wrong.
         let (e1, e2) = if swapped { (&*eother, &*eret) } else { (&*eret, &*eother) };
         let nactvar = self.fs().nactvar;
@@ -2159,13 +2151,7 @@ impl<'a> Parser<'a> {
         match t {
             None => {
                 // Construct TNEW RD: hhhhhaaaaaaaaaaa.
-                if !needarr {
-                    narr = 0;
-                } else if narr < 3 {
-                    narr = 3;
-                } else if narr > 0x7ff {
-                    narr = 0x7ff;
-                }
+                narr = if needarr { narr.clamp(3, 0x7ff) } else { 0 };
                 setbc_d(self.insm(pc), narr | (hsize2hbits(nhash) << 11));
             }
             Some(tt) => {
@@ -2378,13 +2364,12 @@ impl<'a> Parser<'a> {
                 self.nav_check(v.info, &mut xpc)?;
             }
             let tok = self.ls.tok;
-            let call;
-            if tok == b'[' as LexToken {
+            let call = if tok == b'[' as LexToken {
                 let mut key = ExpDesc::new(K::Void, 0);
                 self.expr_toanyreg(v)?;
                 self.expr_bracket(&mut key)?;
                 self.expr_index(v, &mut key)?;
-                call = false;
+                false
             } else if tok == b':' as LexToken {
                 if eflags & EXPR_F_NOCOLON != 0 {
                     if nav {
@@ -2401,19 +2386,19 @@ impl<'a> Parser<'a> {
                     nav = true;
                     self.nav_check(v.info, &mut xpc)?;
                 }
-                call = true;
+                true
             } else if tok == b'(' as LexToken || tok == TK_STRING || tok == b'{' as LexToken {
                 self.expr_tonextreg(v)?;
                 if self.fr2 != 0 {
                     self.bcreg_reserve(1)?;
                 }
-                call = true;
+                true
             } else if nav || self.lex_opt(b'.' as LexToken)? {
                 self.expr_field(v)?;
-                call = false;
+                false
             } else {
                 break;
-            }
+            };
             if call {
                 self.parse_args(v)?;
                 // Keep nav VCALL if no suffix follows.

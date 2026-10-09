@@ -1,0 +1,26 @@
+-- BYTECODE -- long_strings.lua:0-36
+0001    KPRI     0   0
+0002    KSTR     0   0      ; "simple"
+0003    KSTR     0   1      ; "skip first newline"
+0004    KSTR     0   2      ; "multi\nline\nstring"
+0005    KSTR     0   3      ; "with ]] inside"
+0006    KSTR     0   4      ; "level two ]=] ]] "
+0007    KSTR     0   5      ; ""
+0008    KSTR     0   5      ; ""
+0009    KSTR     0   6      ; " [[ nested ]] "
+0010    KSTR     0   7      ; "with "quotes" and 'apos' and \n escapes"
+0011    KSTR     0   8      ; "after comment"
+0012    KSTR     1   9      ; "trailing"
+0013    KSTR     2  10      ; "concat"
+0014    CAT      0   1   2
+0015    GGET     1  11      ; "f"
+0016    KSTR     2  12      ; "call"
+0017    CALL     1   1   2
+0018    GGET     1  11      ; "f"
+0019    KSTR     2  13      ; "call2"
+0020    CALL     1   1   2
+0021    KSHORT   0   1
+0022    KSTR     0   5      ; ""
+0023    KSTR     0  14      ; "\ntwo blank"
+0024    RET0     0   1
+

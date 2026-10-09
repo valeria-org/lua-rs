@@ -1,0 +1,184 @@
+-- BYTECODE -- tables.lua:49-49
+0001    RET0     0   1
+
+-- BYTECODE -- tables.lua:50-50
+0001    RET1     0   2
+
+-- BYTECODE -- tables.lua:0-64
+0001    VARG     0   3   0
+0002    KPRI     2   0
+0003    TNEW     2   0
+0004    TDUP     2   0
+0005    TDUP     2   1
+0006    TDUP     2   2
+0007    TDUP     2   3
+0008    TDUP     2   4
+0009    TDUP     2   5
+0010    TDUP     2   6
+0011    TNEW     3   3
+0012    TSETB    0   3   1
+0013    MOV      2   3
+0014    TNEW     3   3
+0015    TSETB    0   3   1
+0016    TSETB    1   3   2
+0017    MOV      2   3
+0018    TDUP     3   7
+0019    TSETS    0   3   8  ; "x"
+0020    MOV      2   3
+0021    TDUP     3   9
+0022    TSETB    0   3   2
+0023    TSETB    1   3   4
+0024    MOV      2   3
+0025    TDUP     3  10
+0026    TSETS    0   3  11  ; "y"
+0027    MOV      2   3
+0028    TDUP     2  12
+0029    TDUP     2  13
+0030    TDUP     2  14
+0031    TNEW     3 2048
+0032    KSHORT   4   1
+0033    TSETV    4   3   0
+0034    MOV      2   3
+0035    TNEW     3 2048
+0036    TSETV    1   3   0
+0037    TSETV    0   3   1
+0038    MOV      2   3
+0039    TDUP     2  15
+0040    TDUP     2  16
+0041    TDUP     2  17
+0042    TDUP     2  18
+0043    TDUP     2  19
+0044    TDUP     2  20
+0045    TDUP     2  21
+0046    TDUP     2  22
+0047    TDUP     2  23
+0048    TDUP     2  24
+0049    TDUP     2  25
+0050    TDUP     2  26
+0051    TNEW     3   3
+0052    GGET     4  27      ; "f"
+0053    CALL     4   0   1
+0054    TSETM    4   0      ; 1
+0055    MOV      2   3
+0056    TNEW     3   3
+0057    GGET     4  27      ; "f"
+0058    CALL     4   2   1
+0059    TSETB    4   3   1
+0060    GGET     4  27      ; "f"
+0061    CALL     4   0   1
+0062    TSETM    4   1      ; 2
+0063    MOV      2   3
+0064    TDUP     3  28
+0065    GGET     4  27      ; "f"
+0066    CALL     4   0   1
+0067    TSETM    4   2      ; 3
+0068    MOV      2   3
+0069    TNEW     3   3
+0070    GGET     4  27      ; "f"
+0071    CALL     4   2   1
+0072    TSETB    4   3   1
+0073    MOV      2   3
+0074    TDUP     3  29
+0075    GGET     4  27      ; "f"
+0076    CALL     4   2   1
+0077    TSETB    4   3   1
+0078    MOV      2   3
+0079    TDUP     3  30
+0080    GGET     4  27      ; "f"
+0081    CALL     4   2   1
+0082    TSETS    4   3   8  ; "x"
+0083    MOV      2   3
+0084    TNEW     3   3
+0085    VARG     4   0   0
+0086    TSETM    4   0      ; 1
+0087    MOV      2   3
+0088    TDUP     3  31
+0089    VARG     4   0   0
+0090    TSETM    4   1      ; 2
+0091    MOV      2   3
+0092    TDUP     3  32
+0093    VARG     4   2   0
+0094    TSETB    4   3   1
+0095    MOV      2   3
+0096    TNEW     3   3
+0097    TNEW     4   0
+0098    TSETB    4   3   1
+0099    TNEW     4   0
+0100    TSETB    4   3   2
+0101    MOV      2   3
+0102    TNEW     3   3
+0103    TDUP     4  33
+0104    TSETB    4   3   1
+0105    TDUP     4  34
+0106    TSETB    4   3   2
+0107    MOV      2   3
+0108    TDUP     3  38
+0109    TDUP     4  36
+0110    TDUP     5  35
+0111    TSETS    5   4  37  ; "b"
+0112    TSETS    4   3  39  ; "a"
+0113    MOV      2   3
+0114    TDUP     2  40
+0115    TDUP     2  41
+0116    TDUP     2  42
+0117    TNEW     3   3
+0118    FNEW     4  43      ; tables.lua:49
+0119    TSETB    4   3   1
+0120    MOV      2   3
+0121    TDUP     3  45
+0122    FNEW     4  44      ; tables.lua:50
+0123    TSETS    4   3  27  ; "f"
+0124    MOV      2   3
+0125    TNEW     3 2048
+0126    MOV      4   0
+0127    MOV      5   1
+0128    CAT      4   4   5
+0129    KSHORT   5   1
+0130    TSETV    5   3   4
+0131    MOV      2   3
+0132    TNEW     3 2048
+0133    GGET     4  27      ; "f"
+0134    CALL     4   2   1
+0135    GGET     5  27      ; "f"
+0136    CALL     5   2   1
+0137    TSETV    5   3   4
+0138    MOV      2   3
+0139    TNEW     3   3
+0140    KCDATA   4  46
+0141    TSETB    4   3   1
+0142    MOV      2   3
+0143    TDUP     3  47
+0144    KCDATA   4  48
+0145    TSETS    4   3   8  ; "x"
+0146    MOV      2   3
+0147    TDUP     2  49
+0148    TNEW     3 2048
+0149    KPRI     4   0
+0150    TSETV    4   3   0
+0151    MOV      2   3
+0152    TDUP     2  50
+0153    TDUP     2  51
+0154    TDUP     2  52
+0155    TDUP     2  53
+0156    TDUP     2  54
+0157    TNEW     3 2048
+0158    KSHORT   4   0
+0159    UNM      4   4
+0160    KSHORT   5   1
+0161    TSETV    5   3   4
+0162    MOV      2   3
+0163    TNEW     3 2048
+0164    KSHORT   4   0
+0165    DIVVN    4   4   3  ; 0
+0166    KSHORT   5   0
+0167    DIVVN    5   5   3  ; 0
+0168    ISNEV    4   5
+0169    JMP      4 => 0172
+0170    KPRI     4   1
+0171    JMP      5 => 0173
+0172 => KPRI     4   2
+0173 => KSHORT   5   1
+0174    TSETV    5   3   4
+0175    MOV      2   3
+0176    RET0     0   1
+

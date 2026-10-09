@@ -1,0 +1,130 @@
+-- BYTECODE -- generic_for.lua:13-13
+0001    KSHORT   2   3
+0002    ISGE     1   2
+0003    JMP      2 => 0006
+0004    ADDVN    2   1   0  ; 1
+0005    RET1     2   2
+0006 => RET0     0   1
+
+-- BYTECODE -- generic_for.lua:17-17
+0001    RET0     0   1
+
+-- BYTECODE -- generic_for.lua:0-18
+0001    TDUP     0   0
+0002    GGET     1   1      ; "pairs"
+0003    MOV      2   0
+0004    CALL     1   4   2
+0005    ISNEXT   4 => 0010
+0006 => GGET     6   2      ; "print"
+0007    MOV      7   4
+0008    MOV      8   5
+0009    CALL     6   1   3
+0010 => ITERN    4   3   3
+0011    ITERL    4 => 0006
+0012    GGET     1   1      ; "pairs"
+0013    MOV      2   0
+0014    CALL     1   4   2
+0015    ISNEXT   4 => 0019
+0016 => GGET     5   2      ; "print"
+0017    MOV      6   4
+0018    CALL     5   1   2
+0019 => ITERN    4   2   3
+0020    ITERL    4 => 0016
+0021    GGET     1   3      ; "next"
+0022    MOV      2   0
+0023    KPRI     3   0
+0024    ISNEXT   4 => 0029
+0025 => GGET     6   2      ; "print"
+0026    MOV      7   4
+0027    MOV      8   5
+0028    CALL     6   1   3
+0029 => ITERN    4   3   3
+0030    ITERL    4 => 0025
+0031    GGET     1   3      ; "next"
+0032    MOV      2   0
+0033    KPRI     3   0
+0034    ISNEXT   4 => 0039
+0035 => GGET     6   2      ; "print"
+0036    MOV      7   4
+0037    MOV      8   5
+0038    CALL     6   1   3
+0039 => ITERN    4   3   3
+0040    ITERL    4 => 0035
+0041    GGET     1   4      ; "ipairs"
+0042    MOV      2   0
+0043    CALL     1   4   2
+0044    JMP      4 => 0049
+0045 => GGET     6   2      ; "print"
+0046    MOV      7   4
+0047    MOV      8   5
+0048    CALL     6   1   3
+0049 => ITERC    4   3   3
+0050    ITERL    4 => 0045
+0051    GGET     1   1      ; "pairs"
+0052    MOV      2   0
+0053    CALL     1   4   2
+0054    JMP      4 => 0055
+0055 => ITERC    4   6   3
+0056    ITERL    4 => 0055
+0057    GGET     1   1      ; "pairs"
+0058    MOV      2   0
+0059    CALL     1   4   2
+0060    JMP      4 => 0061
+0061 => ITERC    4   7   3
+0062    ITERL    4 => 0061
+0063    GGET     1   3      ; "next"
+0064    MOV      2   0
+0065    KPRI     3   0
+0066    JMP      4 => 0067
+0067 => ITERC    4   8   3
+0068    ITERL    4 => 0067
+0069    GGET     1   5      ; "io"
+0070    TGETS    1   1   6  ; "lines"
+0071    KSTR     2   7      ; "x"
+0072    CALL     1   4   2
+0073    JMP      4 => 0077
+0074 => GGET     5   2      ; "print"
+0075    MOV      6   4
+0076    CALL     5   1   2
+0077 => ITERC    4   2   3
+0078    ITERL    4 => 0074
+0079    GGET     1   8      ; "string"
+0080    TGETS    1   1   9  ; "gmatch"
+0081    KSTR     2  10      ; "a b"
+0082    KSTR     3  11      ; "%a+"
+0083    CALL     1   4   3
+0084    JMP      4 => 0085
+0085 => ITERC    4   2   3
+0086    ITERL    4 => 0085
+0087    FNEW     1  12      ; generic_for.lua:13
+0088    MOV      2   1
+0089    KPRI     3   0
+0090    KSHORT   4   0
+0091    JMP      5 => 0095
+0092 => GGET     6   2      ; "print"
+0093    MOV      7   5
+0094    CALL     6   1   2
+0095 => ITERC    5   2   3
+0096    ITERL    5 => 0092
+0097    GGET     2   1      ; "pairs"
+0098    MOV      3   0
+0099    CALL     2   2   2
+0100    KSHORT   3   1
+0101    KPRI     4   0
+0102    ISNEXT   5 => 0103
+0103 => ITERN    5   3   3
+0104    ITERL    5 => 0103
+0105    MOV      2   0
+0106    KNIL     3   4
+0107    JMP      5 => 0108
+0108 => ITERC    5   3   3
+0109    ITERL    5 => 0108
+0110    GGET     2  13      ; "coroutine"
+0111    TGETS    2   2  14  ; "wrap"
+0112    FNEW     3  15      ; generic_for.lua:17
+0113    CALL     2   4   2
+0114    JMP      5 => 0115
+0115 => ITERC    5   3   3
+0116    ITERL    5 => 0115
+0117    RET0     0   1
+

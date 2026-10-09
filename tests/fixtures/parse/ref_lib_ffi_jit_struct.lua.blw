@@ -1,0 +1,538 @@
+-- BYTECODE -- ref_lib_ffi_jit_struct.lua:193-198
+0001    KSHORT   0   1
+0002    KSHORT   1 100
+0003    KSHORT   2   1
+0004    FORI     0 => 0017
+0005 => UGET     4   0      ; s
+0006    TSETS    3   4   0  ; "x"
+0007    GGET     4   1      ; "assert"
+0008    UGET     5   0      ; s
+0009    TGETS    5   5   0  ; "x"
+0010    ISEQV    5   3
+0011    JMP      5 => 0014
+0012    KPRI     5   1
+0013    JMP      6 => 0015
+0014 => KPRI     5   2
+0015 => CALL     4   1   2
+0016    FORL     0 => 0005
+0017 => RET0     0   1
+
+-- BYTECODE -- ref_lib_ffi_jit_struct.lua:0-202
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "ffi"
+0003    CALL     0   2   2
+0004    TGETS    1   0   2  ; "cdef"
+0005    KSTR     2   3      ; "typedef struct { int a, b, c; } jit_stru"~
+0006    CALL     1   1   2
+0007    TGETS    1   0   4  ; "new"
+0008    KSTR     2   5      ; "jit_struct_foo_t"
+0009    CALL     1   2   2
+0010    GGET     2   6      ; "ipairs"
+0011    TDUP     3   7
+0012    CALL     2   4   2
+0013    JMP      5 => 0022
+0014 => KSHORT   7   1
+0015    KSHORT   8 100
+0016    KSHORT   9   1
+0017    FORI     7 => 0022
+0018 => TGETV   11   1   6
+0019    ADDVV   11  11   5
+0020    TSETV   11   1   6
+0021    FORL     7 => 0018
+0022 => ITERC    5   3   3
+0023    ITERL    5 => 0014
+0024    GGET     2   8      ; "assert"
+0025    TGETS    3   1   9  ; "a"
+0026    ISEQN    3   0      ; 100
+0027    JMP      3 => 0030
+0028    KPRI     3   1
+0029    JMP      4 => 0031
+0030 => KPRI     3   2
+0031 => CALL     2   1   2
+0032    GGET     2   8      ; "assert"
+0033    TGETS    3   1  10  ; "b"
+0034    ISEQN    3   1      ; 200
+0035    JMP      3 => 0038
+0036    KPRI     3   1
+0037    JMP      4 => 0039
+0038 => KPRI     3   2
+0039 => CALL     2   1   2
+0040    GGET     2   8      ; "assert"
+0041    TGETS    3   1  11  ; "c"
+0042    ISEQN    3   2      ; 300
+0043    JMP      3 => 0046
+0044    KPRI     3   1
+0045    JMP      4 => 0047
+0046 => KPRI     3   2
+0047 => CALL     2   1   2
+0048    TGETS    1   0   4  ; "new"
+0049    KSTR     2   5      ; "jit_struct_foo_t"
+0050    CALL     1   2   2
+0051    KSHORT   2   1
+0052    KSHORT   3 100
+0053    KSHORT   4   1
+0054    FORI     2 => 0065
+0055 => TGETS    6   1   9  ; "a"
+0056    ADDVN    6   6   3  ; 1
+0057    TSETS    6   1   9  ; "a"
+0058    TGETS    6   1  10  ; "b"
+0059    ADDVN    6   6   4  ; 2
+0060    TSETS    6   1  10  ; "b"
+0061    TGETS    6   1  11  ; "c"
+0062    ADDVN    6   6   5  ; 3
+0063    TSETS    6   1  11  ; "c"
+0064    FORL     2 => 0055
+0065 => GGET     2   8      ; "assert"
+0066    TGETS    3   1   9  ; "a"
+0067    ISEQN    3   0      ; 100
+0068    JMP      3 => 0071
+0069    KPRI     3   1
+0070    JMP      4 => 0072
+0071 => KPRI     3   2
+0072 => CALL     2   1   2
+0073    GGET     2   8      ; "assert"
+0074    TGETS    3   1  10  ; "b"
+0075    ISEQN    3   1      ; 200
+0076    JMP      3 => 0079
+0077    KPRI     3   1
+0078    JMP      4 => 0080
+0079 => KPRI     3   2
+0080 => CALL     2   1   2
+0081    GGET     2   8      ; "assert"
+0082    TGETS    3   1  11  ; "c"
+0083    ISEQN    3   2      ; 300
+0084    JMP      3 => 0087
+0085    KPRI     3   1
+0086    JMP      4 => 0088
+0087 => KPRI     3   2
+0088 => CALL     2   1   2
+0089    TGETS    1   0   4  ; "new"
+0090    KSTR     2   5      ; "jit_struct_foo_t"
+0091    CALL     1   2   2
+0092    TGETS    2   0   4  ; "new"
+0093    KSTR     3  12      ; "jit_struct_foo2_t"
+0094    KSHORT   4   1
+0095    KSHORT   5   2
+0096    KSHORT   6   3
+0097    CALL     2   2   5
+0098    KSHORT   3   1
+0099    KSHORT   4 100
+0100    KSHORT   5   1
+0101    FORI     3 => 0115
+0102 => TGETS    7   1   9  ; "a"
+0103    TGETS    8   2   9  ; "a"
+0104    ADDVV    7   7   8
+0105    TSETS    7   1   9  ; "a"
+0106    TGETS    7   1  10  ; "b"
+0107    TGETS    8   2  10  ; "b"
+0108    ADDVV    7   7   8
+0109    TSETS    7   1  10  ; "b"
+0110    TGETS    7   1  11  ; "c"
+0111    TGETS    8   2  11  ; "c"
+0112    ADDVV    7   7   8
+0113    TSETS    7   1  11  ; "c"
+0114    FORL     3 => 0102
+0115 => GGET     3   8      ; "assert"
+0116    TGETS    4   1   9  ; "a"
+0117    ISEQN    4   0      ; 100
+0118    JMP      4 => 0121
+0119    KPRI     4   1
+0120    JMP      5 => 0122
+0121 => KPRI     4   2
+0122 => CALL     3   1   2
+0123    GGET     3   8      ; "assert"
+0124    TGETS    4   1  10  ; "b"
+0125    ISEQN    4   1      ; 200
+0126    JMP      4 => 0129
+0127    KPRI     4   1
+0128    JMP      5 => 0130
+0129 => KPRI     4   2
+0130 => CALL     3   1   2
+0131    GGET     3   8      ; "assert"
+0132    TGETS    4   1  11  ; "c"
+0133    ISEQN    4   2      ; 300
+0134    JMP      4 => 0137
+0135    KPRI     4   1
+0136    JMP      5 => 0138
+0137 => KPRI     4   2
+0138 => CALL     3   1   2
+0139    TGETS    1   0   4  ; "new"
+0140    KSTR     2  13      ; "jit_struct_sarr_t"
+0141    CALL     1   2   2
+0142    KSHORT   2   1
+0143    KSHORT   3 100
+0144    KSHORT   4   1
+0145    FORI     2 => 0157
+0146 => TGETS    6   1   9  ; "a"
+0147    TGETS    7   1   9  ; "a"
+0148    TGETB    7   7   5
+0149    ADDVN    7   7   3  ; 1
+0150    TSETB    7   6   5
+0151    TGETS    6   1  10  ; "b"
+0152    TGETS    7   1  10  ; "b"
+0153    TGETB    7   7   5
+0154    ADDVN    7   7   4  ; 2
+0155    TSETB    7   6   5
+0156    FORL     2 => 0146
+0157 => GGET     2   8      ; "assert"
+0158    TGETS    3   1   9  ; "a"
+0159    TGETB    3   3   5
+0160    ISEQN    3   0      ; 100
+0161    JMP      3 => 0164
+0162    KPRI     3   1
+0163    JMP      4 => 0165
+0164 => KPRI     3   2
+0165 => CALL     2   1   2
+0166    GGET     2   8      ; "assert"
+0167    TGETS    3   1  10  ; "b"
+0168    TGETB    3   3   5
+0169    ISEQN    3   1      ; 200
+0170    JMP      3 => 0173
+0171    KPRI     3   1
+0172    JMP      4 => 0174
+0173 => KPRI     3   2
+0174 => CALL     2   1   2
+0175    TGETS    1   0   4  ; "new"
+0176    KSTR     2  14      ; "\tstruct {\n\t  struct {\n\t    int x;\n"~
+0177    CALL     1   2   2
+0178    TGETS    2   1   9  ; "a"
+0179    TGETB    2   2  10
+0180    TGETS    2   2  10  ; "b"
+0181    KSHORT   3  10
+0182    TSETB    3   2   4
+0183    TGETS    2   1   9  ; "a"
+0184    TGETB    2   2  95
+0185    TGETS    2   2  10  ; "b"
+0186    KSHORT   3  95
+0187    TSETB    3   2   4
+0188    KSHORT   2   0
+0189    KSHORT   3   1
+0190    KSHORT   4 100
+0191    KSHORT   5   1
+0192    FORI     3 => 0200
+0193 => TGETS    7   1   9  ; "a"
+0194    SUBVN    8   6   3  ; 1
+0195    TGETV    7   7   8
+0196    TGETS    7   7  10  ; "b"
+0197    TGETB    7   7   4
+0198    ADDVV    2   2   7
+0199    FORL     3 => 0193
+0200 => GGET     3   8      ; "assert"
+0201    ISEQN    2   6      ; 105
+0202    JMP      4 => 0205
+0203    KPRI     4   1
+0204    JMP      5 => 0206
+0205 => KPRI     4   2
+0206 => CALL     3   1   2
+0207    TGETS    1   0   4  ; "new"
+0208    KSTR     2  15      ; "struct { int a; }"
+0209    CALL     1   2   2
+0210    TGETS    2   0   4  ; "new"
+0211    KSTR     3  15      ; "struct { int a; }"
+0212    CALL     2   2   2
+0213    KSHORT   3   0
+0214    KSHORT   4   1
+0215    KSHORT   5   2
+0216    KSHORT   6   1
+0217    FORI     4 => 0248
+0218 => KSHORT   8   1
+0219    KSHORT   9 100
+0220    KSHORT  10   1
+0221    FORI     8 => 0228
+0222 => TSETS   11   2   9  ; "a"
+0223    KSHORT  12   1
+0224    TSETS   12   1   9  ; "a"
+0225    TGETS   12   2   9  ; "a"
+0226    ADDVV    3   3  12
+0227    FORL     8 => 0222
+0228 => ISNEN    7   3      ; 1
+0229    JMP      8 => 0240
+0230    GGET     8   8      ; "assert"
+0231    ISEQN    3   7      ; 5050
+0232    JMP      9 => 0235
+0233    KPRI     9   1
+0234    JMP     10 => 0236
+0235 => KPRI     9   2
+0236 => CALL     8   1   2
+0237    MOV      2   1
+0238    KSHORT   3   0
+0239    JMP      8 => 0247
+0240 => GGET     8   8      ; "assert"
+0241    ISEQN    3   0      ; 100
+0242    JMP      9 => 0245
+0243    KPRI     9   1
+0244    JMP     10 => 0246
+0245 => KPRI     9   2
+0246 => CALL     8   1   2
+0247 => FORL     4 => 0218
+0248 => TGETS    1   0   4  ; "new"
+0249    KSTR     2  15      ; "struct { int a; }"
+0250    CALL     1   2   2
+0251    TGETS    2   0   4  ; "new"
+0252    KSTR     3  16      ; "struct { char a; }"
+0253    CALL     2   2   2
+0254    KSHORT   3   0
+0255    KSHORT   4   1
+0256    KSHORT   5   2
+0257    KSHORT   6   1
+0258    FORI     4 => 0289
+0259 => KSHORT   8   1
+0260    KSHORT   9 100
+0261    KSHORT  10   1
+0262    FORI     8 => 0269
+0263 => TSETS   11   2   9  ; "a"
+0264    KSHORT  12   1
+0265    TSETS   12   1   9  ; "a"
+0266    TGETS   12   2   9  ; "a"
+0267    ADDVV    3   3  12
+0268    FORL     8 => 0263
+0269 => ISNEN    7   3      ; 1
+0270    JMP      8 => 0281
+0271    GGET     8   8      ; "assert"
+0272    ISEQN    3   7      ; 5050
+0273    JMP      9 => 0276
+0274    KPRI     9   1
+0275    JMP     10 => 0277
+0276 => KPRI     9   2
+0277 => CALL     8   1   2
+0278    MOV      2   1
+0279    KSHORT   3   0
+0280    JMP      8 => 0288
+0281 => GGET     8   8      ; "assert"
+0282    ISEQN    3   0      ; 100
+0283    JMP      9 => 0286
+0284    KPRI     9   1
+0285    JMP     10 => 0287
+0286 => KPRI     9   2
+0287 => CALL     8   1   2
+0288 => FORL     4 => 0259
+0289 => TGETS    1   0   4  ; "new"
+0290    KSTR     2  17      ; "union { uint8_t a; int8_t b; }"
+0291    CALL     1   2   2
+0292    KSHORT   2   0
+0293    KSHORT   3   1
+0294    KSHORT   4 200
+0295    KSHORT   5   1
+0296    FORI     3 => 0301
+0297 => TSETS    6   1   9  ; "a"
+0298    TGETS    7   1  10  ; "b"
+0299    ADDVV    2   2   7
+0300    FORL     3 => 0297
+0301 => GGET     3   8      ; "assert"
+0302    ISEQN    2   8      ; 1412
+0303    JMP      4 => 0306
+0304    KPRI     4   1
+0305    JMP      5 => 0307
+0306 => KPRI     4   2
+0307 => CALL     3   1   2
+0308    TGETS    1   0   4  ; "new"
+0309    KSTR     2  18      ; "jit_struct_chain_t"
+0310    CALL     1   2   2
+0311    TGETS    2   0   4  ; "new"
+0312    KSTR     3  18      ; "jit_struct_chain_t"
+0313    CALL     2   2   2
+0314    TGETS    3   0   4  ; "new"
+0315    KSTR     4  18      ; "jit_struct_chain_t"
+0316    CALL     3   2   2
+0317    TSETS    2   1  19  ; "next"
+0318    TSETS    3   2  19  ; "next"
+0319    TSETS    1   3  19  ; "next"
+0320    MOV      4   1
+0321    KSHORT   5   1
+0322    KSHORT   6  99
+0323    KSHORT   7   1
+0324    FORI     5 => 0328
+0325 => TSETS    8   4  20  ; "v"
+0326    TGETS    4   4  19  ; "next"
+0327    FORL     5 => 0325
+0328 => GGET     5   8      ; "assert"
+0329    TGETS    6   1  20  ; "v"
+0330    ISEQN    6   9      ; 97
+0331    JMP      6 => 0334
+0332    KPRI     6   1
+0333    JMP      7 => 0335
+0334 => KPRI     6   2
+0335 => CALL     5   1   2
+0336    GGET     5   8      ; "assert"
+0337    TGETS    6   2  20  ; "v"
+0338    ISEQN    6  10      ; 98
+0339    JMP      6 => 0342
+0340    KPRI     6   1
+0341    JMP      7 => 0343
+0342 => KPRI     6   2
+0343 => CALL     5   1   2
+0344    GGET     5   8      ; "assert"
+0345    TGETS    6   3  20  ; "v"
+0346    ISEQN    6  11      ; 99
+0347    JMP      6 => 0350
+0348    KPRI     6   1
+0349    JMP      7 => 0351
+0350 => KPRI     6   2
+0351 => CALL     5   1   2
+0352    TGETS    1   0  21  ; "typeof"
+0353    KSTR     2  22      ; "struct { int a,b,c; }"
+0354    CALL     1   2   2
+0355    KSHORT   2   0
+0356    KSHORT   3   0
+0357    KSHORT   4   0
+0358    KSHORT   5   1
+0359    KSHORT   6 100
+0360    KSHORT   7   1
+0361    FORI     5 => 0373
+0362 => MOV      9   1
+0363    MOV     10   8
+0364    ADDVN   11   8   3  ; 1
+0365    CALL     9   2   3
+0366    TGETS   10   9   9  ; "a"
+0367    ADDVV    2   2  10
+0368    TGETS   10   9  10  ; "b"
+0369    ADDVV    3   3  10
+0370    TGETS   10   9  11  ; "c"
+0371    ADDVV    4   4  10
+0372    FORL     5 => 0362
+0373 => GGET     5   8      ; "assert"
+0374    ISEQN    2   7      ; 5050
+0375    JMP      6 => 0378
+0376    KPRI     6   1
+0377    JMP      7 => 0379
+0378 => KPRI     6   2
+0379 => CALL     5   1   2
+0380    GGET     5   8      ; "assert"
+0381    ISEQN    3  12      ; 5150
+0382    JMP      6 => 0385
+0383    KPRI     6   1
+0384    JMP      7 => 0386
+0385 => KPRI     6   2
+0386 => CALL     5   1   2
+0387    GGET     5   8      ; "assert"
+0388    ISEQN    4  13      ; 0
+0389    JMP      6 => 0392
+0390    KPRI     6   1
+0391    JMP      7 => 0393
+0392 => KPRI     6   2
+0393 => CALL     5   1   2
+0394    TGETS    1   0  21  ; "typeof"
+0395    KSTR     2  23      ; "struct { double a,b,c; }"
+0396    CALL     1   2   2
+0397    KSHORT   2   0
+0398    KSHORT   3   0
+0399    KSHORT   4   0
+0400    KSHORT   5   1
+0401    KSHORT   6 100
+0402    KSHORT   7   1
+0403    FORI     5 => 0415
+0404 => MOV      9   1
+0405    MOV     10   8
+0406    ADDVN   11   8   3  ; 1
+0407    CALL     9   2   3
+0408    TGETS   10   9   9  ; "a"
+0409    ADDVV    2   2  10
+0410    TGETS   10   9  10  ; "b"
+0411    ADDVV    3   3  10
+0412    TGETS   10   9  11  ; "c"
+0413    ADDVV    4   4  10
+0414    FORL     5 => 0404
+0415 => GGET     5   8      ; "assert"
+0416    ISEQN    2   7      ; 5050
+0417    JMP      6 => 0420
+0418    KPRI     6   1
+0419    JMP      7 => 0421
+0420 => KPRI     6   2
+0421 => CALL     5   1   2
+0422    GGET     5   8      ; "assert"
+0423    ISEQN    3  12      ; 5150
+0424    JMP      6 => 0427
+0425    KPRI     6   1
+0426    JMP      7 => 0428
+0427 => KPRI     6   2
+0428 => CALL     5   1   2
+0429    GGET     5   8      ; "assert"
+0430    ISEQN    4  13      ; 0
+0431    JMP      6 => 0434
+0432    KPRI     6   1
+0433    JMP      7 => 0435
+0434 => KPRI     6   2
+0435 => CALL     5   1   2
+0436    TGETS    1   0   4  ; "new"
+0437    KSTR     2  18      ; "jit_struct_chain_t"
+0438    CALL     1   2   2
+0439    KPRI     2   0
+0440    KSHORT   3   1
+0441    KSHORT   4 100
+0442    KSHORT   5   1
+0443    FORI     3 => 0451
+0444 => TGETS    7   0   4  ; "new"
+0445    KSTR     8  18      ; "jit_struct_chain_t"
+0446    MOV      9   1
+0447    MOV     10   6
+0448    CALL     7   2   4
+0449    MOV      2   7
+0450    FORL     3 => 0444
+0451 => GGET     3   8      ; "assert"
+0452    GGET     4  24      ; "tonumber"
+0453    TGETS    5   0  25  ; "cast"
+0454    KSTR     6  26      ; "int"
+0455    TGETS    7   2  19  ; "next"
+0456    CALL     5   0   3
+0457    CALLM    4   2   0
+0458    GGET     5  24      ; "tonumber"
+0459    TGETS    6   0  25  ; "cast"
+0460    KSTR     7  26      ; "int"
+0461    TGETS    8   0  25  ; "cast"
+0462    KSTR     9  27      ; "jit_struct_chain_t *"
+0463    MOV     10   1
+0464    CALL     8   0   3
+0465    CALLM    6   0   1
+0466    CALLM    5   2   0
+0467    ISEQV    4   5
+0468    JMP      4 => 0471
+0469    KPRI     4   1
+0470    JMP      5 => 0472
+0471 => KPRI     4   2
+0472 => CALL     3   1   2
+0473    GGET     3   8      ; "assert"
+0474    TGETS    4   2  20  ; "v"
+0475    ISEQN    4   0      ; 100
+0476    JMP      4 => 0479
+0477    KPRI     4   1
+0478    JMP      5 => 0480
+0479 => KPRI     4   2
+0480 => CALL     3   1   2
+0481    TGETS    1   0  21  ; "typeof"
+0482    KSTR     2  28      ; "struct { int *p; int y; }"
+0483    CALL     1   2   2
+0484    KPRI     2   0
+0485    KSHORT   3   1
+0486    KSHORT   4 200
+0487    KSHORT   5   1
+0488    FORI     3 => 0501
+0489 => ISNEN    6   0      ; 100
+0490    JMP      7 => 0495
+0491    TGETS    7   0  21  ; "typeof"
+0492    KSTR     8  18      ; "jit_struct_chain_t"
+0493    CALL     7   2   2
+0494    MOV      1   7
+0495 => MOV      7   1
+0496    KPRI     8   0
+0497    KSHORT   9  10
+0498    CALL     7   2   3
+0499    MOV      2   7
+0500    FORL     3 => 0489
+0501 => GGET     3   8      ; "assert"
+0502    TGETS    4   2  20  ; "v"
+0503    ISEQN    4  14      ; 10
+0504    JMP      4 => 0507
+0505    KPRI     4   1
+0506    JMP      5 => 0508
+0507 => KPRI     4   2
+0508 => CALL     3   1   2
+0509    TGETS    1   0   4  ; "new"
+0510    KSTR     2  29      ; "struct { int x; }"
+0511    KSHORT   3  42
+0512    CALL     1   2   3
+0513    FNEW     2  30      ; ref_lib_ffi_jit_struct.lua:193
+0514    MOV      3   2
+0515    CALL     3   1   1
+0516    UCLO     1 => 0517
+0517 => RET0     0   1
+

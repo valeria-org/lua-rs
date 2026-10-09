@@ -1,0 +1,164 @@
+-- BYTECODE -- ref_lib_string_dump.lua:4-10
+0001    TNEW     0   0
+0002    KSHORT   1   1
+0003    KSHORT   2 100
+0004    KSHORT   3   1
+0005    FORI     1 => 0008
+0006 => TSETV    4   0   4
+0007    FORL     1 => 0006
+0008 => GGET     1   0      ; "ipairs"
+0009    MOV      2   0
+0010    CALL     1   4   2
+0011    JMP      4 => 0012
+0012 => ITERC    4   3   3
+0013    ITERL    4 => 0012
+0014    KSHORT   1   0
+0015 => KSHORT   2 100
+0016    ISGE     1   2
+0017    JMP      2 => 0021
+0018    LOOP     2 => 0021
+0019    ADDVN    1   1   0  ; 1
+0020    JMP      2 => 0015
+0021 => RET0     0   1
+
+-- BYTECODE -- ref_lib_string_dump.lua:25-25
+0001    KNUM     0   0      ; -2147483648
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lib_string_dump.lua:26-26
+0001    KNUM     0   0      ; 0.971234567
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lib_string_dump.lua:0-32
+0001    GGET     0   0      ; "loadstring"
+0002    IST          0
+0003    JMP      1 => 0005
+0004    GGET     0   1      ; "load"
+0005 => FNEW     1   2      ; ref_lib_string_dump.lua:4
+0006    GGET     2   3      ; "string"
+0007    TGETS    2   2   4  ; "dump"
+0008    MOV      3   1
+0009    CALL     2   2   2
+0010    MOV      3   1
+0011    CALL     3   1   1
+0012    GGET     3   5      ; "assert"
+0013    GGET     4   3      ; "string"
+0014    TGETS    4   4   4  ; "dump"
+0015    MOV      5   1
+0016    CALL     4   2   2
+0017    ISEQV    4   2
+0018    JMP      4 => 0021
+0019    KPRI     4   1
+0020    JMP      5 => 0022
+0021 => KPRI     4   2
+0022 => CALL     3   1   2
+0023    GGET     3   6      ; "jit"
+0024    ISF          3
+0025    JMP      4 => 0030
+0026    GGET     3   6      ; "jit"
+0027    TGETS    3   3   7  ; "off"
+0028    MOV      4   1
+0029    CALL     3   1   2
+0030 => MOV      3   1
+0031    CALL     3   1   1
+0032    GGET     3   5      ; "assert"
+0033    GGET     4   3      ; "string"
+0034    TGETS    4   4   4  ; "dump"
+0035    MOV      5   1
+0036    CALL     4   2   2
+0037    ISEQV    4   2
+0038    JMP      4 => 0041
+0039    KPRI     4   1
+0040    JMP      5 => 0042
+0041 => KPRI     4   2
+0042 => CALL     3   1   2
+0043    GGET     3   3      ; "string"
+0044    TGETS    3   3   4  ; "dump"
+0045    MOV      4   0
+0046    MOV      5   2
+0047    KSTR     6   8      ; ""
+0048    CALL     4   2   3
+0049    KPRI     5   2
+0050    CALL     3   2   3
+0051    GGET     4   3      ; "string"
+0052    TGETS    4   4   4  ; "dump"
+0053    GGET     5   5      ; "assert"
+0054    MOV      6   0
+0055    MOV      7   3
+0056    KSTR     8   8      ; ""
+0057    CALL     6   0   3
+0058    CALLM    5   2   0
+0059    KPRI     6   2
+0060    CALL     4   2   3
+0061    GGET     5   5      ; "assert"
+0062    ISEQV    3   4
+0063    JMP      6 => 0066
+0064    KPRI     6   1
+0065    JMP      7 => 0067
+0066 => KPRI     6   2
+0067 => CALL     5   1   2
+0068    GGET     5   5      ; "assert"
+0069    MOV      6   0
+0070    GGET     7   3      ; "string"
+0071    TGETS    7   7   4  ; "dump"
+0072    GGET     8   5      ; "assert"
+0073    MOV      9   0
+0074    MOV     10   3
+0075    KSTR    11   8      ; ""
+0076    CALL     9   0   3
+0077    CALLM    8   0   0
+0078    CALLM    7   0   0
+0079    CALLM    6   0   0
+0080    CALLM    5   1   0
+0081    FNEW     1   9      ; ref_lib_string_dump.lua:25
+0082    FNEW     2  10      ; ref_lib_string_dump.lua:26
+0083    GGET     3   5      ; "assert"
+0084    MOV      4   1
+0085    CALL     4   2   1
+0086    ISEQN    4   0      ; -2147483648
+0087    JMP      4 => 0090
+0088    KPRI     4   1
+0089    JMP      5 => 0091
+0090 => KPRI     4   2
+0091 => CALL     3   1   2
+0092    GGET     3   5      ; "assert"
+0093    MOV      4   0
+0094    GGET     5   3      ; "string"
+0095    TGETS    5   5   4  ; "dump"
+0096    MOV      6   1
+0097    CALL     5   2   2
+0098    KSTR     6   8      ; ""
+0099    CALL     4   2   3
+0100    CALL     4   2   1
+0101    ISEQN    4   0      ; -2147483648
+0102    JMP      4 => 0105
+0103    KPRI     4   1
+0104    JMP      5 => 0106
+0105 => KPRI     4   2
+0106 => CALL     3   1   2
+0107    GGET     3   5      ; "assert"
+0108    MOV      4   2
+0109    CALL     4   2   1
+0110    ISEQN    4   1      ; 0.971234567
+0111    JMP      4 => 0114
+0112    KPRI     4   1
+0113    JMP      5 => 0115
+0114 => KPRI     4   2
+0115 => CALL     3   1   2
+0116    GGET     3   5      ; "assert"
+0117    MOV      4   0
+0118    GGET     5   3      ; "string"
+0119    TGETS    5   5   4  ; "dump"
+0120    MOV      6   2
+0121    CALL     5   2   2
+0122    KSTR     6   8      ; ""
+0123    CALL     4   2   3
+0124    CALL     4   2   1
+0125    ISEQN    4   1      ; 0.971234567
+0126    JMP      4 => 0129
+0127    KPRI     4   1
+0128    JMP      5 => 0130
+0129 => KPRI     4   2
+0130 => CALL     3   1   2
+0131    RET0     0   1
+

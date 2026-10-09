@@ -1,0 +1,354 @@
+-- BYTECODE -- ref_lib_base_tonumber_tostring.lua:44-44
+0001    GGET     1   0      ; "tostring"
+0002    TGETB    2   0   1
+0003    CALLT    1   2
+
+-- BYTECODE -- ref_lib_base_tonumber_tostring.lua:55-55
+0001    GGET     2   0      ; "tostring"
+0002    TGETB    3   1   1
+0003    CALLT    2   2
+
+-- BYTECODE -- ref_lib_base_tonumber_tostring.lua:67-67
+0001    GGET     0   0      ; "print"
+0002    KSHORT   1   1
+0003    CALL     0   1   2
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_tonumber_tostring.lua:69-69
+0001    USETP    0   2      ; x
+0002    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_tonumber_tostring.lua:80-80
+0001    GGET     0   0      ; "tostring"
+0002    UGET     1   0      ; t
+0003    CALL     0   1   2
+0004    RET0     0   1
+
+-- BYTECODE -- ref_lib_base_tonumber_tostring.lua:0-82
+0001    KSHORT   0   0
+0002    KSHORT   1   1
+0003    KSHORT   2 100
+0004    KSHORT   3   1
+0005    FORI     1 => 0011
+0006 => GGET     5   0      ; "tonumber"
+0007    MOV      6   4
+0008    CALL     5   2   2
+0009    ADDVV    0   0   5
+0010    FORL     1 => 0006
+0011 => GGET     1   1      ; "assert"
+0012    ISEQN    0   0      ; 5050
+0013    JMP      2 => 0016
+0014    KPRI     2   1
+0015    JMP      3 => 0017
+0016 => KPRI     2   2
+0017 => CALL     1   1   2
+0018    KSHORT   0   0
+0019    KNUM     1   1      ; 1.5
+0020    KNUM     2   2      ; 100.5
+0021    KSHORT   3   1
+0022    FORI     1 => 0028
+0023 => GGET     5   0      ; "tonumber"
+0024    MOV      6   4
+0025    CALL     5   2   2
+0026    ADDVV    0   0   5
+0027    FORL     1 => 0023
+0028 => GGET     1   1      ; "assert"
+0029    ISEQN    0   3      ; 5100
+0030    JMP      2 => 0033
+0031    KPRI     2   1
+0032    JMP      3 => 0034
+0033 => KPRI     2   2
+0034 => CALL     1   1   2
+0035    TNEW     0   0
+0036    KSHORT   1   1
+0037    KSHORT   2 100
+0038    KSHORT   3   1
+0039    FORI     1 => 0045
+0040 => GGET     5   2      ; "tostring"
+0041    MOV      6   4
+0042    CALL     5   2   2
+0043    TSETV    5   0   4
+0044    FORL     1 => 0040
+0045 => KSHORT   1   0
+0046    KSHORT   2   1
+0047    KSHORT   3 100
+0048    KSHORT   4   1
+0049    FORI     2 => 0065
+0050 => GGET     6   1      ; "assert"
+0051    GGET     7   3      ; "type"
+0052    TGETV    8   0   5
+0053    CALL     7   2   2
+0054    ISEQS    7   4      ; "string"
+0055    JMP      7 => 0058
+0056    KPRI     7   1
+0057    JMP      8 => 0059
+0058 => KPRI     7   2
+0059 => CALL     6   1   2
+0060    GGET     6   0      ; "tonumber"
+0061    TGETV    7   0   5
+0062    CALL     6   2   2
+0063    ADDVV    1   1   6
+0064    FORL     2 => 0050
+0065 => GGET     2   1      ; "assert"
+0066    ISEQN    1   0      ; 5050
+0067    JMP      3 => 0070
+0068    KPRI     3   1
+0069    JMP      4 => 0071
+0070 => KPRI     3   2
+0071 => CALL     2   1   2
+0072    TNEW     0   0
+0073    KSHORT   1   1
+0074    KSHORT   2 100
+0075    KSHORT   3   1
+0076    FORI     1 => 0082
+0077 => GGET     5   2      ; "tostring"
+0078    ADDVN    6   4   4  ; 0.5
+0079    CALL     5   2   2
+0080    TSETV    5   0   4
+0081    FORL     1 => 0077
+0082 => KSHORT   1   0
+0083    KSHORT   2   1
+0084    KSHORT   3 100
+0085    KSHORT   4   1
+0086    FORI     2 => 0102
+0087 => GGET     6   1      ; "assert"
+0088    GGET     7   3      ; "type"
+0089    TGETV    8   0   5
+0090    CALL     7   2   2
+0091    ISEQS    7   4      ; "string"
+0092    JMP      7 => 0095
+0093    KPRI     7   1
+0094    JMP      8 => 0096
+0095 => KPRI     7   2
+0096 => CALL     6   1   2
+0097    GGET     6   0      ; "tonumber"
+0098    TGETV    7   0   5
+0099    CALL     6   2   2
+0100    ADDVV    1   1   6
+0101    FORL     2 => 0087
+0102 => GGET     2   1      ; "assert"
+0103    ISEQN    1   3      ; 5100
+0104    JMP      3 => 0107
+0105    KPRI     3   1
+0106    JMP      4 => 0108
+0107 => KPRI     3   2
+0108 => CALL     2   1   2
+0109    KSHORT   0   1
+0110    KSHORT   1 100
+0111    KSHORT   2   1
+0112    FORI     0 => 0124
+0113 => GGET     4   1      ; "assert"
+0114    GGET     5   0      ; "tonumber"
+0115    TNEW     6   0
+0116    CALL     5   2   2
+0117    ISEQP    5   0
+0118    JMP      5 => 0121
+0119    KPRI     5   1
+0120    JMP      6 => 0122
+0121 => KPRI     5   2
+0122 => CALL     4   1   2
+0123    FORL     0 => 0113
+0124 => TNEW     0   0
+0125    KSHORT   1   1
+0126    KSHORT   2 100
+0127    KSHORT   3   1
+0128    FORI     1 => 0134
+0129 => GGET     5   2      ; "tostring"
+0130    MOV      6   4
+0131    CALL     5   2   2
+0132    TSETV    5   0   4
+0133    FORL     1 => 0129
+0134 => KSHORT   1   1
+0135    KSHORT   2 100
+0136    KSHORT   3   1
+0137    FORI     1 => 0143
+0138 => GGET     5   2      ; "tostring"
+0139    TGETV    6   0   4
+0140    CALL     5   2   2
+0141    TSETV    5   0   4
+0142    FORL     1 => 0138
+0143 => KSHORT   1   0
+0144    KSHORT   2   1
+0145    KSHORT   3 100
+0146    KSHORT   4   1
+0147    FORI     2 => 0161
+0148 => GGET     6   1      ; "assert"
+0149    GGET     7   3      ; "type"
+0150    TGETV    8   0   5
+0151    CALL     7   2   2
+0152    ISEQS    7   4      ; "string"
+0153    JMP      7 => 0156
+0154    KPRI     7   1
+0155    JMP      8 => 0157
+0156 => KPRI     7   2
+0157 => CALL     6   1   2
+0158    TGETV    6   0   5
+0159    ADDVV    1   1   6
+0160    FORL     2 => 0148
+0161 => GGET     2   1      ; "assert"
+0162    ISEQN    1   0      ; 5050
+0163    JMP      3 => 0166
+0164    KPRI     3   1
+0165    JMP      4 => 0167
+0166 => KPRI     3   2
+0167 => CALL     2   1   2
+0168    TDUP     0   6
+0169    FNEW     1   5      ; ref_lib_base_tonumber_tostring.lua:44
+0170    TSETS    1   0   7  ; "__tostring"
+0171    TNEW     1   0
+0172    KSHORT   2   1
+0173    KSHORT   3 100
+0174    KSHORT   4   1
+0175    FORI     2 => 0183
+0176 => GGET     6   8      ; "setmetatable"
+0177    TNEW     7   3
+0178    TSETB    5   7   1
+0179    MOV      8   0
+0180    CALL     6   2   3
+0181    TSETV    6   1   5
+0182    FORL     2 => 0176
+0183 => KSHORT   2   1
+0184    KSHORT   3 100
+0185    KSHORT   4   1
+0186    FORI     2 => 0192
+0187 => GGET     6   2      ; "tostring"
+0188    TGETV    7   1   5
+0189    CALL     6   2   2
+0190    TSETV    6   1   5
+0191    FORL     2 => 0187
+0192 => KSHORT   2   0
+0193    KSHORT   3   1
+0194    KSHORT   4 100
+0195    KSHORT   5   1
+0196    FORI     3 => 0210
+0197 => GGET     7   1      ; "assert"
+0198    GGET     8   3      ; "type"
+0199    TGETV    9   1   6
+0200    CALL     8   2   2
+0201    ISEQS    8   4      ; "string"
+0202    JMP      8 => 0205
+0203    KPRI     8   1
+0204    JMP      9 => 0206
+0205 => KPRI     8   2
+0206 => CALL     7   1   2
+0207    TGETV    7   1   6
+0208    ADDVV    2   2   7
+0209    FORL     3 => 0197
+0210 => GGET     3   1      ; "assert"
+0211    ISEQN    2   0      ; 5050
+0212    JMP      4 => 0215
+0213    KPRI     4   1
+0214    JMP      5 => 0216
+0215 => KPRI     4   2
+0216 => CALL     3   1   2
+0217    GGET     0   8      ; "setmetatable"
+0218    TNEW     1   0
+0219    TDUP     2  10
+0220    FNEW     3   9      ; ref_lib_base_tonumber_tostring.lua:55
+0221    TSETS    3   2  11  ; "__call"
+0222    CALL     0   2   3
+0223    TDUP     1  12
+0224    TSETS    0   1   7  ; "__tostring"
+0225    TNEW     2   0
+0226    KSHORT   3   1
+0227    KSHORT   4 100
+0228    KSHORT   5   1
+0229    FORI     3 => 0237
+0230 => GGET     7   8      ; "setmetatable"
+0231    TNEW     8   3
+0232    TSETB    6   8   1
+0233    MOV      9   1
+0234    CALL     7   2   3
+0235    TSETV    7   2   6
+0236    FORL     3 => 0230
+0237 => KSHORT   3   1
+0238    KSHORT   4 100
+0239    KSHORT   5   1
+0240    FORI     3 => 0246
+0241 => GGET     7   2      ; "tostring"
+0242    TGETV    8   2   6
+0243    CALL     7   2   2
+0244    TSETV    7   2   6
+0245    FORL     3 => 0241
+0246 => KSHORT   3   0
+0247    KSHORT   4   1
+0248    KSHORT   5 100
+0249    KSHORT   6   1
+0250    FORI     4 => 0264
+0251 => GGET     8   1      ; "assert"
+0252    GGET     9   3      ; "type"
+0253    TGETV   10   2   7
+0254    CALL     9   2   2
+0255    ISEQS    9   4      ; "string"
+0256    JMP      9 => 0259
+0257    KPRI     9   1
+0258    JMP     10 => 0260
+0259 => KPRI     9   2
+0260 => CALL     8   1   2
+0261    TGETV    8   2   7
+0262    ADDVV    3   3   8
+0263    FORL     4 => 0251
+0264 => GGET     4   1      ; "assert"
+0265    ISEQN    3   0      ; 5050
+0266    JMP      5 => 0269
+0267    KPRI     5   1
+0268    JMP      6 => 0270
+0269 => KPRI     5   2
+0270 => CALL     4   1   2
+0271    KPRI     0   1
+0272    GGET     1  13      ; "coroutine"
+0273    TGETS    1   1  14  ; "create"
+0274    FNEW     2  15      ; ref_lib_base_tonumber_tostring.lua:67
+0275    CALL     1   2   2
+0276    GGET     2  16      ; "debug"
+0277    TGETS    2   2  17  ; "setfenv"
+0278    MOV      3   1
+0279    GGET     4   8      ; "setmetatable"
+0280    TNEW     5   0
+0281    TDUP     6  20
+0282    TDUP     7  19
+0283    FNEW     8  18      ; ref_lib_base_tonumber_tostring.lua:69
+0284    TSETS    8   7   2  ; "tostring"
+0285    TSETS    7   6  21  ; "__index"
+0286    CALL     4   0   3
+0287    CALLM    2   1   1
+0288    GGET     2  13      ; "coroutine"
+0289    TGETS    2   2  22  ; "resume"
+0290    MOV      3   1
+0291    CALL     2   1   2
+0292    GGET     2   1      ; "assert"
+0293    ISEQP    0   2
+0294    JMP      3 => 0297
+0295    KPRI     3   1
+0296    JMP      4 => 0298
+0297 => KPRI     3   2
+0298 => CALL     2   1   2
+0299    UCLO     0 => 0300
+0300 => GGET     0   1      ; "assert"
+0301    GGET     1   0      ; "tonumber"
+0302    KSHORT   2 111
+0303    KSHORT   3   2
+0304    CALL     1   2   3
+0305    ISEQN    1   5      ; 7
+0306    JMP      1 => 0309
+0307    KPRI     1   1
+0308    JMP      2 => 0310
+0309 => KPRI     1   2
+0310 => CALL     0   1   2
+0311    GGET     0   8      ; "setmetatable"
+0312    TNEW     1   0
+0313    TDUP     2  23
+0314    CALL     0   2   3
+0315    GGET     1   1      ; "assert"
+0316    GGET     2  24      ; "pcall"
+0317    FNEW     3  25      ; ref_lib_base_tonumber_tostring.lua:80
+0318    CALL     2   2   2
+0319    ISEQP    2   1
+0320    JMP      2 => 0323
+0321    KPRI     2   1
+0322    JMP      3 => 0324
+0323 => KPRI     2   2
+0324 => CALL     1   1   2
+0325    UCLO     0 => 0326
+0326 => RET0     0   1
+

@@ -1,0 +1,1417 @@
+-- BYTECODE -- ref_lang_compare.lua:1-3
+0001    ISGE     0   1
+0002    JMP      2 => 0006
+0003    KPRI     2   2
+0004    RET1     2   2
+0005    JMP      2 => 0008
+0006 => KPRI     2   1
+0007    RET1     2   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:5-7
+0001    ISGT     0   1
+0002    JMP      2 => 0006
+0003    KPRI     2   2
+0004    RET1     2   2
+0005    JMP      2 => 0008
+0006 => KPRI     2   1
+0007    RET1     2   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:9-11
+0001    ISGE     1   0
+0002    JMP      2 => 0006
+0003    KPRI     2   2
+0004    RET1     2   2
+0005    JMP      2 => 0008
+0006 => KPRI     2   1
+0007    RET1     2   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:13-15
+0001    ISGT     1   0
+0002    JMP      2 => 0006
+0003    KPRI     2   2
+0004    RET1     2   2
+0005    JMP      2 => 0008
+0006 => KPRI     2   1
+0007    RET1     2   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:17-19
+0001    ISNEV    0   1
+0002    JMP      2 => 0006
+0003    KPRI     2   2
+0004    RET1     2   2
+0005    JMP      2 => 0008
+0006 => KPRI     2   1
+0007    RET1     2   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:21-23
+0001    ISEQV    0   1
+0002    JMP      2 => 0006
+0003    KPRI     2   2
+0004    RET1     2   2
+0005    JMP      2 => 0008
+0006 => KPRI     2   1
+0007    RET1     2   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:26-28
+0001    KSHORT   1   1
+0002    ISGE     0   1
+0003    JMP      1 => 0007
+0004    KPRI     1   2
+0005    RET1     1   2
+0006    JMP      1 => 0009
+0007 => KPRI     1   1
+0008    RET1     1   2
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:30-32
+0001    KSHORT   1   1
+0002    ISGT     0   1
+0003    JMP      1 => 0007
+0004    KPRI     1   2
+0005    RET1     1   2
+0006    JMP      1 => 0009
+0007 => KPRI     1   1
+0008    RET1     1   2
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:34-36
+0001    KSHORT   1   1
+0002    ISGE     1   0
+0003    JMP      1 => 0007
+0004    KPRI     1   2
+0005    RET1     1   2
+0006    JMP      1 => 0009
+0007 => KPRI     1   1
+0008    RET1     1   2
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:38-40
+0001    KSHORT   1   1
+0002    ISGT     1   0
+0003    JMP      1 => 0007
+0004    KPRI     1   2
+0005    RET1     1   2
+0006    JMP      1 => 0009
+0007 => KPRI     1   1
+0008    RET1     1   2
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:42-44
+0001    ISNEN    0   0      ; 1
+0002    JMP      1 => 0006
+0003    KPRI     1   2
+0004    RET1     1   2
+0005    JMP      1 => 0008
+0006 => KPRI     1   1
+0007    RET1     1   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:46-48
+0001    ISEQN    0   0      ; 1
+0002    JMP      1 => 0006
+0003    KPRI     1   2
+0004    RET1     1   2
+0005    JMP      1 => 0008
+0006 => KPRI     1   1
+0007    RET1     1   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:51-53
+0001    KSHORT   1   1
+0002    ISGE     1   0
+0003    JMP      1 => 0007
+0004    KPRI     1   2
+0005    RET1     1   2
+0006    JMP      1 => 0009
+0007 => KPRI     1   1
+0008    RET1     1   2
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:55-57
+0001    KSHORT   1   1
+0002    ISGT     1   0
+0003    JMP      1 => 0007
+0004    KPRI     1   2
+0005    RET1     1   2
+0006    JMP      1 => 0009
+0007 => KPRI     1   1
+0008    RET1     1   2
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:59-61
+0001    KSHORT   1   1
+0002    ISGE     0   1
+0003    JMP      1 => 0007
+0004    KPRI     1   2
+0005    RET1     1   2
+0006    JMP      1 => 0009
+0007 => KPRI     1   1
+0008    RET1     1   2
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:63-65
+0001    KSHORT   1   1
+0002    ISGT     0   1
+0003    JMP      1 => 0007
+0004    KPRI     1   2
+0005    RET1     1   2
+0006    JMP      1 => 0009
+0007 => KPRI     1   1
+0008    RET1     1   2
+0009 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:67-69
+0001    ISNEN    0   0      ; 1
+0002    JMP      1 => 0006
+0003    KPRI     1   2
+0004    RET1     1   2
+0005    JMP      1 => 0008
+0006 => KPRI     1   1
+0007    RET1     1   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:71-73
+0001    ISEQN    0   0      ; 1
+0002    JMP      1 => 0006
+0003    KPRI     1   2
+0004    RET1     1   2
+0005    JMP      1 => 0008
+0006 => KPRI     1   1
+0007    RET1     1   2
+0008 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:75-79
+0001    ISEQV    0   1
+0002    JMP      2 => 0015
+0003    GGET     2   0      ; "error"
+0004    KSTR     3   1      ; "check failed with "
+0005    GGET     4   2      ; "tostring"
+0006    MOV      5   0
+0007    CALL     4   2   2
+0008    KSTR     5   3      ; " ~= "
+0009    GGET     6   2      ; "tostring"
+0010    MOV      7   1
+0011    CALL     6   2   2
+0012    CAT      3   3   6
+0013    KSHORT   4   2
+0014    CALL     2   1   3
+0015 => RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:226-229
+0001    KNUM     0   0      ; 10.5
+0002    KPRI     1   0
+0003    ISLT     0   1
+0004    JMP      2 => 0007
+0005    KPRI     2   1
+0006    JMP      3 => 0008
+0007 => KPRI     2   2
+0008 => RET1     2   2
+
+-- BYTECODE -- ref_lang_compare.lua:252-261
+0001    GGET     6   0      ; "assert"
+0002    ISLT     0   1
+0003    JMP      7 => 0006
+0004    KPRI     7   1
+0005    JMP      8 => 0007
+0006 => KPRI     7   2
+0007 => ISEQV    7   2
+0008    JMP      7 => 0011
+0009    KPRI     7   1
+0010    JMP      8 => 0012
+0011 => KPRI     7   2
+0012 => CALL     6   1   2
+0013    GGET     6   0      ; "assert"
+0014    ISLT     1   0
+0015    JMP      7 => 0018
+0016    KPRI     7   1
+0017    JMP      8 => 0019
+0018 => KPRI     7   2
+0019 => ISEQV    7   3
+0020    JMP      7 => 0023
+0021    KPRI     7   1
+0022    JMP      8 => 0024
+0023 => KPRI     7   2
+0024 => CALL     6   1   2
+0025    GGET     6   0      ; "assert"
+0026    ISLE     0   1
+0027    JMP      7 => 0030
+0028    KPRI     7   1
+0029    JMP      8 => 0031
+0030 => KPRI     7   2
+0031 => ISEQV    7   4
+0032    JMP      7 => 0035
+0033    KPRI     7   1
+0034    JMP      8 => 0036
+0035 => KPRI     7   2
+0036 => CALL     6   1   2
+0037    GGET     6   0      ; "assert"
+0038    ISLE     1   0
+0039    JMP      7 => 0042
+0040    KPRI     7   1
+0041    JMP      8 => 0043
+0042 => KPRI     7   2
+0043 => ISEQV    7   5
+0044    JMP      7 => 0047
+0045    KPRI     7   1
+0046    JMP      8 => 0048
+0047 => KPRI     7   2
+0048 => CALL     6   1   2
+0049    GGET     6   0      ; "assert"
+0050    ISGE     0   1
+0051    JMP      7 => 0054
+0052    KPRI     7   1
+0053    JMP      8 => 0055
+0054 => KPRI     7   2
+0055 => NOT      8   2
+0056    ISEQV    7   8
+0057    JMP      7 => 0060
+0058    KPRI     7   1
+0059    JMP      8 => 0061
+0060 => KPRI     7   2
+0061 => CALL     6   1   2
+0062    GGET     6   0      ; "assert"
+0063    ISGE     1   0
+0064    JMP      7 => 0067
+0065    KPRI     7   1
+0066    JMP      8 => 0068
+0067 => KPRI     7   2
+0068 => NOT      8   3
+0069    ISEQV    7   8
+0070    JMP      7 => 0073
+0071    KPRI     7   1
+0072    JMP      8 => 0074
+0073 => KPRI     7   2
+0074 => CALL     6   1   2
+0075    GGET     6   0      ; "assert"
+0076    ISGT     0   1
+0077    JMP      7 => 0080
+0078    KPRI     7   1
+0079    JMP      8 => 0081
+0080 => KPRI     7   2
+0081 => NOT      8   4
+0082    ISEQV    7   8
+0083    JMP      7 => 0086
+0084    KPRI     7   1
+0085    JMP      8 => 0087
+0086 => KPRI     7   2
+0087 => CALL     6   1   2
+0088    GGET     6   0      ; "assert"
+0089    ISGT     1   0
+0090    JMP      7 => 0093
+0091    KPRI     7   1
+0092    JMP      8 => 0094
+0093 => KPRI     7   2
+0094 => NOT      8   5
+0095    ISEQV    7   8
+0096    JMP      7 => 0099
+0097    KPRI     7   1
+0098    JMP      8 => 0100
+0099 => KPRI     7   2
+0100 => CALL     6   1   2
+0101    RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:263-265
+0001    UGET     2   0      ; str_cmp
+0002    MOV      3   0
+0003    MOV      4   1
+0004    KPRI     5   2
+0005    KPRI     6   1
+0006    KPRI     7   2
+0007    KPRI     8   1
+0008    CALL     2   1   7
+0009    RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:267-269
+0001    UGET     2   0      ; str_cmp
+0002    MOV      3   0
+0003    MOV      4   1
+0004    KPRI     5   1
+0005    KPRI     6   1
+0006    KPRI     7   2
+0007    KPRI     8   2
+0008    CALL     2   1   7
+0009    RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:271-273
+0001    UGET     2   0      ; str_cmp
+0002    MOV      3   0
+0003    MOV      4   1
+0004    KPRI     5   1
+0005    KPRI     6   2
+0006    KPRI     7   1
+0007    KPRI     8   2
+0008    CALL     2   1   7
+0009    RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:287-290
+0001    GGET     2   0      ; "assert"
+0002    ISEQV    0   1
+0003    JMP      3 => 0006
+0004    KPRI     3   1
+0005    JMP      4 => 0007
+0006 => KPRI     3   2
+0007 => ISEQP    3   2
+0008    JMP      3 => 0011
+0009    KPRI     3   1
+0010    JMP      4 => 0012
+0011 => KPRI     3   2
+0012 => CALL     2   1   2
+0013    GGET     2   0      ; "assert"
+0014    ISNEV    0   1
+0015    JMP      3 => 0018
+0016    KPRI     3   1
+0017    JMP      4 => 0019
+0018 => KPRI     3   2
+0019 => ISEQP    3   1
+0020    JMP      3 => 0023
+0021    KPRI     3   1
+0022    JMP      4 => 0024
+0023 => KPRI     3   2
+0024 => CALL     2   1   2
+0025    RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:292-295
+0001    GGET     2   0      ; "assert"
+0002    ISEQV    0   1
+0003    JMP      3 => 0006
+0004    KPRI     3   1
+0005    JMP      4 => 0007
+0006 => KPRI     3   2
+0007 => ISEQP    3   1
+0008    JMP      3 => 0011
+0009    KPRI     3   1
+0010    JMP      4 => 0012
+0011 => KPRI     3   2
+0012 => CALL     2   1   2
+0013    GGET     2   0      ; "assert"
+0014    ISNEV    0   1
+0015    JMP      3 => 0018
+0016    KPRI     3   1
+0017    JMP      4 => 0019
+0018 => KPRI     3   2
+0019 => ISEQP    3   2
+0020    JMP      3 => 0023
+0021    KPRI     3   1
+0022    JMP      4 => 0024
+0023 => KPRI     3   2
+0024 => CALL     2   1   2
+0025    RET0     0   1
+
+-- BYTECODE -- ref_lang_compare.lua:0-324
+0001    FNEW     0   0      ; ref_lang_compare.lua:1
+0002    FNEW     1   1      ; ref_lang_compare.lua:5
+0003    FNEW     2   2      ; ref_lang_compare.lua:9
+0004    FNEW     3   3      ; ref_lang_compare.lua:13
+0005    FNEW     4   4      ; ref_lang_compare.lua:17
+0006    FNEW     5   5      ; ref_lang_compare.lua:21
+0007    FNEW     6   6      ; ref_lang_compare.lua:26
+0008    FNEW     7   7      ; ref_lang_compare.lua:30
+0009    FNEW     8   8      ; ref_lang_compare.lua:34
+0010    FNEW     9   9      ; ref_lang_compare.lua:38
+0011    FNEW    10  10      ; ref_lang_compare.lua:42
+0012    FNEW    11  11      ; ref_lang_compare.lua:46
+0013    FNEW    12  12      ; ref_lang_compare.lua:51
+0014    FNEW    13  13      ; ref_lang_compare.lua:55
+0015    FNEW    14  14      ; ref_lang_compare.lua:59
+0016    FNEW    15  15      ; ref_lang_compare.lua:63
+0017    FNEW    16  16      ; ref_lang_compare.lua:67
+0018    FNEW    17  17      ; ref_lang_compare.lua:71
+0019    FNEW    18  18      ; ref_lang_compare.lua:75
+0020    KSHORT  19   1
+0021    KSHORT  20   2
+0022    MOV     21  18
+0023    ISLT    19  20
+0024    JMP     22 => 0027
+0025    KPRI    22   1
+0026    JMP     23 => 0028
+0027 => KPRI    22   2
+0028 => KPRI    23   2
+0029    CALL    21   1   3
+0030    MOV     21  18
+0031    ISLE    19  20
+0032    JMP     22 => 0035
+0033    KPRI    22   1
+0034    JMP     23 => 0036
+0035 => KPRI    22   2
+0036 => KPRI    23   2
+0037    CALL    21   1   3
+0038    MOV     21  18
+0039    ISLT    20  19
+0040    JMP     22 => 0043
+0041    KPRI    22   1
+0042    JMP     23 => 0044
+0043 => KPRI    22   2
+0044 => KPRI    23   1
+0045    CALL    21   1   3
+0046    MOV     21  18
+0047    ISLE    20  19
+0048    JMP     22 => 0051
+0049    KPRI    22   1
+0050    JMP     23 => 0052
+0051 => KPRI    22   2
+0052 => KPRI    23   1
+0053    CALL    21   1   3
+0054    MOV     21  18
+0055    ISEQV   19  20
+0056    JMP     22 => 0059
+0057    KPRI    22   1
+0058    JMP     23 => 0060
+0059 => KPRI    22   2
+0060 => KPRI    23   1
+0061    CALL    21   1   3
+0062    MOV     21  18
+0063    ISNEV   19  20
+0064    JMP     22 => 0067
+0065    KPRI    22   1
+0066    JMP     23 => 0068
+0067 => KPRI    22   2
+0068 => KPRI    23   2
+0069    CALL    21   1   3
+0070    MOV     21  18
+0071    KSHORT  22   1
+0072    ISLT    22  20
+0073    JMP     22 => 0076
+0074    KPRI    22   1
+0075    JMP     23 => 0077
+0076 => KPRI    22   2
+0077 => KPRI    23   2
+0078    CALL    21   1   3
+0079    MOV     21  18
+0080    KSHORT  22   1
+0081    ISLE    22  20
+0082    JMP     22 => 0085
+0083    KPRI    22   1
+0084    JMP     23 => 0086
+0085 => KPRI    22   2
+0086 => KPRI    23   2
+0087    CALL    21   1   3
+0088    MOV     21  18
+0089    KSHORT  22   1
+0090    ISLT    20  22
+0091    JMP     22 => 0094
+0092    KPRI    22   1
+0093    JMP     23 => 0095
+0094 => KPRI    22   2
+0095 => KPRI    23   1
+0096    CALL    21   1   3
+0097    MOV     21  18
+0098    KSHORT  22   1
+0099    ISLE    20  22
+0100    JMP     22 => 0103
+0101    KPRI    22   1
+0102    JMP     23 => 0104
+0103 => KPRI    22   2
+0104 => KPRI    23   1
+0105    CALL    21   1   3
+0106    MOV     21  18
+0107    ISEQN   20   0      ; 1
+0108    JMP     22 => 0111
+0109    KPRI    22   1
+0110    JMP     23 => 0112
+0111 => KPRI    22   2
+0112 => KPRI    23   1
+0113    CALL    21   1   3
+0114    MOV     21  18
+0115    ISNEN   20   0      ; 1
+0116    JMP     22 => 0119
+0117    KPRI    22   1
+0118    JMP     23 => 0120
+0119 => KPRI    22   2
+0120 => KPRI    23   2
+0121    CALL    21   1   3
+0122    MOV     21  18
+0123    KSHORT  22   2
+0124    ISLT    19  22
+0125    JMP     22 => 0128
+0126    KPRI    22   1
+0127    JMP     23 => 0129
+0128 => KPRI    22   2
+0129 => KPRI    23   2
+0130    CALL    21   1   3
+0131    MOV     21  18
+0132    KSHORT  22   2
+0133    ISLE    19  22
+0134    JMP     22 => 0137
+0135    KPRI    22   1
+0136    JMP     23 => 0138
+0137 => KPRI    22   2
+0138 => KPRI    23   2
+0139    CALL    21   1   3
+0140    MOV     21  18
+0141    KSHORT  22   2
+0142    ISLT    22  19
+0143    JMP     22 => 0146
+0144    KPRI    22   1
+0145    JMP     23 => 0147
+0146 => KPRI    22   2
+0147 => KPRI    23   1
+0148    CALL    21   1   3
+0149    MOV     21  18
+0150    KSHORT  22   2
+0151    ISLE    22  19
+0152    JMP     22 => 0155
+0153    KPRI    22   1
+0154    JMP     23 => 0156
+0155 => KPRI    22   2
+0156 => KPRI    23   1
+0157    CALL    21   1   3
+0158    MOV     21  18
+0159    ISEQN   19   1      ; 2
+0160    JMP     22 => 0163
+0161    KPRI    22   1
+0162    JMP     23 => 0164
+0163 => KPRI    22   2
+0164 => KPRI    23   1
+0165    CALL    21   1   3
+0166    MOV     21  18
+0167    ISNEN   19   1      ; 2
+0168    JMP     22 => 0171
+0169    KPRI    22   1
+0170    JMP     23 => 0172
+0171 => KPRI    22   2
+0172 => KPRI    23   2
+0173    CALL    21   1   3
+0174    MOV     21  18
+0175    MOV     22   0
+0176    MOV     23  19
+0177    MOV     24  20
+0178    CALL    22   2   3
+0179    KPRI    23   2
+0180    CALL    21   1   3
+0181    MOV     21  18
+0182    MOV     22   1
+0183    MOV     23  19
+0184    MOV     24  20
+0185    CALL    22   2   3
+0186    KPRI    23   2
+0187    CALL    21   1   3
+0188    MOV     21  18
+0189    MOV     22   2
+0190    MOV     23  19
+0191    MOV     24  20
+0192    CALL    22   2   3
+0193    KPRI    23   1
+0194    CALL    21   1   3
+0195    MOV     21  18
+0196    MOV     22   3
+0197    MOV     23  19
+0198    MOV     24  20
+0199    CALL    22   2   3
+0200    KPRI    23   1
+0201    CALL    21   1   3
+0202    MOV     21  18
+0203    MOV     22   4
+0204    MOV     23  20
+0205    MOV     24  19
+0206    CALL    22   2   3
+0207    KPRI    23   1
+0208    CALL    21   1   3
+0209    MOV     21  18
+0210    MOV     22   5
+0211    MOV     23  20
+0212    MOV     24  19
+0213    CALL    22   2   3
+0214    KPRI    23   2
+0215    CALL    21   1   3
+0216    KSHORT  19   2
+0217    KSHORT  20   1
+0218    MOV     21  18
+0219    ISLT    19  20
+0220    JMP     22 => 0223
+0221    KPRI    22   1
+0222    JMP     23 => 0224
+0223 => KPRI    22   2
+0224 => KPRI    23   1
+0225    CALL    21   1   3
+0226    MOV     21  18
+0227    ISLE    19  20
+0228    JMP     22 => 0231
+0229    KPRI    22   1
+0230    JMP     23 => 0232
+0231 => KPRI    22   2
+0232 => KPRI    23   1
+0233    CALL    21   1   3
+0234    MOV     21  18
+0235    ISLT    20  19
+0236    JMP     22 => 0239
+0237    KPRI    22   1
+0238    JMP     23 => 0240
+0239 => KPRI    22   2
+0240 => KPRI    23   2
+0241    CALL    21   1   3
+0242    MOV     21  18
+0243    ISLE    20  19
+0244    JMP     22 => 0247
+0245    KPRI    22   1
+0246    JMP     23 => 0248
+0247 => KPRI    22   2
+0248 => KPRI    23   2
+0249    CALL    21   1   3
+0250    MOV     21  18
+0251    ISEQV   19  20
+0252    JMP     22 => 0255
+0253    KPRI    22   1
+0254    JMP     23 => 0256
+0255 => KPRI    22   2
+0256 => KPRI    23   1
+0257    CALL    21   1   3
+0258    MOV     21  18
+0259    ISNEV   19  20
+0260    JMP     22 => 0263
+0261    KPRI    22   1
+0262    JMP     23 => 0264
+0263 => KPRI    22   2
+0264 => KPRI    23   2
+0265    CALL    21   1   3
+0266    MOV     21  18
+0267    KSHORT  22   2
+0268    ISLT    22  20
+0269    JMP     22 => 0272
+0270    KPRI    22   1
+0271    JMP     23 => 0273
+0272 => KPRI    22   2
+0273 => KPRI    23   1
+0274    CALL    21   1   3
+0275    MOV     21  18
+0276    KSHORT  22   2
+0277    ISLE    22  20
+0278    JMP     22 => 0281
+0279    KPRI    22   1
+0280    JMP     23 => 0282
+0281 => KPRI    22   2
+0282 => KPRI    23   1
+0283    CALL    21   1   3
+0284    MOV     21  18
+0285    KSHORT  22   2
+0286    ISLT    20  22
+0287    JMP     22 => 0290
+0288    KPRI    22   1
+0289    JMP     23 => 0291
+0290 => KPRI    22   2
+0291 => KPRI    23   2
+0292    CALL    21   1   3
+0293    MOV     21  18
+0294    KSHORT  22   2
+0295    ISLE    20  22
+0296    JMP     22 => 0299
+0297    KPRI    22   1
+0298    JMP     23 => 0300
+0299 => KPRI    22   2
+0300 => KPRI    23   2
+0301    CALL    21   1   3
+0302    MOV     21  18
+0303    ISEQN   20   1      ; 2
+0304    JMP     22 => 0307
+0305    KPRI    22   1
+0306    JMP     23 => 0308
+0307 => KPRI    22   2
+0308 => KPRI    23   1
+0309    CALL    21   1   3
+0310    MOV     21  18
+0311    ISNEN   20   1      ; 2
+0312    JMP     22 => 0315
+0313    KPRI    22   1
+0314    JMP     23 => 0316
+0315 => KPRI    22   2
+0316 => KPRI    23   2
+0317    CALL    21   1   3
+0318    MOV     21  18
+0319    KSHORT  22   1
+0320    ISLT    19  22
+0321    JMP     22 => 0324
+0322    KPRI    22   1
+0323    JMP     23 => 0325
+0324 => KPRI    22   2
+0325 => KPRI    23   1
+0326    CALL    21   1   3
+0327    MOV     21  18
+0328    KSHORT  22   1
+0329    ISLE    19  22
+0330    JMP     22 => 0333
+0331    KPRI    22   1
+0332    JMP     23 => 0334
+0333 => KPRI    22   2
+0334 => KPRI    23   1
+0335    CALL    21   1   3
+0336    MOV     21  18
+0337    KSHORT  22   1
+0338    ISLT    22  19
+0339    JMP     22 => 0342
+0340    KPRI    22   1
+0341    JMP     23 => 0343
+0342 => KPRI    22   2
+0343 => KPRI    23   2
+0344    CALL    21   1   3
+0345    MOV     21  18
+0346    KSHORT  22   1
+0347    ISLE    22  19
+0348    JMP     22 => 0351
+0349    KPRI    22   1
+0350    JMP     23 => 0352
+0351 => KPRI    22   2
+0352 => KPRI    23   2
+0353    CALL    21   1   3
+0354    MOV     21  18
+0355    ISEQN   19   0      ; 1
+0356    JMP     22 => 0359
+0357    KPRI    22   1
+0358    JMP     23 => 0360
+0359 => KPRI    22   2
+0360 => KPRI    23   1
+0361    CALL    21   1   3
+0362    MOV     21  18
+0363    ISNEN   19   0      ; 1
+0364    JMP     22 => 0367
+0365    KPRI    22   1
+0366    JMP     23 => 0368
+0367 => KPRI    22   2
+0368 => KPRI    23   2
+0369    CALL    21   1   3
+0370    MOV     21  18
+0371    MOV     22   0
+0372    MOV     23  19
+0373    MOV     24  20
+0374    CALL    22   2   3
+0375    KPRI    23   1
+0376    CALL    21   1   3
+0377    MOV     21  18
+0378    MOV     22   1
+0379    MOV     23  19
+0380    MOV     24  20
+0381    CALL    22   2   3
+0382    KPRI    23   1
+0383    CALL    21   1   3
+0384    MOV     21  18
+0385    MOV     22   2
+0386    MOV     23  19
+0387    MOV     24  20
+0388    CALL    22   2   3
+0389    KPRI    23   2
+0390    CALL    21   1   3
+0391    MOV     21  18
+0392    MOV     22   3
+0393    MOV     23  19
+0394    MOV     24  20
+0395    CALL    22   2   3
+0396    KPRI    23   2
+0397    CALL    21   1   3
+0398    MOV     21  18
+0399    MOV     22   4
+0400    MOV     23  20
+0401    MOV     24  19
+0402    CALL    22   2   3
+0403    KPRI    23   1
+0404    CALL    21   1   3
+0405    MOV     21  18
+0406    MOV     22   5
+0407    MOV     23  20
+0408    MOV     24  19
+0409    CALL    22   2   3
+0410    KPRI    23   2
+0411    CALL    21   1   3
+0412    KSHORT  19   1
+0413    KSHORT  20   1
+0414    MOV     21  18
+0415    ISLT    19  20
+0416    JMP     22 => 0419
+0417    KPRI    22   1
+0418    JMP     23 => 0420
+0419 => KPRI    22   2
+0420 => KPRI    23   1
+0421    CALL    21   1   3
+0422    MOV     21  18
+0423    ISLE    19  20
+0424    JMP     22 => 0427
+0425    KPRI    22   1
+0426    JMP     23 => 0428
+0427 => KPRI    22   2
+0428 => KPRI    23   2
+0429    CALL    21   1   3
+0430    MOV     21  18
+0431    ISLT    20  19
+0432    JMP     22 => 0435
+0433    KPRI    22   1
+0434    JMP     23 => 0436
+0435 => KPRI    22   2
+0436 => KPRI    23   1
+0437    CALL    21   1   3
+0438    MOV     21  18
+0439    ISLE    20  19
+0440    JMP     22 => 0443
+0441    KPRI    22   1
+0442    JMP     23 => 0444
+0443 => KPRI    22   2
+0444 => KPRI    23   2
+0445    CALL    21   1   3
+0446    MOV     21  18
+0447    ISEQV   19  20
+0448    JMP     22 => 0451
+0449    KPRI    22   1
+0450    JMP     23 => 0452
+0451 => KPRI    22   2
+0452 => KPRI    23   2
+0453    CALL    21   1   3
+0454    MOV     21  18
+0455    ISNEV   19  20
+0456    JMP     22 => 0459
+0457    KPRI    22   1
+0458    JMP     23 => 0460
+0459 => KPRI    22   2
+0460 => KPRI    23   1
+0461    CALL    21   1   3
+0462    MOV     21  18
+0463    KSHORT  22   1
+0464    ISLT    22  20
+0465    JMP     22 => 0468
+0466    KPRI    22   1
+0467    JMP     23 => 0469
+0468 => KPRI    22   2
+0469 => KPRI    23   1
+0470    CALL    21   1   3
+0471    MOV     21  18
+0472    KSHORT  22   1
+0473    ISLE    22  20
+0474    JMP     22 => 0477
+0475    KPRI    22   1
+0476    JMP     23 => 0478
+0477 => KPRI    22   2
+0478 => KPRI    23   2
+0479    CALL    21   1   3
+0480    MOV     21  18
+0481    KSHORT  22   1
+0482    ISLT    20  22
+0483    JMP     22 => 0486
+0484    KPRI    22   1
+0485    JMP     23 => 0487
+0486 => KPRI    22   2
+0487 => KPRI    23   1
+0488    CALL    21   1   3
+0489    MOV     21  18
+0490    KSHORT  22   1
+0491    ISLE    20  22
+0492    JMP     22 => 0495
+0493    KPRI    22   1
+0494    JMP     23 => 0496
+0495 => KPRI    22   2
+0496 => KPRI    23   2
+0497    CALL    21   1   3
+0498    MOV     21  18
+0499    ISEQN   20   0      ; 1
+0500    JMP     22 => 0503
+0501    KPRI    22   1
+0502    JMP     23 => 0504
+0503 => KPRI    22   2
+0504 => KPRI    23   2
+0505    CALL    21   1   3
+0506    MOV     21  18
+0507    ISNEN   20   0      ; 1
+0508    JMP     22 => 0511
+0509    KPRI    22   1
+0510    JMP     23 => 0512
+0511 => KPRI    22   2
+0512 => KPRI    23   1
+0513    CALL    21   1   3
+0514    MOV     21  18
+0515    KSHORT  22   1
+0516    ISLT    19  22
+0517    JMP     22 => 0520
+0518    KPRI    22   1
+0519    JMP     23 => 0521
+0520 => KPRI    22   2
+0521 => KPRI    23   1
+0522    CALL    21   1   3
+0523    MOV     21  18
+0524    KSHORT  22   1
+0525    ISLE    19  22
+0526    JMP     22 => 0529
+0527    KPRI    22   1
+0528    JMP     23 => 0530
+0529 => KPRI    22   2
+0530 => KPRI    23   2
+0531    CALL    21   1   3
+0532    MOV     21  18
+0533    KSHORT  22   1
+0534    ISLT    22  19
+0535    JMP     22 => 0538
+0536    KPRI    22   1
+0537    JMP     23 => 0539
+0538 => KPRI    22   2
+0539 => KPRI    23   1
+0540    CALL    21   1   3
+0541    MOV     21  18
+0542    KSHORT  22   1
+0543    ISLE    22  19
+0544    JMP     22 => 0547
+0545    KPRI    22   1
+0546    JMP     23 => 0548
+0547 => KPRI    22   2
+0548 => KPRI    23   2
+0549    CALL    21   1   3
+0550    MOV     21  18
+0551    ISEQN   19   0      ; 1
+0552    JMP     22 => 0555
+0553    KPRI    22   1
+0554    JMP     23 => 0556
+0555 => KPRI    22   2
+0556 => KPRI    23   2
+0557    CALL    21   1   3
+0558    MOV     21  18
+0559    ISNEN   19   0      ; 1
+0560    JMP     22 => 0563
+0561    KPRI    22   1
+0562    JMP     23 => 0564
+0563 => KPRI    22   2
+0564 => KPRI    23   1
+0565    CALL    21   1   3
+0566    MOV     21  18
+0567    MOV     22   0
+0568    MOV     23  19
+0569    MOV     24  20
+0570    CALL    22   2   3
+0571    KPRI    23   1
+0572    CALL    21   1   3
+0573    MOV     21  18
+0574    MOV     22   1
+0575    MOV     23  19
+0576    MOV     24  20
+0577    CALL    22   2   3
+0578    KPRI    23   2
+0579    CALL    21   1   3
+0580    MOV     21  18
+0581    MOV     22   2
+0582    MOV     23  19
+0583    MOV     24  20
+0584    CALL    22   2   3
+0585    KPRI    23   1
+0586    CALL    21   1   3
+0587    MOV     21  18
+0588    MOV     22   3
+0589    MOV     23  19
+0590    MOV     24  20
+0591    CALL    22   2   3
+0592    KPRI    23   2
+0593    CALL    21   1   3
+0594    MOV     21  18
+0595    MOV     22   4
+0596    MOV     23  20
+0597    MOV     24  19
+0598    CALL    22   2   3
+0599    KPRI    23   2
+0600    CALL    21   1   3
+0601    MOV     21  18
+0602    MOV     22   5
+0603    MOV     23  20
+0604    MOV     24  19
+0605    CALL    22   2   3
+0606    KPRI    23   1
+0607    CALL    21   1   3
+0608    MOV     19  18
+0609    MOV     20  12
+0610    KSHORT  21   2
+0611    CALL    20   2   2
+0612    KPRI    21   2
+0613    CALL    19   1   3
+0614    MOV     19  18
+0615    MOV     20  13
+0616    KSHORT  21   2
+0617    CALL    20   2   2
+0618    KPRI    21   2
+0619    CALL    19   1   3
+0620    MOV     19  18
+0621    MOV     20  14
+0622    KSHORT  21   2
+0623    CALL    20   2   2
+0624    KPRI    21   1
+0625    CALL    19   1   3
+0626    MOV     19  18
+0627    MOV     20  15
+0628    KSHORT  21   2
+0629    CALL    20   2   2
+0630    KPRI    21   1
+0631    CALL    19   1   3
+0632    MOV     19  18
+0633    MOV     20  16
+0634    KSHORT  21   2
+0635    CALL    20   2   2
+0636    KPRI    21   1
+0637    CALL    19   1   3
+0638    MOV     19  18
+0639    MOV     20  17
+0640    KSHORT  21   2
+0641    CALL    20   2   2
+0642    KPRI    21   2
+0643    CALL    19   1   3
+0644    MOV     19  18
+0645    MOV     20   6
+0646    KSHORT  21   2
+0647    CALL    20   2   2
+0648    KPRI    21   1
+0649    CALL    19   1   3
+0650    MOV     19  18
+0651    MOV     20   7
+0652    KSHORT  21   2
+0653    CALL    20   2   2
+0654    KPRI    21   1
+0655    CALL    19   1   3
+0656    MOV     19  18
+0657    MOV     20   8
+0658    KSHORT  21   2
+0659    CALL    20   2   2
+0660    KPRI    21   2
+0661    CALL    19   1   3
+0662    MOV     19  18
+0663    MOV     20   9
+0664    KSHORT  21   2
+0665    CALL    20   2   2
+0666    KPRI    21   2
+0667    CALL    19   1   3
+0668    MOV     19  18
+0669    MOV     20  10
+0670    KSHORT  21   2
+0671    CALL    20   2   2
+0672    KPRI    21   1
+0673    CALL    19   1   3
+0674    MOV     19  18
+0675    MOV     20  11
+0676    KSHORT  21   2
+0677    CALL    20   2   2
+0678    KPRI    21   2
+0679    CALL    19   1   3
+0680    MOV     19  18
+0681    MOV     20  12
+0682    KSHORT  21   1
+0683    CALL    20   2   2
+0684    KPRI    21   1
+0685    CALL    19   1   3
+0686    MOV     19  18
+0687    MOV     20  13
+0688    KSHORT  21   1
+0689    CALL    20   2   2
+0690    KPRI    21   2
+0691    CALL    19   1   3
+0692    MOV     19  18
+0693    MOV     20  14
+0694    KSHORT  21   1
+0695    CALL    20   2   2
+0696    KPRI    21   1
+0697    CALL    19   1   3
+0698    MOV     19  18
+0699    MOV     20  15
+0700    KSHORT  21   1
+0701    CALL    20   2   2
+0702    KPRI    21   2
+0703    CALL    19   1   3
+0704    MOV     19  18
+0705    MOV     20  16
+0706    KSHORT  21   1
+0707    CALL    20   2   2
+0708    KPRI    21   2
+0709    CALL    19   1   3
+0710    MOV     19  18
+0711    MOV     20  17
+0712    KSHORT  21   1
+0713    CALL    20   2   2
+0714    KPRI    21   1
+0715    CALL    19   1   3
+0716    MOV     19  18
+0717    MOV     20   6
+0718    KSHORT  21   1
+0719    CALL    20   2   2
+0720    KPRI    21   1
+0721    CALL    19   1   3
+0722    MOV     19  18
+0723    MOV     20   7
+0724    KSHORT  21   1
+0725    CALL    20   2   2
+0726    KPRI    21   2
+0727    CALL    19   1   3
+0728    MOV     19  18
+0729    MOV     20   8
+0730    KSHORT  21   1
+0731    CALL    20   2   2
+0732    KPRI    21   1
+0733    CALL    19   1   3
+0734    MOV     19  18
+0735    MOV     20   9
+0736    KSHORT  21   1
+0737    CALL    20   2   2
+0738    KPRI    21   2
+0739    CALL    19   1   3
+0740    MOV     19  18
+0741    MOV     20  10
+0742    KSHORT  21   1
+0743    CALL    20   2   2
+0744    KPRI    21   2
+0745    CALL    19   1   3
+0746    MOV     19  18
+0747    MOV     20  11
+0748    KSHORT  21   1
+0749    CALL    20   2   2
+0750    KPRI    21   1
+0751    CALL    19   1   3
+0752    MOV     19  18
+0753    MOV     20  12
+0754    KSHORT  21   0
+0755    CALL    20   2   2
+0756    KPRI    21   1
+0757    CALL    19   1   3
+0758    MOV     19  18
+0759    MOV     20  13
+0760    KSHORT  21   0
+0761    CALL    20   2   2
+0762    KPRI    21   1
+0763    CALL    19   1   3
+0764    MOV     19  18
+0765    MOV     20  14
+0766    KSHORT  21   0
+0767    CALL    20   2   2
+0768    KPRI    21   2
+0769    CALL    19   1   3
+0770    MOV     19  18
+0771    MOV     20  15
+0772    KSHORT  21   0
+0773    CALL    20   2   2
+0774    KPRI    21   2
+0775    CALL    19   1   3
+0776    MOV     19  18
+0777    MOV     20  16
+0778    KSHORT  21   0
+0779    CALL    20   2   2
+0780    KPRI    21   1
+0781    CALL    19   1   3
+0782    MOV     19  18
+0783    MOV     20  17
+0784    KSHORT  21   0
+0785    CALL    20   2   2
+0786    KPRI    21   2
+0787    CALL    19   1   3
+0788    MOV     19  18
+0789    MOV     20   6
+0790    KSHORT  21   0
+0791    CALL    20   2   2
+0792    KPRI    21   2
+0793    CALL    19   1   3
+0794    MOV     19  18
+0795    MOV     20   7
+0796    KSHORT  21   0
+0797    CALL    20   2   2
+0798    KPRI    21   2
+0799    CALL    19   1   3
+0800    MOV     19  18
+0801    MOV     20   8
+0802    KSHORT  21   0
+0803    CALL    20   2   2
+0804    KPRI    21   1
+0805    CALL    19   1   3
+0806    MOV     19  18
+0807    MOV     20   9
+0808    KSHORT  21   0
+0809    CALL    20   2   2
+0810    KPRI    21   1
+0811    CALL    19   1   3
+0812    MOV     19  18
+0813    MOV     20  10
+0814    KSHORT  21   0
+0815    CALL    20   2   2
+0816    KPRI    21   1
+0817    CALL    19   1   3
+0818    MOV     19  18
+0819    MOV     20  11
+0820    KSHORT  21   0
+0821    CALL    20   2   2
+0822    KPRI    21   2
+0823    CALL    19   1   3
+0824    GGET    19  19      ; "assert"
+0825    GGET    20  20      ; "pcall"
+0826    FNEW    21  21      ; ref_lang_compare.lua:226
+0827    CALL    20   2   2
+0828    NOT     20  20
+0829    CALL    19   1   2
+0830    KSHORT  19   1
+0831    KSHORT  20 100
+0832    KSHORT  21   1
+0833    FORI    19 => 0847
+0834 => GGET    23  19      ; "assert"
+0835    GGET    24  22      ; "bit"
+0836    TGETS   24  24  23  ; "tobit"
+0837    ADDVN   25  22   2  ; 2147483647
+0838    CALL    24   2   2
+0839    KSHORT  25   0
+0840    ISLT    24  25
+0841    JMP     24 => 0844
+0842    KPRI    24   1
+0843    JMP     25 => 0845
+0844 => KPRI    24   2
+0845 => CALL    23   1   2
+0846    FORL    19 => 0834
+0847 => KSHORT  19   1
+0848    KSHORT  20 100
+0849    KSHORT  21   1
+0850    FORI    19 => 0864
+0851 => GGET    23  19      ; "assert"
+0852    GGET    24  22      ; "bit"
+0853    TGETS   24  24  23  ; "tobit"
+0854    ADDVN   25  22   2  ; 2147483647
+0855    CALL    24   2   2
+0856    KSHORT  25   0
+0857    ISLE    24  25
+0858    JMP     24 => 0861
+0859    KPRI    24   1
+0860    JMP     25 => 0862
+0861 => KPRI    24   2
+0862 => CALL    23   1   2
+0863    FORL    19 => 0851
+0864 => KSTR    19  24      ; "ÿÿÿÿ"
+0865    KSTR    20  25      ; "\001\001\001\001"
+0866    GGET    21  19      ; "assert"
+0867    ISLT    20  19
+0868    JMP     22 => 0871
+0869    KPRI    22   1
+0870    JMP     23 => 0872
+0871 => KPRI    22   2
+0872 => CALL    21   1   2
+0873    GGET    21  19      ; "assert"
+0874    ISLT    20  19
+0875    JMP     22 => 0878
+0876    KPRI    22   1
+0877    JMP     23 => 0879
+0878 => KPRI    22   2
+0879 => CALL    21   1   2
+0880    GGET    21  19      ; "assert"
+0881    ISLE    20  19
+0882    JMP     22 => 0885
+0883    KPRI    22   1
+0884    JMP     23 => 0886
+0885 => KPRI    22   2
+0886 => CALL    21   1   2
+0887    GGET    21  19      ; "assert"
+0888    ISLE    20  19
+0889    JMP     22 => 0892
+0890    KPRI    22   1
+0891    JMP     23 => 0893
+0892 => KPRI    22   2
+0893 => CALL    21   1   2
+0894    FNEW    19  26      ; ref_lang_compare.lua:252
+0895    FNEW    20  27      ; ref_lang_compare.lua:263
+0896    FNEW    21  28      ; ref_lang_compare.lua:267
+0897    FNEW    22  29      ; ref_lang_compare.lua:271
+0898    MOV     23  20
+0899    KSTR    24  30      ; "a"
+0900    KSTR    25  31      ; "b"
+0901    CALL    23   1   3
+0902    MOV     23  21
+0903    KSTR    24  30      ; "a"
+0904    KSTR    25  30      ; "a"
+0905    CALL    23   1   3
+0906    MOV     23  22
+0907    KSTR    24  31      ; "b"
+0908    KSTR    25  30      ; "a"
+0909    CALL    23   1   3
+0910    MOV     23  20
+0911    KSTR    24  30      ; "a"
+0912    KSTR    25  32      ; "aa"
+0913    CALL    23   1   3
+0914    MOV     23  22
+0915    KSTR    24  32      ; "aa"
+0916    KSTR    25  30      ; "a"
+0917    CALL    23   1   3
+0918    MOV     23  20
+0919    KSTR    24  30      ; "a"
+0920    KSTR    25  33      ; "a\000"
+0921    CALL    23   1   3
+0922    MOV     23  22
+0923    KSTR    24  33      ; "a\000"
+0924    KSTR    25  30      ; "a"
+0925    CALL    23   1   3
+0926    UCLO    19 => 0927
+0927 => FNEW    19  34      ; ref_lang_compare.lua:287
+0928    FNEW    20  35      ; ref_lang_compare.lua:292
+0929    MOV     21  19
+0930    KNIL    22  23
+0931    CALL    21   1   3
+0932    MOV     21  20
+0933    KPRI    22   0
+0934    KPRI    23   1
+0935    CALL    21   1   3
+0936    MOV     21  20
+0937    KPRI    22   0
+0938    KPRI    23   2
+0939    CALL    21   1   3
+0940    MOV     21  20
+0941    KPRI    22   1
+0942    KPRI    23   0
+0943    CALL    21   1   3
+0944    MOV     21  19
+0945    KPRI    22   1
+0946    KPRI    23   1
+0947    CALL    21   1   3
+0948    MOV     21  20
+0949    KPRI    22   1
+0950    KPRI    23   2
+0951    CALL    21   1   3
+0952    MOV     21  20
+0953    KPRI    22   2
+0954    KPRI    23   0
+0955    CALL    21   1   3
+0956    MOV     21  20
+0957    KPRI    22   2
+0958    KPRI    23   1
+0959    CALL    21   1   3
+0960    MOV     21  19
+0961    KPRI    22   2
+0962    KPRI    23   2
+0963    CALL    21   1   3
+0964    MOV     21  19
+0965    KSHORT  22   1
+0966    KSHORT  23   1
+0967    CALL    21   1   3
+0968    MOV     21  20
+0969    KSHORT  22   1
+0970    KSHORT  23   2
+0971    CALL    21   1   3
+0972    MOV     21  20
+0973    KSHORT  22   2
+0974    KSHORT  23   1
+0975    CALL    21   1   3
+0976    MOV     21  19
+0977    KSTR    22  30      ; "a"
+0978    KSTR    23  30      ; "a"
+0979    CALL    21   1   3
+0980    MOV     21  20
+0981    KSTR    22  30      ; "a"
+0982    KSTR    23  31      ; "b"
+0983    CALL    21   1   3
+0984    MOV     21  20
+0985    KSTR    22  30      ; "a"
+0986    KSHORT  23   1
+0987    CALL    21   1   3
+0988    MOV     21  20
+0989    KSHORT  22   1
+0990    KSTR    23  30      ; "a"
+0991    CALL    21   1   3
+0992    TNEW    21   0
+0993    TNEW    22   0
+0994    MOV     23  19
+0995    MOV     24  21
+0996    MOV     25  21
+0997    CALL    23   1   3
+0998    MOV     23  20
+0999    MOV     24  21
+1000    MOV     25  22
+1001    CALL    23   1   3
+1002    MOV     23  20
+1003    MOV     24  21
+1004    KSHORT  25   1
+1005    CALL    23   1   3
+1006    MOV     23  20
+1007    MOV     24  21
+1008    KSTR    25  36      ; ""
+1009    CALL    23   1   3
+1010    RET0     0   1
+

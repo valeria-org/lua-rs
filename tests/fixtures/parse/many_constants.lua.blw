@@ -1,0 +1,678 @@
+-- BYTECODE -- many_constants.lua:0-318
+0001    TNEW     0   0
+0002    KPRI     1   0
+0003    KSHORT   2   0
+0004    TSETS    2   0   0  ; "s0"
+0005    KSHORT   2   1
+0006    TSETS    2   0   1  ; "s1"
+0007    KSHORT   2   2
+0008    TSETS    2   0   2  ; "s2"
+0009    KSHORT   2   3
+0010    TSETS    2   0   3  ; "s3"
+0011    KSHORT   2   4
+0012    TSETS    2   0   4  ; "s4"
+0013    KSHORT   2   5
+0014    TSETS    2   0   5  ; "s5"
+0015    KSHORT   2   6
+0016    TSETS    2   0   6  ; "s6"
+0017    KSHORT   2   7
+0018    TSETS    2   0   7  ; "s7"
+0019    KSHORT   2   8
+0020    TSETS    2   0   8  ; "s8"
+0021    KSHORT   2   9
+0022    TSETS    2   0   9  ; "s9"
+0023    KSHORT   2  10
+0024    TSETS    2   0  10  ; "s10"
+0025    KSHORT   2  11
+0026    TSETS    2   0  11  ; "s11"
+0027    KSHORT   2  12
+0028    TSETS    2   0  12  ; "s12"
+0029    KSHORT   2  13
+0030    TSETS    2   0  13  ; "s13"
+0031    KSHORT   2  14
+0032    TSETS    2   0  14  ; "s14"
+0033    KSHORT   2  15
+0034    TSETS    2   0  15  ; "s15"
+0035    KSHORT   2  16
+0036    TSETS    2   0  16  ; "s16"
+0037    KSHORT   2  17
+0038    TSETS    2   0  17  ; "s17"
+0039    KSHORT   2  18
+0040    TSETS    2   0  18  ; "s18"
+0041    KSHORT   2  19
+0042    TSETS    2   0  19  ; "s19"
+0043    KSHORT   2  20
+0044    TSETS    2   0  20  ; "s20"
+0045    KSHORT   2  21
+0046    TSETS    2   0  21  ; "s21"
+0047    KSHORT   2  22
+0048    TSETS    2   0  22  ; "s22"
+0049    KSHORT   2  23
+0050    TSETS    2   0  23  ; "s23"
+0051    KSHORT   2  24
+0052    TSETS    2   0  24  ; "s24"
+0053    KSHORT   2  25
+0054    TSETS    2   0  25  ; "s25"
+0055    KSHORT   2  26
+0056    TSETS    2   0  26  ; "s26"
+0057    KSHORT   2  27
+0058    TSETS    2   0  27  ; "s27"
+0059    KSHORT   2  28
+0060    TSETS    2   0  28  ; "s28"
+0061    KSHORT   2  29
+0062    TSETS    2   0  29  ; "s29"
+0063    KSHORT   2  30
+0064    TSETS    2   0  30  ; "s30"
+0065    KSHORT   2  31
+0066    TSETS    2   0  31  ; "s31"
+0067    KSHORT   2  32
+0068    TSETS    2   0  32  ; "s32"
+0069    KSHORT   2  33
+0070    TSETS    2   0  33  ; "s33"
+0071    KSHORT   2  34
+0072    TSETS    2   0  34  ; "s34"
+0073    KSHORT   2  35
+0074    TSETS    2   0  35  ; "s35"
+0075    KSHORT   2  36
+0076    TSETS    2   0  36  ; "s36"
+0077    KSHORT   2  37
+0078    TSETS    2   0  37  ; "s37"
+0079    KSHORT   2  38
+0080    TSETS    2   0  38  ; "s38"
+0081    KSHORT   2  39
+0082    TSETS    2   0  39  ; "s39"
+0083    KSHORT   2  40
+0084    TSETS    2   0  40  ; "s40"
+0085    KSHORT   2  41
+0086    TSETS    2   0  41  ; "s41"
+0087    KSHORT   2  42
+0088    TSETS    2   0  42  ; "s42"
+0089    KSHORT   2  43
+0090    TSETS    2   0  43  ; "s43"
+0091    KSHORT   2  44
+0092    TSETS    2   0  44  ; "s44"
+0093    KSHORT   2  45
+0094    TSETS    2   0  45  ; "s45"
+0095    KSHORT   2  46
+0096    TSETS    2   0  46  ; "s46"
+0097    KSHORT   2  47
+0098    TSETS    2   0  47  ; "s47"
+0099    KSHORT   2  48
+0100    TSETS    2   0  48  ; "s48"
+0101    KSHORT   2  49
+0102    TSETS    2   0  49  ; "s49"
+0103    KSHORT   2  50
+0104    TSETS    2   0  50  ; "s50"
+0105    KSHORT   2  51
+0106    TSETS    2   0  51  ; "s51"
+0107    KSHORT   2  52
+0108    TSETS    2   0  52  ; "s52"
+0109    KSHORT   2  53
+0110    TSETS    2   0  53  ; "s53"
+0111    KSHORT   2  54
+0112    TSETS    2   0  54  ; "s54"
+0113    KSHORT   2  55
+0114    TSETS    2   0  55  ; "s55"
+0115    KSHORT   2  56
+0116    TSETS    2   0  56  ; "s56"
+0117    KSHORT   2  57
+0118    TSETS    2   0  57  ; "s57"
+0119    KSHORT   2  58
+0120    TSETS    2   0  58  ; "s58"
+0121    KSHORT   2  59
+0122    TSETS    2   0  59  ; "s59"
+0123    KSHORT   2  60
+0124    TSETS    2   0  60  ; "s60"
+0125    KSHORT   2  61
+0126    TSETS    2   0  61  ; "s61"
+0127    KSHORT   2  62
+0128    TSETS    2   0  62  ; "s62"
+0129    KSHORT   2  63
+0130    TSETS    2   0  63  ; "s63"
+0131    KSHORT   2  64
+0132    TSETS    2   0  64  ; "s64"
+0133    KSHORT   2  65
+0134    TSETS    2   0  65  ; "s65"
+0135    KSHORT   2  66
+0136    TSETS    2   0  66  ; "s66"
+0137    KSHORT   2  67
+0138    TSETS    2   0  67  ; "s67"
+0139    KSHORT   2  68
+0140    TSETS    2   0  68  ; "s68"
+0141    KSHORT   2  69
+0142    TSETS    2   0  69  ; "s69"
+0143    KSHORT   2  70
+0144    TSETS    2   0  70  ; "s70"
+0145    KSHORT   2  71
+0146    TSETS    2   0  71  ; "s71"
+0147    KSHORT   2  72
+0148    TSETS    2   0  72  ; "s72"
+0149    KSHORT   2  73
+0150    TSETS    2   0  73  ; "s73"
+0151    KSHORT   2  74
+0152    TSETS    2   0  74  ; "s74"
+0153    KSHORT   2  75
+0154    TSETS    2   0  75  ; "s75"
+0155    KSHORT   2  76
+0156    TSETS    2   0  76  ; "s76"
+0157    KSHORT   2  77
+0158    TSETS    2   0  77  ; "s77"
+0159    KSHORT   2  78
+0160    TSETS    2   0  78  ; "s78"
+0161    KSHORT   2  79
+0162    TSETS    2   0  79  ; "s79"
+0163    KSHORT   2  80
+0164    TSETS    2   0  80  ; "s80"
+0165    KSHORT   2  81
+0166    TSETS    2   0  81  ; "s81"
+0167    KSHORT   2  82
+0168    TSETS    2   0  82  ; "s82"
+0169    KSHORT   2  83
+0170    TSETS    2   0  83  ; "s83"
+0171    KSHORT   2  84
+0172    TSETS    2   0  84  ; "s84"
+0173    KSHORT   2  85
+0174    TSETS    2   0  85  ; "s85"
+0175    KSHORT   2  86
+0176    TSETS    2   0  86  ; "s86"
+0177    KSHORT   2  87
+0178    TSETS    2   0  87  ; "s87"
+0179    KSHORT   2  88
+0180    TSETS    2   0  88  ; "s88"
+0181    KSHORT   2  89
+0182    TSETS    2   0  89  ; "s89"
+0183    KSHORT   2  90
+0184    TSETS    2   0  90  ; "s90"
+0185    KSHORT   2  91
+0186    TSETS    2   0  91  ; "s91"
+0187    KSHORT   2  92
+0188    TSETS    2   0  92  ; "s92"
+0189    KSHORT   2  93
+0190    TSETS    2   0  93  ; "s93"
+0191    KSHORT   2  94
+0192    TSETS    2   0  94  ; "s94"
+0193    KSHORT   2  95
+0194    TSETS    2   0  95  ; "s95"
+0195    KSHORT   2  96
+0196    TSETS    2   0  96  ; "s96"
+0197    KSHORT   2  97
+0198    TSETS    2   0  97  ; "s97"
+0199    KSHORT   2  98
+0200    TSETS    2   0  98  ; "s98"
+0201    KSHORT   2  99
+0202    TSETS    2   0  99  ; "s99"
+0203    KSHORT   2 100
+0204    TSETS    2   0 100  ; "s100"
+0205    KSHORT   2 101
+0206    TSETS    2   0 101  ; "s101"
+0207    KSHORT   2 102
+0208    TSETS    2   0 102  ; "s102"
+0209    KSHORT   2 103
+0210    TSETS    2   0 103  ; "s103"
+0211    KSHORT   2 104
+0212    TSETS    2   0 104  ; "s104"
+0213    KSHORT   2 105
+0214    TSETS    2   0 105  ; "s105"
+0215    KSHORT   2 106
+0216    TSETS    2   0 106  ; "s106"
+0217    KSHORT   2 107
+0218    TSETS    2   0 107  ; "s107"
+0219    KSHORT   2 108
+0220    TSETS    2   0 108  ; "s108"
+0221    KSHORT   2 109
+0222    TSETS    2   0 109  ; "s109"
+0223    KSHORT   2 110
+0224    TSETS    2   0 110  ; "s110"
+0225    KSHORT   2 111
+0226    TSETS    2   0 111  ; "s111"
+0227    KSHORT   2 112
+0228    TSETS    2   0 112  ; "s112"
+0229    KSHORT   2 113
+0230    TSETS    2   0 113  ; "s113"
+0231    KSHORT   2 114
+0232    TSETS    2   0 114  ; "s114"
+0233    KSHORT   2 115
+0234    TSETS    2   0 115  ; "s115"
+0235    KSHORT   2 116
+0236    TSETS    2   0 116  ; "s116"
+0237    KSHORT   2 117
+0238    TSETS    2   0 117  ; "s117"
+0239    KSHORT   2 118
+0240    TSETS    2   0 118  ; "s118"
+0241    KSHORT   2 119
+0242    TSETS    2   0 119  ; "s119"
+0243    KSHORT   2 120
+0244    TSETS    2   0 120  ; "s120"
+0245    KSHORT   2 121
+0246    TSETS    2   0 121  ; "s121"
+0247    KSHORT   2 122
+0248    TSETS    2   0 122  ; "s122"
+0249    KSHORT   2 123
+0250    TSETS    2   0 123  ; "s123"
+0251    KSHORT   2 124
+0252    TSETS    2   0 124  ; "s124"
+0253    KSHORT   2 125
+0254    TSETS    2   0 125  ; "s125"
+0255    KSHORT   2 126
+0256    TSETS    2   0 126  ; "s126"
+0257    KSHORT   2 127
+0258    TSETS    2   0 127  ; "s127"
+0259    KSHORT   2 128
+0260    TSETS    2   0 128  ; "s128"
+0261    KSHORT   2 129
+0262    TSETS    2   0 129  ; "s129"
+0263    KSHORT   2 130
+0264    TSETS    2   0 130  ; "s130"
+0265    KSHORT   2 131
+0266    TSETS    2   0 131  ; "s131"
+0267    KSHORT   2 132
+0268    TSETS    2   0 132  ; "s132"
+0269    KSHORT   2 133
+0270    TSETS    2   0 133  ; "s133"
+0271    KSHORT   2 134
+0272    TSETS    2   0 134  ; "s134"
+0273    KSHORT   2 135
+0274    TSETS    2   0 135  ; "s135"
+0275    KSHORT   2 136
+0276    TSETS    2   0 136  ; "s136"
+0277    KSHORT   2 137
+0278    TSETS    2   0 137  ; "s137"
+0279    KSHORT   2 138
+0280    TSETS    2   0 138  ; "s138"
+0281    KSHORT   2 139
+0282    TSETS    2   0 139  ; "s139"
+0283    KSHORT   2 140
+0284    TSETS    2   0 140  ; "s140"
+0285    KSHORT   2 141
+0286    TSETS    2   0 141  ; "s141"
+0287    KSHORT   2 142
+0288    TSETS    2   0 142  ; "s142"
+0289    KSHORT   2 143
+0290    TSETS    2   0 143  ; "s143"
+0291    KSHORT   2 144
+0292    TSETS    2   0 144  ; "s144"
+0293    KSHORT   2 145
+0294    TSETS    2   0 145  ; "s145"
+0295    KSHORT   2 146
+0296    TSETS    2   0 146  ; "s146"
+0297    KSHORT   2 147
+0298    TSETS    2   0 147  ; "s147"
+0299    KSHORT   2 148
+0300    TSETS    2   0 148  ; "s148"
+0301    KSHORT   2 149
+0302    TSETS    2   0 149  ; "s149"
+0303    KSHORT   2 150
+0304    TSETS    2   0 150  ; "s150"
+0305    KSHORT   2 151
+0306    TSETS    2   0 151  ; "s151"
+0307    KSHORT   2 152
+0308    TSETS    2   0 152  ; "s152"
+0309    KSHORT   2 153
+0310    TSETS    2   0 153  ; "s153"
+0311    KSHORT   2 154
+0312    TSETS    2   0 154  ; "s154"
+0313    KSHORT   2 155
+0314    TSETS    2   0 155  ; "s155"
+0315    KSHORT   2 156
+0316    TSETS    2   0 156  ; "s156"
+0317    KSHORT   2 157
+0318    TSETS    2   0 157  ; "s157"
+0319    KSHORT   2 158
+0320    TSETS    2   0 158  ; "s158"
+0321    KSHORT   2 159
+0322    TSETS    2   0 159  ; "s159"
+0323    KSHORT   2 160
+0324    TSETS    2   0 160  ; "s160"
+0325    KSHORT   2 161
+0326    TSETS    2   0 161  ; "s161"
+0327    KSHORT   2 162
+0328    TSETS    2   0 162  ; "s162"
+0329    KSHORT   2 163
+0330    TSETS    2   0 163  ; "s163"
+0331    KSHORT   2 164
+0332    TSETS    2   0 164  ; "s164"
+0333    KSHORT   2 165
+0334    TSETS    2   0 165  ; "s165"
+0335    KSHORT   2 166
+0336    TSETS    2   0 166  ; "s166"
+0337    KSHORT   2 167
+0338    TSETS    2   0 167  ; "s167"
+0339    KSHORT   2 168
+0340    TSETS    2   0 168  ; "s168"
+0341    KSHORT   2 169
+0342    TSETS    2   0 169  ; "s169"
+0343    KSHORT   2 170
+0344    TSETS    2   0 170  ; "s170"
+0345    KSHORT   2 171
+0346    TSETS    2   0 171  ; "s171"
+0347    KSHORT   2 172
+0348    TSETS    2   0 172  ; "s172"
+0349    KSHORT   2 173
+0350    TSETS    2   0 173  ; "s173"
+0351    KSHORT   2 174
+0352    TSETS    2   0 174  ; "s174"
+0353    KSHORT   2 175
+0354    TSETS    2   0 175  ; "s175"
+0355    KSHORT   2 176
+0356    TSETS    2   0 176  ; "s176"
+0357    KSHORT   2 177
+0358    TSETS    2   0 177  ; "s177"
+0359    KSHORT   2 178
+0360    TSETS    2   0 178  ; "s178"
+0361    KSHORT   2 179
+0362    TSETS    2   0 179  ; "s179"
+0363    KSHORT   2 180
+0364    TSETS    2   0 180  ; "s180"
+0365    KSHORT   2 181
+0366    TSETS    2   0 181  ; "s181"
+0367    KSHORT   2 182
+0368    TSETS    2   0 182  ; "s182"
+0369    KSHORT   2 183
+0370    TSETS    2   0 183  ; "s183"
+0371    KSHORT   2 184
+0372    TSETS    2   0 184  ; "s184"
+0373    KSHORT   2 185
+0374    TSETS    2   0 185  ; "s185"
+0375    KSHORT   2 186
+0376    TSETS    2   0 186  ; "s186"
+0377    KSHORT   2 187
+0378    TSETS    2   0 187  ; "s187"
+0379    KSHORT   2 188
+0380    TSETS    2   0 188  ; "s188"
+0381    KSHORT   2 189
+0382    TSETS    2   0 189  ; "s189"
+0383    KSHORT   2 190
+0384    TSETS    2   0 190  ; "s190"
+0385    KSHORT   2 191
+0386    TSETS    2   0 191  ; "s191"
+0387    KSHORT   2 192
+0388    TSETS    2   0 192  ; "s192"
+0389    KSHORT   2 193
+0390    TSETS    2   0 193  ; "s193"
+0391    KSHORT   2 194
+0392    TSETS    2   0 194  ; "s194"
+0393    KSHORT   2 195
+0394    TSETS    2   0 195  ; "s195"
+0395    KSHORT   2 196
+0396    TSETS    2   0 196  ; "s196"
+0397    KSHORT   2 197
+0398    TSETS    2   0 197  ; "s197"
+0399    KSHORT   2 198
+0400    TSETS    2   0 198  ; "s198"
+0401    KSHORT   2 199
+0402    TSETS    2   0 199  ; "s199"
+0403    KSHORT   2 200
+0404    TSETS    2   0 200  ; "s200"
+0405    KSHORT   2 201
+0406    TSETS    2   0 201  ; "s201"
+0407    KSHORT   2 202
+0408    TSETS    2   0 202  ; "s202"
+0409    KSHORT   2 203
+0410    TSETS    2   0 203  ; "s203"
+0411    KSHORT   2 204
+0412    TSETS    2   0 204  ; "s204"
+0413    KSHORT   2 205
+0414    TSETS    2   0 205  ; "s205"
+0415    KSHORT   2 206
+0416    TSETS    2   0 206  ; "s206"
+0417    KSHORT   2 207
+0418    TSETS    2   0 207  ; "s207"
+0419    KSHORT   2 208
+0420    TSETS    2   0 208  ; "s208"
+0421    KSHORT   2 209
+0422    TSETS    2   0 209  ; "s209"
+0423    KSHORT   2 210
+0424    TSETS    2   0 210  ; "s210"
+0425    KSHORT   2 211
+0426    TSETS    2   0 211  ; "s211"
+0427    KSHORT   2 212
+0428    TSETS    2   0 212  ; "s212"
+0429    KSHORT   2 213
+0430    TSETS    2   0 213  ; "s213"
+0431    KSHORT   2 214
+0432    TSETS    2   0 214  ; "s214"
+0433    KSHORT   2 215
+0434    TSETS    2   0 215  ; "s215"
+0435    KSHORT   2 216
+0436    TSETS    2   0 216  ; "s216"
+0437    KSHORT   2 217
+0438    TSETS    2   0 217  ; "s217"
+0439    KSHORT   2 218
+0440    TSETS    2   0 218  ; "s218"
+0441    KSHORT   2 219
+0442    TSETS    2   0 219  ; "s219"
+0443    KSHORT   2 220
+0444    TSETS    2   0 220  ; "s220"
+0445    KSHORT   2 221
+0446    TSETS    2   0 221  ; "s221"
+0447    KSHORT   2 222
+0448    TSETS    2   0 222  ; "s222"
+0449    KSHORT   2 223
+0450    TSETS    2   0 223  ; "s223"
+0451    KSHORT   2 224
+0452    TSETS    2   0 224  ; "s224"
+0453    KSHORT   2 225
+0454    TSETS    2   0 225  ; "s225"
+0455    KSHORT   2 226
+0456    TSETS    2   0 226  ; "s226"
+0457    KSHORT   2 227
+0458    TSETS    2   0 227  ; "s227"
+0459    KSHORT   2 228
+0460    TSETS    2   0 228  ; "s228"
+0461    KSHORT   2 229
+0462    TSETS    2   0 229  ; "s229"
+0463    KSHORT   2 230
+0464    TSETS    2   0 230  ; "s230"
+0465    KSHORT   2 231
+0466    TSETS    2   0 231  ; "s231"
+0467    KSHORT   2 232
+0468    TSETS    2   0 232  ; "s232"
+0469    KSHORT   2 233
+0470    TSETS    2   0 233  ; "s233"
+0471    KSHORT   2 234
+0472    TSETS    2   0 234  ; "s234"
+0473    KSHORT   2 235
+0474    TSETS    2   0 235  ; "s235"
+0475    KSHORT   2 236
+0476    TSETS    2   0 236  ; "s236"
+0477    KSHORT   2 237
+0478    TSETS    2   0 237  ; "s237"
+0479    KSHORT   2 238
+0480    TSETS    2   0 238  ; "s238"
+0481    KSHORT   2 239
+0482    TSETS    2   0 239  ; "s239"
+0483    KSHORT   2 240
+0484    TSETS    2   0 240  ; "s240"
+0485    KSHORT   2 241
+0486    TSETS    2   0 241  ; "s241"
+0487    KSHORT   2 242
+0488    TSETS    2   0 242  ; "s242"
+0489    KSHORT   2 243
+0490    TSETS    2   0 243  ; "s243"
+0491    KSHORT   2 244
+0492    TSETS    2   0 244  ; "s244"
+0493    KSHORT   2 245
+0494    TSETS    2   0 245  ; "s245"
+0495    KSHORT   2 246
+0496    TSETS    2   0 246  ; "s246"
+0497    KSHORT   2 247
+0498    TSETS    2   0 247  ; "s247"
+0499    KSHORT   2 248
+0500    TSETS    2   0 248  ; "s248"
+0501    KSHORT   2 249
+0502    TSETS    2   0 249  ; "s249"
+0503    KSHORT   2 250
+0504    TSETS    2   0 250  ; "s250"
+0505    KSHORT   2 251
+0506    TSETS    2   0 251  ; "s251"
+0507    KSHORT   2 252
+0508    TSETS    2   0 252  ; "s252"
+0509    KSHORT   2 253
+0510    TSETS    2   0 253  ; "s253"
+0511    KSHORT   2 254
+0512    TSETS    2   0 254  ; "s254"
+0513    KSHORT   2 255
+0514    TSETS    2   0 255  ; "s255"
+0515    KSTR     2 256      ; "s256"
+0516    KSHORT   3 256
+0517    TSETV    3   0   2
+0518    KSTR     2 257      ; "s257"
+0519    KSHORT   3 257
+0520    TSETV    3   0   2
+0521    KSTR     2 258      ; "s258"
+0522    KSHORT   3 258
+0523    TSETV    3   0   2
+0524    KSTR     2 259      ; "s259"
+0525    KSHORT   3 259
+0526    TSETV    3   0   2
+0527    KSTR     2 260      ; "s260"
+0528    KSHORT   3 260
+0529    TSETV    3   0   2
+0530    KSTR     2 261      ; "s261"
+0531    KSHORT   3 261
+0532    TSETV    3   0   2
+0533    KSTR     2 262      ; "s262"
+0534    KSHORT   3 262
+0535    TSETV    3   0   2
+0536    KSTR     2 263      ; "s263"
+0537    KSHORT   3 263
+0538    TSETV    3   0   2
+0539    KSTR     2 264      ; "s264"
+0540    KSHORT   3 264
+0541    TSETV    3   0   2
+0542    KSTR     2 265      ; "s265"
+0543    KSHORT   3 265
+0544    TSETV    3   0   2
+0545    KSTR     2 266      ; "s266"
+0546    KSHORT   3 266
+0547    TSETV    3   0   2
+0548    KSTR     2 267      ; "s267"
+0549    KSHORT   3 267
+0550    TSETV    3   0   2
+0551    KSTR     2 268      ; "s268"
+0552    KSHORT   3 268
+0553    TSETV    3   0   2
+0554    KSTR     2 269      ; "s269"
+0555    KSHORT   3 269
+0556    TSETV    3   0   2
+0557    KSTR     2 270      ; "s270"
+0558    KSHORT   3 270
+0559    TSETV    3   0   2
+0560    KSTR     2 271      ; "s271"
+0561    KSHORT   3 271
+0562    TSETV    3   0   2
+0563    KSTR     2 272      ; "s272"
+0564    KSHORT   3 272
+0565    TSETV    3   0   2
+0566    KSTR     2 273      ; "s273"
+0567    KSHORT   3 273
+0568    TSETV    3   0   2
+0569    KSTR     2 274      ; "s274"
+0570    KSHORT   3 274
+0571    TSETV    3   0   2
+0572    KSTR     2 275      ; "s275"
+0573    KSHORT   3 275
+0574    TSETV    3   0   2
+0575    KSTR     2 276      ; "s276"
+0576    KSHORT   3 276
+0577    TSETV    3   0   2
+0578    KSTR     2 277      ; "s277"
+0579    KSHORT   3 277
+0580    TSETV    3   0   2
+0581    KSTR     2 278      ; "s278"
+0582    KSHORT   3 278
+0583    TSETV    3   0   2
+0584    KSTR     2 279      ; "s279"
+0585    KSHORT   3 279
+0586    TSETV    3   0   2
+0587    KSTR     2 280      ; "s280"
+0588    KSHORT   3 280
+0589    TSETV    3   0   2
+0590    KSTR     2 281      ; "s281"
+0591    KSHORT   3 281
+0592    TSETV    3   0   2
+0593    KSTR     2 282      ; "s282"
+0594    KSHORT   3 282
+0595    TSETV    3   0   2
+0596    KSTR     2 283      ; "s283"
+0597    KSHORT   3 283
+0598    TSETV    3   0   2
+0599    KSTR     2 284      ; "s284"
+0600    KSHORT   3 284
+0601    TSETV    3   0   2
+0602    KSTR     2 285      ; "s285"
+0603    KSHORT   3 285
+0604    TSETV    3   0   2
+0605    KSTR     2 286      ; "s286"
+0606    KSHORT   3 286
+0607    TSETV    3   0   2
+0608    KSTR     2 287      ; "s287"
+0609    KSHORT   3 287
+0610    TSETV    3   0   2
+0611    KSTR     2 288      ; "s288"
+0612    KSHORT   3 288
+0613    TSETV    3   0   2
+0614    KSTR     2 289      ; "s289"
+0615    KSHORT   3 289
+0616    TSETV    3   0   2
+0617    KSTR     2 290      ; "s290"
+0618    KSHORT   3 290
+0619    TSETV    3   0   2
+0620    KSTR     2 291      ; "s291"
+0621    KSHORT   3 291
+0622    TSETV    3   0   2
+0623    KSTR     2 292      ; "s292"
+0624    KSHORT   3 292
+0625    TSETV    3   0   2
+0626    KSTR     2 293      ; "s293"
+0627    KSHORT   3 293
+0628    TSETV    3   0   2
+0629    KSTR     2 294      ; "s294"
+0630    KSHORT   3 294
+0631    TSETV    3   0   2
+0632    KSTR     2 295      ; "s295"
+0633    KSHORT   3 295
+0634    TSETV    3   0   2
+0635    KSTR     2 296      ; "s296"
+0636    KSHORT   3 296
+0637    TSETV    3   0   2
+0638    KSTR     2 297      ; "s297"
+0639    KSHORT   3 297
+0640    TSETV    3   0   2
+0641    KSTR     2 298      ; "s298"
+0642    KSHORT   3 298
+0643    TSETV    3   0   2
+0644    KSTR     2 299      ; "s299"
+0645    KSHORT   3 299
+0646    TSETV    3   0   2
+0647    KSTR     2 300      ; "after_many"
+0648    TGETV    1   0   2
+0649    KSTR     2 300      ; "after_many"
+0650    KSHORT   3   1
+0651    TSETV    3   0   2
+0652    KSTR     2 301      ; "another"
+0653    TSETV    1   0   2
+0654    KSTR     2 301      ; "another"
+0655    TGETV    1   0   2
+0656    KNUM     2   0      ; 1.5
+0657    TGETV    1   0   2
+0658    KNUM     2   1      ; 2.5
+0659    TSETV    1   0   2
+0660    TDUP     1 302
+0661    KSTR     1 303      ; "plainstr"
+0662    ISNES    1 304      ; "cmpstr"
+0663    JMP      2 => 0664
+0664 => MOV      2   1
+0665    KSTR     3 305      ; "catstr"
+0666    CAT      1   2   3
+0667    MOV      3   0
+0668    KSTR     4 306      ; "meth"
+0669    TGETV    2   0   4
+0670    CALL     2   2   2
+0671    MOV      1   2
+0672    GSET     1 307      ; "gname"
+0673    GGET     1 308      ; "gname2"
+0674    TGETV    1   0   1
+0675    KNUM     1   2      ; 12345.5
+0676    RET0     0   1
+

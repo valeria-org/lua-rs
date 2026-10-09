@@ -1,0 +1,56 @@
+-- BYTECODE -- ref_lang_meta_nomm.lua:6-6
+0001    KSHORT   2 12345
+0002    RET1     2   2
+
+-- BYTECODE -- ref_lang_meta_nomm.lua:0-22
+0001    TNEW     0   0
+0002    KSHORT   1   1
+0003    KSHORT   2 100
+0004    KSHORT   3   1
+0005    FORI     1 => 0009
+0006 => KSTR     5   0      ; "foo"
+0007    TSETV    5   0   4
+0008    FORL     1 => 0006
+0009 => KSTR     1   1      ; "__index"
+0010    TSETB    1   0  95
+0011    FNEW     1   2      ; ref_lang_meta_nomm.lua:6
+0012    TDUP     2   3
+0013    GGET     3   4      ; "setmetatable"
+0014    TDUP     4   5
+0015    MOV      5   2
+0016    CALL     3   2   3
+0017    KPRI     4   0
+0018    TSETB    4   3   1
+0019    KPRI     4   0
+0020    TSETS    4   2   1  ; "__index"
+0021    KPRI     4   0
+0022    KSHORT   5   1
+0023    KSHORT   6 100
+0024    KSHORT   7   1
+0025    FORI     5 => 0043
+0026 => TGETV    9   0   8
+0027    TSETV    1   2   9
+0028    TGETB    9   3   1
+0029    ISF          9
+0030    JMP     10 => 0042
+0031    IST          4
+0032    JMP      9 => 0034
+0033    MOV      4   8
+0034 => GGET     9   6      ; "assert"
+0035    TGETB   10   3   1
+0036    ISEQN   10   0      ; 12345
+0037    JMP     10 => 0040
+0038    KPRI    10   1
+0039    JMP     11 => 0041
+0040 => KPRI    10   2
+0041 => CALL     9   1   2
+0042 => FORL     5 => 0026
+0043 => GGET     5   6      ; "assert"
+0044    ISEQN    4   1      ; 95
+0045    JMP      6 => 0048
+0046    KPRI     6   1
+0047    JMP      7 => 0049
+0048 => KPRI     6   2
+0049 => CALL     5   1   2
+0050    RET0     0   1
+

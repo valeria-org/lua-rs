@@ -42,12 +42,21 @@ fn first_diff(want: &[u8], got: &[u8]) -> String {
 }
 
 fn run_listing(path: &Path) -> Result<(), String> {
+    check_listing(path, "lua.bl", true)
+}
+
+/// Non-native frame layout (`luajit -bWl`).
+fn run_listing_fr1(path: &Path) -> Result<(), String> {
+    check_listing(path, "lua.blw", false)
+}
+
+fn check_listing(path: &Path, ext: &str, fr2: bool) -> Result<(), String> {
     let name = path.file_name().unwrap().to_str().unwrap();
     let src = fs::read(path).unwrap();
-    let want = fs::read(path.with_extension("lua.bl")).map_err(|e| format!("{name}: no golden: {e}"))?;
+    let want = fs::read(path.with_extension(ext)).map_err(|e| format!("{name}: no golden: {e}"))?;
     let mut vm = Vm::new();
     let chunkname = format!("@{name}");
-    let pt = parse::parse(&mut vm, &src, chunkname.as_bytes()).map_err(|e| {
+    let pt = parse::parse_ex(&mut vm, &src, chunkname.as_bytes(), fr2).map_err(|e| {
         let msg = match e.value {
             Value::Str(s) => s.to_string_lossy(),
             _ => String::from("?"),
@@ -90,21 +99,13 @@ fn run_error(path: &Path) -> Result<(), String> {
 fn run_all(files: Vec<PathBuf>, f: fn(&Path) -> Result<(), String>) {
     assert!(!files.is_empty(), "no fixtures found");
     let total = files.len();
-    // Deeply nested fixtures need more native stack than the default test thread has.
-    let failures: Vec<String> = std::thread::Builder::new()
-        .stack_size(256 << 20)
-        .spawn(move || {
-            files
-                .iter()
-                .filter_map(|p| match std::panic::catch_unwind(|| f(p)) {
-                    Ok(r) => r.err(),
-                    Err(_) => Some(format!("{}: panicked", p.display())),
-                })
-                .collect()
+    let failures: Vec<String> = files
+        .iter()
+        .filter_map(|p| match std::panic::catch_unwind(|| f(p)) {
+            Ok(r) => r.err(),
+            Err(_) => Some(format!("{}: panicked", p.display())),
         })
-        .unwrap()
-        .join()
-        .unwrap();
+        .collect();
     if !failures.is_empty() {
         panic!("{} of {} fixtures failed:\n{}", failures.len(), total, failures.join("\n"));
     }
@@ -118,4 +119,9 @@ fn bytecode_listings_match_reference() {
 #[test]
 fn syntax_errors_match_reference() {
     run_all(lua_files(&fixture_dir().join("errors")), run_error);
+}
+
+#[test]
+fn bytecode_listings_fr1_match_reference() {
+    run_all(lua_files(&fixture_dir()), run_listing_fr1);
 }

@@ -1,0 +1,770 @@
+-- BYTECODE -- ref_jit_p.lua:83-85
+0001    UGET     1   0      ; vmdef
+0002    TGETS    1   1   0  ; "ffnames"
+0003    UGET     2   1      ; tonumber
+0004    MOV      3   0
+0005    CALL     2   2   2
+0006    TGETV    1   1   2
+0007    RET1     1   2
+
+-- BYTECODE -- ref_jit_p.lua:70-115
+0001    UGET     3   0      ; prof_samples
+0002    ADDVV    3   3   1
+0003    USETV    0   3      ; prof_samples
+0004    KNIL     3   5
+0005    UGET     6   1      ; prof_states
+0006    ISF          6
+0007    JMP      7 => 0024
+0008    UGET     6   1      ; prof_states
+0009    ISNES    6   0      ; "v"
+0010    JMP      6 => 0017
+0011    UGET     6   2      ; map_vmmode
+0012    TGETV    6   6   2
+0013    ISTC     5   6
+0014    JMP      7 => 0016
+0015    MOV      5   2
+0016 => JMP      6 => 0024
+0017 => UGET     6   3      ; zone
+0018    MOV      7   6
+0019    TGETS    6   6   1  ; "get"
+0020    CALL     6   2   2
+0021    ISTC     5   6
+0022    JMP      7 => 0024
+0023    KSTR     5   2      ; "(none)"
+0024 => UGET     6   4      ; prof_fmt
+0025    ISF          6
+0026    JMP      7 => 0063
+0027    UGET     6   5      ; profile
+0028    TGETS    6   6   3  ; "dumpstack"
+0029    MOV      7   0
+0030    UGET     8   4      ; prof_fmt
+0031    UGET     9   6      ; prof_depth
+0032    CALL     6   2   4
+0033    MOV      3   6
+0034    MOV      7   3
+0035    TGETS    6   3   4  ; "gsub"
+0036    KSTR     8   5      ; "%[builtin#(%d+)%]"
+0037    FNEW     9   6      ; ref_jit_p.lua:83
+0038    CALL     6   2   4
+0039    MOV      3   6
+0040    UGET     6   9      ; prof_split
+0041    ISNEN    6   0      ; 2
+0042    JMP      6 => 0053
+0043    MOV      7   3
+0044    TGETS    6   3   7  ; "match"
+0045    KSTR     8   8      ; "(.-) [<>] (.*)"
+0046    CALL     6   3   3
+0047    ISF          7
+0048    JMP      8 => 0063
+0049    MOV      8   6
+0050    MOV      4   7
+0051    MOV      3   8
+0052    JMP      6 => 0063
+0053 => UGET     6   9      ; prof_split
+0054    ISNEN    6   1      ; 3
+0055    JMP      6 => 0063
+0056    UGET     6   5      ; profile
+0057    TGETS    6   6   3  ; "dumpstack"
+0058    MOV      7   0
+0059    KSTR     8   9      ; "l"
+0060    KSHORT   9   1
+0061    CALL     6   2   4
+0062    MOV      4   6
+0063 => KNIL     6   7
+0064    UGET     8   9      ; prof_split
+0065    ISNEN    8   2      ; 1
+0066    JMP      8 => 0074
+0067    ISF          5
+0068    JMP      8 => 0084
+0069    MOV      6   5
+0070    ISF          3
+0071    JMP      8 => 0084
+0072    MOV      7   3
+0073    JMP      8 => 0084
+0074 => ISF          3
+0075    JMP      8 => 0084
+0076    MOV      6   3
+0077    ISF          4
+0078    JMP      8 => 0081
+0079    MOV      7   4
+0080    JMP      8 => 0084
+0081 => ISF          5
+0082    JMP      8 => 0084
+0083    MOV      7   5
+0084 => ISF          6
+0085    JMP      8 => 0107
+0086    UGET     8  10      ; prof_count1
+0087    TGETV    9   8   6
+0088    IST          9
+0089    JMP     10 => 0091
+0090    KSHORT   9   0
+0091 => ADDVV    9   9   1
+0092    TSETV    9   8   6
+0093    ISF          7
+0094    JMP      9 => 0107
+0095    UGET     9  11      ; prof_count2
+0096    TGETV   10   9   6
+0097    IST         10
+0098    JMP     11 => 0101
+0099    TNEW    10   0
+0100    TSETV   10   9   6
+0101 => TGETV   11  10   7
+0102    IST         11
+0103    JMP     12 => 0105
+0104    KSHORT  11   0
+0105 => ADDVV   11  11   1
+0106    TSETV   11  10   7
+0107 => RET0     0   1
+
+-- BYTECODE -- ref_jit_p.lua:126-126
+0001    UGET     2   0      ; count1
+0002    TGETV    2   2   0
+0003    UGET     3   0      ; count1
+0004    TGETV    3   3   1
+0005    ISLT     3   2
+0006    JMP      2 => 0009
+0007    KPRI     2   1
+0008    JMP      3 => 0010
+0009 => KPRI     2   2
+0010 => RET1     2   2
+
+-- BYTECODE -- ref_jit_p.lua:120-147
+0001    TNEW     4   0
+0002    KSHORT   5   0
+0003    UGET     6   0      ; pairs
+0004    MOV      7   0
+0005    CALL     6   4   2
+0006    ISNEXT   9 => 0009
+0007 => ADDVN    5   5   0  ; 1
+0008    TSETV    9   4   5
+0009 => ITERN    9   2   3
+0010    ITERL    9 => 0007
+0011    UGET     6   1      ; sort
+0012    MOV      7   4
+0013    FNEW     8   0      ; ref_jit_p.lua:126
+0014    CALL     6   1   3
+0015    KSHORT   6   1
+0016    MOV      7   5
+0017    KSHORT   8   1
+0018    FORI     6 => 0093
+0019 => TGETV   10   4   9
+0020    TGETV   11   0  10
+0021    UGET    12   2      ; floor
+0022    MULVN   13  11   1  ; 100
+0023    DIVVV   13  13   2
+0024    ADDVN   13  13   2  ; 0.5
+0025    CALL    12   2   2
+0026    UGET    13   3      ; prof_min
+0027    ISGE    12  13
+0028    JMP     13 => 0030
+0029    JMP      6 => 0093
+0030 => UGET    13   4      ; prof_raw
+0031    IST         13
+0032    JMP     13 => 0044
+0033    UGET    13   5      ; out
+0034    MOV     14  13
+0035    TGETS   13  13   1  ; "write"
+0036    UGET    15   6      ; format
+0037    KSTR    16   2      ; "%s%2d%%  %s\n"
+0038    MOV     17   3
+0039    MOV     18  12
+0040    MOV     19  10
+0041    CALL    15   0   5
+0042    CALLM   13   1   1
+0043    JMP     13 => 0067
+0044 => UGET    13   4      ; prof_raw
+0045    ISNES   13   3      ; "r"
+0046    JMP     13 => 0058
+0047    UGET    13   5      ; out
+0048    MOV     14  13
+0049    TGETS   13  13   1  ; "write"
+0050    UGET    15   6      ; format
+0051    KSTR    16   4      ; "%s%5d  %s\n"
+0052    MOV     17   3
+0053    MOV     18  11
+0054    MOV     19  10
+0055    CALL    15   0   5
+0056    CALLM   13   1   1
+0057    JMP     13 => 0067
+0058 => UGET    13   5      ; out
+0059    MOV     14  13
+0060    TGETS   13  13   1  ; "write"
+0061    UGET    15   6      ; format
+0062    KSTR    16   5      ; "%s %d\n"
+0063    MOV     17  10
+0064    MOV     18  11
+0065    CALL    15   0   4
+0066    CALLM   13   1   1
+0067 => ISF          1
+0068    JMP     13 => 0092
+0069    TGETV   13   1  10
+0070    ISF         13
+0071    JMP     14 => 0092
+0072    UGET    14   7      ; prof_top
+0073    MOV     15  13
+0074    KPRI    16   0
+0075    MOV     17  11
+0076    UGET    18   8      ; prof_split
+0077    ISEQN   18   3      ; 3
+0078    JMP     18 => 0082
+0079    UGET    18   8      ; prof_split
+0080    ISNEN   18   0      ; 1
+0081    JMP     18 => 0084
+0082 => KSTR    18   6      ; "  -- "
+0083    JMP     19 => 0091
+0084 => UGET    18   9      ; prof_depth
+0085    KSHORT  19   0
+0086    ISGE    18  19
+0087    JMP     18 => 0090
+0088    KSTR    18   7      ; "  -> "
+0089    JMP     19 => 0091
+0090 => KSTR    18   8      ; "  <- "
+0091 => CALL    14   1   5
+0092 => FORL     6 => 0019
+0093 => UCLO     0 => 0094
+0094 => RET0     0   1
+
+-- BYTECODE -- ref_jit_p.lua:150-219
+0001    TNEW     2   0
+0002    KSHORT   3   0
+0003    UGET     4   0      ; pairs
+0004    MOV      5   0
+0005    CALL     4   4   2
+0006    ISNEXT   7 => 0048
+0007 => UGET     9   1      ; floor
+0008    MULVN   10   8   0  ; 100
+0009    DIVVV   10  10   1
+0010    ADDVN   10  10   1  ; 0.5
+0011    CALL     9   2   2
+0012    UGET    10   2      ; math
+0013    TGETS   10  10   0  ; "max"
+0014    MOV     11   3
+0015    MOV     12   8
+0016    CALL    10   2   3
+0017    MOV      3  10
+0018    UGET    10   3      ; prof_min
+0019    ISGT    10   9
+0020    JMP     10 => 0048
+0021    MOV     11   7
+0022    TGETS   10   7   1  ; "match"
+0023    KSTR    12   2      ; "^(.*):(%d+)$"
+0024    CALL    10   3   3
+0025    IST         10
+0026    JMP     12 => 0029
+0027    MOV     10   7
+0028    KSHORT  11   0
+0029 => TGETV   12   2  10
+0030    IST         12
+0031    JMP     13 => 0037
+0032    TNEW    12   0
+0033    TSETV   12   2  10
+0034    LEN     13   2
+0035    ADDVN   13  13   2  ; 1
+0036    TSETV   10   2  13
+0037 => UGET    13   4      ; tonumber
+0038    MOV     14  11
+0039    CALL    13   2   2
+0040    MOV     11  13
+0041    UGET    13   5      ; prof_raw
+0042    ISF         13
+0043    JMP     14 => 0046
+0044    ISTC    13   8
+0045    JMP     13 => 0047
+0046 => MOV     13   9
+0047 => TSETV   13  12  11
+0048 => ITERN    7   3   3
+0049    ITERL    7 => 0007
+0050    UGET     4   6      ; sort
+0051    MOV      5   2
+0052    CALL     4   1   2
+0053    KSTR     4   3      ; " %3d%% | %s\n"
+0054    KSTR     5   4      ; "      | %s\n"
+0055    UGET     6   5      ; prof_raw
+0056    ISF          6
+0057    JMP      7 => 0080
+0058    UGET     6   2      ; math
+0059    TGETS    6   6   0  ; "max"
+0060    KSHORT   7   5
+0061    UGET     8   2      ; math
+0062    TGETS    8   8   5  ; "ceil"
+0063    UGET     9   2      ; math
+0064    TGETS    9   9   6  ; "log10"
+0065    MOV     10   3
+0066    CALL     9   0   2
+0067    CALLM    8   0   0
+0068    CALLM    6   2   1
+0069    KSTR     7   7      ; "%"
+0070    MOV      8   6
+0071    KSTR     9   8      ; "d | %s\n"
+0072    CAT      4   7   9
+0073    KSTR     7   9      ; " "
+0074    MOV      8   7
+0075    TGETS    7   7  10  ; "rep"
+0076    MOV      9   6
+0077    CALL     7   2   3
+0078    KSTR     8  11      ; " | %s\n"
+0079    CAT      5   7   8
+0080 => UGET     6   7      ; prof_ann
+0081    UGET     7   8      ; ipairs
+0082    MOV      8   2
+0083    CALL     7   4   2
+0084    JMP     10 => 0220
+0085 => MOV     13  11
+0086    TGETS   12  11  12  ; "byte"
+0087    CALL    12   2   2
+0088    ISEQN   12   3      ; 40
+0089    JMP     13 => 0092
+0090    ISNEN   12   4      ; 91
+0091    JMP     13 => 0101
+0092 => UGET    13   9      ; out
+0093    MOV     14  13
+0094    TGETS   13  13  13  ; "write"
+0095    UGET    15  10      ; format
+0096    KSTR    16  14      ; "\n====== %s ======\n[Cannot annotate non"~
+0097    MOV     17  11
+0098    CALL    15   0   3
+0099    CALLM   13   1   1
+0100    JMP      7 => 0222
+0101 => GGET    13  15      ; "io"
+0102    TGETS   13  13  16  ; "open"
+0103    MOV     14  11
+0104    CALL    13   3   2
+0105    IST         13
+0106    JMP     15 => 0117
+0107    UGET    15   9      ; out
+0108    MOV     16  15
+0109    TGETS   15  15  13  ; "write"
+0110    UGET    17  10      ; format
+0111    KSTR    18  17      ; "====== ERROR: %s: %s\n"
+0112    MOV     19  11
+0113    MOV     20  14
+0114    CALL    17   0   4
+0115    CALLM   15   1   1
+0116    JMP      7 => 0222
+0117 => UGET    15   9      ; out
+0118    MOV     16  15
+0119    TGETS   15  15  13  ; "write"
+0120    UGET    17  10      ; format
+0121    KSTR    18  18      ; "\n====== %s ======\n"
+0122    MOV     19  11
+0123    CALL    17   0   3
+0124    CALLM   15   1   1
+0125    TGETV   15   2  11
+0126    KSHORT  16   1
+0127    KPRI    17   1
+0128    ISEQN    6   5      ; 0
+0129    JMP     18 => 0145
+0130    KSHORT  18   1
+0131    MOV     19   6
+0132    KSHORT  20   1
+0133    FORI    18 => 0145
+0134 => TGETV   22  15  21
+0135    ISF         22
+0136    JMP     23 => 0144
+0137    KPRI    17   2
+0138    UGET    22   9      ; out
+0139    MOV     23  22
+0140    TGETS   22  22  13  ; "write"
+0141    KSTR    24  19      ; "@@ 1 @@\n"
+0142    CALL    22   1   3
+0143    JMP     18 => 0145
+0144 => FORL    18 => 0134
+0145 => MOV     19  13
+0146    TGETS   18  13  20  ; "lines"
+0147    CALL    18   4   2
+0148    JMP     21 => 0215
+0149 => MOV     23  21
+0150    TGETS   22  21  12  ; "byte"
+0151    CALL    22   2   2
+0152    ISNEN   22   6      ; 27
+0153    JMP     22 => 0160
+0154    UGET    22   9      ; out
+0155    MOV     23  22
+0156    TGETS   22  22  13  ; "write"
+0157    KSTR    24  21      ; "[Cannot annotate bytecode file]\n"
+0158    CALL    22   1   3
+0159    JMP     18 => 0217
+0160 => TGETV   22  15  16
+0161    ISEQN    6   5      ; 0
+0162    JMP     23 => 0194
+0163    ADDVV   23  16   6
+0164    TGETV   23  15  23
+0165    ISF         17
+0166    JMP     24 => 0180
+0167    ISF         23
+0168    JMP     24 => 0171
+0169    ADDVV   17  16   6
+0170    JMP     24 => 0191
+0171 => ISF         22
+0172    JMP     24 => 0175
+0173    MOV     17  16
+0174    JMP     24 => 0191
+0175 => ADDVV   24  17   6
+0176    ISGE    24  16
+0177    JMP     24 => 0191
+0178    KPRI    17   1
+0179    JMP     24 => 0191
+0180 => ISF         23
+0181    JMP     24 => 0191
+0182    ADDVV   17  16   6
+0183    UGET    24   9      ; out
+0184    MOV     25  24
+0185    TGETS   24  24  13  ; "write"
+0186    UGET    26  10      ; format
+0187    KSTR    27  22      ; "@@ %d @@\n"
+0188    MOV     28  16
+0189    CALL    26   0   3
+0190    CALLM   24   1   1
+0191 => IST         17
+0192    JMP     24 => 0194
+0193    JMP     23 => 0214
+0194 => ISF         22
+0195    JMP     23 => 0206
+0196    UGET    23   9      ; out
+0197    MOV     24  23
+0198    TGETS   23  23  13  ; "write"
+0199    UGET    25  10      ; format
+0200    MOV     26   4
+0201    MOV     27  22
+0202    MOV     28  21
+0203    CALL    25   0   4
+0204    CALLM   23   1   1
+0205    JMP     23 => 0214
+0206 => UGET    23   9      ; out
+0207    MOV     24  23
+0208    TGETS   23  23  13  ; "write"
+0209    UGET    25  10      ; format
+0210    MOV     26   5
+0211    MOV     27  21
+0212    CALL    25   0   3
+0213    CALLM   23   1   1
+0214 => ADDVN   16  16   2  ; 1
+0215 => ITERC   21   2   3
+0216    ITERL   21 => 0149
+0217 => MOV     19  13
+0218    TGETS   18  13  23  ; "close"
+0219    CALL    18   1   2
+0220 => ITERC   10   3   3
+0221    ITERL   10 => 0085
+0222 => RET0     0   1
+
+-- BYTECODE -- ref_jit_p.lua:224-240
+0001    UGET     0   0      ; prof_ud
+0002    ISF          0
+0003    JMP      1 => 0044
+0004    UGET     0   1      ; profile
+0005    TGETS    0   0   0  ; "stop"
+0006    CALL     0   1   1
+0007    UGET     0   2      ; prof_samples
+0008    ISNEN    0   0      ; 0
+0009    JMP      1 => 0019
+0010    UGET     1   3      ; prof_raw
+0011    ISEQP    1   2
+0012    JMP      1 => 0033
+0013    UGET     1   4      ; out
+0014    MOV      2   1
+0015    TGETS    1   1   1  ; "write"
+0016    KSTR     3   2      ; "[No samples collected]\n"
+0017    CALL     1   1   3
+0018    JMP      1 => 0033
+0019 => UGET     1   5      ; prof_ann
+0020    ISF          1
+0021    JMP      2 => 0027
+0022    UGET     1   6      ; prof_annotate
+0023    UGET     2   7      ; prof_count1
+0024    MOV      3   0
+0025    CALL     1   1   3
+0026    JMP      1 => 0033
+0027 => UGET     1   8      ; prof_top
+0028    UGET     2   7      ; prof_count1
+0029    UGET     3   9      ; prof_count2
+0030    MOV      4   0
+0031    KSTR     5   3      ; ""
+0032    CALL     1   1   5
+0033 => USETP    7   0      ; prof_count1
+0034    USETP    9   0      ; prof_count2
+0035    USETP    0   0      ; prof_ud
+0036    UGET     1   4      ; out
+0037    UGET     2  10      ; stdout
+0038    ISEQV    1   2
+0039    JMP      1 => 0044
+0040    UGET     1   4      ; out
+0041    MOV      2   1
+0042    TGETS    1   1   4  ; "close"
+0043    CALL     1   1   2
+0044 => RET0     0   1
+
+-- BYTECODE -- ref_jit_p.lua:245-245
+0001    USETV    0   0      ; interval
+0002    KSTR     1   0      ; ""
+0003    RET1     1   2
+
+-- BYTECODE -- ref_jit_p.lua:247-247
+0001    UGET     1   1      ; tonumber
+0002    MOV      2   0
+0003    CALL     1   2   2
+0004    USETV    0   1      ; prof_min
+0005    KSTR     1   0      ; ""
+0006    RET1     1   2
+
+-- BYTECODE -- ref_jit_p.lua:249-249
+0001    UGET     1   1      ; tonumber
+0002    MOV      2   0
+0003    CALL     1   2   2
+0004    USETV    0   1      ; prof_depth
+0005    KSTR     1   0      ; ""
+0006    RET1     1   2
+
+-- BYTECODE -- ref_jit_p.lua:243-290
+0001    KSTR     1   0      ; ""
+0002    MOV      3   0
+0003    TGETS    2   0   1  ; "gsub"
+0004    KSTR     4   2      ; "i%d*"
+0005    FNEW     5   3      ; ref_jit_p.lua:245
+0006    CALL     2   2   4
+0007    MOV      0   2
+0008    USETN    0   0      ; prof_min ; 3
+0009    MOV      3   0
+0010    TGETS    2   0   1  ; "gsub"
+0011    KSTR     4   4      ; "m(%d+)"
+0012    FNEW     5   5      ; ref_jit_p.lua:247
+0013    CALL     2   2   4
+0014    MOV      0   2
+0015    USETN    2   1      ; prof_depth ; 1
+0016    MOV      3   0
+0017    TGETS    2   0   1  ; "gsub"
+0018    KSTR     4   6      ; "%-?%d+"
+0019    FNEW     5   7      ; ref_jit_p.lua:249
+0020    CALL     2   2   4
+0021    MOV      0   2
+0022    TNEW     2   0
+0023    MOV      4   0
+0024    TGETS    3   0   8  ; "gmatch"
+0025    KSTR     5   9      ; "."
+0026    CALL     3   4   3
+0027    JMP      6 => 0029
+0028 => TSETV    6   2   6
+0029 => ITERC    6   2   3
+0030    ITERL    6 => 0028
+0031    TGETS    3   2  10  ; "z"
+0032    IST          3
+0033    JMP      4 => 0035
+0034    TGETS    3   2  11  ; "v"
+0035 => USETV    3   3      ; prof_states
+0036    UGET     3   3      ; prof_states
+0037    ISNES    3  10      ; "z"
+0038    JMP      3 => 0043
+0039    GGET     3  12      ; "require"
+0040    KSTR     4  13      ; "jit.zone"
+0041    CALL     3   2   2
+0042    USETV    4   3      ; zone
+0043 => TGETS    3   2  14  ; "l"
+0044    IST          3
+0045    JMP      4 => 0058
+0046    TGETS    3   2  15  ; "f"
+0047    IST          3
+0048    JMP      4 => 0058
+0049    TGETS    3   2  16  ; "F"
+0050    IST          3
+0051    JMP      4 => 0058
+0052    UGET     3   3      ; prof_states
+0053    ISF          3
+0054    JMP      4 => 0057
+0055    KSTR     3   0      ; ""
+0056    JMP      4 => 0058
+0057 => KSTR     3  15      ; "f"
+0058 => TGETS    4   2  17  ; "p"
+0059    IST          4
+0060    JMP      5 => 0062
+0061    KSTR     4   0      ; ""
+0062 => TGETS    5   2  18  ; "r"
+0063    USETV    5   5      ; prof_raw
+0064    TGETS    5   2  19  ; "s"
+0065    ISF          5
+0066    JMP      6 => 0081
+0067    USETN    6   2      ; prof_split ; 2
+0068    UGET     5   2      ; prof_depth
+0069    ISEQN    5   3      ; -1
+0070    JMP      5 => 0074
+0071    TGETS    5   2  20  ; "-"
+0072    ISF          5
+0073    JMP      6 => 0076
+0074 => USETN    2   4      ; prof_depth ; -2
+0075    JMP      5 => 0102
+0076 => UGET     5   2      ; prof_depth
+0077    ISNEN    5   1      ; 1
+0078    JMP      5 => 0102
+0079    USETN    2   2      ; prof_depth ; 2
+0080    JMP      5 => 0102
+0081 => MOV      6   0
+0082    TGETS    5   0  21  ; "find"
+0083    KSTR     7  22      ; "[fF].*l"
+0084    CALL     5   2   3
+0085    ISF          5
+0086    JMP      6 => 0090
+0087    KSTR     3  14      ; "l"
+0088    USETN    6   0      ; prof_split ; 3
+0089    JMP      5 => 0102
+0090 => ISEQS    3   0      ; ""
+0091    JMP      5 => 0098
+0092    MOV      6   0
+0093    TGETS    5   0  21  ; "find"
+0094    KSTR     7  23      ; "[zv].*[lfF]"
+0095    CALL     5   2   3
+0096    ISF          5
+0097    JMP      6 => 0100
+0098 => KSHORT   5   1
+0099    JMP      6 => 0101
+0100 => KSHORT   5   0
+0101 => USETV    6   5      ; prof_split
+0102 => TGETS    5   2  24  ; "A"
+0103    ISF          5
+0104    JMP      6 => 0107
+0105    KSHORT   5   0
+0106    JMP      6 => 0111
+0107 => TGETS    5   2  25  ; "a"
+0108    ISF          5
+0109    JMP      6 => 0111
+0110    KSHORT   5   3
+0111 => USETV    7   5      ; prof_ann
+0112    UGET     5   7      ; prof_ann
+0113    ISF          5
+0114    JMP      6 => 0120
+0115    KSTR     3  14      ; "l"
+0116    USETS    8  26      ; prof_fmt ; "pl"
+0117    USETN    6   5      ; prof_split ; 0
+0118    USETN    2   1      ; prof_depth ; 1
+0119    JMP      5 => 0159
+0120 => TGETS    5   2  27  ; "G"
+0121    ISF          5
+0122    JMP      6 => 0134
+0123    ISEQS    3   0      ; ""
+0124    JMP      5 => 0134
+0125    MOV      5   4
+0126    MOV      6   3
+0127    KSTR     7  28      ; "Z;"
+0128    CAT      5   5   7
+0129    USETV    8   5      ; prof_fmt
+0130    USETN    2   6      ; prof_depth ; -100
+0131    USETP    5   2      ; prof_raw
+0132    USETN    0   5      ; prof_min ; 0
+0133    JMP      5 => 0159
+0134 => ISNES    3   0      ; ""
+0135    JMP      5 => 0138
+0136    USETP    8   1      ; prof_fmt
+0137    JMP      5 => 0159
+0138 => UGET     5   6      ; prof_split
+0139    ISNEN    5   0      ; 3
+0140    JMP      5 => 0144
+0141    TGETS    5   2  15  ; "f"
+0142    IST          5
+0143    JMP      6 => 0148
+0144 => TGETS    5   2  16  ; "F"
+0145    IST          5
+0146    JMP      6 => 0148
+0147    MOV      5   3
+0148 => MOV      6   4
+0149    MOV      7   5
+0150    UGET     8   2      ; prof_depth
+0151    KSHORT   9   0
+0152    ISGT     9   8
+0153    JMP      8 => 0156
+0154    KSTR     8  29      ; "Z < "
+0155    JMP      9 => 0157
+0156 => KSTR     8  30      ; "Z > "
+0157 => CAT      6   6   8
+0158    USETV    8   6      ; prof_fmt
+0159 => TNEW     5   0
+0160    USETV    9   5      ; prof_count1
+0161    TNEW     5   0
+0162    USETV   10   5      ; prof_count2
+0163    USETN   11   5      ; prof_samples ; 0
+0164    UGET     5  12      ; profile
+0165    TGETS    5   5  31  ; "start"
+0166    MOV      7   3
+0167    TGETS    6   3  32  ; "lower"
+0168    CALL     6   2   2
+0169    MOV      7   1
+0170    CAT      6   6   7
+0171    UGET     7  13      ; prof_cb
+0172    CALL     5   1   3
+0173    GGET     5  33      ; "newproxy"
+0174    KPRI     6   2
+0175    CALL     5   2   2
+0176    USETV   14   5      ; prof_ud
+0177    GGET     5  34      ; "getmetatable"
+0178    UGET     6  14      ; prof_ud
+0179    CALL     5   2   2
+0180    UGET     6  15      ; prof_finish
+0181    TSETS    6   5  35  ; "__gc"
+0182    UCLO     0 => 0183
+0183 => RET0     0   1
+
+-- BYTECODE -- ref_jit_p.lua:294-302
+0001    IST          1
+0002    JMP      2 => 0008
+0003    GGET     2   0      ; "os"
+0004    TGETS    2   2   1  ; "getenv"
+0005    KSTR     3   2      ; "LUAJIT_PROFILEFILE"
+0006    CALL     2   2   2
+0007    MOV      1   2
+0008 => ISF          1
+0009    JMP      2 => 0024
+0010    ISNES    1   3      ; "-"
+0011    JMP      2 => 0015
+0012    UGET     2   1      ; stdout
+0013    IST          2
+0014    JMP      3 => 0022
+0015 => GGET     2   4      ; "assert"
+0016    GGET     3   5      ; "io"
+0017    TGETS    3   3   6  ; "open"
+0018    MOV      4   1
+0019    KSTR     5   7      ; "w"
+0020    CALL     3   0   3
+0021    CALLM    2   2   0
+0022 => USETV    0   2      ; out
+0023    JMP      2 => 0026
+0024 => UGET     2   1      ; stdout
+0025    USETV    0   2      ; out
+0026 => UGET     2   2      ; prof_start
+0027    ISTC     3   0
+0028    JMP      3 => 0030
+0029    KSTR     3   8      ; "f"
+0030 => CALL     2   1   2
+0031    RET0     0   1
+
+-- BYTECODE -- ref_jit_p.lua:0-310
+0001    GGET     0   0      ; "require"
+0002    KSTR     1   1      ; "jit"
+0003    CALL     0   2   2
+0004    GGET     1   0      ; "require"
+0005    KSTR     2   2      ; "jit.profile"
+0006    CALL     1   2   2
+0007    GGET     2   0      ; "require"
+0008    KSTR     3   3      ; "jit.vmdef"
+0009    CALL     2   2   2
+0010    GGET     3   4      ; "math"
+0011    GGET     4   5      ; "pairs"
+0012    GGET     5   6      ; "ipairs"
+0013    GGET     6   7      ; "tonumber"
+0014    TGETS    7   3   8  ; "floor"
+0015    GGET     8   9      ; "table"
+0016    TGETS    8   8  10  ; "sort"
+0017    GGET     9  11      ; "string"
+0018    TGETS    9   9  12  ; "format"
+0019    GGET    10  13      ; "io"
+0020    TGETS   10  10  14  ; "stdout"
+0021    KNIL    11  23
+0022    TDUP    24  15
+0023    FNEW    25  16      ; ref_jit_p.lua:70
+0024    FNEW    26  17      ; ref_jit_p.lua:120
+0025    FNEW    27  18      ; ref_jit_p.lua:150
+0026    FNEW    28  19      ; ref_jit_p.lua:224
+0027    FNEW    29  20      ; ref_jit_p.lua:243
+0028    FNEW    30  21      ; ref_jit_p.lua:294
+0029    TDUP    31  22
+0030    TSETS   30  31  23  ; "start"
+0031    TSETS   28  31  24  ; "stop"
+0032    UCLO     0 => 0033
+0033 => RET1    31   2
+

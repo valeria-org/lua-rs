@@ -1,0 +1,246 @@
+-- BYTECODE -- ref_lang_upvalue_closure.lua:4-4
+0001    UGET     0   0      ; i
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:16-16
+0001    UGET     0   0      ; j
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:29-29
+0001    UGET     0   0      ; j
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:39-39
+0001    UGET     0   0      ; x
+0002    RET1     0   2
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:38-40
+0001    FNEW     1   0      ; ref_lang_upvalue_closure.lua:39
+0002    UCLO     0 => 0003
+0003 => RET1     1   2
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:54-59
+0001    GGET     0   0      ; "type"
+0002    UGET     1   0      ; b
+0003    CALL     0   2   2
+0004    ISNES    0   1      ; "function"
+0005    JMP      0 => 0011
+0006    UGET     0   1      ; a
+0007    UGET     1   0      ; b
+0008    CALL     1   2   1
+0009    ADDVV    0   0   1
+0010    RET1     0   2
+0011 => UGET     0   1      ; a
+0012    UGET     1   0      ; b
+0013    ADDVV    0   0   1
+0014    RET1     0   2
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:51-62
+0001    KSHORT   1   0
+0002    ISGE     1   0
+0003    JMP      1 => 0011
+0004    UGET     1   0      ; f1
+0005    SUBVN    2   0   0  ; 1
+0006    CALL     1   2   2
+0007    FNEW     2   0      ; ref_lang_upvalue_closure.lua:54
+0008    UCLO     0 => 0009
+0009 => RET1     2   2
+0010    UCLO     1 => 0011
+0011 => UCLO     0 => 0012
+0012 => RET1     0   2
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:64-66
+0001    UGET     1   0      ; f1
+0002    MOV      2   0
+0003    CALL     1   2   2
+0004    CALLT    1   1
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:76-80
+0001    KSHORT   0   0
+0002    KSHORT   1   1
+0003    KSHORT   2 100
+0004    KSHORT   3   1
+0005    FORI     1 => 0009
+0006 => UGET     5   0      ; x
+0007    ADDVV    0   0   5
+0008    FORL     1 => 0006
+0009 => RET1     0   2
+
+-- BYTECODE -- ref_lang_upvalue_closure.lua:0-85
+0001    KNIL     0   1
+0002    KSHORT   2   1
+0003    KSHORT   3  10
+0004    KSHORT   4   1
+0005    FORI     2 => 0014
+0006 => FNEW     6   0      ; ref_lang_upvalue_closure.lua:4
+0007    ISF          0
+0008    JMP      7 => 0011
+0009    MOV      1   6
+0010    JMP      7 => 0012
+0011 => MOV      0   6
+0012 => UCLO     5 => 0013
+0013 => FORL     2 => 0006
+0014 => GGET     2   1      ; "assert"
+0015    MOV      3   0
+0016    CALL     3   2   1
+0017    ISEQN    3   0      ; 1
+0018    JMP      3 => 0021
+0019    KPRI     3   1
+0020    JMP      4 => 0022
+0021 => KPRI     3   2
+0022 => CALL     2   1   2
+0023    GGET     2   1      ; "assert"
+0024    MOV      3   1
+0025    CALL     3   2   1
+0026    ISEQN    3   1      ; 10
+0027    JMP      3 => 0030
+0028    KPRI     3   1
+0029    JMP      4 => 0031
+0030 => KPRI     3   2
+0031 => CALL     2   1   2
+0032    KNIL     0   1
+0033    KSHORT   2   1
+0034 => KSHORT   3  10
+0035    ISGT     2   3
+0036    JMP      3 => 0047
+0037    LOOP     3 => 0047
+0038    MOV      3   2
+0039    FNEW     4   2      ; ref_lang_upvalue_closure.lua:16
+0040    ISF          0
+0041    JMP      5 => 0044
+0042    MOV      1   4
+0043    JMP      5 => 0045
+0044 => MOV      0   4
+0045 => ADDVN    2   2   0  ; 1
+0046    UCLO     3 => 0034
+0047 => GGET     3   1      ; "assert"
+0048    MOV      4   0
+0049    CALL     4   2   1
+0050    ISEQN    4   0      ; 1
+0051    JMP      4 => 0054
+0052    KPRI     4   1
+0053    JMP      5 => 0055
+0054 => KPRI     4   2
+0055 => CALL     3   1   2
+0056    GGET     3   1      ; "assert"
+0057    MOV      4   1
+0058    CALL     4   2   1
+0059    ISEQN    4   1      ; 10
+0060    JMP      4 => 0063
+0061    KPRI     4   1
+0062    JMP      5 => 0064
+0063 => KPRI     4   2
+0064 => CALL     3   1   2
+0065    KNIL     0   1
+0066    KSHORT   2   1
+0067 => LOOP     3 => 0081
+0068    MOV      3   2
+0069    FNEW     4   3      ; ref_lang_upvalue_closure.lua:29
+0070    ISF          0
+0071    JMP      5 => 0074
+0072    MOV      1   4
+0073    JMP      5 => 0075
+0074 => MOV      0   4
+0075 => ADDVN    2   2   0  ; 1
+0076    KSHORT   5  10
+0077    ISGE     5   2
+0078    JMP      5 => 0080
+0079    UCLO     3 => 0081
+0080 => UCLO     3 => 0067
+0081 => GGET     3   1      ; "assert"
+0082    MOV      4   0
+0083    CALL     4   2   1
+0084    ISEQN    4   0      ; 1
+0085    JMP      4 => 0088
+0086    KPRI     4   1
+0087    JMP      5 => 0089
+0088 => KPRI     4   2
+0089 => CALL     3   1   2
+0090    GGET     3   1      ; "assert"
+0091    MOV      4   1
+0092    CALL     4   2   1
+0093    ISEQN    4   1      ; 10
+0094    JMP      4 => 0097
+0095    KPRI     4   1
+0096    JMP      5 => 0098
+0097 => KPRI     4   2
+0098 => CALL     3   1   2
+0099    FNEW     0   4      ; ref_lang_upvalue_closure.lua:38
+0100    KNIL     1   2
+0101    KSHORT   3   1
+0102    KSHORT   4  10
+0103    KSHORT   5   1
+0104    FORI     3 => 0114
+0105 => MOV      7   0
+0106    MOV      8   6
+0107    CALL     7   2   2
+0108    ISF          1
+0109    JMP      8 => 0112
+0110    MOV      2   7
+0111    JMP      8 => 0113
+0112 => MOV      1   7
+0113 => FORL     3 => 0105
+0114 => GGET     3   1      ; "assert"
+0115    MOV      4   1
+0116    CALL     4   2   1
+0117    ISEQN    4   0      ; 1
+0118    JMP      4 => 0121
+0119    KPRI     4   1
+0120    JMP      5 => 0122
+0121 => KPRI     4   2
+0122 => CALL     3   1   2
+0123    GGET     3   1      ; "assert"
+0124    MOV      4   2
+0125    CALL     4   2   1
+0126    ISEQN    4   1      ; 10
+0127    JMP      4 => 0130
+0128    KPRI     4   1
+0129    JMP      5 => 0131
+0130 => KPRI     4   2
+0131 => CALL     3   1   2
+0132    FNEW     0   5      ; ref_lang_upvalue_closure.lua:51
+0133    FNEW     1   6      ; ref_lang_upvalue_closure.lua:64
+0134    KSHORT   2   1
+0135    KSHORT   3  41
+0136    KSHORT   4   1
+0137    FORI     2 => 0153
+0138 => MOV      6   1
+0139    KSHORT   7   4
+0140    CALL     6   2   2
+0141    MOV      7   1
+0142    KSHORT   8   4
+0143    CALL     7   2   2
+0144    ADDVV    6   6   7
+0145    GGET     7   1      ; "assert"
+0146    ISEQN    6   2      ; 20
+0147    JMP      8 => 0150
+0148    KPRI     8   1
+0149    JMP      9 => 0151
+0150 => KPRI     8   2
+0151 => CALL     7   1   2
+0152    FORL     2 => 0138
+0153 => UCLO     0 => 0154
+0154 => KSHORT   0   1
+0155    FNEW     1   7      ; ref_lang_upvalue_closure.lua:76
+0156    GGET     2   1      ; "assert"
+0157    MOV      3   1
+0158    CALL     3   2   1
+0159    ISEQN    3   3      ; 100
+0160    JMP      3 => 0163
+0161    KPRI     3   1
+0162    JMP      4 => 0164
+0163 => KPRI     3   2
+0164 => CALL     2   1   2
+0165    KSHORT   0   2
+0166    GGET     2   1      ; "assert"
+0167    MOV      3   1
+0168    CALL     3   2   1
+0169    ISEQN    3   4      ; 200
+0170    JMP      3 => 0173
+0171    KPRI     3   1
+0172    JMP      4 => 0174
+0173 => KPRI     3   2
+0174 => CALL     2   1   2
+0175    UCLO     0 => 0176
+0176 => RET0     0   1
+
