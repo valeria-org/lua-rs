@@ -78,7 +78,7 @@ fn set_global(vm: &mut Vm, name: &[u8], v: Value) {
 fn pmain(vm: &mut Vm) -> LuaResult<usize> {
     let (Value::Str(src), Value::Str(name)) = (vm.upvalue(1), vm.upvalue(2)) else { unreachable!() };
     let f = vm.load(src.as_bytes(), name.as_bytes(), None)?;
-    vm.push(Value::Func(f));
+    vm.push(f);
     vm.call(0, 0)?;
     Ok(0)
 }

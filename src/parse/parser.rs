@@ -1514,6 +1514,7 @@ impl<'a> Parser<'a> {
 
     fn var_new_lit(&mut self, n: u32, s: &[u8]) -> R<usize> {
         let name = self.ls.vm.new_str(s);
+        self.ls.anchor(Value::Str(name));
         self.var_new(n, VName::Str(name))
     }
 
@@ -1898,7 +1899,9 @@ impl<'a> Parser<'a> {
                 KSlot::CData(cd) => KGc::CData(cd),
                 KSlot::Proto(mut p) => {
                     self.fs_fixup_uv2(&mut p.uv);
-                    KGc::Proto(self.ls.vm.new_proto(p))
+                    let p = self.ls.vm.new_proto(p);
+                    self.ls.anchor(Value::Proto(p));
+                    KGc::Proto(p)
                 }
             });
         }
@@ -2085,6 +2088,7 @@ impl<'a> Parser<'a> {
                     None => {
                         // Create template table on demand.
                         let tt = self.ls.vm.new_table(if needarr { narr } else { 0 }, hsize2hbits(nhash))?;
+                        self.ls.anchor(Value::Table(tt));
                         let kidx = self.const_gc_new(KSlot::Table(tt));
                         *self.insm(pc) = ins_ad(bc!(TDUP), freg - 1, kidx);
                         t = Some(tt);

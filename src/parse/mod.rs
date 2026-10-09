@@ -18,9 +18,9 @@ pub use listing::bclist;
 /// Parse Lua source text into a prototype (`lj_lex_setup` + `lj_parse`). Skips a UTF-8 BOM and a
 /// `#` header line. Syntax errors are `ErrorKind::Syntax` errors carrying upstream's message.
 ///
-/// The input is always treated as source text: callers dispatch bytecode dumps (leading
-/// `\x1b`) to the bytecode reader before calling this (see [`chunk_is_bytecode`]). A dump after
-/// a BOM/`#` header is rejected with "cannot load malformed bytecode", as upstream does.
+/// The input is always treated as source text: chunk loading ([`Vm::load`]) dispatches bytecode
+/// dumps (leading `\x1b`) to the bytecode reader. A dump after a BOM/`#` header is rejected with
+/// "cannot load malformed bytecode", as upstream does.
 pub fn parse(vm: &mut Vm, src: &[u8], chunkname: &[u8]) -> LuaResult<Gc<Proto>> {
     parse_ex(vm, src, chunkname, true)
 }
@@ -31,17 +31,14 @@ pub fn parse(vm: &mut Vm, src: &[u8], chunkname: &[u8]) -> LuaResult<Gc<Proto>> 
 pub fn parse_ex(vm: &mut Vm, src: &[u8], chunkname: &[u8], fr2: bool) -> LuaResult<Gc<Proto>> {
     lex::init_reserved(vm);
     let name = vm.new_str(lex::cstr(chunkname));
-    let mut ls = lex::LexState::new(vm, src, name);
+    let mut ls = lex::LexState::new(vm, lex::Input::from_slice(src), name);
     ls.setup()?;
-    parser::Parser::new(ls, fr2).parse()
+    parse_lex(ls, fr2)
 }
 
-/// The decision of `lj_lex_setup` for `lua_load`: true if `src` is a bytecode dump. A dump after
-/// a UTF-8 BOM or `#` header line is an error ("cannot load malformed bytecode"), raised before
-/// any load-mode check, exactly as upstream.
-pub fn chunk_is_bytecode(vm: &mut Vm, src: &[u8]) -> LuaResult<bool> {
-    let name = vm.empty_str;
-    lex::LexState::new(vm, src, name).setup()
+/// `lj_parse` on a lexer already set up (`lj_lex_setup` found source text).
+pub fn parse_lex(ls: lex::LexState<'_>, fr2: bool) -> LuaResult<Gc<Proto>> {
+    parser::Parser::new(ls, fr2).parse()
 }
 
 /// Loader for the `ffi` library, registered by the FFI implementation.

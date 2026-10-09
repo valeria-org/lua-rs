@@ -3,10 +3,16 @@
 //!
 //! A C API error is raised as an exception of a private class with `_Unwind_RaiseException`.
 //! It is caught by [`pcall_c`], an assembly trampoline whose frame has its own personality
-//! routine: it lands Lua errors as well as foreign exceptions (C++ exceptions escaping a C++
-//! module become the Lua error `C++ exception`, as upstream), and lets Rust panics and forced
+//! routine: it lands Lua errors as well as foreign exceptions, and lets Rust panics and forced
 //! unwinds pass. Since the exception object is not a Rust panic, C++ code may catch it with
 //! `catch (...)` and end the catch normally, as it may with upstream LuaJIT.
+//!
+//! A foreign exception (a C++ exception escaping a C++ module) becomes the Lua error
+//! `C++ exception` while it unwinds Lua frames, but the exception object is kept: if no Lua
+//! catch point (`pcall`, coroutine resume, `lua_pcall`, ...) consumes the error before it
+//! reaches C code again, it is raised again unchanged ([`reraise`]), so C++ code calling
+//! `lua_call` can catch its own exception, like with upstream's `err_unwind` in the DWARF
+//! personality of the VM frames.
 
 use std::ffi::{c_int, c_void};
 
@@ -139,11 +145,33 @@ pub(crate) fn raise(e: LuaError) -> LuaError {
     }
 }
 
+/// A caught foreign exception object, owned (deleted on drop).
+pub(crate) struct Foreign(std::ptr::NonNull<UnwindException>);
+
+impl Foreign {
+    /// Raise the exception again through the C frames. Returns it only if no handler was found.
+    pub(crate) fn reraise(self) -> Foreign {
+        let x = self.0.as_ptr();
+        std::mem::forget(self);
+        // SAFETY: a landed exception object owned by us; ownership passes to the catcher, as
+        // with any raised exception.
+        unsafe { _Unwind_RaiseException(x) };
+        Foreign(std::ptr::NonNull::new(x).expect("exception object"))
+    }
+}
+
+impl Drop for Foreign {
+    fn drop(&mut self) {
+        // SAFETY: a landed exception object owned by us, not referenced elsewhere.
+        unsafe { _Unwind_DeleteException(self.0.as_ptr()) };
+    }
+}
+
 /// What a catch point received.
 pub(crate) enum Caught {
     Lua(LuaError),
-    /// A foreign (non-Lua, non-Rust) exception, already destroyed.
-    Foreign,
+    /// A foreign (non-Lua, non-Rust) exception.
+    Foreign(Foreign),
 }
 
 /// Call `f` behind the trampoline: `Ok` with its result, or the caught exception.
@@ -161,16 +189,15 @@ pub(crate) fn pcall_c<F: FnOnce() -> R, R>(f: F) -> Result<R, Caught> {
     let mut d: Data<F, R> = Data { f: Some(f), r: None };
     // SAFETY: `call` matches `Data<F, R>`; the trampoline returns normally or with an exception.
     let exc = unsafe { ljrs_capi_pcall(call::<F, R>, &mut d as *mut Data<F, R> as *mut c_void) };
-    if exc.is_null() {
+    let Some(exc) = std::ptr::NonNull::new(exc) else {
         return Ok(d.r.take().expect("result"));
-    }
+    };
     // SAFETY: `exc` is the landed exception object, now owned by us.
     unsafe {
-        if (*exc).class == LUA_CLASS {
-            Err(Caught::Lua(Box::from_raw(exc as *mut LuaException).err))
+        if exc.as_ref().class == LUA_CLASS {
+            Err(Caught::Lua(Box::from_raw(exc.as_ptr() as *mut LuaException).err))
         } else {
-            _Unwind_DeleteException(exc);
-            Err(Caught::Foreign)
+            Err(Caught::Foreign(Foreign(exc)))
         }
     }
 }

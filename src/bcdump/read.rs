@@ -1,17 +1,21 @@
 //! Port of lj_bcread.c: load a bytecode dump into a prototype tree.
 //!
-//! The input is the whole dump, as `loadstring` hands it to upstream's reader in one piece.
-//! Upstream reads a prototype blindly — past its end into the following bytes if it is
-//! malformed — and checks the consumed length afterwards; this reader does the same, so errors
-//! raised on the way (`table index is nil`, …) match. Upstream would go on reading undefined
-//! memory past the end of the input; here that is `cannot load malformed bytecode`, except in
-//! the header, where missing bytes read as zero.
+//! The input comes from the chunk [`Input`]: in memory, or piece by piece from a reader that is
+//! asked for more data only when `bcread_want`/`bcread_need` require it, as upstream. A
+//! prototype is read from the buffer once its announced length is available. Upstream reads a
+//! prototype blindly — past its end into the following buffered bytes if it is malformed — and
+//! checks the consumed length afterwards; this reader does the same, so errors raised on the way
+//! (`table index is nil`, …) match. Upstream would go on reading undefined memory past the end
+//! of the buffer; here that is `cannot load malformed bytecode`, except in the header, where
+//! missing bytes read as zero.
 //!
 //! Beyond upstream, every instruction must have a valid opcode (`Ins::op` relies on it) and the
 //! debug info block must decode completely (it is stored decoded in [`Proto`]); otherwise the
 //! dump is rejected as malformed.
 
+use std::borrow::Cow;
 use std::cell::Cell;
+use std::ops::Range;
 
 use super::*;
 use crate::bc::{BC_MAX, Ins, Op};
@@ -20,6 +24,7 @@ use crate::error::{ErrorKind, LuaError, LuaResult};
 use crate::func::{KGc, PROTO_VARARG, Proto, VARNAME_END, VARNAME_MAX, VarInfo, VarName};
 use crate::gc::Gc;
 use crate::lstr::{LuaStr, MAX_STR};
+use crate::parse::lex::{self, Input, LJ_MAX_BUF};
 use crate::state::Vm;
 use crate::table::{MAX_ASIZE, MAX_HBITS, TabError, Table, hsize2hbits};
 use crate::value::Value;
@@ -47,15 +52,20 @@ pub fn read(vm: &mut Vm, src: &[u8], chunkname: &[u8]) -> LuaResult<Gc<Proto>> {
 /// (`ls->fr2 = 0`), which only accepts dumps without `BCDUMP_F_FR2` and marks the resulting
 /// non-native (dumpable, not runnable) prototypes with a `NOT` header instruction.
 pub fn read_ex(vm: &mut Vm, src: &[u8], chunkname: &[u8], fr2: bool) -> LuaResult<Gc<Proto>> {
-    let chunkarg = match chunkname.iter().position(|&c| c == 0) {
-        Some(n) => &chunkname[..n],
-        None => chunkname,
-    };
+    let chunkarg = lex::cstr(chunkname);
     if src.first() != Some(&BCDUMP_HEAD1) {
         return Err(error(vm, chunkarg, ERR_BCFMT));
     }
+    let mut input = Input::from_slice(src);
+    input.p = 1;
+    read_input(vm, input, chunkarg, fr2)
+}
+
+/// `lj_bcread`: read a dump from `input`, positioned after the leading `\x1b` (consumed by
+/// `lj_lex_setup`). `chunkarg` and `fr2` as for [`read_ex`].
+pub fn read_input<'a>(vm: &'a mut Vm, input: Input<'a>, chunkarg: &'a [u8], fr2: bool) -> LuaResult<Gc<Proto>> {
     let empty = vm.empty_str;
-    let mut ls = Reader { vm, buf: &src[1..], pos: 0, eof: false, flags: 0, fr2, chunkarg, chunkname: empty };
+    let mut ls = Reader { vm, inp: input, eof: false, flags: 0, fr2, chunkarg: lex::cstr(chunkarg), chunkname: empty };
     ls.read_dump()
 }
 
@@ -66,13 +76,20 @@ pub fn read_ex(vm: &mut Vm, src: &[u8], chunkname: &[u8], fr2: bool) -> LuaResul
 /// number of bytes it occupies.
 pub fn read_proto(vm: &mut Vm, src: &[u8], chunkname: Gc<LuaStr>) -> LuaResult<(Proto, usize)> {
     let name = chunkname.as_bytes();
-    let mut ls =
-        Reader { vm, buf: src, pos: 0, eof: true, flags: BCDUMP_F_STRIP, fr2: true, chunkarg: name, chunkname };
+    let mut ls = Reader {
+        vm,
+        inp: Input::from_slice(src),
+        eof: true,
+        flags: BCDUMP_F_STRIP,
+        fr2: true,
+        chunkarg: name,
+        chunkname,
+    };
     let pt = ls.proto(&mut Vec::new())?;
     if !valid_opcodes(&pt) {
         return Err(ls.bad());
     }
-    Ok((pt, ls.pos))
+    Ok((pt, ls.inp.p))
 }
 
 /// Every instruction has a valid opcode, which `Ins::op` relies on (upstream doesn't check).
@@ -97,9 +114,8 @@ fn error(vm: &mut Vm, chunkarg: &[u8], msg: &str) -> LuaError {
 /// Reader state (the `LexState` fields upstream reuses for bytecode).
 struct Reader<'a> {
     vm: &'a mut Vm,
-    /// Input after the leading `\x1b`.
-    buf: &'a [u8],
-    pos: usize,
+    /// Chunk input: the buffered bytes and the read position (`ls->p`, `ls->pe`).
+    inp: Input<'a>,
     /// Reader returned EOF (`ls->c < 0`): the next refill is an error.
     eof: bool,
     /// Header `BCDUMP_F_*` flags.
@@ -119,47 +135,84 @@ impl<'a> Reader<'a> {
         self.err(ERR_BCBAD)
     }
 
+    /// Keep a GC object alive while the reader may run Lua code (see [`Input::streaming`]).
+    fn anchor(&mut self, v: Value) {
+        if self.inp.streaming() {
+            self.vm.anchor_load(v);
+        }
+    }
+
     #[inline]
     fn remaining(&self) -> usize {
-        self.buf.len().saturating_sub(self.pos)
+        self.inp.buf.len().saturating_sub(self.inp.p)
     }
 
-    /// `bcread_want`: the whole input is already buffered, so a short buffer only records EOF;
-    /// a second refill attempt after EOF is an error (`bcread_fill`).
-    fn want(&mut self, len: usize) -> LuaResult<()> {
-        if self.remaining() < len {
-            if self.eof {
-                return Err(self.bad());
-            }
-            self.eof = true;
+    /// `bcread_fill`: get pieces from the reader until `len` bytes are buffered; the unread
+    /// rest of the buffer is kept. At the end of the input that is an error if `need`, else
+    /// it is recorded and only a further refill is an error.
+    #[cold]
+    fn fill(&mut self, len: usize, need: bool) -> LuaResult<()> {
+        if len > LJ_MAX_BUF || self.eof {
+            return Err(self.bad());
         }
-        Ok(())
+        loop {
+            let n = self.remaining();
+            let Some(piece) = self.inp.read_piece(self.vm)? else {
+                if need {
+                    return Err(self.bad());
+                }
+                self.eof = true;
+                return Ok(());
+            };
+            if piece.len() >= LJ_MAX_BUF - n {
+                return Err(lex::err_mem(self.vm));
+            }
+            if n > 0 {
+                let mut b = Vec::with_capacity((n + piece.len()).max(len));
+                b.extend_from_slice(&self.inp.buf[self.inp.p..]);
+                b.extend_from_slice(&piece);
+                self.inp.buf = Cow::Owned(b);
+            } else {
+                self.inp.buf = Cow::Owned(piece);
+            }
+            self.inp.p = 0;
+            if self.remaining() >= len {
+                return Ok(());
+            }
+        }
     }
 
-    /// `bcread_need`: the input must hold `len` more bytes.
+    /// `bcread_want`: try to buffer `len` bytes; fewer are left only at the end of the input.
+    #[inline]
+    fn want(&mut self, len: usize) -> LuaResult<()> {
+        if self.remaining() < len { self.fill(len, false) } else { Ok(()) }
+    }
+
+    /// `bcread_need`: buffer `len` bytes.
+    #[inline]
     fn need(&mut self, len: usize) -> LuaResult<()> {
-        if self.remaining() < len { Err(self.bad()) } else { Ok(()) }
+        if self.remaining() < len { self.fill(len, true) } else { Ok(()) }
     }
 
-    /// `bcread_mem`.
-    fn mem(&mut self, len: usize) -> LuaResult<&'a [u8]> {
+    /// `bcread_mem`: the buffer range of the next `len` bytes.
+    fn mem(&mut self, len: usize) -> LuaResult<Range<usize>> {
+        if len == 0 {
+            return Ok(0..0);
+        }
         if self.remaining() < len {
             return Err(self.bad());
         }
-        if len == 0 {
-            return Ok(&[]);
-        }
-        let p = self.pos;
-        self.pos += len;
-        Ok(&self.buf[p..p + len])
+        let p = self.inp.p;
+        self.inp.p += len;
+        Ok(p..p + len)
     }
 
     /// `bcread_byte`.
     #[inline]
     fn byte(&mut self) -> LuaResult<u8> {
-        match self.buf.get(self.pos) {
+        match self.inp.buf.get(self.inp.p) {
             Some(&b) => {
-                self.pos += 1;
+                self.inp.p += 1;
                 Ok(b)
             }
             None => Err(self.bad()),
@@ -207,8 +260,8 @@ impl<'a> Reader<'a> {
     /// version or flags field fails the compatibility check, a missing name length gives an
     /// empty name and the next read reports a malformed dump.
     fn hbyte(&mut self) -> u8 {
-        let b = self.buf.get(self.pos).copied().unwrap_or(0);
-        self.pos += 1;
+        let b = self.inp.buf.get(self.inp.p).copied().unwrap_or(0);
+        self.inp.p += 1;
         b
     }
 
@@ -252,9 +305,11 @@ impl<'a> Reader<'a> {
             self.chunkname = self.vm.new_str(name);
         } else {
             let len = self.huleb128() as usize;
-            let name = self.mem(len)?; // bcread_need + bcread_mem.
-            self.chunkname = self.vm.new_str(name);
+            self.need(len)?;
+            let r = self.mem(len)?;
+            self.chunkname = self.vm.new_str(&self.inp.buf[r]);
         }
+        self.anchor(Value::Str(self.chunkname));
         Ok(true)
     }
 
@@ -266,8 +321,8 @@ impl<'a> Reader<'a> {
         let mut stack: Vec<Gc<Proto>> = Vec::new();
         loop {
             // Shortcut EOF.
-            if self.buf.get(self.pos) == Some(&0) {
-                self.pos += 1;
+            if self.inp.buf.get(self.inp.p) == Some(&0) {
+                self.inp.p += 1;
                 break;
             }
             self.want(5)?;
@@ -276,14 +331,16 @@ impl<'a> Reader<'a> {
                 break;
             }
             self.need(len)?;
-            let start = self.pos;
+            let start = self.inp.p;
             let pt = self.proto(&mut stack)?;
-            if self.pos != start + len || !valid_opcodes(&pt) {
+            if self.inp.p != start + len || !valid_opcodes(&pt) {
                 return Err(self.bad());
             }
-            stack.push(self.vm.new_proto(pt));
+            let pt = self.vm.new_proto(pt);
+            self.anchor(Value::Proto(pt));
+            stack.push(pt);
         }
-        if self.pos != self.buf.len() || stack.len() != 1 {
+        if self.inp.p != self.inp.buf.len() || stack.len() != 1 {
             return Err(self.bad());
         }
         Ok(stack[0])
@@ -323,7 +380,8 @@ impl<'a> Reader<'a> {
             Op::FUNCF
         };
         let swap = self.swap();
-        let raw = self.mem((sizebc - 1) * 4)?;
+        let r = self.mem((sizebc - 1) * 4)?;
+        let raw = &self.inp.buf[r];
         let mut bc = Vec::with_capacity(sizebc);
         bc.push(Ins::ad(op, framesize as u32, 0));
         bc.extend(raw.as_chunks::<4>().0.iter().map(|&w| {
@@ -332,7 +390,8 @@ impl<'a> Reader<'a> {
         }));
 
         // Upvalue refs.
-        let raw = self.mem(sizeuv * 2)?;
+        let r = self.mem(sizeuv * 2)?;
+        let raw = &self.inp.buf[r];
         let uv: Box<[u16]> = raw
             .as_chunks::<2>()
             .0
@@ -411,15 +470,15 @@ impl<'a> Reader<'a> {
         if len as usize >= MAX_STR {
             return Err(self.vm.msg_error(ERR_STROV));
         }
-        let s = self.mem(len as usize)?;
-        Ok(self.vm.new_str(s))
+        let r = self.mem(len as usize)?;
+        Ok(self.vm.new_str(&self.inp.buf[r]))
     }
 
     /// `bcread_knum`.
     fn knum(&mut self, sizekn: usize) -> LuaResult<Box<[f64]>> {
         let mut knum = Vec::with_capacity(sizekn.min(self.remaining()));
         for _ in 0..sizekn {
-            let isnum = self.buf.get(self.pos).is_some_and(|&b| b & 1 != 0);
+            let isnum = self.inp.buf.get(self.inp.p).is_some_and(|&b| b & 1 != 0);
             let lo = self.uleb128_33()?;
             knum.push(if isnum {
                 let hi = self.uleb128()?;
@@ -501,13 +560,15 @@ impl<'a> Reader<'a> {
         firstline: u32,
         numline: u32,
     ) -> LuaResult<DebugInfo> {
-        let block = self.mem(sizedbg)?;
+        let swap = self.swap();
+        let r = self.mem(sizedbg)?;
+        // Errors are built from the fields, as `block` borrows the buffer.
+        let block = &self.inp.buf[r];
         let shift = lineinfo_shift(numline);
         let sizeli = (sizebc - 1) << shift;
         if sizeli > block.len() {
-            return Err(self.bad());
+            return Err(error(self.vm, self.chunkarg, ERR_BCBAD));
         }
-        let swap = self.swap();
         let mut lineinfo = Vec::with_capacity(sizebc);
         lineinfo.push(firstline); // Line of the FUNCF/FUNCV header.
         let li = &block[..sizeli];
@@ -528,7 +589,7 @@ impl<'a> Reader<'a> {
         let mut uvnames = Vec::with_capacity(sizeuv);
         for _ in 0..sizeuv {
             let Some(name) = cstr(block, &mut p) else {
-                return Err(self.bad());
+                return Err(error(self.vm, self.chunkarg, ERR_BCBAD));
             };
             uvnames.push(self.vm.new_str(name));
         }
@@ -538,7 +599,7 @@ impl<'a> Reader<'a> {
         let mut lastpc = 0u32;
         loop {
             let Some(&vn) = block.get(p) else {
-                return Err(self.bad());
+                return Err(error(self.vm, self.chunkarg, ERR_BCBAD));
             };
             let name = if vn < VARNAME_MAX {
                 p += 1;
@@ -548,19 +609,19 @@ impl<'a> Reader<'a> {
                 VarName::Internal(vn)
             } else {
                 let Some(name) = cstr(block, &mut p) else {
-                    return Err(self.bad());
+                    return Err(error(self.vm, self.chunkarg, ERR_BCBAD));
                 };
                 VarName::Str(self.vm.new_str(name))
             };
             let (Some(d1), Some(d2)) = (block_uleb128(block, &mut p), block_uleb128(block, &mut p)) else {
-                return Err(self.bad());
+                return Err(error(self.vm, self.chunkarg, ERR_BCBAD));
             };
             let startpc = lastpc.wrapping_add(d1);
             lastpc = startpc;
             varinfo.push(VarInfo { name, startpc, endpc: startpc.wrapping_add(d2) });
         }
         if p != block.len() {
-            return Err(self.bad());
+            return Err(error(self.vm, self.chunkarg, ERR_BCBAD));
         }
         Ok(DebugInfo {
             lineinfo: lineinfo.into_boxed_slice(),

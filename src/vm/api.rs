@@ -378,7 +378,7 @@ impl Vm {
         let ef = errfunc.map_or(ErrFunc::None, |s| ErrFunc::Slot(s as u32));
         let r = self.call_at(th, fslot, nargs, FrameKind::Cp(ef), nres);
         if r.is_err() {
-            self.rt.thrown = None;
+            self.rt_clear_thrown();
             th.set_top(fslot);
         }
         r
@@ -586,9 +586,10 @@ impl Vm {
     }
 
     /// Forget the "handler already applied" mark of a caught error (after a native caught an
-    /// error and turned it into a value).
+    /// error and turned it into a value), deleting the foreign exception it came from, if any.
     pub fn rt_clear_thrown(&mut self) {
         self.rt.thrown = None;
+        self.rt.capi.foreign = None;
     }
 
     // -- GC -------------------------------------------------------------------------------------

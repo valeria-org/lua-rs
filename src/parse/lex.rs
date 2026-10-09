@@ -1,5 +1,7 @@
 //! Port of lj_lex.c / lj_lex.h: lexical analyzer.
 
+use std::borrow::Cow;
+
 use crate::cdata::{CTID_COMPLEX_DOUBLE, CTID_INT64, CTID_UINT64, CData};
 use crate::error::{ErrorKind, LuaError, LuaResult};
 use crate::gc::Gc;
@@ -8,6 +10,62 @@ use crate::state::Vm;
 use crate::text::chars;
 use crate::text::strscan::{self, StrScan};
 use crate::value::Value;
+use crate::vm::ErrMsg;
+
+/// `LJ_MAX_BUF`: a piece of a chunk must be shorter than this.
+pub const LJ_MAX_BUF: usize = 0x7fff_ff00;
+
+/// A chunk reader (`lua_Reader`): returns the next piece of the chunk; `None` or an empty piece
+/// ends it. It may run Lua code.
+pub type ChunkReader<'r> = dyn FnMut(&mut Vm) -> LuaResult<Option<Vec<u8>>> + 'r;
+
+/// Chunk input shared by the lexer and the bytecode reader (`ls->p`, `ls->pe`, `ls->rfunc` of
+/// upstream's `LexState`): the current piece, the read position in it, and the reader that
+/// supplies further pieces on demand.
+pub struct Input<'a> {
+    pub(crate) buf: Cow<'a, [u8]>,
+    pub(crate) p: usize,
+    reader: Option<Box<ChunkReader<'a>>>,
+}
+
+impl<'a> Input<'a> {
+    /// A chunk held in memory: a single piece (the reader of `luaL_loadbuffer`).
+    pub fn from_slice(src: &'a [u8]) -> Input<'a> {
+        Input { buf: Cow::Borrowed(src), p: 0, reader: None }
+    }
+
+    /// A chunk delivered piece by piece by `reader` (`lua_load`).
+    pub fn from_reader(reader: Box<ChunkReader<'a>>) -> Input<'a> {
+        Input { buf: Cow::Borrowed(&[]), p: 0, reader: Some(reader) }
+    }
+
+    /// True if more input comes from a reader, which may run Lua code (and so the collector):
+    /// GC objects created while loading must then be anchored ([`Vm::anchor_load`]).
+    pub fn streaming(&self) -> bool {
+        self.reader.is_some()
+    }
+
+    /// Call the reader for the next piece (`None` at the end of the chunk). A piece of
+    /// `LJ_MAX_BUF` bytes or more is an out-of-memory error, as in `lex_more`.
+    pub(crate) fn read_piece(&mut self, vm: &mut Vm) -> LuaResult<Option<Vec<u8>>> {
+        let Some(r) = self.reader.as_mut() else { return Ok(None) };
+        match r(vm)? {
+            Some(piece) if !piece.is_empty() => {
+                if piece.len() >= LJ_MAX_BUF {
+                    return Err(err_mem(vm));
+                }
+                Ok(Some(piece))
+            }
+            _ => Ok(None),
+        }
+    }
+}
+
+/// `lj_err_mem`.
+pub(crate) fn err_mem(vm: &mut Vm) -> LuaError {
+    let v = vm.err_str(ErrMsg::ERRMEM);
+    LuaError::new(ErrorKind::Mem, v)
+}
 
 /// Lexical character: a byte, or `LEX_EOF`.
 pub type LexChar = i32;
@@ -174,8 +232,10 @@ fn isspace(c: LexChar) -> bool {
 /// Lexer state (`LexState`, lexer part).
 pub struct LexState<'a> {
     pub vm: &'a mut Vm,
-    src: &'a [u8],
-    p: usize,
+    pub input: Input<'a>,
+    /// Error raised by the reader. Upstream throws it right away; here the input ends and the
+    /// error is reported by the token request that read past the piece.
+    rerr: Option<LuaError>,
     /// Current character.
     pub c: LexChar,
     /// Current token.
@@ -195,11 +255,11 @@ pub struct LexState<'a> {
 }
 
 impl<'a> LexState<'a> {
-    pub fn new(vm: &'a mut Vm, src: &'a [u8], chunkname: Gc<LuaStr>) -> LexState<'a> {
-        LexState {
+    pub fn new(vm: &'a mut Vm, input: Input<'a>, chunkname: Gc<LuaStr>) -> LexState<'a> {
+        let mut ls = LexState {
             vm,
-            src,
-            p: 0,
+            input,
+            rerr: None,
             c: LEX_EOF,
             tok: 0,
             tokval: TokVal::None,
@@ -209,6 +269,17 @@ impl<'a> LexState<'a> {
             linenumber: 1,
             lastline: 1,
             chunkname,
+        };
+        ls.anchor(Value::Str(chunkname));
+        ls
+    }
+
+    /// Keep a GC object created by the lexer or parser alive while the reader may run Lua code
+    /// (upstream anchors them on the Lua stack or in the constant tables).
+    #[inline]
+    pub fn anchor(&mut self, v: Value) {
+        if self.input.streaming() {
+            self.vm.anchor_load(v);
         }
     }
 
@@ -216,14 +287,45 @@ impl<'a> LexState<'a> {
 
     #[inline]
     fn next(&mut self) -> LexChar {
-        self.c = if self.p < self.src.len() {
-            let b = self.src[self.p];
-            self.p += 1;
+        let inp = &mut self.input;
+        self.c = if inp.p < inp.buf.len() {
+            let b = inp.buf[inp.p];
+            inp.p += 1;
             b as LexChar
         } else {
-            LEX_EOF
+            self.more()
         };
         self.c
+    }
+
+    /// `lex_more`: the current piece is exhausted, ask the reader for the next one.
+    #[cold]
+    fn more(&mut self) -> LexChar {
+        if self.rerr.is_some() {
+            return LEX_EOF;
+        }
+        match self.input.read_piece(self.vm) {
+            Ok(Some(piece)) => {
+                let c = piece[0];
+                self.input.buf = Cow::Owned(piece);
+                self.input.p = 1;
+                c as LexChar
+            }
+            Ok(None) => LEX_EOF,
+            Err(e) => {
+                self.rerr = Some(e);
+                LEX_EOF
+            }
+        }
+    }
+
+    /// A pending reader error takes precedence over the result of reading past it.
+    #[inline]
+    fn checked<T>(&mut self, r: LuaResult<T>) -> LuaResult<T> {
+        match self.rerr.take() {
+            Some(e) => Err(e),
+            None => r,
+        }
     }
 
     #[inline]
@@ -697,15 +799,21 @@ impl<'a> LexState<'a> {
 
     // -- Lexer API --
 
-    /// `lj_lex_setup`: read the first character, skip a UTF-8 BOM and a `#` header line.
-    /// Returns true if the input is a bytecode dump (without header); a dump after a header is
-    /// rejected.
+    /// `lj_lex_setup`: read the first character, skip a UTF-8 BOM (if buffered in the first
+    /// piece) and a `#` header line. Returns true if the input is a bytecode dump (without
+    /// header); a dump after a header is rejected.
     pub fn setup(&mut self) -> LuaResult<bool> {
+        let r = self.setup_inner();
+        self.checked(r)
+    }
+
+    fn setup_inner(&mut self) -> LuaResult<bool> {
         let mut header = false;
         self.next(); // Read-ahead first char.
-        if self.c == 0xef && self.p + 2 <= self.src.len() && self.src[self.p] == 0xbb && self.src[self.p + 1] == 0xbf {
+        let (buf, p) = (&self.input.buf, self.input.p);
+        if self.c == 0xef && p + 2 <= buf.len() && buf[p] == 0xbb && buf[p + 1] == 0xbf {
             // Skip UTF-8 BOM.
-            self.p += 2;
+            self.input.p += 2;
             self.next();
             header = true;
         }
@@ -734,11 +842,23 @@ impl<'a> LexState<'a> {
         Ok(false)
     }
 
+    /// Scan a token; its string or cdata value is anchored (see [`Self::anchor`]).
+    fn scan_anchored(&mut self) -> LuaResult<(LexToken, TokVal)> {
+        let r = self.scan();
+        let (tok, tv) = self.checked(r)?;
+        match tv {
+            TokVal::Str(s) => self.anchor(Value::Str(s)),
+            TokVal::CData(cd) => self.anchor(Value::CData(cd)),
+            _ => {}
+        }
+        Ok((tok, tv))
+    }
+
     /// `lj_lex_next`: advance to the next token.
     pub fn next_token(&mut self) -> LuaResult<()> {
         self.lastline = self.linenumber;
         if self.lookahead == TK_EOF {
-            let (tok, tv) = self.scan()?;
+            let (tok, tv) = self.scan_anchored()?;
             self.tok = tok;
             self.tokval = tv;
         } else {
@@ -752,7 +872,7 @@ impl<'a> LexState<'a> {
     /// `lj_lex_lookahead`: look ahead for the next token.
     pub fn lookahead(&mut self) -> LuaResult<LexToken> {
         debug_assert!(self.lookahead == TK_EOF, "double lookahead");
-        let (tok, tv) = self.scan()?;
+        let (tok, tv) = self.scan_anchored()?;
         self.lookahead = tok;
         self.lookaheadval = tv;
         Ok(tok)

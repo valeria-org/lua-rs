@@ -696,24 +696,8 @@ pub unsafe extern "C-unwind" fn luaL_loadfilex(L: *mut lua_State, filename: *con
         let mode = (!mode.is_null()).then(|| cstr(mode));
         api(L, |vm, _| {
             let r = vm.load_file(name, mode);
-            vm.gc_safe();
-            Ok(load_result(vm, r))
+            Ok(load_status(vm, r))
         })
-    }
-}
-
-/// Push a loaded function or the error object; return the status.
-fn load_result(vm: &mut Vm, r: crate::error::LuaResult<Gc<crate::func::Function>>) -> c_int {
-    match r {
-        Ok(f) => {
-            vm.push(Value::Func(f));
-            0
-        }
-        Err(e) => {
-            vm.rt_clear_thrown();
-            vm.push(e.value);
-            e.status()
-        }
     }
 }
 
@@ -741,8 +725,7 @@ pub unsafe extern "C-unwind" fn luaL_loadbufferx(
         let mode = (!mode.is_null()).then(|| cstr(mode));
         api(L, |vm, _| {
             let r = vm.load(src, name, mode);
-            vm.gc_safe();
-            Ok(load_result(vm, r))
+            Ok(load_status(vm, r))
         })
     }
 }

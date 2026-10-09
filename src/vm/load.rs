@@ -2,104 +2,121 @@
 //! `luaL_loadbufferx`) on top of the parser and the bytecode reader.
 
 use crate::error::{ErrorKind, LuaError, LuaResult};
-use crate::func::Function;
-use crate::gc::Gc;
+use crate::parse::lex::{self, Input, LJ_MAX_BUF};
 use crate::state::Vm;
 use crate::value::Value;
 
 use super::err::ErrMsg;
 
-/// `LJ_MAX_BUF`: maximum size of a chunk read from a reader function.
-const LJ_MAX_BUF: usize = 0x7fff_ff00;
-
 impl Vm {
-    /// `lua_loadx` for an in-memory chunk: compile source text or load a bytecode dump
-    /// (decided by the `\x1b` signature, after an optional BOM/`#` line), check `mode`
-    /// (`"b"`, `"t"`, `"bt"`; `None` = any), and return a closure whose environment is the
-    /// current thread's environment. Errors: `ErrorKind::Syntax` for syntax errors and wrong
-    /// modes (`attempt to load chunk with wrong mode`); bytecode reader errors are runtime
-    /// errors to which an active error handler has been applied, as upstream.
-    pub fn load(&mut self, src: &[u8], chunkname: &[u8], mode: Option<&[u8]>) -> LuaResult<Gc<Function>> {
-        let r = self.load_inner(src, chunkname, mode);
+    /// `lua_loadx` for an in-memory chunk (`luaL_loadbufferx`): compile source text or load a
+    /// bytecode dump (decided by the `\x1b` signature, after an optional BOM/`#` line), check
+    /// `mode` (`"b"`, `"t"`, `"bt"`; `None` = any) and return a closure whose environment is
+    /// the current thread's environment. With `W` in `mode`, non-native (non-GC64) bytecode is
+    /// generated or accepted and the result is the dumpable but not runnable prototype
+    /// (`Value::Proto`). Errors: `ErrorKind::Syntax` for syntax errors and wrong modes
+    /// (`attempt to load chunk with wrong mode`); bytecode reader errors are runtime errors to
+    /// which an active error handler has been applied, as upstream.
+    pub fn load(&mut self, src: &[u8], chunkname: &[u8], mode: Option<&[u8]>) -> LuaResult<Value> {
+        if src.len() >= LJ_MAX_BUF {
+            return Err(lex::err_mem(self));
+        }
+        self.load_input(Input::from_slice(src), chunkname, mode)
+    }
+
+    /// `lua_load` with a reader: [`Vm::load`] of the chunk formed by the pieces `reader`
+    /// returns until it returns `None` or an empty piece. The reader is called only when the
+    /// lexer or the bytecode reader needs more input, as upstream.
+    pub fn load_reader(
+        &mut self,
+        reader: impl FnMut(&mut Vm) -> LuaResult<Option<Vec<u8>>>,
+        chunkname: &[u8],
+        mode: Option<&[u8]>,
+    ) -> LuaResult<Value> {
+        self.load_input(Input::from_reader(Box::new(reader)), chunkname, mode)
+    }
+
+    /// Anchor a GC object created by a load whose reader may run Lua code, until the load ends.
+    pub(crate) fn anchor_load(&mut self, v: Value) {
+        self.rt.load_anchors.push(v);
+    }
+
+    fn load_input(&mut self, input: Input<'_>, chunkname: &[u8], mode: Option<&[u8]>) -> LuaResult<Value> {
+        let mark = self.rt.load_anchors.len();
+        let r = self.cpparser(input, chunkname, mode);
+        self.rt.load_anchors.truncate(mark);
         match r {
-            Err(e) if e.kind == ErrorKind::Run => {
+            // The error handler is inherited (`cframe_errfunc = -1`): runtime errors raised
+            // while loading (by the reader or the bytecode reader) get it applied once.
+            Err(e) if e.kind == ErrorKind::Run && self.rt.thrown.is_none_or(|t| !t.raw_equal(e.value)) => {
                 let th = self.cur_thread;
-                if self.rt.thrown.is_none_or(|t| !t.raw_equal(e.value)) {
-                    let e = self.apply_errfunc(th, e);
-                    return Err(e);
-                }
+                let e = self.apply_errfunc(th, e);
+                self.rt.thrown = Some(e.value);
                 Err(e)
             }
             r => r,
         }
     }
 
-    fn load_inner(&mut self, src: &[u8], chunkname: &[u8], mode: Option<&[u8]>) -> LuaResult<Gc<Function>> {
-        let bc = crate::parse::chunk_is_bytecode(self, src)?;
-        if let Some(mode) = mode {
-            let want = if bc { b'b' } else { b't' };
-            if !crate::parse::lex::cstr(mode).contains(&want) {
-                let v = self.err_str(ErrMsg::XMODE);
-                return Err(LuaError::new(ErrorKind::Syntax, v));
+    /// `cpparser`.
+    fn cpparser(&mut self, input: Input<'_>, chunkname: &[u8], mode: Option<&[u8]>) -> LuaResult<Value> {
+        let chunkarg = lex::cstr(chunkname);
+        lex::init_reserved(self);
+        let name = self.new_str(chunkarg);
+        let (pt, bc, fr2) = {
+            let mut ls = lex::LexState::new(self, input, name);
+            let bc = ls.setup()?;
+            let mut fr2 = true;
+            if let Some(mode) = mode {
+                let mut xmode = true;
+                for &c in lex::cstr(mode) {
+                    if c == if bc { b'b' } else { b't' } {
+                        xmode = false;
+                    }
+                    if c == b'W' {
+                        fr2 = false;
+                    }
+                }
+                if xmode {
+                    let v = ls.vm.err_str(ErrMsg::XMODE);
+                    return Err(LuaError::new(ErrorKind::Syntax, v));
+                }
             }
-        }
-        let pt = if bc { crate::bcdump::read(self, src, chunkname)? } else { crate::parse::parse(self, src, chunkname)? };
-        super::interp::closure_count(&pt);
-        let env = self.cur_thread.env();
-        // `lj_func_newL_empty`: fresh closed upvalues (a main chunk has none).
-        let uvs: Vec<_> = pt
-            .uv
-            .iter()
-            .map(|&v| {
-                let u = self.new_upval_closed(Value::Nil);
-                u.set_immutable(v & crate::func::PROTO_UV_IMMUTABLE != 0);
-                u
-            })
-            .collect();
-        let f = self.new_lua_function(pt, uvs, env);
+            let pt = if bc {
+                crate::bcdump::read_input(ls.vm, ls.input, chunkarg, fr2)?
+            } else {
+                crate::parse::parse_lex(ls, fr2)?
+            };
+            (pt, bc, fr2)
+        };
+        let v = if fr2 {
+            super::interp::closure_count(&pt);
+            let env = self.cur_thread.env();
+            // `lj_func_newL_empty`: fresh closed upvalues (a main chunk has none).
+            let uvs: Vec<_> = pt
+                .uv
+                .iter()
+                .map(|&v| {
+                    let u = self.new_upval_closed(Value::Nil);
+                    u.set_immutable(v & crate::func::PROTO_UV_IMMUTABLE != 0);
+                    u
+                })
+                .collect();
+            Value::Func(self.new_lua_function(pt, uvs, env))
+        } else {
+            // Non-native generation returns a dumpable, but non-runnable prototype.
+            Value::Proto(pt)
+        };
         if !bc {
             // `lj_vmevent_send(L, BC, ...)` of lj_parse.c's fs_finish, delivered once parsing is done.
-            self.vmevent_bc(f);
+            self.vmevent_bc(v);
         }
-        Ok(f)
-    }
-
-    /// `lua_load` with a reader: `reader` is called until it returns `None` or an empty piece;
-    /// the pieces form the chunk.
-    pub fn load_reader(
-        &mut self,
-        mut reader: impl FnMut(&mut Vm) -> LuaResult<Option<Vec<u8>>>,
-        chunkname: &[u8],
-        mode: Option<&[u8]>,
-    ) -> LuaResult<Gc<Function>> {
-        let mut buf = Vec::new();
-        loop {
-            match reader(self) {
-                Ok(Some(p)) if !p.is_empty() => {
-                    if buf.len() + p.len() > LJ_MAX_BUF {
-                        let v = self.err_str(ErrMsg::ERRMEM);
-                        return Err(LuaError::new(ErrorKind::Mem, v));
-                    }
-                    buf.extend_from_slice(&p);
-                }
-                Ok(_) => break,
-                Err(e) => {
-                    if e.kind == ErrorKind::Run && self.rt.thrown.is_none_or(|t| !t.raw_equal(e.value)) {
-                        let th = self.cur_thread;
-                        let e = self.apply_errfunc(th, e);
-                        self.rt.thrown = Some(e.value);
-                        return Err(e);
-                    }
-                    return Err(e);
-                }
-            }
-        }
-        self.load(&buf, chunkname, mode)
+        Ok(v)
     }
 
     /// `luaL_loadfilex`: load a file (`None` = stdin, chunkname `=stdin`). File errors are
     /// `ErrorKind::File` with upstream's `cannot open/read <name>` messages.
-    pub fn load_file(&mut self, filename: Option<&[u8]>, mode: Option<&[u8]>) -> LuaResult<Gc<Function>> {
+    pub fn load_file(&mut self, filename: Option<&[u8]>, mode: Option<&[u8]>) -> LuaResult<Value> {
         use std::io::Read;
         let (data, chunkname) = match filename {
             Some(name) => {

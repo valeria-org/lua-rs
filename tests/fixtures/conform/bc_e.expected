@@ -1,0 +1,12 @@
+#ifdef __cplusplus
+extern "C"
+#endif
+#ifdef _WIN32
+__declspec(dllexport)
+#elif (defined(__ELF__) || defined(__MACH__) || defined(__psp2__)) && !((defined(__sun__) && defined(__svr4__)) || defined(__CELLOS_LV2__))
+__attribute__((visibility("default")))
+#endif
+const unsigned char luaJIT_BC_x[] = {
+27,76,74,2,10,21,2,0,1,0,1,0,3,41,0,1,0,55,0,0,0,75,0,1,0,6,120,0
+};
+--- exit 0

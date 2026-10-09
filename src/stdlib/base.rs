@@ -392,14 +392,14 @@ fn lj_cf_xpcall(vm: &mut Vm) -> LuaResult<usize> {
 
 // -- Loading ------------------------------------------------------------------------------
 
-/// `load_aux`.
-fn load_aux(vm: &mut Vm, r: LuaResult<crate::gc::Gc<crate::func::Function>>, envarg: usize) -> LuaResult<usize> {
+/// `load_aux`. Non-native loads return a prototype, which gets no environment.
+fn load_aux(vm: &mut Vm, r: LuaResult<Value>, envarg: usize) -> LuaResult<usize> {
     match r {
-        Ok(f) => {
-            if let Value::Table(t) = vm.arg(envarg) {
+        Ok(v) => {
+            if let (Value::Table(t), Value::Func(f)) = (vm.arg(envarg), v) {
                 f.set_env(t);
             }
-            vm.ret1(Value::Func(f))
+            vm.ret1(v)
         }
         Err(e) if e.kind == ErrorKind::Yield => Err(e),
         Err(e) => {
@@ -463,7 +463,7 @@ fn lj_cf_dofile(vm: &mut Vm) -> LuaResult<usize> {
     vm.set_top(1);
     match vm.load_file(fname.as_deref(), None) {
         Ok(f) => {
-            vm.push(Value::Func(f));
+            vm.push(f);
             let n = vm.call(0, -1)?;
             Ok(n)
         }

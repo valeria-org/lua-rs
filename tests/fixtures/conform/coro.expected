@@ -1,0 +1,76 @@
+true 2
+pcall result false src/coro.lua:6: errX
+true in xpcall
+xpcall result true Y
+true done
+false cannot resume dead coroutine
+dead
+yielded: index foo
+got index R:index foo
+yielded: newindex bar
+raw bar 5
+yielded: add
+add R:add
+yielded: eq
+eq false
+yielded: lt
+lt false
+yielded: le
+le true
+yielded: concat
+concat R:concat
+yielded: call 42
+call R:call 42
+yielded: unm
+unm R:unm
+len 0
+yielded: index 1
+loop 1 R:index 1
+yielded: index 2
+loop 2 R:index 2
+co2 end
+false src/coro.lua:57: attempt to yield across C-call boundary
+true
+false src/coro.lua:64: attempt to yield across C-call boundary
+true ok
+true 1 2 3
+true b c
+1:1 2:4 3:9 
+body1 body2 body3 it0 it1 it2 end8
+
+false src/coro.lua:85: attempt to index local 'x' (a nil value)
+dead false cannot resume dead coroutine
+false table 1
+false wrapped
+true
+false cannot resume dead coroutine
+nil
+false
+true true running
+outer status normal
+false bad argument #1 to '?' (coroutine expected)
+false attempt to yield across C-call boundary
+leaf12345678910
+true false src/coro.lua:120: bottom | 22
+false src/coro.lua:125: attempt to index local 't' (a nil value)
+abc
+resumed
+stack traceback:
+	[C]: in function 'yield'
+	src/coro.lua:134: in function 'f'
+	src/coro.lua:134: in function <src/coro.lua:134>
+msg
+stack traceback:
+	[C]: in function 'yield'
+	src/coro.lua:134: in function 'f'
+	src/coro.lua:134: in function <src/coro.lua:134>
+msg
+stack traceback:
+	src/coro.lua:134: in function 'f'
+	src/coro.lua:134: in function <src/coro.lua:134>
+top
+stack traceback:
+	src/coro.lua:139: in main chunk	1
+src/coro.lua 134
+nil
+--- exit 0

@@ -206,6 +206,7 @@ fn string_upper(vm: &mut Vm) -> LuaResult<usize> {
 fn string_dump(vm: &mut Vm) -> LuaResult<usize> {
     // lj_lib_checkLproto(L, 1, 1).
     let pt = match vm.arg(1) {
+        Value::Proto(pt) if vm.nargs() >= 1 => Some(pt),
         Value::Func(f) if vm.nargs() >= 1 => f.proto(),
         _ => return Err(vm.argt_error(1, "function")),
     };

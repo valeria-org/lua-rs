@@ -1,0 +1,1038 @@
+-- BYTECODE -- patterns.lua:2-7
+0001    GGET     0   0      ; "table"
+0002    TGETS    0   0   1  ; "pack"
+0003    ISF          0
+0004    JMP      1 => 0011
+0005    GGET     0   0      ; "table"
+0006    TGETS    0   0   1  ; "pack"
+0007    VARG     2   0   0
+0008    CALLM    0   2   0
+0009    IST          0
+0010    JMP      1 => 0019
+0011 => TDUP     0   4
+0012    GGET     1   2      ; "select"
+0013    KSTR     3   3      ; "#"
+0014    VARG     4   0   0
+0015    CALLM    1   2   1
+0016    TSETS    1   0   5  ; "n"
+0017    VARG     1   0   0
+0018    TSETM    1   0      ; 1
+0019 => TNEW     1   0
+0020    KSHORT   2   1
+0021    TGETS    3   0   5  ; "n"
+0022    KSHORT   4   1
+0023    FORI     2 => 0029
+0024 => GGET     6   6      ; "tostring"
+0025    TGETV    8   0   5
+0026    CALL     6   2   2
+0027    TSETV    6   1   5
+0028    FORL     2 => 0024
+0029 => GGET     2   7      ; "print"
+0030    GGET     4   0      ; "table"
+0031    TGETS    4   4   8  ; "concat"
+0032    MOV      6   1
+0033    KSTR     7   9      ; " | "
+0034    CALL     4   0   3
+0035    CALLM    2   1   0
+0036    RET0     0   1
+
+-- BYTECODE -- patterns.lua:8-8
+0001    UGET     1   0      ; p
+0002    GGET     3   0      ; "pcall"
+0003    MOV      5   0
+0004    VARG     6   0   1
+0005    CALLM    3   0   1
+0006    CALLM    1   1   0
+0007    RET0     0   1
+
+-- BYTECODE -- patterns.lua:77-77
+0001    ISNES    0   0      ; "b"
+0002    JMP      1 => 0005
+0003    KPRI     1   0
+0004    RET1     1   2
+0005 => MOV      3   0
+0006    TGETS    1   0   1  ; "upper"
+0007    CALLT    1   2
+
+-- BYTECODE -- patterns.lua:0-120
+0001    FNEW     0   0      ; patterns.lua:2
+0002    FNEW     1   1      ; patterns.lua:8
+0003    MOV      2   0
+0004    GGET     4   2      ; "string"
+0005    TGETS    4   4   3  ; "find"
+0006    KSTR     6   4      ; "hello world"
+0007    KSTR     7   5      ; "o w"
+0008    CALL     4   0   3
+0009    CALLM    2   1   0
+0010    MOV      2   0
+0011    GGET     4   2      ; "string"
+0012    TGETS    4   4   3  ; "find"
+0013    KSTR     6   6      ; "hello"
+0014    KSTR     7   7      ; "l+"
+0015    CALL     4   0   3
+0016    CALLM    2   1   0
+0017    MOV      2   0
+0018    GGET     4   2      ; "string"
+0019    TGETS    4   4   3  ; "find"
+0020    KSTR     6   6      ; "hello"
+0021    KSTR     7   8      ; ""
+0022    KSHORT   8  10
+0023    CALL     4   0   4
+0024    CALLM    2   1   0
+0025    MOV      2   0
+0026    GGET     4   2      ; "string"
+0027    TGETS    4   4   3  ; "find"
+0028    KSTR     6   6      ; "hello"
+0029    KSTR     7   8      ; ""
+0030    KSHORT   8   6
+0031    CALL     4   0   4
+0032    CALLM    2   1   0
+0033    MOV      2   0
+0034    GGET     4   2      ; "string"
+0035    TGETS    4   4   3  ; "find"
+0036    KSTR     6   6      ; "hello"
+0037    KSTR     7   8      ; ""
+0038    KSHORT   8   5
+0039    CALL     4   0   4
+0040    CALLM    2   1   0
+0041    MOV      2   0
+0042    GGET     4   2      ; "string"
+0043    TGETS    4   4   3  ; "find"
+0044    KSTR     6   6      ; "hello"
+0045    KSTR     7   8      ; ""
+0046    KSHORT   8 -10
+0047    CALL     4   0   4
+0048    CALLM    2   1   0
+0049    MOV      2   0
+0050    GGET     4   2      ; "string"
+0051    TGETS    4   4   3  ; "find"
+0052    KSTR     6   6      ; "hello"
+0053    KSTR     7   9      ; "l"
+0054    KSHORT   8  -2
+0055    CALL     4   0   4
+0056    CALLM    2   1   0
+0057    MOV      2   0
+0058    GGET     4   2      ; "string"
+0059    TGETS    4   4   3  ; "find"
+0060    KSTR     6  10      ; "a.b"
+0061    KSTR     7  11      ; "."
+0062    KSHORT   8   1
+0063    KPRI     9   2
+0064    CALL     4   0   5
+0065    CALLM    2   1   0
+0066    MOV      2   0
+0067    GGET     4   2      ; "string"
+0068    TGETS    4   4   3  ; "find"
+0069    KSTR     6  12      ; "a+b"
+0070    KSTR     7  13      ; "+"
+0071    KSHORT   8   1
+0072    KPRI     9   2
+0073    CALL     4   0   5
+0074    CALLM    2   1   0
+0075    MOV      2   0
+0076    GGET     4   2      ; "string"
+0077    TGETS    4   4   3  ; "find"
+0078    KSTR     6   8      ; ""
+0079    KSTR     7   8      ; ""
+0080    CALL     4   0   3
+0081    CALLM    2   1   0
+0082    MOV      2   0
+0083    GGET     4   2      ; "string"
+0084    TGETS    4   4   3  ; "find"
+0085    KSTR     6  14      ; "abc"
+0086    KSTR     7  15      ; "^"
+0087    CALL     4   0   3
+0088    CALLM    2   1   0
+0089    MOV      2   0
+0090    GGET     4   2      ; "string"
+0091    TGETS    4   4   3  ; "find"
+0092    KSTR     6  14      ; "abc"
+0093    KSTR     7  16      ; "$"
+0094    CALL     4   0   3
+0095    CALLM    2   1   0
+0096    MOV      2   0
+0097    GGET     4   2      ; "string"
+0098    TGETS    4   4   3  ; "find"
+0099    KSTR     6  14      ; "abc"
+0100    KSTR     7  17      ; "^$"
+0101    CALL     4   0   3
+0102    CALLM    2   1   0
+0103    MOV      2   0
+0104    GGET     4   2      ; "string"
+0105    TGETS    4   4   3  ; "find"
+0106    KSTR     6  18      ; "a$c"
+0107    KSTR     7  19      ; "$c"
+0108    CALL     4   0   3
+0109    CALLM    2   1   0
+0110    MOV      2   0
+0111    GGET     4   2      ; "string"
+0112    TGETS    4   4   3  ; "find"
+0113    KSTR     6  20      ; "a^c"
+0114    KSTR     7  21      ; "a^"
+0115    CALL     4   0   3
+0116    CALLM    2   1   0
+0117    MOV      2   0
+0118    GGET     4   2      ; "string"
+0119    TGETS    4   4   3  ; "find"
+0120    KSTR     6  14      ; "abc"
+0121    KSTR     7  22      ; "b"
+0122    KSHORT   8   0
+0123    CALL     4   0   4
+0124    CALLM    2   1   0
+0125    MOV      2   0
+0126    GGET     4   2      ; "string"
+0127    TGETS    4   4   3  ; "find"
+0128    KSTR     6  14      ; "abc"
+0129    KSTR     7  22      ; "b"
+0130    KNUM     8   0      ; 1.9
+0131    CALL     4   0   4
+0132    CALLM    2   1   0
+0133    MOV      2   0
+0134    GGET     4   2      ; "string"
+0135    TGETS    4   4  23  ; "match"
+0136    KSTR     6  24      ; "key = value"
+0137    KSTR     7  25      ; "(%w+)%s*=%s*(%w+)"
+0138    CALL     4   0   3
+0139    CALLM    2   1   0
+0140    MOV      2   0
+0141    GGET     4   2      ; "string"
+0142    TGETS    4   4  23  ; "match"
+0143    KSTR     6   6      ; "hello"
+0144    KSTR     7  26      ; "()ll()"
+0145    CALL     4   0   3
+0146    CALLM    2   1   0
+0147    MOV      2   0
+0148    GGET     4   2      ; "string"
+0149    TGETS    4   4  23  ; "match"
+0150    KSTR     6   6      ; "hello"
+0151    KSTR     7  27      ; "(h)(e)(l)(l)(o)"
+0152    CALL     4   0   3
+0153    CALLM    2   1   0
+0154    MOV      2   0
+0155    GGET     4   2      ; "string"
+0156    TGETS    4   4  23  ; "match"
+0157    KSTR     6  28      ; "  trim  "
+0158    KSTR     7  29      ; "^%s*(.-)%s*$"
+0159    CALL     4   0   3
+0160    CALLM    2   1   0
+0161    MOV      2   0
+0162    GGET     4   2      ; "string"
+0163    TGETS    4   4  23  ; "match"
+0164    KSTR     6  30      ; "THE (quick) fox"
+0165    KSTR     7  31      ; "%((%a+)%)"
+0166    CALL     4   0   3
+0167    CALLM    2   1   0
+0168    MOV      2   0
+0169    GGET     4   2      ; "string"
+0170    TGETS    4   4  23  ; "match"
+0171    KSTR     6  32      ; "f(a(b)c)d"
+0172    KSTR     7  33      ; "%b()"
+0173    CALL     4   0   3
+0174    CALLM    2   1   0
+0175    MOV      2   0
+0176    GGET     4   2      ; "string"
+0177    TGETS    4   4  23  ; "match"
+0178    KSTR     6  34      ; "[[x]]"
+0179    KSTR     7  35      ; "%b[]"
+0180    CALL     4   0   3
+0181    CALLM    2   1   0
+0182    MOV      2   0
+0183    GGET     4   2      ; "string"
+0184    TGETS    4   4  23  ; "match"
+0185    KSTR     6  14      ; "abc"
+0186    KSTR     7  36      ; "%bxy"
+0187    CALL     4   0   3
+0188    CALLM    2   1   0
+0189    MOV      2   0
+0190    GGET     4   2      ; "string"
+0191    TGETS    4   4  23  ; "match"
+0192    KSTR     6  30      ; "THE (quick) fox"
+0193    KSTR     7  37      ; "%f[%a]%a+"
+0194    CALL     4   0   3
+0195    CALLM    2   1   0
+0196    MOV      2   0
+0197    GGET     4   2      ; "string"
+0198    TGETS    4   4  23  ; "match"
+0199    KSTR     6  30      ; "THE (quick) fox"
+0200    KSTR     7  38      ; "%f[%l]%a+"
+0201    CALL     4   0   3
+0202    CALLM    2   1   0
+0203    MOV      2   0
+0204    GGET     4   2      ; "string"
+0205    TGETS    4   4  39  ; "gsub"
+0206    KSTR     6   4      ; "hello world"
+0207    KSTR     7  40      ; "%f[%w]%w+"
+0208    GGET     8   2      ; "string"
+0209    TGETS    8   8  41  ; "upper"
+0210    CALL     4   0   4
+0211    CALLM    2   1   0
+0212    MOV      2   0
+0213    GGET     4   2      ; "string"
+0214    TGETS    4   4  39  ; "gsub"
+0215    KSTR     6  30      ; "THE (quick) fox"
+0216    KSTR     7  42      ; "%f[%a]"
+0217    KSTR     8  43      ; "|"
+0218    CALL     4   0   4
+0219    CALLM    2   1   0
+0220    MOV      2   0
+0221    GGET     4   2      ; "string"
+0222    TGETS    4   4  39  ; "gsub"
+0223    KSTR     6  14      ; "abc"
+0224    KSTR     7  44      ; "%f[%z]"
+0225    KSTR     8  45      ; "Z"
+0226    CALL     4   0   4
+0227    CALLM    2   1   0
+0228    MOV      2   0
+0229    GGET     4   2      ; "string"
+0230    TGETS    4   4  23  ; "match"
+0231    KSTR     6  46      ; "a\000b"
+0232    KSTR     7  47      ; "%z"
+0233    CALL     4   0   3
+0234    CALLM    2   1   0
+0235    MOV      2   0
+0236    GGET     4   2      ; "string"
+0237    TGETS    4   4   3  ; "find"
+0238    KSTR     6  46      ; "a\000b"
+0239    KSTR     7  48      ; "\000"
+0240    KSHORT   8   1
+0241    KPRI     9   2
+0242    CALL     4   0   5
+0243    CALLM    2   1   0
+0244    MOV      2   0
+0245    GGET     4   2      ; "string"
+0246    TGETS    4   4  23  ; "match"
+0247    KSTR     6  49      ; "a\000b\000c"
+0248    KSTR     7  50      ; "[%z]+"
+0249    CALL     4   0   3
+0250    CALLM    2   1   0
+0251    MOV      2   0
+0252    GGET     4   2      ; "string"
+0253    TGETS    4   4  23  ; "match"
+0254    KSTR     6  51      ; "x = 10"
+0255    KSTR     7  52      ; "%d+"
+0256    CALL     4   2   3
+0257    ADDVN    4   4   1  ; 1
+0258    CALL     2   1   2
+0259    MOV      2   0
+0260    GGET     4   2      ; "string"
+0261    TGETS    4   4  23  ; "match"
+0262    KSTR     6  53      ; "2024-01-15"
+0263    KSTR     7  54      ; "(%d+)-(%d+)-(%d+)"
+0264    CALL     4   0   3
+0265    CALLM    2   1   0
+0266    MOV      2   0
+0267    GGET     4   2      ; "string"
+0268    TGETS    4   4  23  ; "match"
+0269    KSTR     6  14      ; "abc"
+0270    KSTR     7  55      ; "a*"
+0271    CALL     4   0   3
+0272    CALLM    2   1   0
+0273    MOV      2   0
+0274    GGET     4   2      ; "string"
+0275    TGETS    4   4  23  ; "match"
+0276    KSTR     6  56      ; "aaa"
+0277    KSTR     7  57      ; "a-b"
+0278    CALL     4   0   3
+0279    CALLM    2   1   0
+0280    MOV      2   0
+0281    GGET     4   2      ; "string"
+0282    TGETS    4   4  23  ; "match"
+0283    KSTR     6  58      ; "aaab"
+0284    KSTR     7  57      ; "a-b"
+0285    CALL     4   0   3
+0286    CALLM    2   1   0
+0287    MOV      2   0
+0288    GGET     4   2      ; "string"
+0289    TGETS    4   4  23  ; "match"
+0290    KSTR     6  56      ; "aaa"
+0291    KSTR     7  59      ; "^a?a?a?a?$"
+0292    CALL     4   0   3
+0293    CALLM    2   1   0
+0294    MOV      2   0
+0295    GGET     4   2      ; "string"
+0296    TGETS    4   4  23  ; "match"
+0297    KSTR     6  60      ; "test123abc"
+0298    KSTR     7  61      ; "^(%a+)(%d+)(%a+)$"
+0299    CALL     4   0   3
+0300    CALLM    2   1   0
+0301    MOV      2   0
+0302    GGET     4   2      ; "string"
+0303    TGETS    4   4  23  ; "match"
+0304    KSTR     6  62      ; "[]"
+0305    KSTR     7  63      ; "[]]"
+0306    CALL     4   0   3
+0307    CALLM    2   1   0
+0308    MOV      2   0
+0309    GGET     4   2      ; "string"
+0310    TGETS    4   4  23  ; "match"
+0311    KSTR     6  64      ; "a-z"
+0312    KSTR     7  65      ; "[a%-z]+"
+0313    CALL     4   0   3
+0314    CALLM    2   1   0
+0315    MOV      2   0
+0316    GGET     4   2      ; "string"
+0317    TGETS    4   4  23  ; "match"
+0318    KSTR     6  66      ; "^x"
+0319    KSTR     7  67      ; "[%^x]+"
+0320    CALL     4   0   3
+0321    CALLM    2   1   0
+0322    MOV      2   0
+0323    GGET     4   2      ; "string"
+0324    TGETS    4   4  23  ; "match"
+0325    KSTR     6  68      ; "abc]"
+0326    KSTR     7  69      ; "[^]]+"
+0327    CALL     4   0   3
+0328    CALLM    2   1   0
+0329    MOV      2   0
+0330    GGET     4   2      ; "string"
+0331    TGETS    4   4  23  ; "match"
+0332    KSTR     6   6      ; "hello"
+0333    KSTR     7  70      ; "[^%s]+"
+0334    CALL     4   0   3
+0335    CALLM    2   1   0
+0336    MOV      2   0
+0337    GGET     4   2      ; "string"
+0338    TGETS    4   4  23  ; "match"
+0339    KSTR     6  71      ; "\n\t "
+0340    KSTR     7  72      ; "%s+"
+0341    CALL     4   2   3
+0342    MOV      6   4
+0343    TGETS    4   4  73  ; "len"
+0344    CALL     4   0   2
+0345    CALLM    2   1   0
+0346    MOV      2   0
+0347    GGET     4   2      ; "string"
+0348    TGETS    4   4  23  ; "match"
+0349    KSTR     6  74      ; "a.b-c"
+0350    KSTR     7  75      ; "[%.%-]"
+0351    CALL     4   0   3
+0352    CALLM    2   1   0
+0353    MOV      2   0
+0354    GGET     4   2      ; "string"
+0355    TGETS    4   4  23  ; "match"
+0356    KSTR     6  76      ; "UPPER lower"
+0357    KSTR     7  77      ; "%u+ %l+"
+0358    CALL     4   0   3
+0359    CALLM    2   1   0
+0360    MOV      2   0
+0361    GGET     4   2      ; "string"
+0362    TGETS    4   4  23  ; "match"
+0363    KSTR     6  78      ; "123abc!@#"
+0364    KSTR     7  79      ; "%p+"
+0365    CALL     4   0   3
+0366    CALLM    2   1   0
+0367    MOV      2   0
+0368    GGET     4   2      ; "string"
+0369    TGETS    4   4  23  ; "match"
+0370    KSTR     6  80      ; "\001\002abc"
+0371    KSTR     7  81      ; "%c+"
+0372    CALL     4   2   3
+0373    MOV      6   4
+0374    TGETS    4   4  82  ; "byte"
+0375    KSHORT   7   1
+0376    KSHORT   8  -1
+0377    CALL     4   0   4
+0378    CALLM    2   1   0
+0379    MOV      2   0
+0380    GGET     4   2      ; "string"
+0381    TGETS    4   4  23  ; "match"
+0382    KSTR     6  83      ; "0x?F"
+0383    KSTR     7  84      ; "%x+"
+0384    KSHORT   8   3
+0385    CALL     4   0   4
+0386    CALLM    2   1   0
+0387    MOV      2   0
+0388    GGET     4   2      ; "string"
+0389    TGETS    4   4  23  ; "match"
+0390    KSTR     6   6      ; "hello"
+0391    KSTR     7  85      ; ".-(l+)(.*)"
+0392    CALL     4   0   3
+0393    CALLM    2   1   0
+0394    MOV      2   0
+0395    GGET     4   2      ; "string"
+0396    TGETS    4   4  23  ; "match"
+0397    KSTR     6   6      ; "hello"
+0398    KSTR     7  86      ; "(.)%1"
+0399    CALL     4   0   3
+0400    CALLM    2   1   0
+0401    MOV      2   0
+0402    GGET     4   2      ; "string"
+0403    TGETS    4   4  23  ; "match"
+0404    KSTR     6  87      ; "abba"
+0405    KSTR     7  88      ; "(a)(b)%2%1"
+0406    CALL     4   0   3
+0407    CALLM    2   1   0
+0408    MOV      2   0
+0409    GGET     4   2      ; "string"
+0410    TGETS    4   4  39  ; "gsub"
+0411    KSTR     6   4      ; "hello world"
+0412    KSTR     7  89      ; "o"
+0413    KSTR     8  90      ; "0"
+0414    CALL     4   0   4
+0415    CALLM    2   1   0
+0416    MOV      2   0
+0417    GGET     4   2      ; "string"
+0418    TGETS    4   4  39  ; "gsub"
+0419    KSTR     6   4      ; "hello world"
+0420    KSTR     7  89      ; "o"
+0421    KSTR     8  90      ; "0"
+0422    KSHORT   9   1
+0423    CALL     4   0   5
+0424    CALLM    2   1   0
+0425    MOV      2   0
+0426    GGET     4   2      ; "string"
+0427    TGETS    4   4  39  ; "gsub"
+0428    KSTR     6   4      ; "hello world"
+0429    KSTR     7  89      ; "o"
+0430    KSTR     8  90      ; "0"
+0431    KSHORT   9   0
+0432    CALL     4   0   5
+0433    CALLM    2   1   0
+0434    MOV      2   0
+0435    GGET     4   2      ; "string"
+0436    TGETS    4   4  39  ; "gsub"
+0437    KSTR     6   4      ; "hello world"
+0438    KSTR     7  89      ; "o"
+0439    KSTR     8  90      ; "0"
+0440    KSHORT   9  -1
+0441    CALL     4   0   5
+0442    CALLM    2   1   0
+0443    MOV      2   0
+0444    GGET     4   2      ; "string"
+0445    TGETS    4   4  39  ; "gsub"
+0446    KSTR     6   6      ; "hello"
+0447    KSTR     7   8      ; ""
+0448    KSTR     8  91      ; "-"
+0449    CALL     4   0   4
+0450    CALLM    2   1   0
+0451    MOV      2   0
+0452    GGET     4   2      ; "string"
+0453    TGETS    4   4  39  ; "gsub"
+0454    KSTR     6   6      ; "hello"
+0455    KSTR     7  92      ; ".-"
+0456    KSTR     8  91      ; "-"
+0457    CALL     4   0   4
+0458    CALLM    2   1   0
+0459    MOV      2   0
+0460    GGET     4   2      ; "string"
+0461    TGETS    4   4  39  ; "gsub"
+0462    KSTR     6   6      ; "hello"
+0463    KSTR     7  93      ; "l*"
+0464    KSTR     8  94      ; "X"
+0465    CALL     4   0   4
+0466    CALLM    2   1   0
+0467    MOV      2   0
+0468    GGET     4   2      ; "string"
+0469    TGETS    4   4  39  ; "gsub"
+0470    KSTR     6  14      ; "abc"
+0471    KSTR     7  95      ; "%w"
+0472    KSTR     8  96      ; "%0%0"
+0473    CALL     4   0   4
+0474    CALLM    2   1   0
+0475    MOV      2   0
+0476    GGET     4   2      ; "string"
+0477    TGETS    4   4  39  ; "gsub"
+0478    KSTR     6  14      ; "abc"
+0479    KSTR     7  97      ; "(%w)"
+0480    KSTR     8  98      ; "%1-"
+0481    CALL     4   0   4
+0482    CALLM    2   1   0
+0483    MOV      2   0
+0484    GGET     4   2      ; "string"
+0485    TGETS    4   4  39  ; "gsub"
+0486    KSTR     6  14      ; "abc"
+0487    KSTR     7  95      ; "%w"
+0488    KSTR     8  99      ; "%%"
+0489    CALL     4   0   4
+0490    CALLM    2   1   0
+0491    MOV      2   0
+0492    GGET     4   2      ; "string"
+0493    TGETS    4   4  39  ; "gsub"
+0494    KSTR     6  14      ; "abc"
+0495    KSTR     7  22      ; "b"
+0496    TDUP     8 100
+0497    CALL     4   0   4
+0498    CALLM    2   1   0
+0499    MOV      2   0
+0500    GGET     4   2      ; "string"
+0501    TGETS    4   4  39  ; "gsub"
+0502    KSTR     6  14      ; "abc"
+0503    KSTR     7  22      ; "b"
+0504    TDUP     8 101
+0505    CALL     4   0   4
+0506    CALLM    2   1   0
+0507    MOV      2   0
+0508    GGET     4   2      ; "string"
+0509    TGETS    4   4  39  ; "gsub"
+0510    KSTR     6  14      ; "abc"
+0511    KSTR     7 102      ; "(b)(c)"
+0512    TDUP     8 103
+0513    CALL     4   0   4
+0514    CALLM    2   1   0
+0515    MOV      2   0
+0516    GGET     4   2      ; "string"
+0517    TGETS    4   4  39  ; "gsub"
+0518    KSTR     6  14      ; "abc"
+0519    KSTR     7  95      ; "%w"
+0520    FNEW     8 104      ; patterns.lua:77
+0521    CALL     4   0   4
+0522    CALLM    2   1   0
+0523    MOV      2   0
+0524    GGET     4   2      ; "string"
+0525    TGETS    4   4  39  ; "gsub"
+0526    KSTR     6  14      ; "abc"
+0527    KSTR     7 105      ; "()"
+0528    KSTR     8 106      ; "%1"
+0529    CALL     4   0   4
+0530    CALLM    2   1   0
+0531    MOV      2   0
+0532    GGET     4   2      ; "string"
+0533    TGETS    4   4  39  ; "gsub"
+0534    KSTR     6  14      ; "abc"
+0535    KSTR     7 107      ; "^a"
+0536    KSTR     8  94      ; "X"
+0537    CALL     4   0   4
+0538    CALLM    2   1   0
+0539    MOV      2   0
+0540    GGET     4   2      ; "string"
+0541    TGETS    4   4  39  ; "gsub"
+0542    KSTR     6  56      ; "aaa"
+0543    KSTR     7 107      ; "^a"
+0544    KSTR     8  94      ; "X"
+0545    CALL     4   0   4
+0546    CALLM    2   1   0
+0547    MOV      2   0
+0548    GGET     4   2      ; "string"
+0549    TGETS    4   4  39  ; "gsub"
+0550    KSTR     6   4      ; "hello world"
+0551    KSTR     7 108      ; "(o)"
+0552    KSTR     8 109      ; "[%1]"
+0553    CALL     4   0   4
+0554    CALLM    2   1   0
+0555    MOV      2   0
+0556    GGET     4   2      ; "string"
+0557    TGETS    4   4  39  ; "gsub"
+0558    KSTR     6 110      ; "x"
+0559    KSTR     7 110      ; "x"
+0560    KSTR     8 111      ; "%"
+0561    CALL     4   0   4
+0562    CALLM    2   1   0
+0563    MOV      2   1
+0564    GGET     4   2      ; "string"
+0565    TGETS    4   4  39  ; "gsub"
+0566    KSTR     5 110      ; "x"
+0567    KSTR     6 110      ; "x"
+0568    KSTR     7 112      ; "%9"
+0569    CALL     2   1   5
+0570    MOV      2   1
+0571    GGET     4   2      ; "string"
+0572    TGETS    4   4  39  ; "gsub"
+0573    KSTR     5 110      ; "x"
+0574    KSTR     6 113      ; "(x)"
+0575    KSTR     7 114      ; "%2"
+0576    CALL     2   1   5
+0577    MOV      2   1
+0578    GGET     4   2      ; "string"
+0579    TGETS    4   4   3  ; "find"
+0580    KSTR     5 110      ; "x"
+0581    KSTR     6 111      ; "%"
+0582    CALL     2   1   4
+0583    MOV      2   1
+0584    GGET     4   2      ; "string"
+0585    TGETS    4   4   3  ; "find"
+0586    KSTR     5 110      ; "x"
+0587    KSTR     6 115      ; "["
+0588    CALL     2   1   4
+0589    MOV      2   1
+0590    GGET     4   2      ; "string"
+0591    TGETS    4   4   3  ; "find"
+0592    KSTR     5 110      ; "x"
+0593    KSTR     6 116      ; "[^"
+0594    CALL     2   1   4
+0595    MOV      2   1
+0596    GGET     4   2      ; "string"
+0597    TGETS    4   4   3  ; "find"
+0598    KSTR     5 110      ; "x"
+0599    KSTR     6 117      ; "(()"
+0600    CALL     2   1   4
+0601    MOV      2   1
+0602    GGET     4   2      ; "string"
+0603    TGETS    4   4   3  ; "find"
+0604    KSTR     5 110      ; "x"
+0605    KSTR     6 118      ; "x)"
+0606    CALL     2   1   4
+0607    MOV      2   1
+0608    GGET     4   2      ; "string"
+0609    TGETS    4   4   3  ; "find"
+0610    KSTR     5 110      ; "x"
+0611    KSTR     6 119      ; "%b"
+0612    CALL     2   1   4
+0613    MOV      2   1
+0614    GGET     4   2      ; "string"
+0615    TGETS    4   4   3  ; "find"
+0616    KSTR     5 110      ; "x"
+0617    KSTR     6 120      ; "%f"
+0618    CALL     2   1   4
+0619    MOV      2   1
+0620    GGET     4   2      ; "string"
+0621    TGETS    4   4   3  ; "find"
+0622    KSTR     5 110      ; "x"
+0623    KSTR     6 121      ; "%fx"
+0624    CALL     2   1   4
+0625    MOV      2   1
+0626    GGET     4   2      ; "string"
+0627    TGETS    4   4  23  ; "match"
+0628    KSTR     5 110      ; "x"
+0629    KSTR     6 122      ; "(x"
+0630    CALL     2   1   4
+0631    MOV      2   1
+0632    GGET     4   2      ; "string"
+0633    TGETS    4   4  23  ; "match"
+0634    KSTR     5 110      ; "x"
+0635    KSTR     6 106      ; "%1"
+0636    CALL     2   1   4
+0637    MOV      2   1
+0638    GGET     4   2      ; "string"
+0639    TGETS    4   4  23  ; "match"
+0640    GGET     5   2      ; "string"
+0641    TGETS    5   5 123  ; "rep"
+0642    KSTR     7 124      ; "a"
+0643    KSHORT   8  40
+0644    CALL     5   2   3
+0645    GGET     6   2      ; "string"
+0646    TGETS    6   6 123  ; "rep"
+0647    KSTR     8 125      ; "(a)"
+0648    KSHORT   9  40
+0649    CALL     6   0   3
+0650    CALLM    2   1   2
+0651    MOV      2   1
+0652    GGET     4   2      ; "string"
+0653    TGETS    4   4  23  ; "match"
+0654    GGET     5   2      ; "string"
+0655    TGETS    5   5 123  ; "rep"
+0656    KSTR     7 124      ; "a"
+0657    KSHORT   8  33
+0658    CALL     5   2   3
+0659    GGET     6   2      ; "string"
+0660    TGETS    6   6 123  ; "rep"
+0661    KSTR     8 125      ; "(a)"
+0662    KSHORT   9  33
+0663    CALL     6   0   3
+0664    CALLM    2   1   2
+0665    MOV      2   1
+0666    GGET     4   2      ; "string"
+0667    TGETS    4   4 123  ; "rep"
+0668    KSTR     5 126      ; "ab"
+0669    KSHORT   6   3
+0670    KSTR     7 127      ; ","
+0671    CALL     2   1   5
+0672    MOV      2   1
+0673    GGET     4   2      ; "string"
+0674    TGETS    4   4 123  ; "rep"
+0675    KSTR     5 126      ; "ab"
+0676    KSHORT   6   0
+0677    KSTR     7 127      ; ","
+0678    CALL     2   1   5
+0679    MOV      2   1
+0680    GGET     4   2      ; "string"
+0681    TGETS    4   4 123  ; "rep"
+0682    KSTR     5   8      ; ""
+0683    KNUM     6   2      ; 100000000
+0684    CALL     2   1   4
+0685    GGET     2   2      ; "string"
+0686    TGETS    2   2 128  ; "gmatch"
+0687    KSTR     4 129      ; "a=1, b=2, c=3"
+0688    KSTR     5 130      ; "(%w+)=(%w+)"
+0689    CALL     2   4   3
+0690    JMP      5 => 0697
+0691 => GGET     7 131      ; "io"
+0692    TGETS    7   7 132  ; "write"
+0693    MOV      9   5
+0694    MOV     10   6
+0695    KSTR    11 133      ; ";"
+0696    CALL     7   1   4
+0697 => ITERC    5   3   3
+0698    ITERL    5 => 0691
+0699    GGET     2 134      ; "print"
+0700    CALL     2   1   1
+0701    GGET     2   2      ; "string"
+0702    TGETS    2   2 128  ; "gmatch"
+0703    KSTR     4 135      ; "one two  three"
+0704    KSTR     5 136      ; "%a+"
+0705    CALL     2   4   3
+0706    JMP      5 => 0713
+0707 => GGET     6 131      ; "io"
+0708    TGETS    6   6 132  ; "write"
+0709    KSTR     8 137      ; "<"
+0710    MOV      9   5
+0711    KSTR    10 138      ; ">"
+0712    CALL     6   1   4
+0713 => ITERC    5   2   3
+0714    ITERL    5 => 0707
+0715    GGET     2 134      ; "print"
+0716    CALL     2   1   1
+0717    GGET     2   2      ; "string"
+0718    TGETS    2   2 128  ; "gmatch"
+0719    KSTR     4  14      ; "abc"
+0720    KSTR     5 105      ; "()"
+0721    CALL     2   4   3
+0722    JMP      5 => 0728
+0723 => GGET     6 131      ; "io"
+0724    TGETS    6   6 132  ; "write"
+0725    MOV      8   5
+0726    KSTR     9 139      ; " "
+0727    CALL     6   1   3
+0728 => ITERC    5   2   3
+0729    ITERL    5 => 0723
+0730    GGET     2 134      ; "print"
+0731    CALL     2   1   1
+0732    GGET     2   2      ; "string"
+0733    TGETS    2   2 128  ; "gmatch"
+0734    KSTR     4  14      ; "abc"
+0735    KSTR     5 107      ; "^a"
+0736    CALL     2   4   3
+0737    JMP      5 => 0744
+0738 => GGET     6 131      ; "io"
+0739    TGETS    6   6 132  ; "write"
+0740    KSTR     8 115      ; "["
+0741    MOV      9   5
+0742    KSTR    10 140      ; "]"
+0743    CALL     6   1   4
+0744 => ITERC    5   2   3
+0745    ITERL    5 => 0738
+0746    GGET     2 134      ; "print"
+0747    CALL     2   1   1
+0748    GGET     2   2      ; "string"
+0749    TGETS    2   2 128  ; "gmatch"
+0750    KSTR     4 141      ; "aXbXc"
+0751    KSTR     5 142      ; "(%a)()"
+0752    CALL     2   4   3
+0753    JMP      5 => 0760
+0754 => GGET     7 131      ; "io"
+0755    TGETS    7   7 132  ; "write"
+0756    MOV      9   5
+0757    MOV     10   6
+0758    KSTR    11 139      ; " "
+0759    CALL     7   1   4
+0760 => ITERC    5   3   3
+0761    ITERL    5 => 0754
+0762    GGET     2 134      ; "print"
+0763    CALL     2   1   1
+0764    GGET     2   2      ; "string"
+0765    TGETS    2   2 128  ; "gmatch"
+0766    KSTR     4   8      ; ""
+0767    KSTR     5 143      ; ".*"
+0768    CALL     2   4   3
+0769    JMP      5 => 0775
+0770 => GGET     6 131      ; "io"
+0771    TGETS    6   6 132  ; "write"
+0772    KSTR     8 144      ; "empty:"
+0773    LEN      9   5
+0774    CALL     6   1   3
+0775 => ITERC    5   2   3
+0776    ITERL    5 => 0770
+0777    GGET     2 134      ; "print"
+0778    CALL     2   1   1
+0779    GGET     2   2      ; "string"
+0780    TGETS    2   2 128  ; "gmatch"
+0781    KSTR     4 145      ; "a1b2"
+0782    KSTR     5 146      ; "%a(%d)"
+0783    CALL     2   2   3
+0784    MOV      3   0
+0785    MOV      5   2
+0786    CALL     5   2   1
+0787    MOV      6   2
+0788    CALL     6   2   1
+0789    MOV      7   2
+0790    CALL     7   0   1
+0791    CALLM    3   1   2
+0792    MOV      3   0
+0793    GGET     5   2      ; "string"
+0794    TGETS    5   5  82  ; "byte"
+0795    KSTR     7  14      ; "abc"
+0796    KSHORT   8   0
+0797    CALL     5   2   3
+0798    GGET     6   2      ; "string"
+0799    TGETS    6   6  82  ; "byte"
+0800    KSTR     8  14      ; "abc"
+0801    KSHORT   9  -1
+0802    CALL     6   2   3
+0803    GGET     7   2      ; "string"
+0804    TGETS    7   7  82  ; "byte"
+0805    KSTR     9  14      ; "abc"
+0806    KSHORT  10   2
+0807    KSHORT  11  10
+0808    CALL     7   2   4
+0809    GGET     8   2      ; "string"
+0810    TGETS    8   8  82  ; "byte"
+0811    KSTR    10   8      ; ""
+0812    CALL     8   0   2
+0813    CALLM    3   1   3
+0814    MOV      3   0
+0815    GGET     5   2      ; "string"
+0816    TGETS    5   5 147  ; "sub"
+0817    KSTR     7   6      ; "hello"
+0818    KSHORT   8   2
+0819    CALL     5   2   3
+0820    GGET     6   2      ; "string"
+0821    TGETS    6   6 147  ; "sub"
+0822    KSTR     8   6      ; "hello"
+0823    KSHORT   9  -3
+0824    CALL     6   2   3
+0825    GGET     7   2      ; "string"
+0826    TGETS    7   7 147  ; "sub"
+0827    KSTR     9   6      ; "hello"
+0828    KSHORT  10   2
+0829    KSHORT  11  -2
+0830    CALL     7   2   4
+0831    GGET     8   2      ; "string"
+0832    TGETS    8   8 147  ; "sub"
+0833    KSTR    10   6      ; "hello"
+0834    KSHORT  11   0
+0835    CALL     8   2   3
+0836    GGET     9   2      ; "string"
+0837    TGETS    9   9 147  ; "sub"
+0838    KSTR    11   6      ; "hello"
+0839    KSHORT  12  10
+0840    CALL     9   2   3
+0841    GGET    10   2      ; "string"
+0842    TGETS   10  10 147  ; "sub"
+0843    KSTR    12   6      ; "hello"
+0844    KSHORT  13 -100
+0845    KSHORT  14   2
+0846    CALL    10   2   4
+0847    GGET    11   2      ; "string"
+0848    TGETS   11  11 147  ; "sub"
+0849    KSTR    13   6      ; "hello"
+0850    KSHORT  14   3
+0851    KSHORT  15   2
+0852    CALL    11   0   4
+0853    CALLM    3   1   6
+0854    MOV      3   0
+0855    GGET     5   2      ; "string"
+0856    TGETS    5   5  41  ; "upper"
+0857    KSTR     7 148      ; "aBcÿ"
+0858    CALL     5   2   2
+0859    GGET     6   2      ; "string"
+0860    TGETS    6   6 149  ; "lower"
+0861    KSTR     8 150      ; "AbCÈ"
+0862    CALL     6   2   2
+0863    GGET     7   2      ; "string"
+0864    TGETS    7   7 151  ; "reverse"
+0865    KSTR     9  14      ; "abc"
+0866    CALL     7   2   2
+0867    GGET     8   2      ; "string"
+0868    TGETS    8   8 151  ; "reverse"
+0869    KSTR    10   8      ; ""
+0870    CALL     8   0   2
+0871    CALLM    3   1   3
+0872    MOV      3   0
+0873    GGET     5   2      ; "string"
+0874    TGETS    5   5  73  ; "len"
+0875    KSTR     7 152      ; "\000\000"
+0876    CALL     5   2   2
+0877    KSTR     6  14      ; "abc"
+0878    LEN      6   6
+0879    KSTR     7 110      ; "x"
+0880    MOV      9   7
+0881    TGETS    7   7 123  ; "rep"
+0882    KSHORT  10   3
+0883    CALL     7   2   3
+0884    GGET     8   2      ; "string"
+0885    TGETS    8   8 123  ; "rep"
+0886    KSTR    10 110      ; "x"
+0887    KSHORT  11   0
+0888    CALL     8   2   3
+0889    GGET     9   2      ; "string"
+0890    TGETS    9   9 123  ; "rep"
+0891    KSTR    11 110      ; "x"
+0892    KSHORT  12  -1
+0893    CALL     9   0   3
+0894    CALLM    3   1   4
+0895    MOV      3   0
+0896    GGET     5   2      ; "string"
+0897    TGETS    5   5 153  ; "format"
+0898    KSTR     7 154      ; "%s"
+0899    GGET     8   2      ; "string"
+0900    TGETS    8   8   3  ; "find"
+0901    KSTR    10 110      ; "x"
+0902    KSTR    11 110      ; "x"
+0903    KNUM    12   3      ; 2147483648
+0904    CALL     8   0   4
+0905    CALLM    5   0   1
+0906    CALLM    3   1   0
+0907    MOV      3   0
+0908    GGET     5   2      ; "string"
+0909    TGETS    5   5   3  ; "find"
+0910    KSTR     7  14      ; "abc"
+0911    KSTR     8 155      ; "c"
+0912    KNUM     9   4      ; 9.007199254741e+15
+0913    CALL     5   0   4
+0914    CALLM    3   1   0
+0915    MOV      3   0
+0916    GGET     5   2      ; "string"
+0917    TGETS    5   5   3  ; "find"
+0918    KSTR     7  14      ; "abc"
+0919    KSTR     8 124      ; "a"
+0920    KNUM     9   5      ; -9.007199254741e+15
+0921    CALL     5   0   4
+0922    CALLM    3   1   0
+0923    GGET     3   2      ; "string"
+0924    TGETS    3   3 123  ; "rep"
+0925    KSTR     5 124      ; "a"
+0926    KSHORT   6 10000
+0927    CALL     3   2   3
+0928    MOV      4   0
+0929    GGET     6   2      ; "string"
+0930    TGETS    6   6  23  ; "match"
+0931    MOV      8   3
+0932    KSTR     9 156      ; ".-$"
+0933    CALL     6   2   3
+0934    LEN      6   6
+0935    GGET     7   2      ; "string"
+0936    TGETS    7   7  39  ; "gsub"
+0937    MOV      9   3
+0938    KSTR    10 124      ; "a"
+0939    KSTR    11 157      ; "bb"
+0940    CALL     7   2   4
+0941    LEN      7   7
+0942    CALL     4   1   3
+0943    MOV      4   1
+0944    GGET     6   2      ; "string"
+0945    TGETS    6   6  23  ; "match"
+0946    GGET     7   2      ; "string"
+0947    TGETS    7   7 123  ; "rep"
+0948    KSTR     9 124      ; "a"
+0949    KNUM    10   6      ; 300000
+0950    CALL     7   2   3
+0951    GGET     8   2      ; "string"
+0952    TGETS    8   8 123  ; "rep"
+0953    KSTR    10 158      ; "a?"
+0954    KNUM    11   6      ; 300000
+0955    CALL     8   2   3
+0956    GGET     9   2      ; "string"
+0957    TGETS    9   9 123  ; "rep"
+0958    KSTR    11 124      ; "a"
+0959    KNUM    12   6      ; 300000
+0960    CALL     9   2   3
+0961    CAT      8   8   9
+0962    CALL     4   1   4
+0963    MOV      4   0
+0964    GGET     6 159      ; "select"
+0965    KSTR     8 160      ; "#"
+0966    GGET     9   2      ; "string"
+0967    TGETS    9   9  82  ; "byte"
+0968    GGET    11   2      ; "string"
+0969    TGETS   11  11 123  ; "rep"
+0970    KSTR    13 110      ; "x"
+0971    KSHORT  14 100
+0972    CALL    11   2   3
+0973    KSHORT  12   1
+0974    KSHORT  13  -1
+0975    CALL     9   0   4
+0976    CALLM    6   0   1
+0977    CALLM    4   1   0
+0978    UCLO     0 => 0979
+0979 => RET0     0   1
+
+--- exit 0

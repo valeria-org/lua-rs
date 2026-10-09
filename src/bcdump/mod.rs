@@ -25,7 +25,7 @@
 mod read;
 mod write;
 
-pub use read::{read, read_ex, read_proto};
+pub use read::{read, read_ex, read_input, read_proto};
 pub use write::{write, write_flags};
 
 /// Bytecode dump header bytes.

@@ -1,0 +1,149 @@
+false	src/errmsg.lua:8: attempt to call global 'undefinedglobal' (a nil value)
+false	src/errmsg.lua:9: attempt to call local 'x' (a nil value)
+false	src/errmsg.lua:11: attempt to call upvalue 'up' (a nil value)
+false	src/errmsg.lua:12: attempt to call field 'field' (a nil value)
+false	src/errmsg.lua:13: attempt to call method 'method' (a nil value)
+false	src/errmsg.lua:14: attempt to index field 'a' (a nil value)
+false	src/errmsg.lua:15: attempt to index field 'a' (a nil value)
+false	src/errmsg.lua:16: attempt to index global 'undefinedglobal' (a nil value)
+false	src/errmsg.lua:17: attempt to index global 'undefinedglobal' (a nil value)
+false	src/errmsg.lua:18: attempt to index field 'y' (a nil value)
+false	src/errmsg.lua:19: attempt to call a string value
+false	src/errmsg.lua:20: attempt to call a number value
+false	src/errmsg.lua:21: attempt to call a nil value
+false	src/errmsg.lua:22: attempt to call a nil value
+false	src/errmsg.lua:23: attempt to call a nil value
+false	src/errmsg.lua:24: attempt to index upvalue 'up' (a nil value)
+false	src/errmsg.lua:25: attempt to index upvalue 'up' (a nil value)
+false	src/errmsg.lua:26: table index is nil
+false	src/errmsg.lua:27: table index is NaN
+false	table index is nil
+false	src/errmsg.lua:31: attempt to perform arithmetic on local 'a' (a nil value)
+false	src/errmsg.lua:32: attempt to perform arithmetic on upvalue 'up' (a nil value)
+false	src/errmsg.lua:33: attempt to perform arithmetic on a table value
+false	src/errmsg.lua:34: attempt to perform arithmetic on field 'x' (a nil value)
+false	src/errmsg.lua:35: attempt to perform arithmetic on a table value
+false	src/errmsg.lua:36: attempt to perform arithmetic on local 's' (a string value)
+false	src/errmsg.lua:37: attempt to perform arithmetic on a string value
+false	src/errmsg.lua:38: attempt to perform arithmetic on a nil value
+false	src/errmsg.lua:39: attempt to perform arithmetic on local 't' (a table value)
+false	src/errmsg.lua:40: attempt to perform arithmetic on global 'undefinedglobal' (a nil value)
+false	src/errmsg.lua:41: attempt to perform arithmetic on local 'b' (a nil value)
+false	src/errmsg.lua:43: attempt to concatenate local 'a' (a nil value)
+false	src/errmsg.lua:44: attempt to concatenate a table value
+false	src/errmsg.lua:45: attempt to concatenate field 'f' (a nil value)
+false	src/errmsg.lua:46: attempt to concatenate a nil value
+false	src/errmsg.lua:47: attempt to concatenate a boolean value
+false	src/errmsg.lua:49: attempt to compare number with string
+false	src/errmsg.lua:50: attempt to compare two table values
+false	src/errmsg.lua:51: attempt to compare nil with number
+false	src/errmsg.lua:52: attempt to compare string with number
+false	src/errmsg.lua:53: attempt to compare number with table
+false	src/errmsg.lua:54: attempt to compare two boolean values
+false	src/errmsg.lua:55: attempt to compare two table values
+false	src/errmsg.lua:57: attempt to get length of local 'n' (a number value)
+false	src/errmsg.lua:58: attempt to get length of global 'undefinedglobal' (a nil value)
+false	src/errmsg.lua:59: attempt to get length of field 'x' (a nil value)
+false	src/errmsg.lua:61: 'for' limit must be a number
+false	src/errmsg.lua:62: 'for' initial value must be a number
+false	src/errmsg.lua:63: 'for' step must be a number
+false	src/errmsg.lua:64: attempt to call a number value
+false	src/errmsg.lua:65: attempt to call a nil value
+false	src/errmsg.lua:67: bad argument #1 to 'rep' (string expected, got no value)
+false	src/errmsg.lua:68: bad argument #1 to 'rep' (number expected, got no value)
+false	src/errmsg.lua:69: attempt to call method 'bad' (a nil value)
+false	src/errmsg.lua:70: bad argument #1 to 'rep' (number expected, got string)
+false	src/errmsg.lua:71: bad argument #1 to 'setmetatable' (table expected, got number)
+false	src/errmsg.lua:72: bad argument #1 to 'insert' (table expected, got nil)
+false	src/errmsg.lua:73: wrong number of arguments to 'insert'
+false	src/errmsg.lua:74: invalid value (table) at index 1 in table for 'concat'
+false	src/errmsg.lua:75: invalid value (table) at index 3 in table for 'concat'
+false	src/errmsg.lua:76: bad argument #1 to 'ipairs' (value expected)
+false	src/errmsg.lua:77: bad argument #1 to 'select' (index out of range)
+false	src/errmsg.lua:78: bad argument #1 to 'select' (index out of range)
+false	src/errmsg.lua:79: bad argument #1 to 'tostring' (value expected)
+false	src/errmsg.lua:80: bad argument #2 to 'tonumber' (base out of range)
+false	src/errmsg.lua:81: bad argument #1 to 'tonumber' (value expected)
+false	src/errmsg.lua:82: bad argument #1 to 'char' (invalid value)
+false	src/errmsg.lua:83: bad argument #1 to 'char' (invalid value)
+false	src/errmsg.lua:84: bad argument #2 to 'format' (number expected, got string)
+false	src/errmsg.lua:85: invalid option '%y' to 'format'
+false	src/errmsg.lua:86: invalid option '%' to 'format'
+false	src/errmsg.lua:87: invalid option '%10.123' to 'format'
+false	src/errmsg.lua:88: bad argument #2 to 'format' (value expected)
+false	src/errmsg.lua:89: bad argument #3 to 'rep' (string expected, got table)
+false	src/errmsg.lua:90: bad argument #1 to 'floor' (number expected, got string)
+false	src/errmsg.lua:91: bad argument #1 to 'max' (number expected, got no value)
+false	src/errmsg.lua:92: bad argument #1 to 'resume' (coroutine expected)
+false	src/errmsg.lua:93: bad argument #1 to 'wrap' (function expected, got number)
+false	src/errmsg.lua:94: too many results to unpack
+false	src/errmsg.lua:95: bad argument #1 to 'setfenv' (invalid level)
+false	src/errmsg.lua:96: bad argument #1 to 'getfenv' (invalid level)
+false	nil
+false	nil
+false	table: 0x?
+false	msg
+false	src/errmsg.lua:101: msg
+false	msg
+false	src/errmsg.lua:3: msg
+false	src/errmsg.lua:104: 42
+false	src/errmsg.lua:105: assertion failed!
+false	src/errmsg.lua:106: custom
+false	table: 0x?
+false	src/errmsg.lua:108: bad argument #1 to 'assert' (value expected)
+false	src/errmsg.lua:109: idx foo
+false	src/errmsg.lua:110: attempt to index a string value
+false	src/errmsg.lua:111: attempt to call local 't' (a table value)
+false	src/errmsg.lua:112: cannot change a protected metatable
+false	src/errmsg.lua:113: unable to dump given function
+true	nil
+false	src/errmsg.lua:115: bad argument #1 to 'loadstring' (function expected, got no value)
+false	invalid key to 'next'
+true	nil
+false	src/errmsg.lua:118: bad argument #1 to 'xpcall' (value expected)
+false	bad argument #2 to '?' (function expected, got nil)
+false	src/errmsg.lua:120: bad argument #1 to 'newproxy' (boolean or proxy expected)
+false	src/errmsg.lua:121: bad argument #1 to 'collectgarbage' (invalid option 'bogus')
+false	src/errmsg.lua:122: bad argument #2 to 'date' (number expected, got string)
+true	nil
+false	src/errmsg.lua:124: bad argument #1 to 'lines' (/nonexistent/file: No such file or directory)
+false	src/errmsg.lua:125: bad argument #1 to 'sub' (string expected, got no value)
+false	src/errmsg.lua:126: bad argument #1 to 'sub' (number expected, got table)
+false	src/errmsg.lua:127: bad argument #1 to 'band' (number expected, got string)
+false	src/errmsg.lua:128: bad argument #1 to 'tohex' (number expected, got table)
+false	src/errmsg.lua:129: attempt to index local 'a' (a number value)
+false	attempt to compare string with number
+true	nil
+true	nil
+false	src/errmsg.lua:133: bad argument #1 to 'getlocal' (level out of range)
+true	nil
+false	src/errmsg.lua:135: bad argument #1 to 'getinfo' (function or level expected)
+false	src/errmsg.lua:136: bad argument #2 to 'getinfo' (invalid option)
+false	src/errmsg.lua:137: bad argument #2 to 'sethook' (string expected, got no value)
+true	nil
+false	src/errmsg.lua:139: malformed pattern (ends with '%')
+false	src/errmsg.lua:140: malformed pattern (missing ']')
+false	src/errmsg.lua:141: invalid capture index
+false	src/errmsg.lua:142: bad argument #4 to 'gsub' (number expected, got string)
+false	src/errmsg.lua:143: bad argument #3 to 'gsub' (string/function/table expected)
+true	nil
+false	src/errmsg.lua:147: deep
+false	src/errmsg.lua:149: attempt to index field 'b' (a nil value)
+false	src/errmsg.lua:152: attempt to call method 'nomethod' (a nil value)
+false	src/errmsg.lua:153: attempt to index field 'sub' (a nil value)
+false	src/errmsg.lua:155: attempt to index local 'a' (a nil value)
+false	src/errmsg.lua:156: attempt to index a nil value
+false	bad argument #1 to '?' (string expected, got nil)
+true	x
+true	A
+2
+false	TS
+false	handled: src/errmsg.lua:165: E
+false	error in error handling
+false	src/errmsg.lua:167: attempt to call local 'x' (a nil value)
+stack traceback:
+	src/errmsg.lua:167: in function <src/errmsg.lua:167>
+	[C]: in function 'xpcall'
+	src/errmsg.lua:167: in main chunk
+	[C]: at 0x?
+--- exit 0

@@ -1,0 +1,86 @@
+int8_t	0 1 -1 127 -128 -1 0 112 0 0 0 0 0 0 0 3 -3 0 0 0 0 0 1 0 cannot convert 'string' to 'char'
+uint8_t	0 1 255 127 128 255 0 112 0 0 0 0 0 0 0 3 253 0 0 0 0 0 1 0 cannot convert 'string' to 'unsigned char'
+int16_t	0 1 -1 127 128 255 256 4464 0 0 0 0 0 0 0 3 -3 0 0 0 0 0 1 0 cannot convert 'string' to 'short'
+uint16_t	0 1 65535 127 128 255 256 4464 0 0 0 0 0 0 0 3 65533 0 0 0 0 0 1 0 cannot convert 'string' to 'unsigned short'
+int32_t	0 1 -1 127 128 255 256 70000 -2147483648 -2147483648 0 0 0 0 0 3 -3 0 0 0 0 0 1 0 cannot convert 'string' to 'int'
+uint32_t	0 1 4294967295 127 128 255 256 70000 2147483648 2147483648 0 0 0 0 0 3 4294967293 0 0 0 0 0 1 0 cannot convert 'string' to 'unsigned int'
+int64_t	0 1 -1 127 128 255 256 70000 2147483648 -2147483648 4294967296 9.007199254741e+15 -9.2233720368548e+18 -9.2233720368548e+18 -9.2233720368548e+18 3 -3 -9.2233720368548e+18 -9.2233720368548e+18 -9.2233720368548e+18 0 -9.2233720368548e+18 1 0 cannot convert 'string' to 'int64_t'
+uint64_t	0 1 1.844674407371e+19 127 128 255 256 70000 2147483648 1.8446744071562e+19 4294967296 9.007199254741e+15 9.2233720368548e+18 9.2233720368548e+18 0 3 1.844674407371e+19 9.2233720368548e+18 9.2233720368548e+18 9.2233720368548e+18 0 9.2233720368548e+18 1 0 cannot convert 'string' to 'uint64_t'
+bool	0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 cannot convert 'string' to 'bool'
+char	0 1 -1 127 -128 -1 0 112 0 0 0 0 0 0 0 3 -3 0 0 0 0 0 1 0 cannot convert 'string' to 'char'
+float	0 1 -1 127 128 255 256 70000 2147483648 -2147483648 4294967296 9.007199254741e+15 9.2233720368548e+18 -9.2233720368548e+18 1.844674407371e+19 3.9000000953674 -3.9000000953674 nan inf -inf 0.33333334326744 inf 1 0 cannot convert 'string' to 'float'
+double	0 1 -1 127 128 255 256 70000 2147483648 -2147483648 4294967296 9.007199254741e+15 9.2233720368548e+18 -9.2233720368548e+18 1.844674407371e+19 3.9 -3.9 nan inf -inf 0.33333333333333 1e+40 1 0 cannot convert 'string' to 'double'
+long	0 1 -1 127 128 255 256 70000 2147483648 -2147483648 4294967296 9.007199254741e+15 -9.2233720368548e+18 -9.2233720368548e+18 -9.2233720368548e+18 3 -3 -9.2233720368548e+18 -9.2233720368548e+18 -9.2233720368548e+18 0 -9.2233720368548e+18 1 0 cannot convert 'string' to 'int64_t'
+size_t	0 1 1.844674407371e+19 127 128 255 256 70000 2147483648 1.8446744071562e+19 4294967296 9.007199254741e+15 9.2233720368548e+18 9.2233720368548e+18 0 3 1.844674407371e+19 9.2233720368548e+18 9.2233720368548e+18 9.2233720368548e+18 0 9.2233720368548e+18 1 0 cannot convert 'string' to 'uint64_t'
+cannot convert 'nil' to 'bool'	cannot convert 'nil' to 'int'	cannot convert 'nil' to 'double'
+9.007199254741e+15 0 0.10000000149012
+1LL -1LL 1ULL 9223372036854775807LL 18446744073709551615ULL 18446744073709551615ULL 0+12i 0+1.5i
+cdata ctype<int64_t> ctype<uint64_t> ctype<complex>
+3LL 0LL 2LL -2LL 2LL -2LL 1024LL -1LL 18446744073709551615ULL
+true true true true true
+true -9223372036854775808LL
+true -9223372036854775808LL
+true 9223372036854775808ULL
+3 false src/ffi.lua:41: attempt to concatenate 'int64_t' and 'string'
+ffffffffffffffff 1095233372415LL 1099511627776LL 5
+false bad argument #1 to '?' (number expected, got cdata)
+1+2i 1 2 3+0i 0-1i
+false src/ffi.lua:47: attempt to perform arithmetic on 'complex' and 'number'
+hello hel 8 16
+3ULL true 5 2
+No such file or directory
+11 42-str-1.50
+1 2 3
+0ULL true true cdata<int>: 0x?
+cdata<char>: 0x? cdata<unsigned short>: 0x? cdata<double>: 0x? 1LL
+1 2 8 8 24 8 16
+20 20 3 5
+44 1.5 abc -1 1
+1065353216 63 3f800000
+cdata<enum 120>: 5 cdata<enum 120>: 6 cdata<enum 120>: 1 false cannot convert 'string' to 'enum 120'
+20 44 0
+6 24 true
+9 1 0
+true false true ctype<struct 102>
+6 V(3,4) 5 2 true 30 cat
+false cannot change a protected metatable
+42 ctype<int (*)()>
+-1
+false bad callback
+1 2 3 4 5
+1
+false bad argument #1 to '?' (size of C type is unknown or too large)
+false declaration specifier expected near 'nosuchtype'
+false declaration specifier expected near '<eof>'
+true
+false unexpected symbol near '<eof>'
+false too many initializers for 'int [2]'
+false too many initializers for 'struct 102'
+false src/ffi.lua:118: 'struct 102' has no member named 'z'
+false src/ffi.lua:119: 'struct 102' has no member named 'z'
+false src/ffi.lua:120: attempt to perform arithmetic on 'struct 102' and 'number'
+false src/ffi.lua:121: attempt to compare 'struct 102' with 'struct 102'
+false src/ffi.lua:122: attempt to get length of 'struct 102'
+false 'struct 102' is not callable
+false cannot convert 'string' to 'int'
+false cannot convert 'number' to 'int *'
+false src/ffi.lua:126: cannot convert 'string' to 'int'
+false bad argument #1 to '?' (invalid C type)
+false src/ffi.lua:128: missing declaration for symbol 'nonexistent_function'
+false bad argument #1 to '?' (cannot convert 'number' to 'const char *')
+false wrong number of arguments for function call
+false bad argument #1 to '?' (cannot convert 'string' to 'int')
+false bad argument #2 to '?' (value expected)
+false bad argument #2 to '?' (value expected)
+false bad argument #1 to '?' (size of C type is unknown or too large)
+false libnonexistent_library_xyz.so: cannot open shared object file: No such file or directory
+false src/ffi.lua:136: attempt to write to constant location
+false src/ffi.lua:137: attempt to perform arithmetic on 'int64_t' and 'table'
+false src/ffi.lua:138: attempt to concatenate 'uint64_t' and 'table'
+true true
+true true false Linux x64
+2 5
+ctype<int (*)()> ctype<struct 189 *> ctype<uint64_t> ctype<const char *volatile>
+false true
+true ctype<int> 16 4
+--- exit 0
