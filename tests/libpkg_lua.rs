@@ -35,15 +35,23 @@ fn copy_dir(from: &Path, to: &Path) {
 fn command(args: &[&str], dir: &Path) -> Command {
     use std::os::unix::process::CommandExt;
     let mut c = Command::new(env!("CARGO_BIN_EXE_luajit"));
-    c.arg0("luajit").args(args).current_dir(dir).env_remove("LUA_INIT").env_remove("LUA_PATH").env_remove("LUA_CPATH");
+    c.arg0("luajit")
+        .args(args)
+        .current_dir(dir)
+        .env_remove("LUA_INIT")
+        .env_remove("LUA_PATH")
+        .env_remove("LUA_CPATH");
     c
 }
 
 fn have_string_lib() -> bool {
-    command(&["-e", "assert(string.format and io.write)"], &fixture_dir())
-        .stderr(Stdio::null())
-        .status()
-        .is_ok_and(|s| s.success())
+    command(
+        &["-e", "assert(string.format and io.write)"],
+        &fixture_dir(),
+    )
+    .stderr(Stdio::null())
+    .status()
+    .is_ok_and(|s| s.success())
 }
 
 /// Replace every `0x<hex digits>` by `0x?`.
@@ -53,7 +61,8 @@ fn normalize(s: &str) -> String {
     while let Some(p) = rest.find("0x") {
         r.push_str(&rest[..p + 2]);
         let after = &rest[p + 2..];
-        let t = after.trim_start_matches(|c: char| c.is_ascii_hexdigit() && !c.is_ascii_uppercase());
+        let t =
+            after.trim_start_matches(|c: char| c.is_ascii_hexdigit() && !c.is_ascii_uppercase());
         if t.len() != after.len() {
             r.push('?');
         }
@@ -95,7 +104,10 @@ fn fixture(case: &str, dir: &str, args: &[&str]) {
     if got != expected {
         for (i, (g, e)) in got.lines().zip(expected.lines()).enumerate() {
             if g != e {
-                panic!("{case}: first difference at line {}:\n  got:      {g:?}\n  expected: {e:?}\n\nfull output:\n{got}", i + 1);
+                panic!(
+                    "{case}: first difference at line {}:\n  got:      {g:?}\n  expected: {e:?}\n\nfull output:\n{got}",
+                    i + 1
+                );
             }
         }
         panic!("{case}: output length differs:\n{got}");

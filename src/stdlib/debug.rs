@@ -9,9 +9,11 @@ use crate::parse::lex::cstr;
 use crate::state::Vm;
 use crate::table::Table;
 use crate::thread::Thread;
-use crate::value::{Value, VType};
+use crate::value::{VType, Value};
 use crate::vm::ffid::*;
-use crate::vm::{ErrMsg, HookEvent, InfoTarget, LUA_MASKCALL, LUA_MASKCOUNT, LUA_MASKLINE, LUA_MASKRET, num2int};
+use crate::vm::{
+    ErrMsg, HookEvent, InfoTarget, LUA_MASKCALL, LUA_MASKCOUNT, LUA_MASKLINE, LUA_MASKRET, num2int,
+};
 
 use super::{LibFn, register_lib};
 
@@ -19,8 +21,16 @@ use super::{LibFn, register_lib};
 pub fn open_debug(vm: &mut Vm) -> LuaResult<()> {
     let funcs: &[LibFn] = &[
         ("getregistry", lj_cf_debug_getregistry, FF_DEBUG_GETREGISTRY),
-        ("getmetatable", lj_cf_debug_getmetatable, FF_DEBUG_GETMETATABLE),
-        ("setmetatable", lj_cf_debug_setmetatable, FF_DEBUG_SETMETATABLE),
+        (
+            "getmetatable",
+            lj_cf_debug_getmetatable,
+            FF_DEBUG_GETMETATABLE,
+        ),
+        (
+            "setmetatable",
+            lj_cf_debug_setmetatable,
+            FF_DEBUG_SETMETATABLE,
+        ),
         ("getfenv", lj_cf_debug_getfenv, FF_DEBUG_GETFENV),
         ("setfenv", lj_cf_debug_setfenv, FF_DEBUG_SETFENV),
         ("getinfo", lj_cf_debug_getinfo, FF_DEBUG_GETINFO),
@@ -151,7 +161,12 @@ fn lj_cf_debug_getinfo(vm: &mut Vm) -> LuaResult<usize> {
                 let v = str_value(vm, &ar.short_src);
                 set_field(vm, t, "short_src", v)?;
                 set_field(vm, t, "linedefined", Value::Num(ar.linedefined as f64))?;
-                set_field(vm, t, "lastlinedefined", Value::Num(ar.lastlinedefined as f64))?;
+                set_field(
+                    vm,
+                    t,
+                    "lastlinedefined",
+                    Value::Num(ar.lastlinedefined as f64),
+                )?;
                 let v = str_value(vm, ar.what.as_bytes());
                 set_field(vm, t, "what", v)?;
             }
@@ -312,7 +327,11 @@ fn hookf(vm: &mut Vm, ev: HookEvent, line: i32) -> LuaResult<()> {
     if let Value::Func(_) = f {
         vm.push(f);
         vm.push_str(ev.name().as_bytes());
-        vm.push(if line >= 0 { Value::Num(line as f64) } else { Value::Nil });
+        vm.push(if line >= 0 {
+            Value::Num(line as f64)
+        } else {
+            Value::Nil
+        });
         vm.call(2, 0)?;
     }
     Ok(())
@@ -362,7 +381,11 @@ fn lj_cf_debug_sethook(vm: &mut Vm) -> LuaResult<usize> {
             return Err(vm.type_error(arg as i32 + 1, "function"));
         }
         let c = vm.opt_int(arg + 3, 0)?;
-        (func, mask, count) = (Some(hookf as crate::vm::HookFn), makemask(smask.as_bytes(), c), c);
+        (func, mask, count) = (
+            Some(hookf as crate::vm::HookFn),
+            makemask(smask.as_bytes(), c),
+            c,
+        );
     }
     let hf = vm.arg(arg + 1);
     let reg = vm.registry;
@@ -374,7 +397,9 @@ fn lj_cf_debug_sethook(vm: &mut Vm) -> LuaResult<usize> {
 fn lj_cf_debug_gethook(vm: &mut Vm) -> LuaResult<usize> {
     let (hook, mask, count) = vm.get_hook();
     match hook {
-        Some(h) if !std::ptr::fn_addr_eq(h, hookf as crate::vm::HookFn) => vm.push_str(b"external hook"),
+        Some(h) if !std::ptr::fn_addr_eq(h, hookf as crate::vm::HookFn) => {
+            vm.push_str(b"external hook")
+        }
         _ => {
             let f = vm.registry.get(key_hook());
             vm.push(f);
@@ -401,7 +426,13 @@ fn lj_cf_debug_debug(vm: &mut Vm) -> LuaResult<usize> {
             let _ = e.flush();
         }
         // SAFETY: `buffer` has room for 250 bytes; `stdin` is the C library's stream.
-        let r = unsafe { libc::fgets(buffer.as_mut_ptr() as *mut libc::c_char, buffer.len() as i32, C_STDIN) };
+        let r = unsafe {
+            libc::fgets(
+                buffer.as_mut_ptr() as *mut libc::c_char,
+                buffer.len() as i32,
+                C_STDIN,
+            )
+        };
         if r.is_null() {
             return Ok(0);
         }
@@ -438,7 +469,11 @@ fn lj_cf_debug_debug(vm: &mut Vm) -> LuaResult<usize> {
 fn lj_cf_debug_traceback(vm: &mut Vm) -> LuaResult<usize> {
     let (th, arg) = getthread(vm);
     let a = vm.arg(arg + 1);
-    let msg = if arg < vm.nargs() { vm.tostring_opt(a) } else { None };
+    let msg = if arg < vm.nargs() {
+        vm.tostring_opt(a)
+    } else {
+        None
+    };
     if msg.is_none() && vm.nargs() > arg {
         vm.set_top(arg + 1);
         return Ok(1);

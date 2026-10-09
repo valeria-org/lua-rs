@@ -42,14 +42,30 @@ const LJ_VMEVENTS_HSIZE: u32 = 4;
 /// module name, file name below `LUA_LJDIR`, source.
 const EMBEDDED: &[(&str, &str, &[u8])] = &[
     ("jit.bc", "jit/bc.lua", include_bytes!("jit/bc.lua")),
-    ("jit.bcsave", "jit/bcsave.lua", include_bytes!("jit/bcsave.lua")),
+    (
+        "jit.bcsave",
+        "jit/bcsave.lua",
+        include_bytes!("jit/bcsave.lua"),
+    ),
     ("jit.v", "jit/v.lua", include_bytes!("jit/v.lua")),
     ("jit.dump", "jit/dump.lua", include_bytes!("jit/dump.lua")),
     ("jit.p", "jit/p.lua", include_bytes!("jit/p.lua")),
     ("jit.zone", "jit/zone.lua", include_bytes!("jit/zone.lua")),
-    ("jit.vmdef", "jit/vmdef.lua", include_bytes!("jit/vmdef.lua")),
-    ("jit.dis_x64", "jit/dis_x64.lua", include_bytes!("jit/dis_x64.lua")),
-    ("jit.dis_x86", "jit/dis_x86.lua", include_bytes!("jit/dis_x86.lua")),
+    (
+        "jit.vmdef",
+        "jit/vmdef.lua",
+        include_bytes!("jit/vmdef.lua"),
+    ),
+    (
+        "jit.dis_x64",
+        "jit/dis_x64.lua",
+        include_bytes!("jit/dis_x64.lua"),
+    ),
+    (
+        "jit.dis_x86",
+        "jit/dis_x86.lua",
+        include_bytes!("jit/dis_x86.lua"),
+    ),
 ];
 
 /// Source of an embedded `jit.*` module (`name` like `b"jit.bcsave"`).
@@ -59,7 +75,10 @@ pub fn embedded_jit_module(name: &[u8]) -> Option<&'static [u8]> {
 
 /// Source and file name (relative to `LUA_LJDIR`) of an embedded `jit.*` module.
 pub(crate) fn embedded_jit_module_entry(name: &[u8]) -> Option<(&'static [u8], &'static str)> {
-    EMBEDDED.iter().find(|(n, _, _)| n.as_bytes() == name).map(|&(_, f, src)| (src, f))
+    EMBEDDED
+        .iter()
+        .find(|(n, _, _)| n.as_bytes() == name)
+        .map(|&(_, f, src)| (src, f))
 }
 
 // -- Library registration -----------------------------------------------------------------------
@@ -75,7 +94,9 @@ pub fn open_jit(vm: &mut Vm) -> LuaResult<()> {
             let m = crate::vm::fmt_msg(ErrMsg::BADMODN, &[b"jit"]);
             return Err(vm.err_callermsg(&m));
         };
-        loaded.set_str(k, Value::Table(t)).map_err(|e| vm.tab_error(e))?;
+        loaded
+            .set_str(k, Value::Table(t))
+            .map_err(|e| vm.tab_error(e))?;
     }
     let funcs: &[LibFn] = &[
         ("on", lj_cf_jit_on, FF_JIT_ON),
@@ -89,7 +110,12 @@ pub fn open_jit(vm: &mut Vm) -> LuaResult<()> {
     let os = Value::Str(vm.new_str(LJ_OS_NAME.as_bytes()));
     let arch = Value::Str(vm.new_str(LJ_ARCH_NAME.as_bytes()));
     let ver = Value::Str(vm.new_str(LUAJIT_VERSION.as_bytes()));
-    for (k, v) in [("os", os), ("arch", arch), ("version_num", Value::Num(LUAJIT_VERSION_NUM as f64)), ("version", ver)] {
+    for (k, v) in [
+        ("os", os),
+        ("arch", arch),
+        ("version_num", Value::Num(LUAJIT_VERSION_NUM as f64)),
+        ("version", ver),
+    ] {
         let k = vm.new_str(k.as_bytes());
         t.set_str(k, v).map_err(|e| vm.tab_error(e))?;
     }
@@ -105,7 +131,8 @@ fn prereg(vm: &mut Vm, name: &[u8], f: crate::func::NativeFn) -> LuaResult<()> {
     let env = vm.cur_thread.env();
     let f = vm.new_native(NativeImpl::Rust(f), FF_C, vec![], env);
     let k = vm.new_str(name);
-    pre.set_str(k, Value::Func(f)).map_err(|e| vm.tab_error(e))?;
+    pre.set_str(k, Value::Func(f))
+        .map_err(|e| vm.tab_error(e))?;
     Ok(())
 }
 
@@ -125,7 +152,11 @@ fn luaopen_jit_util(vm: &mut Vm) -> LuaResult<usize> {
         ("funcinfo", lj_cf_jit_util_funcinfo, FF_JIT_UTIL_FUNCINFO),
         ("funcbc", lj_cf_jit_util_funcbc, FF_JIT_UTIL_FUNCBC),
         ("funck", lj_cf_jit_util_funck, FF_JIT_UTIL_FUNCK),
-        ("funcuvname", lj_cf_jit_util_funcuvname, FF_JIT_UTIL_FUNCUVNAME),
+        (
+            "funcuvname",
+            lj_cf_jit_util_funcuvname,
+            FF_JIT_UTIL_FUNCUVNAME,
+        ),
     ];
     let t = new_module(vm, 4, funcs)?;
     vm.ret1(Value::Table(t))
@@ -135,7 +166,11 @@ fn luaopen_jit_profile(vm: &mut Vm) -> LuaResult<usize> {
     let funcs: &[LibFn] = &[
         ("start", lj_cf_jit_profile_start, FF_JIT_PROFILE_START),
         ("stop", lj_cf_jit_profile_stop, FF_JIT_PROFILE_STOP),
-        ("dumpstack", lj_cf_jit_profile_dumpstack, FF_JIT_PROFILE_DUMPSTACK),
+        (
+            "dumpstack",
+            lj_cf_jit_profile_dumpstack,
+            FF_JIT_PROFILE_DUMPSTACK,
+        ),
     ];
     let t = new_module(vm, 3, funcs)?;
     vm.ret1(Value::Table(t))
@@ -159,7 +194,9 @@ fn luajit_setmode(vm: &mut Vm, mode: i32) -> LuaResult<bool> {
         return Err(vm.err_caller(ErrMsg::NOGCMM));
     }
     Ok(match mode & LUAJIT_MODE_MASK {
-        LUAJIT_MODE_ENGINE | LUAJIT_MODE_FUNC | LUAJIT_MODE_ALLFUNC | LUAJIT_MODE_ALLSUBFUNC => mode & LUAJIT_MODE_ON == 0,
+        LUAJIT_MODE_ENGINE | LUAJIT_MODE_FUNC | LUAJIT_MODE_ALLFUNC | LUAJIT_MODE_ALLSUBFUNC => {
+            mode & LUAJIT_MODE_ON == 0
+        }
         _ => false,
     })
 }
@@ -218,14 +255,21 @@ fn lj_cf_jit_attach(vm: &mut Vm) -> LuaResult<usize> {
     let f = vm.check_func(1)?;
     let s = vm.opt_str(2)?;
     let reg = vm.registry;
-    let Some(t) = super::package::find_table(vm, reg, crate::vm::VMEVENTS_REGKEY.as_bytes(), LJ_VMEVENTS_HSIZE)? else {
+    let Some(t) = super::package::find_table(
+        vm,
+        reg,
+        crate::vm::VMEVENTS_REGKEY.as_bytes(),
+        LJ_VMEVENTS_HSIZE,
+    )?
+    else {
         return Ok(0);
     };
     vm.push(Value::Table(t));
     match s {
         Some(s) => {
             let idx = vmevent_hash(s.as_bytes());
-            t.set_int(idx, Value::Func(f)).map_err(|e| vm.tab_error(e))?;
+            t.set_int(idx, Value::Func(f))
+                .map_err(|e| vm.tab_error(e))?;
         }
         None => {
             let mut k = Value::Nil;
@@ -313,7 +357,12 @@ fn lj_cf_jit_util_funcinfo(vm: &mut Vm) -> LuaResult<usize> {
             let t = vm.new_table(0, crate::table::hsize2hbits(16))?;
             vm.push(Value::Table(t));
             setintfield(vm, t, "linedefined", pt.firstline as f64)?;
-            setintfield(vm, t, "lastlinedefined", pt.firstline.wrapping_add(pt.numline) as i32 as f64)?;
+            setintfield(
+                vm,
+                t,
+                "lastlinedefined",
+                pt.firstline.wrapping_add(pt.numline) as i32 as f64,
+            )?;
             setintfield(vm, t, "stackslots", pt.framesize as f64)?;
             setintfield(vm, t, "params", pt.numparams as f64)?;
             setintfield(vm, t, "bytecodes", pt.bc.len() as f64)?;
@@ -323,18 +372,31 @@ fn lj_cf_jit_util_funcinfo(vm: &mut Vm) -> LuaResult<usize> {
             if (pc as usize) < pt.bc.len() {
                 setintfield(vm, t, "currentline", debug_line(&pt, pc) as f64)?;
             }
-            setfield(vm, t, "isvararg", Value::Bool(pt.flags() & PROTO_VARARG != 0))?;
-            setfield(vm, t, "children", Value::Bool(pt.flags() & PROTO_CHILD != 0))?;
+            setfield(
+                vm,
+                t,
+                "isvararg",
+                Value::Bool(pt.flags() & PROTO_VARARG != 0),
+            )?;
+            setfield(
+                vm,
+                t,
+                "children",
+                Value::Bool(pt.flags() & PROTO_CHILD != 0),
+            )?;
             setfield(vm, t, "source", Value::Str(pt.chunkname))?;
             let loc = proto_loc(&pt, pc);
             let loc = Value::Str(vm.new_str(&loc));
             setfield(vm, t, "loc", loc)?;
             let k = vm.new_str(b"proto");
-            t.set_str(k, Value::Proto(pt)).map_err(|e| vm.tab_error(e))?;
+            t.set_str(k, Value::Proto(pt))
+                .map_err(|e| vm.tab_error(e))?;
             Ok(1)
         }
         None => {
-            let Value::Func(f) = vm.arg(1) else { unreachable!("checked function") };
+            let Value::Func(f) = vm.arg(1) else {
+                unreachable!("checked function")
+            };
             let t = vm.new_table(0, crate::table::hsize2hbits(4))?;
             vm.push(Value::Table(t));
             if f.ffid() != FF_C {
@@ -436,8 +498,14 @@ extern "C" fn profile_signal(_sig: libc::c_int) {
 fn profile_timer_start(interval: i32) {
     // SAFETY: plain libc calls with initialized structs; the handler only touches atomics.
     unsafe {
-        let tv = libc::timeval { tv_sec: (interval / 1000) as libc::time_t, tv_usec: ((interval % 1000) * 1000) as libc::suseconds_t };
-        let tm = libc::itimerval { it_interval: tv, it_value: tv };
+        let tv = libc::timeval {
+            tv_sec: (interval / 1000) as libc::time_t,
+            tv_usec: ((interval % 1000) * 1000) as libc::suseconds_t,
+        };
+        let tm = libc::itimerval {
+            it_interval: tv,
+            it_value: tv,
+        };
         libc::setitimer(libc::ITIMER_PROF, &tm, std::ptr::null_mut());
         let mut sa: libc::sigaction = std::mem::zeroed();
         sa.sa_flags = libc::SA_RESTART;
@@ -457,8 +525,14 @@ fn profile_timer_stop() {
     }
     // SAFETY: see `profile_timer_start`.
     unsafe {
-        let tv = libc::timeval { tv_sec: 0, tv_usec: 0 };
-        let tm = libc::itimerval { it_interval: tv, it_value: tv };
+        let tv = libc::timeval {
+            tv_sec: 0,
+            tv_usec: 0,
+        };
+        let tm = libc::itimerval {
+            it_interval: tv,
+            it_value: tv,
+        };
         libc::setitimer(libc::ITIMER_PROF, &tm, std::ptr::null_mut());
         if let Some(old) = PROF_OLDSA.lock().unwrap_or_else(|e| e.into_inner()).take() {
             libc::sigaction(libc::SIGPROF, &old, std::ptr::null_mut());
@@ -471,7 +545,9 @@ fn profile_timer_stop() {
 fn profile_interpreter(vm: &mut Vm) -> LuaResult<()> {
     let samples = PROF_SAMPLES.swap(0, Ordering::Relaxed);
     let vmstate = PROF_VMSTATE.load(Ordering::Relaxed);
-    let Some(mut cb) = PROF_CB.with(|c| c.borrow_mut().take()) else { return Ok(()) };
+    let Some(mut cb) = PROF_CB.with(|c| c.borrow_mut().take()) else {
+        return Ok(());
+    };
     let (oldh, oldev) = (vm.rt.hook.active, vm.rt.hook.vmevent);
     vm.rt.hook.active = true;
     vm.rt.hook.vmevent = true;
@@ -501,7 +577,9 @@ pub fn profile_start(vm: &mut Vm, mode: &[u8], cb: ProfileCallback) {
         if m == b'i' {
             interval = 0;
             while i < mode.len() && mode[i].is_ascii_digit() {
-                interval = interval.wrapping_mul(10).wrapping_add((mode[i] - b'0') as i32);
+                interval = interval
+                    .wrapping_mul(10)
+                    .wrapping_add((mode[i] - b'0') as i32);
                 i += 1;
             }
             if interval <= 0 {
@@ -589,7 +667,11 @@ pub fn profile_dumpstack(vm: &mut Vm, th: Gc<Thread>, fmt: &[u8], depth: i32) ->
                             }
                             if let Some(pt) = f.proto() {
                                 if putchunkname(&mut sb, &pt, pathstrip) {
-                                    let line = if c == b'l' { frameline(th, fr.idx) } else { pt.firstline as i32 };
+                                    let line = if c == b'l' {
+                                        frameline(th, fr.idx)
+                                    } else {
+                                        pt.firstline as i32
+                                    };
                                     let line = if line >= 0 { line } else { pt.firstline as i32 };
                                     sb.push(b':');
                                     sb.extend_from_slice(line.to_string().as_bytes());
@@ -629,14 +711,18 @@ fn key_profile_func() -> Value {
 /// `callback(thread, samples, vmstate)`; an error is fatal (panic message, exit).
 fn jit_profile_callback(vm: &mut Vm, samples: i32, vmstate: u8) {
     let f = vm.registry.get(key_profile_func());
-    let Value::Thread(l2) = vm.registry.get(key_profile_thread()) else { return };
+    let Value::Thread(l2) = vm.registry.get(key_profile_thread()) else {
+        return;
+    };
     if !matches!(f, Value::Func(_)) {
         return;
     }
     let l = vm.cur_thread;
     let st = vm.new_str(&[vmstate]);
     let top = l2.top();
-    if l2.max_stack().saturating_sub(top) < crate::thread::LJ_STACK_MIN && vm.grow_stack(l2, crate::thread::LJ_STACK_MIN).is_err() {
+    if l2.max_stack().saturating_sub(top) < crate::thread::LJ_STACK_MIN
+        && vm.grow_stack(l2, crate::thread::LJ_STACK_MIN).is_err()
+    {
         return;
     }
     l2.set(top, f);

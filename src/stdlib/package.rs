@@ -30,9 +30,9 @@ const SYMPREFIX_CF: &[u8] = b"luaopen_";
 const SYMPREFIX_BC: &[u8] = b"luaJIT_BC_";
 
 /// `LUA_PATH_DEFAULT` / `LUA_CPATH_DEFAULT` of a default POSIX build (luaconf.h).
-pub const LUA_PATH_DEFAULT: &str =
-    "./?.lua;/usr/local/share/luajit-2.1/?.lua;/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua";
-pub const LUA_CPATH_DEFAULT: &str = "./?.so;/usr/local/lib/lua/5.1/?.so;/usr/local/lib/lua/5.1/loadall.so";
+pub const LUA_PATH_DEFAULT: &str = "./?.lua;/usr/local/share/luajit-2.1/?.lua;/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua";
+pub const LUA_CPATH_DEFAULT: &str =
+    "./?.so;/usr/local/lib/lua/5.1/?.so;/usr/local/lib/lua/5.1/loadall.so";
 /// `LUA_PATH_CONFIG`.
 const LUA_PATH_CONFIG: &str = "/\n;\n?\n!\n-\n";
 /// `LUA_LJDIR`: where the `jit.*` modules are installed upstream; embedded modules get
@@ -53,7 +53,9 @@ pub fn open_package(vm: &mut Vm) -> LuaResult<()> {
     // luaL_newmetatable(L, "_LOADLIB") with __gc = unloadlib.
     let mt = vm.new_table(0, crate::table::hsize2hbits(2))?;
     let k = vm.new_str(b"_LOADLIB");
-    vm.registry.set_str(k, Value::Table(mt)).map_err(|e| vm.tab_error(e))?;
+    vm.registry
+        .set_str(k, Value::Table(mt))
+        .map_err(|e| vm.tab_error(e))?;
     let gc = super::new_lib_fn(vm, lj_cf_package_unloadlib, FF_C, vec![]);
     let k = vm.new_str(b"__gc");
     vm.setindex(Value::Table(mt), Value::Str(k), Value::Func(gc))?;
@@ -66,11 +68,17 @@ pub fn open_package(vm: &mut Vm) -> LuaResult<()> {
     let pkg = register_lib(vm, "package", funcs)?;
     // From here on the "current environment" of luaopen_package is the package table.
     let loaders = vm.new_table(4, 0)?;
-    let lf: [crate::func::NativeFn; 4] =
-        [lj_cf_package_loader_preload, lj_cf_package_loader_lua, lj_cf_package_loader_c, lj_cf_package_loader_croot];
+    let lf: [crate::func::NativeFn; 4] = [
+        lj_cf_package_loader_preload,
+        lj_cf_package_loader_lua,
+        lj_cf_package_loader_c,
+        lj_cf_package_loader_croot,
+    ];
     for (i, f) in lf.into_iter().enumerate() {
         let f = vm.new_native(NativeImpl::Rust(f), FF_C, vec![], pkg);
-        loaders.set_int(i as i32 + 1, Value::Func(f)).map_err(|e| vm.tab_error(e))?;
+        loaders
+            .set_int(i as i32 + 1, Value::Func(f))
+            .map_err(|e| vm.tab_error(e))?;
     }
     set_field(vm, pkg, b"loaders", Value::Table(loaders))?;
     let k = vm.new_str(b"LUA_NOENV");
@@ -85,7 +93,10 @@ pub fn open_package(vm: &mut Vm) -> LuaResult<()> {
     let preload = find_table(vm, reg, b"_PRELOAD", 4)?.expect("registry._PRELOAD");
     set_field(vm, pkg, b"preload", Value::Table(preload))?;
     let g = vm.cur_thread.env();
-    for (name, f) in [("module", lj_cf_package_module as crate::func::NativeFn), ("require", lj_cf_package_require)] {
+    for (name, f) in [
+        ("module", lj_cf_package_module as crate::func::NativeFn),
+        ("require", lj_cf_package_require),
+    ] {
         let f = vm.new_native(NativeImpl::Rust(f), FF_C, vec![], pkg);
         set_field(vm, g, name.as_bytes(), Value::Func(f))?;
     }
@@ -122,7 +133,12 @@ fn gsub(s: &[u8], p: &[u8], r: &[u8]) -> Vec<u8> {
 
 /// `luaL_findtable(L, t, fname, szhint)`: walk/create the dotted path `fname` below `t`.
 /// Returns `None` if a component holds a non-table value.
-pub fn find_table(vm: &mut Vm, t: Gc<Table>, fname: &[u8], szhint: u32) -> LuaResult<Option<Gc<Table>>> {
+pub fn find_table(
+    vm: &mut Vm,
+    t: Gc<Table>,
+    fname: &[u8],
+    szhint: u32,
+) -> LuaResult<Option<Gc<Table>>> {
     let mut t = t;
     let mut rest = fname;
     loop {
@@ -175,7 +191,11 @@ pub fn push_module(vm: &mut Vm, modname: &[u8], sizehint: u32) -> LuaResult<Gc<T
 fn dlerror_bytes() -> Vec<u8> {
     // SAFETY: dlerror returns NULL or a valid C string.
     let e = unsafe { libc::dlerror() };
-    if e.is_null() { Vec::new() } else { unsafe { CStr::from_ptr(e) }.to_bytes().to_vec() }
+    if e.is_null() {
+        Vec::new()
+    } else {
+        unsafe { CStr::from_ptr(e) }.to_bytes().to_vec()
+    }
 }
 
 fn c_string(s: &[u8]) -> CString {
@@ -185,10 +205,19 @@ fn c_string(s: &[u8]) -> CString {
 /// `ll_load`.
 fn ll_load(path: &[u8], global: bool) -> Result<*mut c_void, Vec<u8>> {
     let p = c_string(path);
-    let flags = libc::RTLD_NOW | if global { libc::RTLD_GLOBAL } else { libc::RTLD_LOCAL };
+    let flags = libc::RTLD_NOW
+        | if global {
+            libc::RTLD_GLOBAL
+        } else {
+            libc::RTLD_LOCAL
+        };
     // SAFETY: valid C string.
     let lib = unsafe { libc::dlopen(p.as_ptr(), flags) };
-    if lib.is_null() { Err(dlerror_bytes()) } else { Ok(lib) }
+    if lib.is_null() {
+        Err(dlerror_bytes())
+    } else {
+        Ok(lib)
+    }
 }
 
 /// `ll_sym`.
@@ -207,7 +236,11 @@ fn ll_sym(lib: *mut c_void, sym: &[u8]) -> Result<CFunction, Vec<u8>> {
 /// `ll_bcsym`: address of embedded bytecode `sym` in `lib` (NULL = the program).
 fn ll_bcsym(lib: *mut c_void, sym: &[u8]) -> *const u8 {
     let s = c_string(sym);
-    let lib = if lib.is_null() { libc::RTLD_DEFAULT } else { lib };
+    let lib = if lib.is_null() {
+        libc::RTLD_DEFAULT
+    } else {
+        lib
+    };
     // SAFETY: valid handle or RTLD_DEFAULT.
     unsafe { libc::dlsym(lib, s.as_ptr()) as *const u8 }
 }
@@ -281,7 +314,9 @@ fn ll_register(vm: &mut Vm, path: &[u8]) -> LuaResult<Gc<crate::udata::Userdata>
     let mt = vm.registry.get_str(k);
     u.set_metatable(mt.as_table());
     vm.push(Value::Udata(u));
-    vm.registry.set_str(key, Value::Udata(u)).map_err(|e| vm.tab_error(e))?;
+    vm.registry
+        .set_str(key, Value::Udata(u))
+        .map_err(|e| vm.tab_error(e))?;
     vm.pop();
     vm.pop();
     Ok(u)
@@ -301,7 +336,12 @@ fn mksymname(modname: &[u8], prefix: &[u8]) -> Vec<u8> {
 
 /// `ll_loadfunc`: on success pushes the function (or `true` for `*`), on error returns the
 /// error code and message.
-fn ll_loadfunc(vm: &mut Vm, path: &[u8], name: &[u8], r: bool) -> LuaResult<Result<(), (i32, Value)>> {
+fn ll_loadfunc(
+    vm: &mut Vm,
+    path: &[u8],
+    name: &[u8],
+    r: bool,
+) -> LuaResult<Result<(), (i32, Value)>> {
     if cstr(path).len() >= 4096 {
         let m = vm.new_str(b"path too long");
         return Ok(Err((PACKAGE_ERR_LIB, Value::Str(m))));
@@ -327,7 +367,11 @@ fn ll_loadfunc(vm: &mut Vm, path: &[u8], name: &[u8], r: bool) -> LuaResult<Resu
         vm.push(Value::Bool(true));
         return Ok(Ok(()));
     }
-    let sym = if r { cstr(name).to_vec() } else { mksymname(name, SYMPREFIX_CF) };
+    let sym = if r {
+        cstr(name).to_vec()
+    } else {
+        mksymname(name, SYMPREFIX_CF)
+    };
     match ll_sym(lib, &sym) {
         Ok(f) => {
             let env = vm.current_env();
@@ -367,7 +411,11 @@ fn lj_cf_package_loadlib(vm: &mut Vm) -> LuaResult<usize> {
         Err((st, msg)) => {
             vm.push(Value::Nil);
             vm.push(msg);
-            vm.push_str(if st == PACKAGE_ERR_LIB { PACKAGE_LIB_FAIL } else { b"init" });
+            vm.push_str(if st == PACKAGE_ERR_LIB {
+                PACKAGE_LIB_FAIL
+            } else {
+                b"init"
+            });
             Ok(3)
         }
     }
@@ -378,7 +426,11 @@ fn lj_cf_package_unloadlib(vm: &mut Vm) -> LuaResult<usize> {
     let k = vm.new_str(b"_LOADLIB");
     let mt = vm.registry.get_str(k);
     let u = match vm.arg(1) {
-        Value::Udata(u) if vm.nargs() >= 1 && mt.as_table().is_some() && u.metatable() == mt.as_table() => u,
+        Value::Udata(u)
+            if vm.nargs() >= 1 && mt.as_table().is_some() && u.metatable() == mt.as_table() =>
+        {
+            u
+        }
         _ => return Err(vm.type_error(1, "_LOADLIB")),
     };
     let slot = lib_slot(&u);
@@ -411,7 +463,11 @@ fn searchpath(name: &[u8], path: &[u8], sep: &[u8], dirsep: &[u8]) -> Result<Vec
     let mut msg = Vec::new();
     let name = cstr(name);
     let (sep, dirsep) = (cstr(sep), cstr(dirsep));
-    let name = if !sep.is_empty() { gsub(name, sep, dirsep) } else { name.to_vec() };
+    let name = if !sep.is_empty() {
+        gsub(name, sep, dirsep)
+    } else {
+        name.to_vec()
+    };
     let path = cstr(path);
     for tmpl in path.split(|&c| c == b';').filter(|t| !t.is_empty()) {
         let filename = gsub(tmpl, b"?", &name);
@@ -427,8 +483,12 @@ fn searchpath(name: &[u8], path: &[u8], sep: &[u8], dirsep: &[u8]) -> Result<Vec
 
 fn lj_cf_package_searchpath(vm: &mut Vm) -> LuaResult<usize> {
     // Upstream checks these as arguments of one C call, which GCC evaluates right to left.
-    let dirsep = vm.opt_str(4)?.map_or_else(|| b"/".to_vec(), |s| s.as_bytes().to_vec());
-    let sep = vm.opt_str(3)?.map_or_else(|| b".".to_vec(), |s| s.as_bytes().to_vec());
+    let dirsep = vm
+        .opt_str(4)?
+        .map_or_else(|| b"/".to_vec(), |s| s.as_bytes().to_vec());
+    let sep = vm
+        .opt_str(3)?
+        .map_or_else(|| b".".to_vec(), |s| s.as_bytes().to_vec());
     let path = vm.check_str(2)?;
     let name = vm.check_str(1)?;
     match searchpath(name.as_bytes(), path.as_bytes(), &sep, &dirsep) {
@@ -459,11 +519,15 @@ fn findfile(vm: &mut Vm, name: &[u8], pname: &str) -> LuaResult<Result<Vec<u8>, 
 fn loaderror(vm: &mut Vm, filename: &[u8], err: Value) -> crate::error::LuaError {
     let a1 = vm.arg(1);
     let mut m = b"error loading module '".to_vec();
-    m.extend_from_slice(cstr(&vm.tostring_opt(a1).unwrap_or_else(|| b"(null)".to_vec())));
+    m.extend_from_slice(cstr(
+        &vm.tostring_opt(a1).unwrap_or_else(|| b"(null)".to_vec()),
+    ));
     m.extend_from_slice(b"' from file '");
     m.extend_from_slice(cstr(filename));
     m.extend_from_slice(b"':\n\t");
-    m.extend_from_slice(cstr(&vm.tostring_opt(err).unwrap_or_else(|| b"(null)".to_vec())));
+    m.extend_from_slice(cstr(
+        &vm.tostring_opt(err).unwrap_or_else(|| b"(null)".to_vec()),
+    ));
     vm.rt_error(&m)
 }
 
@@ -472,7 +536,8 @@ fn lj_cf_package_loader_lua(vm: &mut Vm) -> LuaResult<usize> {
     let filename = match findfile(vm, name.as_bytes(), "path")? {
         Ok(f) => f,
         Err(m) => {
-            if let Some((src, file)) = super::jit::embedded_jit_module_entry(cstr(name.as_bytes())) {
+            if let Some((src, file)) = super::jit::embedded_jit_module_entry(cstr(name.as_bytes()))
+            {
                 let mut cn = b"@".to_vec();
                 cn.extend_from_slice(LUA_LJDIR.as_bytes());
                 cn.extend_from_slice(file.as_bytes());
@@ -521,7 +586,9 @@ fn lj_cf_package_loader_c(vm: &mut Vm) -> LuaResult<usize> {
 fn lj_cf_package_loader_croot(vm: &mut Vm) -> LuaResult<usize> {
     let name = vm.check_str(1)?;
     let nb = cstr(name.as_bytes());
-    let Some(p) = nb.iter().position(|&c| c == b'.') else { return Ok(0) };
+    let Some(p) = nb.iter().position(|&c| c == b'.') else {
+        return Ok(0);
+    };
     let root = nb[..p].to_vec();
     vm.push_str(&root);
     let filename = match findfile(vm, &root, "cpath")? {
@@ -561,7 +628,10 @@ fn lj_cf_package_loader_preload(vm: &mut Vm) -> LuaResult<usize> {
     if !v.is_nil() {
         return vm.ret1(v);
     }
-    let bc = ll_bcsym(std::ptr::null_mut(), &mksymname(name.as_bytes(), SYMPREFIX_BC));
+    let bc = ll_bcsym(
+        std::ptr::null_mut(),
+        &mksymname(name.as_bytes(), SYMPREFIX_BC),
+    );
     if !bc.is_null() {
         match load_bcdata(vm, bc, name.as_bytes()) {
             Ok(f) => return vm.ret1(Value::Func(f)),
@@ -704,7 +774,14 @@ fn lj_cf_package_seeall(vm: &mut Vm) -> LuaResult<usize> {
 
 /// `setpath`: `package[field]` from environment variable `envname` (`;;` expands to the
 /// default) or the default.
-fn setpath(vm: &mut Vm, pkg: Gc<Table>, field: &[u8], envname: &str, def: &str, noenv: bool) -> LuaResult<()> {
+fn setpath(
+    vm: &mut Vm,
+    pkg: Gc<Table>,
+    field: &[u8],
+    envname: &str,
+    def: &str,
+    noenv: bool,
+) -> LuaResult<()> {
     let path = std::env::var_os(envname);
     let v = match path {
         Some(p) if !noenv => {
