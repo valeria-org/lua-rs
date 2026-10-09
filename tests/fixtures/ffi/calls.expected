@@ -33,3 +33,7 @@ false	calls.lua:80: cannot convert 'nil' to 'int'
 4ULL	ctype<uint64_t (*)()>	ctype<uint64_t ()>
 true
 true
+5
+2
+9	9	7
+2
