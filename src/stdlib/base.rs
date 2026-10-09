@@ -538,10 +538,11 @@ fn lj_cf_newproxy(vm: &mut Vm) -> LuaResult<usize> {
 fn lj_cf_print(vm: &mut Vm) -> LuaResult<usize> {
     let nargs = vm.nargs();
     let Value::Str(key) = vm.upvalue(1) else { unreachable!("print upvalue") };
-    let mut tv = vm.cur_thread.env().get_str(key);
+    // `L->env` is the running thread's environment, and LUA_GLOBALSINDEX resolves to it too.
+    let env = vm.cur_thread.env();
+    let mut tv = env.get_str(key);
     if tv.is_nil() {
-        let g = Value::Table(vm.globals);
-        tv = vm.index(g, Value::Str(key))?;
+        tv = vm.index(Value::Table(env), Value::Str(key))?;
     }
     vm.push(tv);
     let shortcut = matches!(tv, Value::Func(f) if f.ffid() == FF_TOSTRING) && vm.basemt(crate::value::VType::Num).is_none();
