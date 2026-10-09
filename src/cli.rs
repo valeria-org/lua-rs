@@ -256,7 +256,7 @@ fn load_err(e: crate::error::LuaError) -> Value {
 fn dofile(vm: &mut Vm, name: Option<&[u8]>) -> Status {
     let r = match vm.load_file(name, None) {
         Ok(f) => {
-            vm.push(Value::Func(f));
+            vm.push(f);
             docall(vm, 0, true)
         }
         Err(e) => Err(load_err(e)),
@@ -267,7 +267,7 @@ fn dofile(vm: &mut Vm, name: Option<&[u8]>) -> Status {
 fn dostring(vm: &mut Vm, s: &[u8], name: &[u8]) -> Status {
     let r = match vm.load(s, name, None) {
         Ok(f) => {
-            vm.push(Value::Func(f));
+            vm.push(f);
             docall(vm, 0, true)
         }
         Err(e) => Err(load_err(e)),
@@ -335,7 +335,7 @@ fn loadline(vm: &mut Vm) -> LuaResult<Option<Result<(), Value>>> {
     loop {
         match vm.load(&buf, b"=stdin", None) {
             Ok(f) => {
-                vm.push(Value::Func(f));
+                vm.push(f);
                 return Ok(Some(Ok(())));
             }
             Err(e) if incomplete(&e) => {
@@ -392,7 +392,7 @@ fn handle_script(vm: &mut Vm, argn: usize) -> LuaResult<Status> {
     let stdin = fname == b"-" && prev != b"--";
     let r = match vm.load_file(if stdin { None } else { Some(&fname) }, None) {
         Ok(f) => {
-            vm.push(Value::Func(f));
+            vm.push(f);
             // Fetch args from arg table. LUA_INIT or -e might have changed them.
             let g = Value::Table(vm.globals);
             let a = getfield(vm, g, b"arg")?;

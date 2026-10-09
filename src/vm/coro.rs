@@ -128,7 +128,7 @@ impl Vm {
             Err(e) => {
                 co.set_status(ThreadStatus::Dead);
                 // The error ends here; raising it again (wrap) is a new error.
-                self.rt.thrown = None;
+                self.rt_clear_thrown();
                 Ok(Err(e.value))
             }
         }

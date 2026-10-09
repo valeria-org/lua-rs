@@ -1,0 +1,17 @@
+# name | environment (KEY=VALUE,...) | arguments (whitespace separated); stdin from <name>.stdin
+errmsg | | src/errmsg.lua
+numfmt | | src/numfmt.lua
+patterns | | src/patterns.lua
+coro | | src/coro.lua
+syntax | | src/syntax.lua
+ffi | | src/ffi.lua
+loadreader | | src/loadreader.lua
+iolib | CONFORM_VAR=set,TZ=UTC | src/iolib.lua
+bc_c | | -b -g -d -n conform.mod -t c src/syntax.lua -
+bc_h_nongc64 | | -b -W -g -d -t h src/coro.lua -
+bc_cc_strip | | -b -s -d -t cc src/numfmt.lua -
+bc_e | | -b -d -t c -e x=1 -
+bc_list | | -bl src/patterns.lua
+bc_list_nongc64 | | -b -l -W src/loadreader.lua
+bc_badtype | | -b -t zip src/errmsg.lua out
+repl | | -i

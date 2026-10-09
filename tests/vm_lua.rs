@@ -176,7 +176,7 @@ fn pmain(vm: &mut Vm) -> LuaResult<usize> {
     vm.push(Value::Func(h));
     let hslot = vm.cur_thread.top() - 1;
     let f = vm.load(src.as_bytes(), name.as_bytes(), None)?;
-    vm.push(Value::Func(f));
+    vm.push(f);
     vm.pcall(0, 0, Some(hslot))?;
     Ok(0)
 }

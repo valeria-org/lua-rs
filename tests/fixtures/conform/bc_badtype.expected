@@ -1,0 +1,3 @@
+--- stderr
+luajit: unknown file type
+--- exit 1

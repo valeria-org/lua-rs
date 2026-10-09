@@ -1,0 +1,61 @@
+1 2 3 
+11 21 31 
+1 2 3
+1 3 5 
+w1 w2 w4 w5 
+r1 r3 r4 
+1a 3c 
+1 7 6 -6 16 16 268435440 -16 -2147483648 1
+255 5 2 false src/syntax.lua:61: attempt to perform arithmetic on a string value
+false [string "return {} & 1"]:1: attempt to perform arithmetic on a table value
+false [string "local t = {} return t | 1"]:1: attempt to perform arithmetic on local 't' (a table value)
+true true false false x true false false
+yes no no yes
+3 3
+big small
+42 nil 42
+nil false nil nil
+7 STR false attempt to call a nil value
+false src/syntax.lua:78: attempt to index a nil value
+default false 0 fallback 3
+1 0
+2
+xy1
+206
+10 100
+2 1
+42 x 1
+nil [string "const k = 1; k = 2"]:1: attempt to assign to const variable 'k'
+nil [string "const k = 1; local function f() k = 3 end"]:1: attempt to assign to const variable 'k'
+25 5 nil i
+21
+a!,b!
+3 2 1
+1000000 65535 10.5 10000000000 170
+HI 2 3 4 nil [string "return '\u{7FFFFFFF}'"]:1: invalid escape sequence near '''
+x = 1 ? 2 src:1: ':' expected near '<eof>'
+x = a?. src:1: '<name>' expected near '<eof>'
+x = 1 ??  src:1: unexpected symbol near '<eof>'
+a, b += 1 src:1: '=' expected near '+'
+local x += 1 src:1: unexpected symbol near '+'
+continue src:1: no loop to continue
+goto nowhere src:1: undefined label 'nowhere'
+do ::l:: ::l:: end src:1: duplicate label 'l'
+for i=1,2 do local x goto l; local y ::l:: print(y) end src:1: <goto l> jumps into the scope of local 'y'
+x = |a -> a src:1: '|' expected near '->'
+x = 0x_ src:1: malformed number near '0x'
+x = 1__0 ok
+x = '\u{110000000}' src:1: invalid escape sequence near '''
+x = '\u{}' src:1: invalid escape sequence near '''
+const x ok
+x = 1 ~= 2 ~= 3 ok
+break src:1: no loop to break
+return return src:1: unexpected symbol near 'return'
+x = y?:z src:1: unexpected symbol near ':'
+a?.b = 1 ok
+f() = 1 src:1: unexpected symbol near '='
+x = 1 <<  src:1: unexpected symbol near '<eof>'
+local function f() continue end src:1: no loop to continue
+repeat local x continue until x ok
+while true do local function g() continue end end src:1: no loop to continue
+--- exit 0

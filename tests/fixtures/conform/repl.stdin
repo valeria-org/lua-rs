@@ -1,0 +1,15 @@
+x = 10
+=x * 2
+print(x,
+  x + 1)
+local y = 5 return y
+for i = 1, 2 do
+print(i)
+end
+error("boom")
+error({})
+x = = 1
+a?.b
+= 1 ? "t" : "f"
+undefinedfn()
+os.exit(3)

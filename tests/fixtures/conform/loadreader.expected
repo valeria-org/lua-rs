@@ -1,0 +1,28 @@
+161	162	54	23	1	ok
+22	23	11	5	ok
+21	163	164	(load): cannot load malformed bytecode
+9	2	6	ok
+13	ok
+12	(load):1: '=' expected near '1'
+5	ok
+2	(load):1: unexpected symbol near '*'
+6	(load):1: unexpected symbol near '='
+true	nil	reader function must return a string
+nil	(load):1: unexpected symbol near '='
+true	nil	src/loadreader.lua:24: boom
+proto	true	nil	y: cannot load incompatible bytecode
+nil	attempt to load chunk with wrong mode
+1	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+1	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+1	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+2	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+2	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+2	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+7	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+7	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+7	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+64	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+64	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+64	strAB2exyes	5	three	n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20	5LL	0+2i
+404
+--- exit 0

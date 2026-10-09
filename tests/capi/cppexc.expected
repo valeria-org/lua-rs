@@ -1,0 +1,24 @@
+2	true	foo
+2	true	idx
+3	true	false	C++ exception
+2	false	C++ exception
+2	false	C++ exception
+3	true	false	C++ exception
+1	dead
+3	true	false	C++ exception
+1	dead
+2	true	catch ...
+2	true	sort
+2	true	gsub
+2	true	ts
+2	true	inner
+2	false	false
+2	false	false
+6	164	312	428	3696	404	404
+10
+1	4
+2	true	catch ...
+2	true	catch ...
+2	true	hook
+done
+[exit 0]

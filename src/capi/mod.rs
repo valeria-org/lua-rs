@@ -178,6 +178,9 @@ pub struct CApiGlobal {
     pub(crate) allocd: *mut c_void,
     /// Number of active catch points for C API errors (calls into C made by the VM).
     catchers: u32,
+    /// Foreign exception caught by a catch point whose `C++ exception` error is still
+    /// unwinding Lua frames (re-raised by [`throw`]; deleted when the error is consumed).
+    pub(crate) foreign: Option<unwind::Foreign>,
     /// C hook installed with `lua_sethook`.
     pub(crate) hook: Option<lua_Hook>,
     /// `LUAJIT_MODE_WRAPCFUNC` wrapper and whether it is enabled.
@@ -199,6 +202,7 @@ impl Default for CApiGlobal {
             allocf: None,
             allocd: std::ptr::null_mut(),
             catchers: 0,
+            foreign: None,
             hook: None,
             wrapf: None,
             wrap_on: false,
@@ -259,9 +263,19 @@ pub(crate) unsafe fn api<R>(L: *mut lua_State, f: impl FnOnce(&mut Vm, Gc<Thread
 }
 
 /// Raise `e` in C code: unwind to the innermost catch point, or call the panic function and
-/// exit if there is none (`lj_err_throw` without a C frame to unwind to).
+/// exit if there is none (`lj_err_throw` without a C frame to unwind to). If `e` is the error of
+/// a foreign exception that no Lua catch point consumed, that exception is raised again.
 pub(crate) fn throw(vm: &mut Vm, e: LuaError) -> ! {
-    let e = if vm.rt.capi.catchers > 0 { unwind::raise(e) } else { e };
+    if vm.rt.capi.catchers > 0 {
+        if e.kind == ErrorKind::Run
+            && vm.rt.thrown.is_some_and(|t| t.raw_equal(e.value))
+            && let Some(x) = vm.rt.capi.foreign.take()
+        {
+            drop(x.reraise());
+        } else {
+            unwind::raise(e);
+        }
+    }
     let th = vm.cur_thread;
     vm.push(e.value);
     if let Some(p) = vm.rt.capi.panic {
@@ -274,7 +288,8 @@ pub(crate) fn throw(vm: &mut Vm, e: LuaError) -> ! {
 
 /// Run `f` (which calls into C) as a catch point: a C API error raised inside comes back as
 /// `Err`; a foreign exception (C++) becomes the error `C++ exception` (`LJ_ERR_ERRCPP`, no
-/// error handler applied, as upstream). Rust panics keep unwinding.
+/// error handler applied, as upstream), keeping the exception for [`throw`]. Rust panics keep
+/// unwinding.
 pub(crate) fn protect<R>(vm: &mut Vm, f: impl FnOnce() -> R) -> LuaResult<R> {
     vm.rt.capi.catchers += 1;
     refresh(vm);
@@ -283,9 +298,10 @@ pub(crate) fn protect<R>(vm: &mut Vm, f: impl FnOnce() -> R) -> LuaResult<R> {
     match r {
         Ok(v) => Ok(v),
         Err(unwind::Caught::Lua(e)) => Err(e),
-        Err(unwind::Caught::Foreign) => {
+        Err(unwind::Caught::Foreign(x)) => {
             let v = Value::Str(vm.new_str(b"C++ exception"));
             vm.rt.thrown = Some(v);
+            vm.rt.capi.foreign = Some(x);
             Err(LuaError::new(ErrorKind::Run, v))
         }
     }
