@@ -41,10 +41,14 @@ pub const VMSTATE_GC: u8 = b'G';
 /// Current VM state (`setvmstate`), read by the profiler's timer.
 pub static VMSTATE: AtomicU8 = AtomicU8::new(VMSTATE_C);
 
-/// `setvmstate`: returns the previous state.
+/// `setvmstate`: returns the previous state. Only the VM thread writes the state (the profiler
+/// timer only reads it), so a plain load/store pair suffices and avoids a locked `xchg` on
+/// every native call.
 #[inline]
 pub(crate) fn set_vmstate(st: u8) -> u8 {
-    VMSTATE.swap(st, Ordering::Relaxed)
+    let old = VMSTATE.load(Ordering::Relaxed);
+    VMSTATE.store(st, Ordering::Relaxed);
+    old
 }
 
 /// Builtin ids of upstream's assembler fast functions (`LJLIB_ASM`/`LJLIB_ASM_` in lib_*.c):

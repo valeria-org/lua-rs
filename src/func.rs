@@ -381,6 +381,14 @@ impl Function {
             Function::Native { .. } => None,
         }
     }
+    /// Upvalue objects of a Lua function (empty for natives).
+    #[inline]
+    pub fn lua_upvals(&self) -> &[Cell<Gc<UpVal>>] {
+        match self {
+            Function::Lua { upvals, .. } => upvals,
+            Function::Native { .. } => &[],
+        }
+    }
     /// Replace upvalue object `i` of a Lua function (`debug.upvaluejoin`).
     pub fn set_upval(&self, i: usize, uv: Gc<UpVal>) {
         if let Function::Lua { upvals, .. } = self {

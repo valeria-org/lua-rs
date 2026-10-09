@@ -40,10 +40,28 @@ pub fn arith_op(mm: MM, x: f64, y: f64) -> f64 {
     }
 }
 
+/// `lj_vm_floor` (`vm_floor_sse`): `floor` with SSE2 arithmetic only. Without SSE4.1 (the
+/// baseline x86-64 target) `f64::floor` is a libm call. Exact for all inputs; relies on the
+/// default round-to-nearest mode like upstream.
+#[inline]
+pub fn floor(x: f64) -> f64 {
+    const TWO52: f64 = 4503599627370496.0;
+    let ax = x.abs();
+    if !(ax < TWO52) {
+        return x; // Integral, infinite or NaN.
+    }
+    let sign = x.to_bits() & (1 << 63);
+    let mut r = f64::from_bits(((ax + TWO52) - TWO52).to_bits() | sign);
+    if r > x {
+        r -= 1.0;
+    }
+    f64::from_bits(r.to_bits() | sign)
+}
+
 /// `lj_vm_modi` / `vm_mod`: `a - floor(a/b)*b`.
 #[inline]
 pub fn modf(a: f64, b: f64) -> f64 {
-    a - (a / b).floor() * b
+    a - floor(a / b) * b
 }
 
 /// `lj_num2bit`: number to 32-bit integer for bit operations (round-to-nearest-even via the
@@ -421,5 +439,50 @@ impl Vm {
             }
         }
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::floor;
+
+    #[test]
+    fn floor_matches_libm() {
+        let mut xs = vec![
+            0.0,
+            -0.0,
+            0.5,
+            -0.5,
+            1.0,
+            -1.0,
+            2.5,
+            -2.5,
+            2.7,
+            -2.7,
+            1e-300,
+            -1e-300,
+            4503599627370495.5,
+            -4503599627370495.5,
+            4503599627370496.0,
+            -4503599627370497.0,
+            1e300,
+            f64::INFINITY,
+            f64::NEG_INFINITY,
+            f64::MIN_POSITIVE,
+            -f64::MIN_POSITIVE,
+        ];
+        let mut s = 0x1234_5678_9abc_def0u64;
+        for _ in 0..100_000 {
+            s ^= s << 13;
+            s ^= s >> 7;
+            s ^= s << 17;
+            xs.push(f64::from_bits(s));
+            xs.push((s % 2_000_001) as f64 / 1000.0 - 1000.0);
+        }
+        // NaNs are returned unchanged (like upstream), so only their NaN-ness is compared.
+        for x in xs.into_iter().filter(|x| !x.is_nan()) {
+            assert_eq!(floor(x).to_bits(), x.floor().to_bits(), "floor({x:e})");
+        }
+        assert!(floor(f64::NAN).is_nan());
     }
 }

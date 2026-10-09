@@ -169,6 +169,7 @@ impl Inner {
         Ok(())
     }
 
+    #[inline]
     fn find_int(&self, key: i32) -> Option<u32> {
         if self.node.is_empty() {
             return None;
@@ -189,6 +190,7 @@ impl Inner {
         }
     }
 
+    #[inline]
     fn find_str(&self, key: Gc<LuaStr>) -> Option<u32> {
         if self.node.is_empty() {
             return None;
@@ -234,6 +236,7 @@ impl Inner {
         }
     }
 
+    #[inline]
     fn get(&self, key: Value) -> Value {
         let n = match key {
             Value::Str(s) => self.find_str(s),
@@ -704,6 +707,48 @@ impl Table {
     pub fn get_str(&self, key: Gc<LuaStr>) -> Value {
         let t = self.inner();
         t.find_str(key).map_or(Value::Nil, |n| t.node[n as usize].val)
+    }
+    /// `lj_tab_getinth` / `lj_tab_get` for a number key.
+    #[inline]
+    pub fn get_num(&self, key: f64) -> Value {
+        match num2int_check(key) {
+            Some(k) => self.inner().get_int(k),
+            None => self.inner().get(Value::Num(key)),
+        }
+    }
+
+    /// Store fast path of the interpreter (`BC_TSETV`/`BC_TSETB` with an array key): store
+    /// `val` into array slot `k` if it exists and its old value is not nil or `nil_ok()` (no
+    /// `__newindex`) holds. Returns false, storing nothing, otherwise.
+    #[inline]
+    pub fn store_array(&self, k: u32, val: Value, nil_ok: impl FnOnce() -> bool) -> bool {
+        let Some(&old) = self.inner().array.get(k as usize) else { return false };
+        if !old.is_nil() || nil_ok() {
+            // SAFETY: short-lived exclusive access. `nil_ok` may read tables (even this one)
+            // but never resizes them, so slot `k` still exists. The size does not change, so
+            // there is nothing to report to the GC.
+            unsafe { (&mut *self.inner.get()).array[k as usize] = val };
+            true
+        } else {
+            false
+        }
+    }
+
+    /// Store fast path of the interpreter for a string key (`BC_TSETS`): store `val` into the
+    /// existing node of `key` if its old value is not nil or `nil_ok()` (no `__newindex`)
+    /// holds, and clear the metamethod cache. Returns false, storing nothing, otherwise.
+    #[inline]
+    pub fn store_str(&self, key: Gc<LuaStr>, val: Value, nil_ok: impl FnOnce() -> bool) -> bool {
+        let t = self.inner();
+        let Some(n) = t.find_str(key) else { return false };
+        if !t.node[n as usize].val.is_nil() || nil_ok() {
+            // SAFETY: as in `store_array`; node `n` still exists.
+            unsafe { (&mut *self.inner.get()).node[n as usize].val = val };
+            self.nomm.set(0);
+            true
+        } else {
+            false
+        }
     }
     /// True if `key` has a slot (array slot or existing hash node), even if its value is nil.
     pub fn has_slot(&self, key: Value) -> bool {
