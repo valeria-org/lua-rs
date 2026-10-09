@@ -307,14 +307,24 @@ impl Thread {
         // SAFETY: short-lived shared access.
         unsafe { (*self.frames.get()).last().copied() }
     }
+    #[inline(always)]
     pub fn push_frame(&self, f: Frame) {
+        // SAFETY: short-lived accesses, no re-entrancy.
+        if unsafe { (*self.frames.get()).len() == (*self.frames.get()).capacity() } {
+            self.grow_frames();
+        }
+        // SAFETY: as above.
+        unsafe { (&mut *self.frames.get()).push(f) };
+    }
+    /// Make room for one more frame and report the growth to the GC.
+    #[cold]
+    #[inline(never)]
+    fn grow_frames(&self) {
         // SAFETY: short-lived exclusive access, no re-entrancy.
         let fr = unsafe { &mut *self.frames.get() };
         let old = fr.capacity();
-        fr.push(f);
-        if fr.capacity() != old {
-            gc::account(((fr.capacity() - old) * std::mem::size_of::<Frame>()) as isize);
-        }
+        fr.reserve(1);
+        gc::account(((fr.capacity() - old) * std::mem::size_of::<Frame>()) as isize);
     }
     pub fn pop_frame(&self) -> Option<Frame> {
         // SAFETY: short-lived exclusive access, no re-entrancy.

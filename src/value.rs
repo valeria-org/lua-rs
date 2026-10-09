@@ -69,11 +69,27 @@ impl VType {
     }
 }
 
+/// `lj_num2int` on x86-64 (`cvttsd2si`): truncation; NaN and out-of-range give `i32::MIN`.
+#[inline]
+pub fn num2int(n: f64) -> i32 {
+    #[cfg(target_arch = "x86_64")]
+    {
+        use std::arch::x86_64::{_mm_cvttsd_si32, _mm_set_sd};
+        // A single instruction, unlike `as`, which saturates and maps NaN to 0.
+        // SAFETY: SSE2 is part of the x86-64 baseline.
+        unsafe { _mm_cvttsd_si32(_mm_set_sd(n)) }
+    }
+    #[cfg(not(target_arch = "x86_64"))]
+    {
+        if n > -2147483649.0 && n < 2147483648.0 { n as i32 } else { i32::MIN }
+    }
+}
+
 /// Exact conversion of a number to `int32_t` (`lj_num2int_check`): `Some(k)` iff `n == k as f64`.
 /// `-0.0` converts to `0`.
 #[inline]
 pub fn num2int_check(n: f64) -> Option<i32> {
-    let k = n as i32;
+    let k = num2int(n);
     if k as f64 == n { Some(k) } else { None }
 }
 

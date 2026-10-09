@@ -71,11 +71,7 @@ pub fn num2bit(n: f64) -> i32 {
     (n + 6755399441055744.0).to_bits() as u32 as i32
 }
 
-/// `lj_num2int` on x86-64 (`cvttsd2si`): truncation; NaN and out-of-range give `i32::MIN`.
-#[inline]
-pub fn num2int(n: f64) -> i32 {
-    if n > -2147483649.0 && n < 2147483648.0 { n as i32 } else { i32::MIN }
-}
+pub use crate::value::num2int;
 
 /// `str2num`: number or number-convertible string.
 #[inline]
@@ -140,11 +136,28 @@ impl Vm {
     /// `lj_meta_tget`: resolve `o[k]` through the `__index` chain. `slot` is the stack slot of
     /// `o` for error messages.
     pub(crate) fn meta_tget(&mut self, o: Value, k: Value, slot: Option<usize>) -> LuaResult<Meta<Value>> {
+        self.tget_chain(o, k, slot, 0)
+    }
+
+    /// `lj_meta_tget` for the interpreter, after the raw lookup of `k` in table `o` returned nil
+    /// and the `__index` metamethod of `o` was found to be `mo`.
+    pub(crate) fn meta_tget_index(&mut self, o: Value, mo: Value, k: Value) -> LuaResult<Meta<Value>> {
+        if let Value::Func(_) = mo {
+            return Ok(Meta::Call { cont: Cont::Ra, mo, a: o, b: k });
+        }
+        self.tget_chain(mo, k, None, 1)
+    }
+
+    /// The `lj_meta_tget` loop from chain link `start` on.
+    fn tget_chain(&mut self, o: Value, k: Value, slot: Option<usize>, start: usize) -> LuaResult<Meta<Value>> {
         let mut o = o;
-        for lp in 0..LJ_MAX_IDXCHAIN {
+        for lp in start..LJ_MAX_IDXCHAIN {
             let mo;
             if let Value::Table(t) = o {
-                let v = t.get(k);
+                let v = match k {
+                    Value::Str(s) => t.get_str(s),
+                    _ => t.get(k),
+                };
                 if !v.is_nil() {
                     return Ok(Meta::Done(v));
                 }

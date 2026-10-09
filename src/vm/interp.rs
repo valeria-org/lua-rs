@@ -215,11 +215,9 @@ impl Vm {
             let func = fr.func;
             let pt = func.proto().expect("lua frame");
             // The frame keeps `func` and thereby `pt` alive while it runs, and prototypes are
-            // immutable apart from their flags, so these views stay valid.
+            // immutable apart from their flags, so this view stays valid.
             let bc: &[Ins] = &pt.bc;
             let knum: &[f64] = &pt.knum;
-            let kgc: &[KGc] = &pt.kgc;
-            let upvals = func.lua_upvals();
             let base = fr.base as usize;
             let mut pc = fr.pc as usize;
             let fs = pt.framesize as usize;
@@ -309,7 +307,7 @@ impl Vm {
             }
             macro_rules! kstr {
                 ($d:expr) => {
-                    match kgc[($d) as usize] {
+                    match pt.kgc[($d) as usize] {
                         KGc::Str(s) => s,
                         _ => unreachable!("string constant"),
                     }
@@ -481,12 +479,19 @@ impl Vm {
                 }};
             }
             macro_rules! tget_done {
-                ($t:expr, $v:expr, $o:expr, $k:expr, $oslot:expr) => {{
+                ($t:expr, $v:expr, $o:expr, $k:expr) => {{
                     let v: Value = $v;
-                    if !v.is_nil() || self.fast_mm($t.metatable(), MM::Index).is_none() {
+                    if !v.is_nil() {
                         set!(a, v);
                     } else {
-                        tget_slow!($o, $k, $oslot)
+                        match self.fast_mm($t.metatable(), MM::Index) {
+                            None => set!(a, v),
+                            Some(mo) => {
+                                save!();
+                                let v = mm_call!(self.meta_tget_index($o, mo, $k)?, None);
+                                set!(a, v);
+                            }
+                        }
                     }
                 }};
             }
@@ -658,7 +663,7 @@ impl Vm {
                     // -- Constants -------------------------------------------------------------
                     Op::KSTR => set!(a, Value::Str(kstr!(ins.d()))),
                     Op::KCDATA => {
-                        let v = match kgc[ins.d() as usize] {
+                        let v = match pt.kgc[ins.d() as usize] {
                             KGc::CData(c) => Value::CData(c),
                             _ => Value::Nil,
                         };
@@ -674,18 +679,18 @@ impl Vm {
                     }
 
                     // -- Upvalues and closures -------------------------------------------------
-                    Op::UGET => set!(a, upvals[ins.d() as usize].get().get()),
-                    Op::USETV => upvals[a as usize].get().set(get!(ins.d())),
-                    Op::USETS => upvals[a as usize].get().set(Value::Str(kstr!(ins.d()))),
-                    Op::USETN => upvals[a as usize].get().set(Value::Num(knum[ins.d() as usize])),
-                    Op::USETP => upvals[a as usize].get().set(kpri(ins.d())),
+                    Op::UGET => set!(a, func.lua_upvals()[ins.d() as usize].get().get()),
+                    Op::USETV => func.lua_upvals()[a as usize].get().set(get!(ins.d())),
+                    Op::USETS => func.lua_upvals()[a as usize].get().set(Value::Str(kstr!(ins.d()))),
+                    Op::USETN => func.lua_upvals()[a as usize].get().set(Value::Num(knum[ins.d() as usize])),
+                    Op::USETP => func.lua_upvals()[a as usize].get().set(kpri(ins.d())),
                     Op::UCLO => {
                         th.close_upvals((base + a as usize) as u32);
                         branch!(ins.j());
                     }
                     Op::FNEW => {
                         gc_point!();
-                        let KGc::Proto(cpt) = kgc[ins.d() as usize] else { unreachable!("FNEW proto") };
+                        let KGc::Proto(cpt) = pt.kgc[ins.d() as usize] else { unreachable!("FNEW proto") };
                         let f = self.new_closure(th, cpt, func, base);
                         th.set(base + a as usize, Value::Func(f));
                     }
@@ -703,37 +708,37 @@ impl Vm {
                     }
                     Op::TDUP => {
                         gc_point!();
-                        let KGc::Table(kt) = kgc[ins.d() as usize] else { unreachable!("TDUP table") };
+                        let KGc::Table(kt) = pt.kgc[ins.d() as usize] else { unreachable!("TDUP table") };
                         let t = self.dup_table(kt);
                         th.set(base + a as usize, Value::Table(t));
                     }
                     Op::GGET => {
                         let k = kstr!(ins.d());
                         let t = func.env();
-                        tget_done!(t, t.get_str(k), Value::Table(t), Value::Str(k), None)
+                        tget_done!(t, t.get_str(k), Value::Table(t), Value::Str(k))
                     }
                     Op::TGETS => {
                         let bb = ins.b();
-                        let o = get!(bb);
+                        let po = slot!(bb);
                         let k = kstr!(ins.c());
-                        match o {
-                            Value::Table(t) => tget_done!(t, t.get_str(k), o, Value::Str(k), Some(base + bb as usize)),
-                            _ => tget_slow!(o, Value::Str(k), Some(base + bb as usize)),
+                        if let Value::Table(t) = *po {
+                            tget_done!(t, t.get_str(k), *po, Value::Str(k))
+                        } else {
+                            tget_slow!(*po, Value::Str(k), Some(base + bb as usize))
                         }
                     }
                     Op::TGETV => {
                         let bb = ins.b();
-                        let (o, k) = (get!(bb), get!(ins.c()));
-                        match o {
-                            Value::Table(t) => {
-                                let v = match k {
-                                    Value::Num(n) => t.get_num(n),
-                                    Value::Str(s) => t.get_str(s),
-                                    _ => t.get(k),
-                                };
-                                tget_done!(t, v, o, k, Some(base + bb as usize))
-                            }
-                            _ => tget_slow!(o, k, Some(base + bb as usize)),
+                        let (po, pk) = (slot!(bb), slot!(ins.c()));
+                        if let Value::Table(t) = *po {
+                            let v = match *pk {
+                                Value::Num(n) => t.get_num(n),
+                                Value::Str(s) => t.get_str(s),
+                                k => t.get(k),
+                            };
+                            tget_done!(t, v, *po, *pk)
+                        } else {
+                            tget_slow!(*po, *pk, Some(base + bb as usize))
                         }
                     }
                     Op::TGETB => {
@@ -742,7 +747,7 @@ impl Vm {
                         let c = ins.c();
                         match o {
                             Value::Table(t) => {
-                                tget_done!(t, t.get_int(c as i32), o, Value::Num(c as f64), Some(base + bb as usize))
+                                tget_done!(t, t.get_int(c as i32), o, Value::Num(c as f64))
                             }
                             _ => tget_slow!(o, Value::Num(c as f64), Some(base + bb as usize)),
                         }
@@ -782,12 +787,13 @@ impl Vm {
                     }
                     Op::TSETV => {
                         let bb = ins.b();
-                        let (o, k, v) = (get!(bb), get!(ins.c()), get!(a));
-                        if let Value::Table(t) = o {
-                            let done = match k {
+                        let (po, pk) = (slot!(bb), slot!(ins.c()));
+                        let v = get!(a);
+                        if let Value::Table(t) = *po {
+                            let done = match *pk {
                                 Value::Num(n) => {
-                                    let i = n as u32;
-                                    i as f64 == n && t.store_array(i, v, no_newindex!(t))
+                                    let k = num2int(n);
+                                    k as f64 == n && t.store_array(k as u32, v, no_newindex!(t))
                                 }
                                 Value::Str(s) => t.store_str(s, v, no_newindex!(t)),
                                 _ => false,
@@ -796,7 +802,7 @@ impl Vm {
                                 continue;
                             }
                         }
-                        tset_slow!(o, k, v, Some(base + bb as usize));
+                        tset_slow!(*po, *pk, v, Some(base + bb as usize));
                     }
                     Op::TSETB => {
                         let bb = ins.b();
@@ -954,7 +960,8 @@ impl Vm {
                     }
                     Op::VARG => {
                         let nparams = ins.c() as usize;
-                        let vstart = base - fr.vdelta as usize + nparams;
+                        let vdelta = th.frame(fidx).expect("lua frame").vdelta as usize;
+                        let vstart = base - vdelta + nparams;
                         let vend = base - 2;
                         let nvar = vend.saturating_sub(vstart);
                         let dst = base + a as usize;
@@ -986,6 +993,7 @@ impl Vm {
                         let first = base + a as usize;
                         // Fast path of `ret` for a return to the calling Lua frame without
                         // stack growth.
+                        let fr = th.frame(fidx).expect("lua frame");
                         if fr.kind == FrameKind::Lua {
                             let dest = fr.call_slot() as usize;
                             let cnt = if fr.nres >= 0 { fr.nres as usize } else { n };
