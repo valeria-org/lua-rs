@@ -1,7 +1,7 @@
 //! Tagged Lua value (`TValue` in lj_obj.h, without NaN-boxing).
 
 use crate::cdata::CData;
-use crate::func::Function;
+use crate::func::{Function, Proto};
 use crate::gc::Gc;
 use crate::lstr::LuaStr;
 use crate::table::Table;
@@ -26,6 +26,8 @@ pub enum Value {
     Udata(Gc<Userdata>),
     LightUd(usize),
     CData(Gc<CData>),
+    /// Function prototype (`LJ_TPROTO`); only reachable through `jit.util.funck`/`funcinfo`.
+    Proto(Gc<Proto>),
 }
 
 const _: () = assert!(std::mem::size_of::<Value>() == 16);
@@ -44,10 +46,11 @@ pub enum VType {
     Udata,
     LightUd,
     CData,
+    Proto,
 }
 
 impl VType {
-    pub const COUNT: usize = 10;
+    pub const COUNT: usize = 11;
 
     /// Result of Lua `type()` (`lj_obj_typename`). Light userdata is `"userdata"`.
     pub fn name(self) -> &'static str {
@@ -61,6 +64,7 @@ impl VType {
             VType::Thread => "thread",
             VType::Udata | VType::LightUd => "userdata",
             VType::CData => "cdata",
+            VType::Proto => "proto",
         }
     }
 }
@@ -87,6 +91,7 @@ impl Value {
             Value::Udata(_) => VType::Udata,
             Value::LightUd(_) => VType::LightUd,
             Value::CData(_) => VType::CData,
+            Value::Proto(_) => VType::Proto,
         }
     }
 
@@ -145,6 +150,7 @@ impl Value {
             Value::Thread(t) => t.addr(),
             Value::Udata(u) => u.addr(),
             Value::CData(c) => c.addr(),
+            Value::Proto(p) => p.addr(),
             Value::LightUd(p) => p,
             Value::Nil | Value::Bool(_) | Value::Num(_) => return None,
         })

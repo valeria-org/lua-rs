@@ -20,3 +20,4 @@ pub mod bcdump;
 pub mod vm;
 pub mod stdlib;
 pub mod capi;
+pub mod cli;

@@ -3,6 +3,11 @@
 
 pub mod base;
 pub mod coroutine;
+pub mod debug;
+pub mod jit;
+pub mod package;
+pub mod io;
+pub mod os;
 
 use crate::error::LuaResult;
 use crate::func::{NativeFn, NativeImpl};
@@ -21,7 +26,14 @@ pub type LibOpen = fn(&mut Vm) -> LuaResult<()>;
 /// Libraries opened by `luaL_openlibs`, in lib_init.c order (`lj_lib_load`): `_LOADED` name
 /// (`""` for the base library, which also opens `coroutine`) and opener. Library modules add
 /// their entry here.
-pub const LIB_LOAD: &[(&str, LibOpen)] = &[("", base::open_base)];
+pub const LIB_LOAD: &[(&str, LibOpen)] = &[
+    ("", base::open_base),
+    ("package", package::open_package),
+    ("io", io::open_io),
+    ("os", os::open_os),
+    ("debug", debug::open_debug),
+    ("jit", jit::open_jit),
+];
 
 /// Modules that are not stored in `package.loaded` by their opener, as `luaopen_*`-style natives
 /// that push the module table and return 1 (`luaopen_ffi`, `luaopen_string_buffer`): module

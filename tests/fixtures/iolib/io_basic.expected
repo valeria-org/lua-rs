@@ -1,0 +1,103 @@
+file	file	nil	nil
+true	true
+true
+24	2	24	1
+true
+closed file	file (closed)
+false	attempt to use a closed file
+false	attempt to use a closed file
+false	attempt to use a closed file
+false	attempt to use a closed file
+false	attempt to use a closed file
+file (closed)
+line1
+42	1.5
+
+line3
+
+
+
+
+la	st
+nil	nil		nil	nil
+	
+line1	42	 1.5	line3
+
+la		st	nil
+false	bad argument #2 to '?' (invalid format)
+false	bad argument #2 to '?' (invalid format)
+false	bad argument #2 to '?' (invalid option)
+false	bad argument #2 to '?' (invalid option)
+false	bad argument #2 to '?' (invalid format)
+false	bad argument #2 to '?' (invalid option 'bad')
+false	bad argument #3 to '?' (number expected, got table)
+false	bad argument #3 to '?' (number expected, got string)
+false	bad argument #2 to '?' (string expected, got no value)
+false	bad argument #2 to '?' (invalid option 'nah')
+true	true	true
+nil	Invalid argument	22
+12	31	-300	0.5	inf	nan	inf
+nil
+7
+nil
+8
+ +9 abc
+[a][bb][][ccc]
+<a,><b,b><
+,ccc>
+file
+false	bad argument #1 to '?' (iotest.tmp.nonexistent: No such file or directory)
+a	bb		ccc
+false	attempt to use a closed file
+false	attempt to use a closed file
+nil	iotest.tmp.nonexistent: No such file or directory	2
+nil	iotest.tmp.nonexistent: No such file or directory	2
+false	bad argument #1 to '?' (string expected, got no value)
+false	bad argument #1 to '?' (string expected, got table)
+false	bad argument #2 to '?' (string expected, got table)
+file
+true	true
+true
+true
+true
+false	standard file is closed
+false	standard file is closed
+true
+via io.write7	
+nil
+true
+false	standard file is closed
+false	bad argument #1 to '?' (iotest.tmp.nonexistent: No such file or directory)
+false	bad argument #1 to '?' (42: No such file or directory)
+false	bad argument #1 to '?' (string expected, got table)
+false	attempt to use a closed file
+false	bad argument #1 to '?' (FILE* expected, got userdata)
+nil	cannot close standard file
+nil	cannot close standard file
+nil	cannot close standard file
+true
+false	bad argument #1 to '?' (FILE* expected, got number)
+false	bad argument #1 to '?' (FILE* expected, got no value)
+false	bad argument #1 to '?' (value expected)
+false	bad argument #1 to '?' (FILE* expected, got number)
+false	bad argument #1 to '?' (string expected, got table)
+afalse	bad argument #2 to '?' (string expected, got nil)
+okfalse	bad argument #3 to '?' (string expected, got boolean)
+
+file	true	0	hello
+file	hi	there
+
+true
+true
+true
+true
+gc'd
+ab
+c
+de
+1	2	3
+4	5	6
+table	true	true
+10
+true
+--- exit 0

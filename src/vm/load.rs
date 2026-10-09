@@ -56,7 +56,12 @@ impl Vm {
                 u
             })
             .collect();
-        Ok(self.new_lua_function(pt, uvs, env))
+        let f = self.new_lua_function(pt, uvs, env);
+        if !bc {
+            // `lj_vmevent_send(L, BC, ...)` of lj_parse.c's fs_finish, delivered once parsing is done.
+            self.vmevent_bc(f);
+        }
+        Ok(f)
     }
 
     /// `lua_load` with a reader: `reader` is called until it returns `None` or an empty piece;

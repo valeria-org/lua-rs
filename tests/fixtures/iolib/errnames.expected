@@ -1,0 +1,26 @@
+errnames.lua:2: bad argument #1 to 'open' (string expected, got no value)
+errnames.lua:3: bad argument #1 to 'lines' (does/not/exist: No such file or directory)
+errnames.lua:4: bad argument #1 to 'input' (does/not/exist: No such file or directory)
+errnames.lua:5: bad argument #1 to 'write' (string expected, got table)
+1errnames.lua:6: bad argument #2 to 'write' (string expected, got table)
+errnames.lua:7: bad argument #1 to 'write' (FILE* expected, got number)
+errnames.lua:8: bad argument #1 to 'seek' (invalid option 'x')
+errnames.lua:9: bad argument #1 to 'setvbuf' (string expected, got no value)
+errnames.lua:10: bad argument #1 to 'read' (invalid format)
+errnames.lua:11: attempt to use a closed file
+errnames.lua:12: attempt to use a closed file
+errnames.lua:13: attempt to use a closed file
+errnames.lua:14: standard file is closed
+errnames.lua:16: bad argument #1 to 'type' (value expected)
+errnames.lua:17: field 'day' missing in date table
+errnames.lua:18: bad argument #1 to 'time' (table expected, got number)
+errnames.lua:19: bad argument #1 to 'date' (string expected, got table)
+errnames.lua:20: bad argument #1 to 'difftime' (number expected, got no value)
+errnames.lua:21: bad argument #2 to 'setlocale' (invalid option 'x')
+errnames.lua:22: bad argument #1 to 'getenv' (string expected, got no value)
+errnames.lua:23: bad argument #1 to 'remove' (string expected, got no value)
+errnames.lua:24: bad argument #2 to 'rename' (string expected, got no value)
+errnames.lua:25: bad argument #1 to 'exit' (number expected, got string)
+errnames.lua:26: idx
+errnames.lua:27: bad argument #1 to '?' (invalid format)
+--- exit 0

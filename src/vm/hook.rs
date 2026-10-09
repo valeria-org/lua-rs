@@ -10,6 +10,8 @@
 //! function (e.g. after returning from a Lua function, or after a native called with a call
 //! hook active).
 
+use std::sync::atomic::{AtomicBool, AtomicU8, Ordering};
+
 use crate::bc::{Ins, Op};
 use crate::error::LuaResult;
 use crate::func::Proto;
@@ -24,6 +26,30 @@ pub const LUA_MASKRET: u8 = 2;
 pub const LUA_MASKLINE: u8 = 4;
 pub const LUA_MASKCOUNT: u8 = 8;
 const HOOK_EVENTMASK: u8 = 0x0f;
+/// The profiler is running (`HOOK_PROFILE`): the interpreter checks [`PROFILE_PENDING`]
+/// before every instruction.
+pub(crate) const HOOK_PROFILE: u8 = 0x10;
+
+/// Set asynchronously by the profiler timer (`profile_trigger`); consumed by the interpreter
+/// before the next instruction, which then calls the profile handler.
+pub static PROFILE_PENDING: AtomicBool = AtomicBool::new(false);
+
+/// VM states sampled by the profiler (`g->vmstate`): interpreter, C/native code, GC.
+pub const VMSTATE_INTERP: u8 = b'I';
+pub const VMSTATE_C: u8 = b'C';
+pub const VMSTATE_GC: u8 = b'G';
+/// Current VM state (`setvmstate`), read by the profiler's timer.
+pub static VMSTATE: AtomicU8 = AtomicU8::new(VMSTATE_C);
+
+/// `setvmstate`: returns the previous state.
+#[inline]
+pub(crate) fn set_vmstate(st: u8) -> u8 {
+    VMSTATE.swap(st, Ordering::Relaxed)
+}
+
+/// Profile handler (`lj_profile_interpreter`), called before an instruction once a sample
+/// is pending, with the profiled frame on top of the current thread.
+pub type ProfileHandler = fn(&mut Vm) -> LuaResult<()>;
 
 /// Hook event (`LUA_HOOK*`).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -60,6 +86,11 @@ pub(crate) struct HookState {
     pub cstart: i32,
     /// A hook (or finalizer / VM event handler) is running (`HOOK_ACTIVE`).
     pub active: bool,
+    /// A VM event handler or profiler callback is running (`HOOK_VMEVENT`): no VM events
+    /// and no profiler callbacks are delivered.
+    pub vmevent: bool,
+    /// Profiler handler while the profiler runs (`HOOK_PROFILE` is then set in `mask`).
+    pub profile: Option<ProfileHandler>,
 }
 
 impl Vm {
@@ -75,12 +106,41 @@ impl Vm {
         h.func = func;
         h.count = count;
         h.cstart = count;
-        h.mask = mask;
+        h.mask = mask | (h.mask & HOOK_PROFILE);
     }
 
     /// `lua_gethook`, `lua_gethookmask`, `lua_gethookcount`.
     pub fn get_hook(&self) -> (Option<HookFn>, u8, i32) {
-        (self.rt.hook.func, self.rt.hook.mask, self.rt.hook.cstart)
+        (self.rt.hook.func, self.rt.hook.mask & HOOK_EVENTMASK, self.rt.hook.cstart)
+    }
+
+    /// Install (`Some`) or remove the profiler handler (`HOOK_PROFILE` on/off). Clears any
+    /// pending sample.
+    pub fn set_profile_handler(&mut self, h: Option<ProfileHandler>) {
+        PROFILE_PENDING.store(false, Ordering::Relaxed);
+        self.rt.hook.profile = h;
+        if h.is_some() {
+            self.rt.hook.mask |= HOOK_PROFILE;
+        } else {
+            self.rt.hook.mask &= !HOOK_PROFILE;
+        }
+    }
+
+    /// `lj_dispatch_profile`: a sample is pending before the instruction at `pc - 1` of frame
+    /// `fidx`. Runs the handler unless a VM event handler (or the handler itself) is active.
+    pub(crate) fn hook_profile(&mut self, th: Gc<Thread>, fidx: usize, pt: &Gc<Proto>, pc: u32) -> LuaResult<()> {
+        if !PROFILE_PENDING.swap(false, Ordering::Relaxed) || self.rt.hook.vmevent {
+            return Ok(());
+        }
+        let Some(h) = self.rt.hook.profile else { return Ok(()) };
+        let base = th.frame(fidx).expect("frame").base as usize;
+        let slots = cur_topslot(pt, pc, self.rt.multres);
+        th.set_top(base + slots);
+        let multres = self.rt.multres;
+        let r = h(self);
+        self.rt.multres = multres;
+        set_vmstate(VMSTATE_INTERP);
+        r
     }
 
     /// True while a hook is running (hooks are not re-entered).
