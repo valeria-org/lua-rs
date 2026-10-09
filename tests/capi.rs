@@ -36,9 +36,19 @@ fn our_bin() -> PathBuf {
     PathBuf::from(env!("CARGO_BIN_EXE_luajit"))
 }
 
+/// Cargo does not build the cdylib for integration tests: build it with the same profile.
 fn our_lib() -> PathBuf {
-    let p = our_bin().with_file_name("libluajit.so");
-    assert!(p.exists(), "{} not built (crate-type cdylib)", p.display());
+    let bin = our_bin();
+    let p = bin.with_file_name("libluajit.so");
+    let target_dir = bin.parent().and_then(Path::parent).expect("target dir");
+    let release = bin.parent().is_some_and(|d| d.ends_with("release"));
+    let mut c = Command::new(env!("CARGO"));
+    c.args(["build", "--lib", "--manifest-path", concat!(env!("CARGO_MANIFEST_DIR"), "/Cargo.toml")]).env("CARGO_TARGET_DIR", target_dir);
+    if release {
+        c.arg("--release");
+    }
+    let st = c.status().expect("run cargo build --lib");
+    assert!(st.success() && p.exists(), "building {} failed", p.display());
     p
 }
 
