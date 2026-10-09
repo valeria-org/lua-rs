@@ -1,0 +1,97 @@
+local function pc(f, ...)
+  print(pcall(f, ...))
+end
+local function showt(t)
+  print(t.year, t.month, t.day, t.hour, t.min, t.sec, t.wday, t.yday, t.isdst)
+end
+
+-- os.date (TZ=UTC in the environment)
+print(os.date("%Y-%m-%d %H:%M:%S", 0))
+print(os.date("!%Y-%m-%d %H:%M:%S", 1234567890))
+print(os.date("%c", 1234567890))
+print(os.date("!%c", 86399.9))
+print(os.date("%x %X %p %A %a %B %b %j %U %w %y %Z %%", 1000000000))
+print(os.date("", 0) == "", os.date("!", 0) == "")
+print(os.date("%Q %E %Ez %", 0))
+print(os.date("plain text", 0))
+print(os.date("%Y", -1e10), os.date("%Y", 1e12))
+print(os.date("%Y", 1e300))
+print(os.date("%Y", "86400000"))
+showt(os.date("*t", 1234567890))
+showt(os.date("!*t", 951782400))
+showt(os.date("!*t", -1))
+print(type(os.date()), type(os.date("*t")))
+pc(os.date, {})
+pc(os.date, "%Y", "x")
+pc(os.date, "%Y", {})
+print(os.date(1, 0), os.date(12.5, 0))
+
+-- os.time
+print(os.time({year = 2009, month = 2, day = 13, hour = 23, min = 31, sec = 30}))
+print(os.time({year = 2000, month = 1, day = 1}))
+print(os.time({year = 2000, month = 1, day = 1, hour = 0}))
+print(os.time({year = 2000, month = 13, day = 32, hour = 25, min = 61, sec = -5}))
+print(os.time({year = 2000, month = 0, day = 0}))
+print(os.time({year = "2001", month = "3", day = "4", hour = "5.9"}))
+print(os.time({year = 1970, month = 1, day = 1, hour = 0, isdst = false}))
+print(os.time({year = 1969, month = 12, day = 31, hour = 23, min = 59, sec = 59}))
+print(os.time({year = 2000, month = 1, day = 1, sec = 2^31}))
+pc(os.time, {year = 2000, month = 1})
+pc(os.time, {year = 2000, day = 1})
+pc(os.time, {month = 1, day = 1})
+pc(os.time, {year = 2000, month = 1, day = "x"})
+pc(os.time, 42)
+pc(os.time, "x")
+print(type(os.time()), os.time(nil) == os.time())
+print(os.time(setmetatable({}, {__index = function(t, k)
+  if k == "year" then return 2010 elseif k == "month" then return 6 elseif k == "day" then return 15 end
+end})))
+
+-- os.difftime
+print(os.difftime(10, 3), os.difftime(3), os.difftime(1.9, 0.5), os.difftime("5", "2"))
+print(os.difftime(2^53 + 1, 0), os.difftime(-1e300, 0))
+pc(os.difftime)
+pc(os.difftime, {})
+pc(os.difftime, 1, {})
+
+-- os.clock
+local c = os.clock()
+print(type(c), c >= 0)
+
+-- os.getenv
+print(os.getenv("LJRS_TEST_VAR"), os.getenv("LJRS_TEST_UNSET"))
+print(os.getenv(42))
+pc(os.getenv)
+pc(os.getenv, {})
+
+-- os.remove / os.rename / os.tmpname
+local n = os.tmpname()
+print(type(n), #n)
+local f = io.open(n, "w")
+f:write("x")
+f:close()
+print(os.rename(n, "osrename.tmp"))
+print(os.rename("nonexist.tmp", "osrename.tmp"))
+print(os.remove("osrename.tmp"))
+print(os.remove("osrename.tmp"))
+print(os.remove("."))
+pc(os.remove)
+pc(os.rename, "a")
+pc(os.rename, {}, "b")
+
+-- os.execute
+print(os.execute())
+print(os.execute("exit 0"))
+print(os.execute("exit 3"))
+print(os.execute("kill -9 $$"))
+pc(os.execute, {})
+
+-- os.setlocale
+print(os.setlocale())
+print(os.setlocale(nil, "numeric"), os.setlocale(nil, "time"), os.setlocale(nil, "ctype"))
+print(os.setlocale("C"), os.setlocale("C", "all"))
+print(os.setlocale("xx_YY.nonexistent"))
+print(os.setlocale(nil, "collate"), os.setlocale(nil, "monetary"))
+pc(os.setlocale, nil, "bogus")
+pc(os.setlocale, nil, "")
+pc(os.setlocale, {}, "all")
