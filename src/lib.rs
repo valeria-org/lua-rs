@@ -15,3 +15,4 @@ pub mod error;
 pub mod state;
 pub mod text;
 pub mod parse;
+pub mod bcdump;
