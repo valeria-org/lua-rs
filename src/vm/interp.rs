@@ -172,15 +172,34 @@ impl Vm {
             let mut pc = fr.pc as usize;
             let fs = pt.framesize as usize;
 
+            // Fast slot access through a pointer to the stack, refreshed before each
+            // instruction. Within an instruction, `get!`/`set!` are only used where no stack
+            // reallocation can have happened since the refresh: helpers that run Lua code or
+            // grow this thread's stack are followed by `continue 'reload`, `continue` or
+            // direct `th.get`/`th.set` accesses.
+            let mut stk: *mut Value;
+            let mut slen: usize;
+            macro_rules! refresh {
+                () => {{
+                    // SAFETY: short-lived access to obtain the buffer pointer and length.
+                    let v = unsafe { th.stack_mut() };
+                    stk = v.as_mut_ptr();
+                    slen = v.len();
+                }};
+            }
             macro_rules! get {
-                ($i:expr) => {
-                    th.get(base + ($i) as usize)
-                };
+                ($i:expr) => {{
+                    let i = base + ($i) as usize;
+                    // SAFETY: `i < slen` and the buffer was not reallocated since `refresh!`.
+                    if i < slen { unsafe { *stk.add(i) } } else { Value::Nil }
+                }};
             }
             macro_rules! set {
                 ($i:expr, $v:expr) => {{
                     let v = $v;
-                    th.set(base + ($i) as usize, v)
+                    let i = base + ($i) as usize;
+                    // SAFETY: as for `get!`.
+                    if i < slen { unsafe { *stk.add(i) = v } } else { th.set(i, v) }
                 }};
             }
             macro_rules! save {
@@ -241,6 +260,7 @@ impl Vm {
                         self.hook_ins(th, fidx, &pt, pc as u32, ins_hook)?;
                     }
                 }
+                refresh!();
                 let a = ins.a();
                 match op {
                     // -- Comparisons -----------------------------------------------------------
@@ -576,7 +596,8 @@ impl Vm {
                         }
                     }
                     Op::TSETM => {
-                        let Value::Table(t) = get!(a - 1) else { unreachable!("TSETM table") };
+                        // The parser guarantees a table below the values.
+                        let Value::Table(t) = get!(a - 1) else { continue };
                         let start = pt.knum[ins.d() as usize].to_bits() as u32 as i32;
                         let n = self.rt.multres;
                         if n > 0 {
@@ -734,9 +755,14 @@ impl Vm {
                     }
                     Op::FORL | Op::IFORL | Op::JFORL => {
                         let ra = base + a as usize;
+                        // The slots can only be non-numbers after `debug.setlocal`.
+                        if !matches!((th.get(ra), th.get(ra + 1), th.get(ra + 2)), (Value::Num(_), Value::Num(_), Value::Num(_))) {
+                            save!();
+                            self.meta_for(ra)?;
+                        }
                         let (Value::Num(idx), Value::Num(stop), Value::Num(step)) = (th.get(ra), th.get(ra + 1), th.get(ra + 2))
                         else {
-                            unreachable!("FORL slots are numbers")
+                            unreachable!("coerced by meta_for")
                         };
                         let idx = idx + step;
                         th.set(ra, Value::Num(idx));
