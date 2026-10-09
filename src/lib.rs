@@ -13,3 +13,4 @@ pub mod thread;
 pub mod bc;
 pub mod error;
 pub mod state;
+pub mod ffi;
