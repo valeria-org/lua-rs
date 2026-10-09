@@ -465,6 +465,9 @@ fn ccall_func(vm: &mut Vm, st: &Rc<FfiState>, cd: Gc<CData>) -> LuaResult<Option
     Ok(Some(1))
 }
 
+/// `LUA_MINSTACK`.
+const LUA_MINSTACK: usize = 20;
+
 // -- Callbacks ---------------------------------------------------------------------------------
 
 /// Handler for all callback slots (`lj_ccallback_enter` + `lj_ccallback_leave`). Lua errors
@@ -492,7 +495,7 @@ fn callback_run(vm: &mut Vm, frame: &mut CallbackFrame) -> LuaResult<()> {
         return Err(vm.err_callermsg(errmsg::FFI_BADCBACK.as_bytes()));
     }
     let f = st.miscmap.get_int(slot as i32);
-    vm.check_stack(crate::thread::LUA_MINSTACK + 2, None)?;
+    vm.check_stack(LUA_MINSTACK + 2, None)?;
     vm.push(f);
     let mut nargs = 0;
     {

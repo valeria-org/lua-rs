@@ -11,21 +11,27 @@ pub struct LuaStr {
     sid: u32,
     reserved: Cell<u8>,
     chain: Cell<Option<Gc<LuaStr>>>,
+    /// Content followed by a NUL byte (not part of the string).
     bytes: Box<[u8]>,
 }
 
 impl LuaStr {
     #[inline]
     pub fn as_bytes(&self) -> &[u8] {
+        &self.bytes[..self.bytes.len() - 1]
+    }
+    /// Content followed by a NUL byte, for C strings (`strdata`).
+    #[inline]
+    pub fn as_bytes_with_nul(&self) -> &[u8] {
         &self.bytes
     }
     #[inline]
     pub fn len(&self) -> usize {
-        self.bytes.len()
+        self.bytes.len() - 1
     }
     #[inline]
     pub fn is_empty(&self) -> bool {
-        self.bytes.is_empty()
+        self.bytes.len() == 1
     }
     /// Content hash used by the intern table.
     #[inline]
@@ -48,17 +54,17 @@ impl LuaStr {
     }
     /// Content as UTF-8, if valid.
     pub fn to_str(&self) -> Option<&str> {
-        std::str::from_utf8(&self.bytes).ok()
+        std::str::from_utf8(self.as_bytes()).ok()
     }
     /// Content as UTF-8 with invalid sequences replaced.
     pub fn to_string_lossy(&self) -> String {
-        String::from_utf8_lossy(&self.bytes).into_owned()
+        String::from_utf8_lossy(self.as_bytes()).into_owned()
     }
 }
 
 impl fmt::Debug for LuaStr {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", String::from_utf8_lossy(&self.bytes))
+        write!(f, "{:?}", String::from_utf8_lossy(self.as_bytes()))
     }
 }
 
@@ -158,7 +164,13 @@ impl StrTab {
             sid,
             reserved: Cell::new(0),
             chain: Cell::new(None),
-            bytes: s.into(),
+            bytes: {
+                // Trailing NUL (not part of the content) so the C API can hand out C strings.
+                let mut b = Vec::with_capacity(s.len() + 1);
+                b.extend_from_slice(s);
+                b.push(0);
+                b.into_boxed_slice()
+            },
         });
         let slot = hash as usize & self.mask;
         g.chain.set(self.tab[slot]);

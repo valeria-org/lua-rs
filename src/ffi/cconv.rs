@@ -778,11 +778,11 @@ fn substruct_tab(
 pub fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, mut flags: CTInfo) -> LuaResult<()> {
     let mut d = d;
     let mut sid = CTID_P_VOID;
-    let mut tmpptr: usize = 0;
+    let mut tmpptr: usize;
     let tmpnum: f64;
     let tmpbool: u8;
     let tmpconst: u32;
-    let mut sp: *const u8 = ptr::from_ref(&tmpptr).cast();
+    let mut sp: *const u8;
     let s: CTypeID;
     match o {
         Value::Num(n) => {
@@ -872,6 +872,7 @@ pub fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, 
         }
         Value::Nil => {
             tmpptr = 0;
+            sp = ptr::from_ref(&tmpptr).cast();
             flags |= CCF_FROMTV;
             s = sid;
         }
@@ -885,10 +886,12 @@ pub fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, 
             {
                 tmpptr = f(&u) as usize;
             }
+            sp = ptr::from_ref(&tmpptr).cast();
             s = sid;
         }
         Value::LightUd(p) => {
             tmpptr = p;
+            sp = ptr::from_ref(&tmpptr).cast();
             s = sid;
         }
         Value::Func(f) => {
