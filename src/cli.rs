@@ -11,8 +11,7 @@ use crate::state::Vm;
 use crate::value::Value;
 use crate::vm::{HookEvent, LUA_MASKCALL, LUA_MASKCOUNT, LUA_MASKRET};
 
-/// `LUAJIT_VERSION`.
-pub const LUAJIT_VERSION: &str = "LuaJIT 2.1.1788856981";
+use crate::stdlib::jit::LUAJIT_VERSION;
 const LUAJIT_COPYRIGHT: &str = "Copyright (C) 2005-2026 Mike Pall";
 const LUAJIT_URL: &str = "https://luajit.org/";
 const LUA_PROGNAME: &[u8] = b"luajit";
