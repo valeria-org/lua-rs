@@ -1,0 +1,21 @@
+[package]
+name = "luajit"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "A re-implementation of LuaJIT 2.1 (interpreter, standard library and FFI) in Rust"
+
+[lib]
+name = "luajit"
+path = "src/lib.rs"
+
+[[bin]]
+name = "luajit"
+path = "src/main.rs"
+
+[dependencies]
+libc = "0.2"
+
+[profile.release]
+debug = 1
+panic = "unwind"

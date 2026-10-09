@@ -1,0 +1,1 @@
+//! Interned Lua strings.
