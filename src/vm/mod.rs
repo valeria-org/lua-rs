@@ -105,6 +105,8 @@ pub struct Runtime {
     pub(crate) multres: usize,
     /// Finalizers are currently being run (prevents re-entrant draining).
     pub(crate) in_finalizers: bool,
+    /// Skip the instruction hook once: the instruction is re-executed after a hook yield.
+    pub(crate) hook_skip: bool,
     /// Value of the last error whose handler was already applied (`lj_err_run` ran), so that
     /// outer runs rethrow it without calling the handler again. Rooted.
     pub(crate) thrown: Option<crate::value::Value>,
@@ -114,6 +116,8 @@ pub struct Runtime {
     pub c_call: Option<CCallHook>,
     /// FFI integration points.
     pub ffi: FfiHooks,
+    /// C API global state (panic function, allocator, hooks, unwinding bookkeeping).
+    pub(crate) capi: crate::capi::CApiGlobal,
 }
 
 impl Runtime {
@@ -147,6 +151,7 @@ impl Vm {
     /// [`crate::stdlib::open_libs`].
     pub fn new_state() -> Vm {
         let mut vm = Vm::new();
+        vm.rt.c_call = Some(crate::capi::call_c);
         vmevent::install_default_handlers(&mut vm);
         // ctype_loadffi: FFI constants in source or bytecode load the FFI on demand.
         crate::parse::set_ffi_loader(crate::ffi::libffi::load_ffi);

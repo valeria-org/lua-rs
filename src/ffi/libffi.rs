@@ -10,7 +10,7 @@ use std::rc::Rc;
 use crate::bc::MM;
 use crate::cdata::CData;
 use crate::error::{LuaError, LuaResult};
-use crate::func::{FF_C, NativeFn, NativeImpl};
+use crate::func::{NativeFn, NativeImpl};
 use crate::gc::Gc;
 use crate::state::Vm;
 use crate::table::Table;
@@ -1171,21 +1171,4 @@ pub fn luaopen_ffi(vm: &mut Vm) -> LuaResult<usize> {
 /// `ctype_loadffi`: the hook the lexer and the bytecode reader use for FFI constants.
 pub(crate) fn load_ffi(vm: &mut Vm) -> LuaResult<()> {
     open_ffi(vm).map(|_| ())
-}
-
-/// Register the FFI with the standard library setup (`lj_lib_preload` of lib_init.c): the
-/// `ffi` module goes to `package.preload`. (The lexer/bytecode loader hook is installed by
-/// `Vm::new_state`.)
-pub fn preload_ffi(vm: &mut Vm) -> LuaResult<()> {
-    let pk = vm.new_str(b"_PRELOAD");
-    let preload = match vm.registry.get_str(pk) {
-        Value::Table(t) => t,
-        _ => {
-            let t = vm.new_table_ah(0, 1)?;
-            vm.registry.set_str(pk, Value::Table(t)).map_err(|e| vm.tab_error(e))?;
-            t
-        }
-    };
-    let f = vm.new_native(NativeImpl::Rust(luaopen_ffi), FF_C, Vec::new(), vm.globals);
-    set_val(vm, preload, "ffi", Value::Func(f))
 }

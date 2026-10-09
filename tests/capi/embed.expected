@@ -1,0 +1,261 @@
+== basics
+version 501
+hello from Lua	0.33333333333333	9.007199254741e+15	-0	1e+301
+print('hello from Lua', 1/3, 2^53, -0.0, 1e300*10): ok
+x = : status 1: [string "x = "]:1: unexpected symbol near '<eof>'
+error('runtime'): status 1: [string "error('runtime')"]:1: runtime
+error({}): status 1: (non-string error)
+local t = nil; return t.x: status 1: [string "local t = nil; return t.x"]:1: attempt to index local 't' (a nil value)
+load status 0
+[results] top=4: 1 'two' <nil> <table>
+== stack ops
+[push] top=5: 1 'a' false <nil> 42
+[insert] top=5: 42 1 'a' false <nil>
+[remove] top=4: 42 'a' false <nil>
+[replace] top=3: <nil> 'a' false
+[pushvalue] top=4: <nil> 'a' false 'a'
+[settop6] top=6: <nil> 'a' false 'a' <nil> <nil>
+[settop-3] top=4: <nil> 'a' false 'a'
+tostring in place: 3.25 type now number
+isnumber 1 tonumber 16 tointeger 16
+isnumber 0 isstring 1 objlen 3
+type of 100: -1 (no value), type of upvalue: -1
+[concat] top=2: 'con7cat' ''
+xmove: L top 2, L1 top 2, L1[1]=2
+tothread roundtrip 1, pushthread main 1, L1 0, L1 top 3
+pushthread value equal 1
+dead	false	cannot resume dead coroutine
+print(coroutine.status(T1), coroutine.resume(T1)): ok
+suspended	true	12
+print(coroutine.status(T1), coroutine.resume(T1, 12)): ok
+dead	false	cannot resume dead coroutine
+print(coroutine.status(T1), coroutine.resume(T1)): ok
+== tables
+[get] top=3: <table> 'v' 30
+objlen 4
+  [1] = 10
+  [2] = 20
+  [3] = 30
+  [4] = 40
+setmetatable(T, {__index=function(t,k) return 'idx:'..k end, __newindex=function(t,k,v) rawset(t,k,v..'!') end}): ok
+[meta] top=4: <table> 'idx:missing' 'val!' <nil>
+getmetatable 1
+a.b.c.d =	5
+print('a.b.c.d =', a.b.c.d): ok
+findtable conflict: d.e
+== userdata
+newmetatable again: 0
+1	Point(11, 2)	userdata
+local a, b = point.new(1, 2), point.new(10) print(a:getx(), tostring(a + b), type(a)): ok
+print(pcall(point.new().getx)): status 1: [string "print(pcall(point.new().getx))"]:1: bad argument #1 to 'new' (number expected, got no value)
+false	bad argument #1 to '?' (Point expected, got table)
+print(pcall(point.new(1).getx, {})): ok
+false	[string "print(pcall(function() return point.new(1):ge..."]:1: bad argument #1 to 'new' (number expected, got string)
+print(pcall(function() return point.new(1):getx() + point.new('x') end)): ok
+gc Point(1234)
+do local p = point.new(1234) end collectgarbage() collectgarbage(): ok
+testudata on number: (nil)
+== closures and registry
+11	C
+16	C
+1	17	C
+local c = newcounter(10, 'C') print(c()) print(c(5)) local d = newcounter() print(d(), c()): ok
+ref nil: -1
+ref reuse: 1
+[refs] top=2: 'second' 'third'
+1 2 3 4 5 -> 4 2 6
+== errors
+false	luaL_error: str 42 2.5 x% [(null)]
+print(pcall(cerror, 'luaL_error')): ok
+false	table	payload
+local ok, e = pcall(cerror, 'table') print(ok, type(e), e.msg): ok
+false	bad argument #2 to '?' (custom message)
+print(pcall(cerror, 'argerror')): ok
+false	bad argument #1 to '?' (widget expected, got string)
+print(pcall(cerror, 'typerror')): ok
+false	bad argument #2 to '?' (invalid option 'gamma')
+print(pcall(cerror, 'option', 'gamma')): ok
+true	beta
+print(pcall(cerror, 'option', 'beta')): ok
+false	bad argument #2 to '?' (string expected, got no value)
+print(pcall(cerror, 'option')): ok
+true	12
+print(pcall(cerror, 'checkint', '12.7')): ok
+false	bad argument #2 to '?' (number expected, got string)
+print(pcall(cerror, 'checkint', 'z')): ok
+false	bad argument #1 to '?' (string expected, got no value)
+print(pcall(cerror)): ok
+[string "print(cerror('where'))"]:1: 
+print(cerror('where')): ok
+false	plain
+print(pcall(cerror, 'plain')): ok
+false	luaL_error: str 42 2.5 x% [(null)]
+false	[string "print(pcall(cerror, 'luaL_error'))..."]:2: luaL_error: str 42 2.5 x% [(null)]
+print(pcall(cerror, 'luaL_error'))
+local function f() cerror('luaL_error') end
+print(pcall(f)): ok
+<from C> and back
+print(callback(function(s) return '<' .. s .. '>' end)): ok
+false	[string "print(pcall(callback, function(s) error('inne..."]:1: inner: from C
+print(pcall(callback, function(s) error('inner: '..s) end)): ok
+false	[string "print(pcall(callback, function(s) cerror('lua..."]:1: luaL_error: str 42 2.5 x% [(null)]
+print(pcall(callback, function(s) cerror('luaL_error') end)): ok
+false	handled: [string "print(xpcall(function() cerror('luaL_error') ..."]:1: luaL_error: str 42 2.5 x% [(null)]
+print(xpcall(function() cerror('luaL_error') end, function(m) return 'handled: '..m end)): ok
+false	bad argument #1 to '?' (function expected, got number)
+print(pcall(callback, 42)): ok
+pcall with traceback handler: 2
+[string "local function lvl2() error('deep error') end..."]:1: deep error
+stack traceback:
+	[C]: in function 'error'
+	[string "local function lvl2() error('deep error') end..."]:1: in function 'lvl2'
+	[string "local function lvl2() error('deep error') end..."]:2: in function 'lvl1'
+	[string "local function lvl2() error('deep error') end..."]:3: in main chunk
+pcall C function: 2 luaL_error: str 42 2.5 x% [(null)]
+cpcall got 1, top=1
+cpcall status 0 top 0
+cpcall got 2, top=1
+cpcall status 2: cpcall failure 2
+errerr status 5: (null)
+== coroutines
+yielded	5	10
+resumed with	p	q	nil
+done
+local co = coroutine.wrap(function(a) local x, y, z = cyield(a, a * 2) print('resumed with', x, y, z) return 'done' end)
+print(co(5)) print(co('p', 'q')): ok
+false	attempt to yield across C-call boundary
+print(pcall(cyield, 1)): ok
+true	yielded	1
+print(coroutine.resume(coroutine.create(function() return pcall(cyield, 1) end))): ok
+co start	1	2
+resume1 status 1 (lua_status 1)
+[co] top=1: 3
+co got	three
+resume2 status 1
+[co] top=2: 'yielded' 'three'
+co got	four
+resume3 status 0 (lua_status 0)
+[co] top=2: 'fin' 99
+resume error: 2 [string "error('in coroutine')"]:1: in coroutine (lua_status 2)
+resume dead: 2 cannot resume non-suspended coroutine
+hook yields: 10 steps, status 0
+[hook co] top=4: 15 1 2 3
+plain C function via lua_resume
+resume C: 0 top 2
+== load and dump
+lua_load status 0 after 14 reader calls
+[loaded] top=3: <function> 'read abc' 3
+dump status 0, starts with ESC L J: 1
+reload status 0
+[reloaded] top=2: 'read xy' 2
+syntax error status 3: broken.lua:1: unexpected symbol near '+'
+mode error status 3: attempt to load chunk with wrong mode
+loadfile status 6: cannot open /nonexistent/file.lua: No such file or directory
+dump of C function: 1
+== debug
+  level 0: C global 'inspect' [C] line -1 [-1--1] nups=0 src==[C]
+    local 1 (*temporary) = function
+  level 1: Lua local 'outer' [string "local function outer(p, q)..."] line 3 [1-5] nups=1 src=local function outer(p, q)
+  local r = p + q
+  inspect(outer)
+  return r
+end
+outer(1, 2)
+    local 1 p = number
+    local 2 q = number
+    local 3 r = number
+  level 2: main  '?' [string "local function outer(p, q)..."] line 6 [0-6] nups=0 src=local function outer(p, q)
+  local r = p + q
+  inspect(outer)
+  return r
+end
+outer(1, 2)
+    local 1 outer = function
+  arg: Lua linedefined=1 nups=1
+local function outer(p, q)
+  local r = p + q
+  inspect(outer)
+  return r
+end
+outer(1, 2): ok
+hook mask 5 count 0 set 1
+  hook call main
+  hook line 1 (hooked)
+  hook line 2 (hooked)
+  hook line 3 (hooked)
+hook lines 3, hook now 1
+msg here
+stack traceback:
+	[string "local function f() print(ctraceback('msg here..."]:1: in function 'f'
+	[string "local function f() print(ctraceback('msg here..."]:1: in main chunk
+local function f() print(ctraceback('msg here')) end f(): ok
+toplevel traceback: stack traceback:
+upvalue 1 up1 = 1
+upvalue 2 up2 = two
+upvalue 3 (nil)
+setupvalue up2
+[upvalues] top=2: 1 'changed'
+C upvalue name ''
+== more
+setfenv on C function 1
+[environ] top=2: 'envtag' false
+getfenv is globals 1
+setfenv on number 0 top 4
+setlocal v top 0
+getinfo f/L: function table
+local now	patched
+local v = 'orig' setlocal_fn() print('local now', v): ok
+getmetafield 1 (null), missing 0
+callmeta 1 top 1, missing 0
+number metatable index	true
+print('number metatable index', (5).f ~= nil): ok
+false	[string "print(pcall(function() return (5).f end))"]:1: attempt to index a number value
+print(pcall(function() return (5).f end)): ok
+upvalue-1
+print(uplib.up()): ok
+upvalueid distinct 1
+upvalueid joined 1
+joined call -> 2
+tocfunction roundtrip 1 iscfunction 1
+builtin: iscfunction 1
+results 2: unpack called through lua_tocfunction
+Lua function: iscfunction 0 tocfunction NULL 1
+lightuserdata: type userdata isuserdata 1 same ptr 1 topointer 1
+topointer table non-null 1, of nil null 1
+wrapcfunc on 1
+upvalue-1	2	1
+print(uplib.up(), newcounter(1)()): ok
+wrapper calls 3, off 1
+upvalue-1
+print(uplib.up()): ok
+wrapper calls after off 3
+loadfile status 0
+file chunk returned from file
+dofile 0 top 1
+fileresult 3: [fileresult] top=3: <nil> 'somefile: No such file or directory' 2
+fileresult ok 1
+execresult 3: [exec] top=3: <nil> 'exit' 3
+execresult 3: [exec] top=3: true 'exit' 0
+true	200
+print(pcall(function() local t = {} for i = 1, 200 do t[i] = i end return select('#', unpack(t)) end)): ok
+dumpstack at top level: ''
+isnumber/tonumberx: 16 16 1 bad 0
+[copy] top=2: 1 1
+== auxiliary
+gsub: bye world, bye moon
+buffer len 13897 tail 2999,|12.5xy top 1
+pushfstring: s|-7|0.1|Z|%|end|   42|ff
+lessthan 1 0 equal 1 rawequal 0
+gc collect 0
+gc running 1
+gc running after stop 0
+gc setpause old 200
+gc setpause old 150
+gc bad option -1
+setmode engine on 0 off 1
+allocf works 1
+checkstack 1 0
+isyieldable main 0
+top at end 0
+closed
+[exit 0]

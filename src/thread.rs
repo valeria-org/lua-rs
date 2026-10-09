@@ -65,6 +65,9 @@ pub enum Cont {
     /// Continue a `CAT` (`lj_cont_cat`): store the result at slot `top - 1` (relative to the Lua
     /// frame's base) and keep concatenating from there.
     Cat { top: u32 },
+    /// Resume after a yield from a line/count hook (`lj_cont_hook`): re-execute the hooked
+    /// instruction without calling the hook again, with `MULTRES` restored.
+    Hook { multres: u32 },
 }
 
 /// How a frame was entered, which decides how it returns (upstream frame link type).
@@ -140,6 +143,8 @@ pub struct Thread {
     env: Cell<Gc<Table>>,
     /// An error handler is running on this thread (upstream `L->status == LUA_ERRERR`).
     errerr: Cell<bool>,
+    /// The C API handle (`lua_State*`) of this thread, created on first use by `capi`.
+    pub(crate) capi: std::cell::OnceCell<Box<crate::capi::LuaState>>,
 }
 
 impl fmt::Debug for Thread {
@@ -159,6 +164,7 @@ impl Thread {
             openupval: UnsafeCell::new(Vec::new()),
             env: Cell::new(env),
             errerr: Cell::new(false),
+            capi: std::cell::OnceCell::new(),
         }
     }
 

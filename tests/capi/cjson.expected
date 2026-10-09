@@ -1,0 +1,45 @@
+function	cjson	true
+[1,2,3,"four",true,false]
+{"a":1}
+{"nested":{"list":[1.5,-2,10000000000,0.1]}}
+"quote \" backslash \\ newline \n tab \t ctrl \u0001 slash \/"
+null	{}	12345678901234
+array[7]
+  1 (number)
+  2.5 (number)
+  s (string)
+  true (boolean)
+  false (boolean)
+  userdata: NULL (userdata)
+  object
+    .a:
+      array[2]
+        1 (number)
+        object
+          .b:
+            deep (string)
+object
+  .name:
+    Jérôme 😀 (string)
+  .x:
+    -0.0005 (number)
+true	str	123.25
+false	Expected value but found T_OBJ_END at character 7
+false	Expected comma or array end but found T_END at character 6
+false	Cannot serialise function: type not supported
+false	Cannot serialise table: excessively sparse array
+nil	Expected object key string but found invalid token at character 2
+nil	Cannot serialise function: type not supported
+false	Cannot serialise, excessive nesting (1001)
+true	2	3
+{"5":"e","1":"a"}
+false	3
+{"math_pi":3.14}
+14
+false
+false	Expected value but found invalid token at character 2
+false	bad argument #1 to '?' (number expected, got string)
+false	Cannot serialise, excessive nesting (1001)
+9632	2000	3	6000
+true	[1]
+[exit 0]

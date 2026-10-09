@@ -26,21 +26,59 @@ use crate::value::Value;
 /// One library function: name, implementation, builtin id (`vm::ffid::FF_*`, or `FF_C`).
 pub type LibFn = (&'static str, NativeFn, u8);
 
-/// `luaL_openlibs`: open every standard library. Library modules add their `open_*` call
-/// here.
+/// Opener of a library registered in `package.loaded` (`luaopen_*` minus the push of the
+/// library table, which the C API's `luaopen_*` exports do from `_LOADED`).
+pub type LibOpen = fn(&mut Vm) -> LuaResult<()>;
+
+/// Libraries opened by `luaL_openlibs`, in lib_init.c order (`lj_lib_load`): `_LOADED` name
+/// (`""` for the base library, which also opens `coroutine`) and opener. Library modules add
+/// their entry here.
+pub const LIB_LOAD: &[(&str, LibOpen)] = &[
+    ("", base::open_base),
+    ("package", package::open_package),
+    ("table", table::open_table),
+    ("io", io::open_io),
+    ("os", os::open_os),
+    ("string", string::open_string),
+    ("math", math::open_math),
+    ("debug", debug::open_debug),
+    ("bit", bit::open_bit),
+    ("jit", jit::open_jit),
+];
+
+/// Modules that are not stored in `package.loaded` by their opener, as `luaopen_*`-style natives
+/// that push the module table and return 1 (`luaopen_ffi`, `luaopen_string_buffer`): module
+/// name and opener. `luaL_openlibs` stores the ones named in [`LIB_PRELOAD`] in
+/// `package.preload` (`lj_lib_preload`).
+pub const LIB_MODULES: &[(&str, NativeFn)] =
+    &[("ffi", crate::ffi::libffi::luaopen_ffi), ("string.buffer", buffer::luaopen_string_buffer)];
+
+/// Names of [`LIB_MODULES`] entries that `luaL_openlibs` puts into `package.preload`.
+pub const LIB_PRELOAD: &[&str] = &["ffi"];
+
+/// `luaL_openlibs`: open every standard library ([`LIB_LOAD`]) and fill `_PRELOAD`
+/// ([`LIB_PRELOAD`]).
 pub fn open_libs(vm: &mut Vm) -> LuaResult<()> {
-    base::open_base(vm)?;
-    package::open_package(vm)?;
-    table::open_table(vm)?;
-    io::open_io(vm)?;
-    os::open_os(vm)?;
-    string::open_string(vm)?;
-    math::open_math(vm)?;
-    debug::open_debug(vm)?;
-    bit::open_bit(vm)?;
-    jit::open_jit(vm)?;
-    // lj_lib_preload: modules loaded on demand through package.preload.
-    crate::ffi::libffi::preload_ffi(vm)?;
+    for &(_, open) in LIB_LOAD {
+        open(vm)?;
+    }
+    let n = LIB_MODULES.iter().filter(|(n, _)| LIB_PRELOAD.contains(n)).count();
+    if n > 0 {
+        let key = vm.new_str(b"_PRELOAD");
+        let t = match vm.registry.get_str(key) {
+            Value::Table(t) => t,
+            _ => {
+                let t = vm.new_table(0, crate::table::hsize2hbits(n as u32))?;
+                vm.registry.set_str(key, Value::Table(t)).map_err(|e| vm.tab_error(e))?;
+                t
+            }
+        };
+        for &(name, f) in LIB_MODULES.iter().filter(|(n, _)| LIB_PRELOAD.contains(n)) {
+            let func = new_lib_fn(vm, f, crate::func::FF_C, Vec::new());
+            let k = vm.new_str(name.as_bytes());
+            t.set_str(k, Value::Func(func)).map_err(|e| vm.tab_error(e))?;
+        }
+    }
     Ok(())
 }
 
