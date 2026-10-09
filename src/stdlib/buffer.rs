@@ -207,7 +207,7 @@ impl SBufExt {
         let b = if self.cow.get() {
             // Copy-on-write semantics.
             // SAFETY: fresh allocation of a non-zero size; the source holds `osz` bytes.
-            let b = unsafe { alloc::alloc(layout) };
+            let b = unsafe { alloc::alloc_zeroed(layout) };
             if b.is_null() {
                 return Err(MemError);
             }
@@ -219,7 +219,7 @@ impl SBufExt {
             b
         } else if ob.is_null() {
             // SAFETY: non-zero size.
-            unsafe { alloc::alloc(layout) }
+            unsafe { alloc::alloc_zeroed(layout) }
         } else {
             // SAFETY: `ob` was allocated with size `osz` and this alignment.
             unsafe { alloc::realloc(ob, Layout::from_size_align_unchecked(osz as usize, SBUF_ALIGN), nsz as usize) }
@@ -294,7 +294,13 @@ impl SBufExt {
         if s.len() as u64 > LJ_MAX_BUF as u64 {
             return Err(MemError);
         }
-        self.more(s.len() as u32)?;
+        self.put_reserved(s, s.len() as u32)
+    }
+
+    /// Write `s` after reserving `reserve >= s.len()` bytes with `lj_buf_more`, like upstream's
+    /// conversions that reserve their maximum size before writing.
+    pub fn put_reserved(&self, s: &[u8], reserve: u32) -> Result<(), MemError> {
+        self.more(reserve)?;
         self.wmem(s);
         Ok(())
     }
@@ -533,8 +539,9 @@ fn buffer_method_put(vm: &mut Vm) -> LuaResult<usize> {
                     mem(vm, r)?;
                 }
                 Value::Num(n) => {
-                    let b = crate::text::strfmt::fmt_num(n);
-                    let r = s.putmem(&b);
+                    let mut b = Vec::new();
+                    let res = crate::text::numfmt::put_fnum_reserve(&mut b, crate::text::strfmt::SFormat::G14, n);
+                    let r = s.put_reserved(&b, res);
                     mem(vm, r)?;
                 }
                 _ if tobuf(o).is_some() => {
@@ -568,12 +575,10 @@ fn buffer_method_put(vm: &mut Vm) -> LuaResult<usize> {
 
 fn buffer_method_putf(vm: &mut Vm) -> LuaResult<usize> {
     let ud = buffer_tobuf(vm)?;
-    let mut out = Vec::new();
-    let r = super::string::strfmt_putarg(vm, &mut out, 2, Some(ud));
-    // Output produced before an error stays in the buffer, as upstream writes in place.
-    let w = sbx(&ud).putmem(&out);
-    r?;
-    mem(vm, w)?;
+    super::string::strfmt_putarg(vm, 2, Some(ud), &mut |vm, s, reserve| {
+        let r = sbx(&ud).put_reserved(s, reserve);
+        mem(vm, r)
+    })?;
     vm.set_top(1);
     vm.gc_safe();
     Ok(1)
@@ -590,11 +595,9 @@ fn buffer_method_get(vm: &mut Vm) -> LuaResult<usize> {
         let n = if vm.arg(arg).is_nil() { LJ_MAX_BUF } else { check_intrange(vm, arg, 0, LJ_MAX_BUF as i32)? as u32 };
         let s = sbx(&ud);
         let n = n.min(s.len());
-        // SAFETY: `r..r+n` is unread buffer memory.
-        let bytes = unsafe { std::slice::from_raw_parts(s.rptr(), n as usize) };
-        let st = if n == 0 { vm.new_str(b"") } else { vm.new_str(bytes) };
+        let st = vm.new_str(&s.contents()[..n as usize]);
         vm.set_arg(arg, Value::Str(st));
-        // SAFETY: as above.
+        // SAFETY: `r + n <= w`.
         s.set_r(unsafe { s.rptr().add(n as usize) });
     }
     let s = sbx(&ud);

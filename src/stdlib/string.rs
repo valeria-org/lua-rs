@@ -10,7 +10,7 @@ use crate::gc::Gc;
 use crate::lstr::LuaStr;
 use crate::state::Vm;
 use crate::text::pattern::{self, Capture, MatchState, PatError};
-use crate::text::strfmt::{self, FmtItem, FormatParser, FormatType};
+use crate::text::strfmt::{self, FmtItem, FormatParser, FormatType, SFormat};
 use crate::udata::Userdata;
 use crate::value::{VType, Value};
 use crate::vm::ffid::FF_STRING_GMATCH_AUX;
@@ -50,7 +50,7 @@ pub fn open_string(vm: &mut Vm) -> LuaResult<()> {
         string_format,
     ];
     let mut stack = Vec::new();
-    let lib = libinit::lib_register(vm, Some("string"), &LIB_INIT_STRING, funcs, &mut stack)?;
+    let lib = libinit::lib_register(vm, Some("string"), LIB_INIT_STRING, funcs, &mut stack)?;
     let mt = vm.new_table(0, crate::table::hsize2hbits(1))?;
     vm.set_basemt(VType::Str, Some(mt));
     let idx = vm.mm_name(MM::Index);
@@ -457,18 +457,26 @@ fn cdata_i64_bits(v: Value) -> Option<u64> {
     }
 }
 
+/// Output of [`strfmt_putarg`]: receives each produced piece together with the size upstream
+/// reserves (`lj_buf_more`) before writing it, which is at least the piece's length. String
+/// buffers honour the reservation because their remaining capacity is observable.
+pub type FmtSink<'a> = dyn FnMut(&mut Vm, &[u8], u32) -> LuaResult<()> + 'a;
+
 /// `lj_strfmt_putarg`: format arguments `arg..` with the format string at `arg` and append
-/// the result to `out`. `selfbuf` is the buffer userdata being written to by `buffer:putf`
-/// (putting it into itself is an error). `__tostring` metamethods for `%s` are called once and
-/// their result replaces the argument in place (keeping it rooted).
-pub fn strfmt_putarg(vm: &mut Vm, out: &mut Vec<u8>, arg: usize, selfbuf: Option<Gc<Userdata>>) -> LuaResult<()> {
+/// each piece to the output through `put` as soon as it is produced (upstream writes into the
+/// buffer in place, so output before an error or a `__tostring` call is already there).
+/// `selfbuf` is the buffer userdata being written to by `buffer:putf` (putting it into
+/// itself is an error). `__tostring` metamethods for `%s` are called once and their result
+/// replaces the argument in place (keeping it rooted).
+pub fn strfmt_putarg(vm: &mut Vm, arg: usize, selfbuf: Option<Gc<Userdata>>, put: &mut FmtSink<'_>) -> LuaResult<()> {
     let narg = vm.nargs();
     let fmt = vm.check_str(arg)?;
     let mut arg = arg;
+    let mut tmp = Vec::new();
     for item in FormatParser::new(fmt.as_bytes()) {
         let sf = match item {
             FmtItem::Lit(s) => {
-                out.extend_from_slice(s);
+                put(vm, s, s.len() as u32)?;
                 continue;
             }
             FmtItem::Err(s) => {
@@ -482,11 +490,19 @@ pub fn strfmt_putarg(vm: &mut Vm, out: &mut Vec<u8>, arg: usize, selfbuf: Option
             return Err(vm.arg_error_em(arg as i32, ErrMsg::NOVAL));
         }
         let o = vm.arg(arg);
+        tmp.clear();
+        let out = &mut tmp;
+        // Reservation, if it differs from the output length.
+        let mut reserve = None;
         match sf.ty() {
             FormatType::Int => match cdata_i64_bits(o) {
                 Some(k) => strfmt::put_fxint(out, sf, k),
                 None => {
                     let n = vm.check_num(arg)?;
+                    let k = crate::text::num2i64(n);
+                    if k == k as i32 as i64 && sf == SFormat::D {
+                        reserve = Some(strfmt::MAXBUF_INT as u32); // lj_strfmt_putint.
+                    }
                     strfmt::put_fnum_int(out, sf, n);
                 }
             },
@@ -499,7 +515,7 @@ pub fn strfmt_putarg(vm: &mut Vm, out: &mut Vec<u8>, arg: usize, selfbuf: Option
             },
             FormatType::Num => {
                 let n = vm.check_num(arg)?;
-                strfmt::put_fnum(out, sf, n);
+                reserve = Some(crate::text::numfmt::put_fnum_reserve(out, sf, n));
             }
             FormatType::Str => {
                 let mut o = o;
@@ -512,47 +528,54 @@ pub fn strfmt_putarg(vm: &mut Vm, out: &mut Vec<u8>, arg: usize, selfbuf: Option
                         vm.set_arg(arg, o);
                     }
                 }
-                let s: Vec<u8>;
-                let bytes: &[u8] = match o {
-                    Value::Str(st) => {
-                        s = st.as_bytes().to_vec();
-                        &s
-                    }
+                let s: Vec<u8> = match o {
+                    Value::Str(st) => st.as_bytes().to_vec(),
                     _ => match super::buffer::tobuf(o) {
                         Some(ud) => {
                             if Some(ud) == selfbuf {
-                                return Err(vm.arg_error_em(arg as i32, ErrMsg::BUFFER_SELF));
+                                return Err(vm.arg_error_em(arg as i32 + 1, ErrMsg::BUFFER_SELF));
                             }
-                            s = super::buffer::sbx(&ud).contents().to_vec();
-                            &s
+                            super::buffer::sbx(&ud).contents().to_vec()
                         }
-                        None => {
-                            let st = vm.tostring_basic(o);
-                            s = st.as_bytes().to_vec();
-                            &s
-                        }
+                        None => vm.tostring_basic(o).as_bytes().to_vec(),
                     },
                 };
                 if sf.is_quoted() {
-                    strfmt::put_quoted(out, bytes); // No formatting.
-                } else {
-                    strfmt::put_fstr(out, sf, bytes);
+                    // No formatting; upstream reserves 1 byte per quote and 4 per character.
+                    put(vm, b"\"", 1)?;
+                    for idx in 0..s.len() {
+                        tmp.clear();
+                        strfmt::put_quoted_char(&mut tmp, &s, idx);
+                        put(vm, &tmp, 4)?;
+                    }
+                    put(vm, b"\"", 1)?;
+                    continue;
                 }
+                strfmt::put_fstr(out, sf, &s);
             }
             FormatType::Char => {
                 let c = vm.check_int(arg)?;
                 strfmt::put_fchar(out, sf, c);
             }
-            FormatType::Ptr => strfmt::put_ptr(out, crate::vm::obj_ptr(o)), // No formatting.
+            FormatType::Ptr => {
+                // No formatting.
+                strfmt::put_ptr(out, crate::vm::obj_ptr(o));
+                reserve = Some(strfmt::MAXBUF_PTR as u32);
+            }
             FormatType::Eof | FormatType::Err | FormatType::Lit => unreachable!("bad string format type"),
         }
+        let r = reserve.unwrap_or(tmp.len() as u32);
+        put(vm, &tmp, r)?;
     }
     Ok(())
 }
 
 fn string_format(vm: &mut Vm) -> LuaResult<usize> {
     let mut out = Vec::new();
-    strfmt_putarg(vm, &mut out, 1, None)?;
+    strfmt_putarg(vm, 1, None, &mut |_, s, _| {
+        out.extend_from_slice(s);
+        Ok(())
+    })?;
     let s = new_str_checked(vm, &out)?;
     vm.push(Value::Str(s));
     vm.gc_safe();

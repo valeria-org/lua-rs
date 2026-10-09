@@ -1,0 +1,62 @@
+	123	1, 2, 3	2.5-c	23
+	102	x:y
+false	invalid value (table) at index 2 in table for 'concat'
+false	invalid value (nil) at index 3 in table for 'concat'
+false	invalid value (boolean) at index 1 in table for 'concat'
+true	
+false	bad argument #1 to '?' (table expected, got no value)
+false	bad argument #2 to '?' (string expected, got table)
+false	bad argument #3 to '?' (number expected, got string)
+c,e,a,b,d
+c,e,a,b,d,nil,nil,nil,nil,far	5
+false	wrong number of arguments to 'insert'
+false	wrong number of arguments to 'insert'
+false	bad argument #1 to '?' (table expected, got nil)
+false	bad argument #2 to '?' (number expected, got string)
+5	1,2,3,4	1	2,3,4	3	2,4
+nil	nil	nil	nil
+0	0
+false	bad argument #1 to '?' (table expected, got nil)
+false	bad argument #2 to '?' (number expected, got string)
+false	bad argument #2 to '?' (number expected, got table)
+0	3	1.5	3	1099511627776
+3	0
+false	bad argument #1 to '?' (table expected, got no value)
+false	bad argument #1 to '?' (table expected, got string)
+1	a
+2	b
+3	c
+stop2
+6
+6
+false	bad argument #2 to '?' (function expected, got nil)
+false	bad argument #1 to '?' (table expected, got nil)
+2,3,4,4,5	1,2,1,2,3	1,2,3
+1,2,3
+false	bad argument #3 to '?' (number expected, got nil)
+false	bad argument #5 to '?' (table expected, got string)
+0,1,2,3,4,5,6,7,8,9
+9,8,7,6,5,4,3,2,1,0
+Cherry,apple,banana,date
+true	1	210
+0	19
+false	attempt to compare string with number
+false	bad argument #2 to '?' (function expected, got number)
+false	bad argument #1 to '?' (table expected, got no value)
+false	invalid order function for sorting
+false	table.lua:65: cmp
+11
+function	true	true	true
+table	0	nil
+0	nil
+false	bad argument #2 to '?' (number expected, got no value)
+false	bad argument #1 to '?' (number expected, got string)
+false	bad argument #1 to '?' (table expected, got number)
+builtin#94	builtin#95	builtin#93
+false	table.lua:80: wrong number of arguments to 'insert'
+false	table.lua:81: invalid value (table) at index 1 in table for 'concat'
+false	attempt to compare string with number
+false	table.lua:83: invalid order function for sorting
+false	table.lua:84: bad argument #1 to 'remove' (table expected, got string)
+false	table.lua:85: bad argument #1 to 'getn' (table expected, got number)
+false	table.lua:86: bad argument #2 to 'foreach' (function expected, got number)

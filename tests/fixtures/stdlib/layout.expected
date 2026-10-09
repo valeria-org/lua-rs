@@ -1,0 +1,8 @@
+byte char dump find format gmatch gsub len lower match rep reverse sub upper
+concat foreach foreachi getn insert maxn move remove sort
+abs acos asin atan atan2 ceil cos cosh deg exp floor fmod frexp huge ldexp log log10 max min modf pi pow rad random randomseed sin sinh sqrt tan tanh
+arshift band bnot bor bswap bxor lshift rol ror rshift tobit tohex
+function: builtin#76	function: builtin#89	function: builtin#86	function: builtin#91	function: builtin#38	function: builtin#63	function: builtin#75
+function	function	function
+decode encode new	buffer	function: builtin#200	function: builtin#208	function: builtin#211	true	function: builtin#209
+function: builtin#212	function: builtin#213	true

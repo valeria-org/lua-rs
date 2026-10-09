@@ -51,7 +51,7 @@ fn table_maxn(vm: &mut Vm) -> LuaResult<usize> {
             break;
         }
     }
-    for i in (0..=t.hmask()).rev() {
+    for i in (0..t.node_count()).rev() {
         let (k, v) = t.node_get(i);
         if !v.is_nil()
             && let Value::Num(n) = k

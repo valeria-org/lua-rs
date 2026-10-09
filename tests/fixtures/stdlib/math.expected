@@ -1,0 +1,43 @@
+3.1415926535898	inf	-inf	true
+3	3	0	2	inf
+3	-4	-1	2	inf	9.007199254741e+15
+4	-3	-0	0
+4	1.4142135623731	nan	inf
+0.8414709848079	0.54030230586814	1.5574077246549	0.5235987755983	1.0471975511966	0.78539816339745
+1.1752011936438	1.5430806348152	0.76159415595576	2.718281828459	0
+0	-inf	nan	3	2	3	-0
+3	0.30102999566398	0.78539816339745	-2.3561944901923	3.1415926535898
+1024	1.4142135623731	nan	1
+1	-1	1	nan	1.5
+3	-3	5	-0	inf	-inf	-0
+0.5	0.6	0	-0.5	0.57526180315594	-1029
+8	0.25	4	0.25	inf	0	0	inf	0
+1	1	0	3	10
+1	nan	1	nan
+180	3.1415926535898	57.295779513082	0.017453292519943
+false	bad argument #1 to '?' (number expected, got no value)
+false	bad argument #1 to '?' (number expected, got string)
+false	bad argument #1 to '?' (number expected, got table)
+false	bad argument #1 to '?' (number expected, got no value)
+false	bad argument #2 to '?' (number expected, got string)
+false	bad argument #3 to '?' (number expected, got nil)
+false	bad argument #2 to '?' (number expected, got string)
+false	bad argument #2 to '?' (number expected, got no value)
+false	bad argument #2 to '?' (number expected, got no value)
+false	bad argument #1 to '?' (number expected, got no value)
+false	bad argument #1 to '?' (number expected, got nil)
+false	[builtin:deg]:0: attempt to perform arithmetic on a nil value
+false	[builtin:deg]:0: attempt to perform arithmetic on a string value
+0.79420629243124097 0.69885246563716397 0.59010374172810343 0.75322861668360219 0.080971251199854377 67 34 74 43 57 -8 -9 10 4 -7
+957 9 539 435 720 815 67 196	true
+0.73848483355983596	2	2	1	3
+263871933
+false	bad argument #1 to '?' (number expected, got string)
+false	bad argument #2 to '?' (number expected, got table)
+false	bad argument #1 to '?' (number expected, got table)
+true
+builtin#62	function
+false	math.lua:54: bad argument #1 to 'floor' (number expected, got no value)
+false	math.lua:55: bad argument #2 to 'max' (number expected, got string)
+false	[builtin:deg]:0: attempt to perform arithmetic on a table value
+false	math.lua:57: bad argument #2 to 'random' (number expected, got table)

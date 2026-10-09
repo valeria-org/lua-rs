@@ -1,0 +1,96 @@
+function	buffer	true
+true	17	abc1231.5-01e+100	abc1231.5-01e+100
+ab		c12	31.5-01e+100	0		
+hello	0
+7-y-  2.2|"a\
+"	15
+0	true
+TSBUF
+SBUF		0
+ref	7	erenced
+erenced!
+0	true
+true	0	again
+x|1
+different
+385	127	1663
+cdata	true
+388
+cdata	388
+128	256
+0	0	0
+false	bad argument #2 to '?' (string/number/__tostring expected, got table)
+false	bad argument #2 to '?' (string/number/__tostring expected, got boolean)
+false	bad argument #2 to '?' (cannot put buffer into itself)
+false	bad argument #4 to '?' (cannot put buffer into itself)
+false	bad argument #3 to '?' (number expected, got string)
+false	bad argument #2 to '?' (number out of range)
+false	bad argument #2 to '?' (number expected, got string)
+false	bad argument #2 to '?' (number expected, got no value)
+false	bad argument #2 to '?' (number out of range)
+false	bad argument #2 to '?' (string expected, got number)
+false	bad argument #2 to '?' (string expected, got no value)
+false	bad argument #2 to '?' (number out of range)
+false	bad argument #1 to '?' (buffer expected, got nil)
+false	bad argument #1 to '?' (buffer expected, got table)
+false	buffer.lua:46: bad argument #2 to 'setmetatable' (nil or table expected)
+false	bad argument #1 to '?' (number out of range)
+false	bad argument #1 to '?' (number expected, got string)
+false	bad argument #2 to '?' (table expected, got number)
+false	bad options table
+false	bad options table
+true	
+false	bad argument #2 to '?' (cdata expected, got string)
+false	buffer.lua:54: attempt to call method 'nosuch' (a nil value)
+1	02	true
+1	01	true
+9	070000000000000000	true
+9	07000000000000f0bf	true
+9	07000000000000e03f	true
+9	079c7500883ce4377e	true
+9	07000000000000f0ff	true
+1	20	true
+4	23616263	true
+202	e00878787878787878787878	true
+8002	fe8079797979797979797979	true
+00	nil
+08	0c0407000000000000f03f070000000000000040070000000000000840	0a0207000000000000000007000000000000f03f	0c0300070000000000000040
+0901217807000000000000f03f	0d020107000000000000f03f217802
+1	2	3	4	str	false	f
+true
+false	cannot serialize 'function'
+false	cannot serialize 'thread'
+false	cannot serialize 'function'
+false	bad argument #1 to '?' (value expected)
+false	unexpected end of buffer
+false	left-over data in buffer
+false	cannot deserialize tag 0x13
+false	cannot deserialize tag 0x1f
+false	unexpected end of buffer
+false	unexpected end of buffer
+false	unexpected end of buffer
+false	unexpected end of buffer
+false	left-over data in buffer
+false	table index is nil
+false	cannot deserialize dictionary index 1
+false	cannot deserialize dictionary index 1
+false	unexpected end of buffer
+false	bad argument #1 to '?' (string expected, got number)
+false	too deep to serialize
+true	
+36
+1	2	3	0
+0e000c0207000000000000f03f
+true	obj	1
+x	1	table	0
+false	unexpected end of buffer
+0
+false	buffer.lua:101: bad argument #1 to 'put' (string/number/__tostring expected, got table)
+false	buffer.lua:102: bad argument #1 to 'put' (buffer expected, got number)
+false	buffer.lua:103: bad argument #1 to 'get' (number out of range)
+false	buffer.lua:104: left-over data in buffer
+false	buffer.lua:105: unexpected end of buffer
+false	buffer.lua:106: bad argument #3 to 'putf' (cannot put buffer into itself)
+a<in>Tb5c
+false	bad argument #4 to '?' (number expected, got string)
+x1y

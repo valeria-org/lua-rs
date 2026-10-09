@@ -336,32 +336,39 @@ pub fn put_uleb128(out: &mut Vec<u8>, mut v: u32) {
 /// `strfmt_putquotedlen`: append `s` quoted for `%q`.
 pub fn put_quoted(out: &mut Vec<u8>, s: &[u8]) {
     out.push(b'"');
-    for (idx, &ch) in s.iter().enumerate() {
-        let mut c = ch as u32;
-        if c == b'"' as u32 || c == b'\\' as u32 || c == b'\n' as u32 {
-            out.push(b'\\');
-        } else if super::chars::iscntrl(ch) {
-            // This can only be 0-31 or 127.
-            out.push(b'\\');
-            let next = s.get(idx + 1).copied().unwrap_or(0);
-            if c >= 100 || super::chars::isdigit(next) {
-                out.push(b'0' + (c >= 100) as u8);
-                if c >= 100 {
-                    c -= 100;
-                }
-                let d = (c * 205) >> 11;
-                c -= d * 10;
-                out.push(b'0' + d as u8);
-            } else if c >= 10 {
-                let d = (c * 205) >> 11;
-                c -= d * 10;
-                out.push(b'0' + d as u8);
-            }
-            c += b'0' as u32;
-        }
-        out.push(c as u8);
+    for idx in 0..s.len() {
+        put_quoted_char(out, s, idx);
     }
     out.push(b'"');
+}
+
+/// One step of `strfmt_putquotedlen`: append the (1 to 4 byte) quoted form of `s[idx]`
+/// (the following byte decides whether a control character needs three digits).
+pub fn put_quoted_char(out: &mut Vec<u8>, s: &[u8], idx: usize) {
+    let ch = s[idx];
+    let mut c = ch as u32;
+    if c == b'"' as u32 || c == b'\\' as u32 || c == b'\n' as u32 {
+        out.push(b'\\');
+    } else if super::chars::iscntrl(ch) {
+        // This can only be 0-31 or 127.
+        out.push(b'\\');
+        let next = s.get(idx + 1).copied().unwrap_or(0);
+        if c >= 100 || super::chars::isdigit(next) {
+            out.push(b'0' + (c >= 100) as u8);
+            if c >= 100 {
+                c -= 100;
+            }
+            let d = (c * 205) >> 11;
+            c -= d * 10;
+            out.push(b'0' + d as u8);
+        } else if c >= 10 {
+            let d = (c * 205) >> 11;
+            c -= d * 10;
+            out.push(b'0' + d as u8);
+        }
+        c += b'0' as u32;
+    }
+    out.push(c as u8);
 }
 
 /// `lj_strfmt_putfchar`: append a character with width/left-justification.

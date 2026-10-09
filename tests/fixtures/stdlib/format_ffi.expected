@@ -1,0 +1,3 @@
+-1 ffffffffffffffff 9223372036854775808	   -3|12   |FFFFFFFFFFFFFFFF
+1LL 18446744073709551614ULL	false	bad argument #2 to '?' (number expected, got cdata)
+false	bad argument #2 to '?' (number expected, got cdata)

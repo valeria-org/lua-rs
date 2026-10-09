@@ -59,6 +59,7 @@ pub type CdataToNumberFn = fn(&mut Vm, Gc<CData>) -> LuaResult<Option<f64>>;
 
 /// Hooks the FFI library installs so the core VM can handle cdata where upstream calls into
 /// the FFI directly.
+#[allow(clippy::type_complexity)]
 #[derive(Clone, Copy, Default)]
 pub struct FfiHooks {
     /// `lj_carith_checkbit64` for a cdata operand of a bit operator: convert the cdata to 64
