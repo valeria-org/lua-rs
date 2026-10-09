@@ -1,0 +1,15 @@
+first line
+17	-25
+ rest
+
+abc
+def
+1:x
+2:y
+3:zlast
+nil		nil
+file	true
+false	too many results to unpack
+function
+false	not enough memory
+--- exit 0
