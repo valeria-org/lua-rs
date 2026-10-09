@@ -1,0 +1,15 @@
+x = 1 +
+2
+=x
+print(x)
+=1,2,nil
+error("e")
+error({})
+error(setmetatable({}, {__tostring=function() return "TS" end}))
+for i=1,2 do
+print(i)
+end
+)
+_PROMPT="P "
+1
+=nil

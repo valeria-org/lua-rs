@@ -3,6 +3,8 @@
 
 pub mod base;
 pub mod coroutine;
+pub mod io;
+pub mod os;
 
 use crate::error::LuaResult;
 use crate::func::{NativeFn, NativeImpl};
@@ -18,6 +20,8 @@ pub type LibFn = (&'static str, NativeFn, u8);
 /// here.
 pub fn open_libs(vm: &mut Vm) -> LuaResult<()> {
     base::open_base(vm)?;
+    io::open_io(vm)?;
+    os::open_os(vm)?;
     // lj_lib_preload: modules loaded on demand through package.preload.
     crate::ffi::libffi::preload_ffi(vm)?;
     Ok(())
