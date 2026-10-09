@@ -514,7 +514,20 @@ fn callback_run(vm: &mut Vm, frame: &mut CallbackFrame) -> LuaResult<()> {
     let ctr = cts.raw(rid);
     if !ctype_isvoid(cts.get(ctr).info) {
         let mut buf = [0u8; 16];
-        cconv::ct_tv(vm, &mut cts, ctr, buf.as_mut_ptr(), o, 0)?;
+        if let Err(e) = cconv::ct_tv(vm, &mut cts, ctr, buf.as_mut_ptr(), o, cconv::CCF_NOLOC) {
+            // The PC of the return is lost: point to the last line of the callback function.
+            drop(cts);
+            return Err(match (f, e.value) {
+                (Value::Func(func), Value::Str(m)) if func.proto().is_some() => {
+                    let pt = func.proto().expect("Lua function");
+                    let mut out = crate::vm::debug::shortname(pt.chunkname.as_bytes(), pt.firstline);
+                    out.extend_from_slice(format!(":{}: ", pt.firstline + pt.numline).as_bytes());
+                    out.extend_from_slice(m.as_bytes());
+                    vm.error_msg_bytes(&out)
+                }
+                _ => e,
+            });
+        }
         frame.set_result(&cts, rid, &buf);
     }
     cts.cb.set_slot(0); // Blacklist C function that called the callback.

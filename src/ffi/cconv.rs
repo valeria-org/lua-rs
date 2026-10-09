@@ -25,6 +25,9 @@ pub const CCF_FROMTV: CTInfo = 0x0000_0002;
 pub const CCF_SAME: CTInfo = 0x0000_0004;
 pub const CCF_IGNQUAL: CTInfo = 0x0000_0008;
 pub const CCF_ARG_SHIFT: u32 = 8;
+/// Internal (not upstream): report a conversion error without any position. Used for
+/// callback results, whose error position is the end of the callback function.
+pub(crate) const CCF_NOLOC: CTInfo = 0x0000_0010;
 
 /// `CCF_ARG(n)`: report conversion errors as errors of argument `n`.
 #[inline]
@@ -125,7 +128,13 @@ pub fn ffi_err(vm: &mut Vm, e: FfiError) -> LuaError {
 /// Error in the context of the caller or of argument `CCF_GETARG(flags)`.
 fn err_ctx(vm: &mut Vm, msg: &[u8], flags: CTInfo) -> LuaError {
     let narg = ccf_getarg(flags);
-    if narg != 0 { vm.arg_error(narg as i32, msg) } else { vm.err_callermsg(msg) }
+    if narg != 0 {
+        vm.arg_error(narg as i32, msg)
+    } else if flags & CCF_NOLOC != 0 {
+        vm.error_msg_bytes(msg)
+    } else {
+        vm.err_callermsg(msg)
+    }
 }
 
 /// Bad conversion (`cconv_err_conv`).

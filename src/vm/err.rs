@@ -201,10 +201,22 @@ impl Vm {
     }
 
     /// `lj_err_callermsg`: `msg` with the position of the Lua code that called the running
-    /// native (none if it was called from Rust or by `pcall`).
+    /// native (none if it was called from Rust or by `pcall`). The frame of an FFI metamethod
+    /// called from bytecode is removed, so it does not show up in tracebacks.
     pub fn err_callermsg(&mut self, msg: &[u8]) -> LuaError {
         let th = self.cur_thread;
-        let pframe = self.top_frame_idx().and_then(|i| debug::caller_frame(th, i));
+        let idx = self.top_frame_idx();
+        let pframe = idx.and_then(|i| debug::caller_frame(th, i));
+        if let (Some(i), Some(_)) = (idx, pframe)
+            && let Some(f) = th.frame(i)
+            && matches!(f.kind, crate::thread::FrameKind::Cont(_))
+            && f.func.is_builtin()
+            && (super::ffid::FF_FFI_META___INDEX..=super::ffid::FF_FFI_META___TOSTRING).contains(&f.func.ffid())
+        {
+            // Remove frame for FFI metamethods.
+            th.set_top(f.call_slot() as usize);
+            th.truncate_frames(i);
+        }
         let s = self.addloc(th, pframe, msg);
         self.error_msg_bytes(&s)
     }
