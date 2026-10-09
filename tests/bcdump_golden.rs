@@ -121,6 +121,80 @@ fn parsed_prototypes_dump_like_reference() {
     }
 }
 
+/// Template table contents (layout may differ: trailing nil array slots aren't dumped).
+fn same_table(a: Gc<Table>, b: Gc<Table>, what: &str) {
+    let norm = |v: Value, t: Gc<Table>| match v {
+        Value::Table(x) if x == t => None, // nil value marker
+        v => Some(v),
+    };
+    let mut n = 0;
+    let mut key = Value::Nil;
+    while let Some((k, v)) = a.next(key).expect("next") {
+        let w = b.get(k);
+        assert!(!w.is_nil(), "{what}: key {k:?} missing");
+        assert_eq!(norm(v, a), norm(w, b), "{what}: value of {k:?}");
+        key = k;
+        n += 1;
+    }
+    let mut m = 0;
+    let mut key = Value::Nil;
+    while let Some((k, _)) = b.next(key).expect("next") {
+        key = k;
+        m += 1;
+    }
+    assert_eq!(n, m, "{what}: entry count");
+}
+
+/// Everything the dump format carries must come back unchanged.
+fn same_proto(a: &Proto, b: &Proto, debug: bool, what: &str) {
+    assert_eq!(a.bc, b.bc, "{what}: bc");
+    assert_eq!(a.uv, b.uv, "{what}: uv");
+    assert_eq!((a.numparams, a.framesize), (b.numparams, b.framesize), "{what}: sizes");
+    assert_eq!(a.flags() & 0x87, b.flags(), "{what}: flags");
+    let abits: Vec<u64> = a.knum.iter().map(|n| n.to_bits()).collect();
+    let bbits: Vec<u64> = b.knum.iter().map(|n| n.to_bits()).collect();
+    assert_eq!(abits, bbits, "{what}: knum");
+    assert_eq!(a.kgc.len(), b.kgc.len(), "{what}: kgc count");
+    for (d, (&x, &y)) in a.kgc.iter().zip(b.kgc.iter()).enumerate() {
+        let what = format!("{what}.{d}");
+        match (x, y) {
+            (KGc::Str(s), KGc::Str(t)) => assert!(s == t, "{what}: string"),
+            (KGc::Proto(p), KGc::Proto(q)) => same_proto(&p, &q, debug, &what),
+            (KGc::Table(s), KGc::Table(t)) => same_table(s, t, &what),
+            (KGc::CData(c), KGc::CData(e)) => {
+                assert_eq!(c.ctypeid(), e.ctypeid(), "{what}: ctype");
+                assert_eq!(payload(&c), payload(&e), "{what}: payload");
+            }
+            _ => panic!("{what}: constant kind differs"),
+        }
+    }
+    if debug {
+        assert_eq!(a.chunkname, b.chunkname, "{what}: chunkname");
+        assert_eq!((a.firstline, a.numline), (b.firstline, b.numline), "{what}: lines");
+        assert_eq!(a.lineinfo, b.lineinfo, "{what}: lineinfo");
+        assert_eq!(a.uvnames, b.uvnames, "{what}: uvnames");
+        assert_eq!(a.varinfo, b.varinfo, "{what}: varinfo");
+    } else {
+        assert_eq!(b.chunkname.as_bytes(), b"=?", "{what}: chunkname");
+        assert_eq!((b.firstline, b.numline), (0, 0), "{what}: lines");
+        assert!(b.lineinfo.is_empty() && b.uvnames.is_empty() && b.varinfo.is_empty(), "{what}: debug info");
+    }
+}
+
+#[test]
+fn parsed_prototypes_survive_round_trip() {
+    let mut vm = Vm::new();
+    for name in corpus() {
+        let src = fs::read(fixture_dir().join("corpus").join(format!("{name}.lua"))).expect("source");
+        let pt = parse::parse(&mut vm, &src, format!("@{name}.lua").as_bytes()).expect("parse");
+        for strip in [false, true] {
+            let d = bcdump::write(&mut vm, pt, strip);
+            let back = load(&mut vm, &d);
+            same_proto(&pt, &back, !strip, &name);
+        }
+    }
+}
+
 // -- Prototype descriptions (format of describe.lua) ----------------------------------------------
 
 fn nbits(n: f64) -> String {

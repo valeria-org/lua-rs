@@ -1,9 +1,15 @@
 //! Port of lj_bcread.c: load a bytecode dump into a prototype tree.
 //!
-//! The input is the whole dump (as `loadstring` hands it to upstream's reader in one piece).
-//! Upstream reads blindly inside a prototype and only checks the consumed length afterwards;
-//! here every read is bounds-checked against the input and an overrun raises the same
-//! `cannot load malformed bytecode` error that upstream's final length check reports.
+//! The input is the whole dump, as `loadstring` hands it to upstream's reader in one piece.
+//! Upstream reads a prototype blindly — past its end into the following bytes if it is
+//! malformed — and checks the consumed length afterwards; this reader does the same, so errors
+//! raised on the way (`table index is nil`, …) match. Upstream would go on reading undefined
+//! memory past the end of the input; here that is `cannot load malformed bytecode`, except in
+//! the header, where missing bytes read as zero.
+//!
+//! Beyond upstream, every instruction must have a valid opcode (`Ins::op` relies on it) and the
+//! debug info block must decode completely (it is stored decoded in [`Proto`]); otherwise the
+//! dump is rejected as malformed.
 
 use std::cell::Cell;
 
@@ -51,6 +57,27 @@ pub fn read_ex(vm: &mut Vm, src: &[u8], chunkname: &[u8], fr2: bool) -> LuaResul
     let empty = vm.empty_str;
     let mut ls = Reader { vm, buf: &src[1..], pos: 0, eof: false, flags: 0, fr2, chunkarg, chunkname: empty };
     ls.read_dump()
+}
+
+/// `lj_bcread_proto` as lj_lib.c's `lib_read_lfunc` uses it for the Lua-coded builtins embedded
+/// in lj_libdef.h: one stripped, native, little-endian prototype at the start of `src` (no dump
+/// header, no length prefix, no child prototypes), named `chunkname`. Returns the prototype —
+/// not yet allocated, so the caller can adjust it (upstream sets `firstline = !0`) — and the
+/// number of bytes it occupies.
+pub fn read_proto(vm: &mut Vm, src: &[u8], chunkname: Gc<LuaStr>) -> LuaResult<(Proto, usize)> {
+    let name = chunkname.as_bytes();
+    let mut ls =
+        Reader { vm, buf: src, pos: 0, eof: true, flags: BCDUMP_F_STRIP, fr2: true, chunkarg: name, chunkname };
+    let pt = ls.proto(&mut Vec::new())?;
+    if !valid_opcodes(&pt) {
+        return Err(ls.bad());
+    }
+    Ok((pt, ls.pos))
+}
+
+/// Every instruction has a valid opcode, which `Ins::op` relies on (upstream doesn't check).
+fn valid_opcodes(pt: &Proto) -> bool {
+    pt.bc.iter().all(|ins| (ins.op_byte() as usize) < BC_MAX)
 }
 
 /// `bcread_error`: `"<name>: <msg>"` as a syntax error.
@@ -251,14 +278,10 @@ impl<'a> Reader<'a> {
             self.need(len)?;
             let start = self.pos;
             let pt = self.proto(&mut stack)?;
-            if self.pos != start + len {
+            if self.pos != start + len || !valid_opcodes(&pt) {
                 return Err(self.bad());
             }
-            // Instructions are validated so `Ins::op` can rely on a valid opcode byte.
-            if pt.bc.iter().any(|ins| ins.op_byte() as usize >= BC_MAX) {
-                return Err(self.bad());
-            }
-            stack.push(pt);
+            stack.push(self.vm.new_proto(pt));
         }
         if self.pos != self.buf.len() || stack.len() != 1 {
             return Err(self.bad());
@@ -272,8 +295,8 @@ impl<'a> Reader<'a> {
         self.flags & BCDUMP_F_BE != 0
     }
 
-    /// `lj_bcread_proto`.
-    fn proto(&mut self, stack: &mut Vec<Gc<Proto>>) -> LuaResult<Gc<Proto>> {
+    /// `lj_bcread_proto`: the prototype is returned unallocated so the caller can check it.
+    fn proto(&mut self, stack: &mut Vec<Gc<Proto>>) -> LuaResult<Proto> {
         // Prototype header.
         let flags = self.byte()?;
         let numparams = self.byte()?;
@@ -325,13 +348,10 @@ impl<'a> Reader<'a> {
         let knum = self.knum(sizekn)?;
 
         // Debug info.
-        let dbg = if sizedbg != 0 {
-            self.debug(sizedbg, sizebc, sizeuv, firstline, numline)?
-        } else {
-            DebugInfo::default()
-        };
+        let dbg =
+            if sizedbg != 0 { self.debug(sizedbg, sizebc, sizeuv, firstline, numline)? } else { DebugInfo::default() };
 
-        Ok(self.vm.new_proto(Proto {
+        Ok(Proto {
             bc: bc.into_boxed_slice(),
             kgc,
             knum,
@@ -345,7 +365,7 @@ impl<'a> Reader<'a> {
             lineinfo: dbg.lineinfo,
             uvnames: dbg.uvnames,
             varinfo: dbg.varinfo,
-        }))
+        })
     }
 
     /// `bcread_kgc`: constants arrive in upstream memory order (highest D first); child
@@ -473,7 +493,14 @@ impl<'a> Reader<'a> {
     /// Decode the debug info block (`bcread_dbg` + `bcread_varinfo`): line deltas, upvalue
     /// names and the varinfo stream. Upstream copies the block verbatim and decodes it lazily;
     /// a block that does not decode (or has trailing bytes) is rejected as malformed here.
-    fn debug(&mut self, sizedbg: usize, sizebc: usize, sizeuv: usize, firstline: u32, numline: u32) -> LuaResult<DebugInfo> {
+    fn debug(
+        &mut self,
+        sizedbg: usize,
+        sizebc: usize,
+        sizeuv: usize,
+        firstline: u32,
+        numline: u32,
+    ) -> LuaResult<DebugInfo> {
         let block = self.mem(sizedbg)?;
         let shift = lineinfo_shift(numline);
         let sizeli = (sizebc - 1) << shift;
