@@ -1,0 +1,13 @@
+100100000000000000	10feffffffffffffff	11feffffffffffffff	120000000000000000000000000000f03f
+5LL	5ULL	0+2i
+100300000000000000	110400000000000000
+false	cannot serialize 'cdata'
+false	cannot serialize 'cdata'
+cdata!
+cdata!
+cdata!xy
+abc
+false	bad argument #2 to '?' (cdata expected, got number)
+false	bad argument #3 to '?' (number out of range)
+false	bad argument #3 to '?' (number expected, got no value)
+ptr

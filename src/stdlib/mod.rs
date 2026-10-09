@@ -2,12 +2,19 @@
 //! lib_init.c (`luaL_openlibs`).
 
 pub mod base;
+pub mod bit;
+pub mod buffer;
 pub mod coroutine;
 pub mod debug;
-pub mod jit;
-pub mod package;
 pub mod io;
+pub mod jit;
+pub mod libinit;
+pub mod math;
 pub mod os;
+pub mod package;
+pub mod serialize;
+pub mod string;
+pub mod table;
 
 use crate::error::LuaResult;
 use crate::func::{NativeFn, NativeImpl};
@@ -24,9 +31,13 @@ pub type LibFn = (&'static str, NativeFn, u8);
 pub fn open_libs(vm: &mut Vm) -> LuaResult<()> {
     base::open_base(vm)?;
     package::open_package(vm)?;
+    table::open_table(vm)?;
     io::open_io(vm)?;
     os::open_os(vm)?;
+    string::open_string(vm)?;
+    math::open_math(vm)?;
     debug::open_debug(vm)?;
+    bit::open_bit(vm)?;
     jit::open_jit(vm)?;
     // lj_lib_preload: modules loaded on demand through package.preload.
     crate::ffi::libffi::preload_ffi(vm)?;

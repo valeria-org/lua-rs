@@ -95,6 +95,15 @@ impl ErrMsg {
     pub const STRCAPU: ErrMsg = ErrMsg("unfinished capture");
     pub const STRFMT: ErrMsg = ErrMsg("invalid option '%s' to 'format'");
     pub const STRGSRV: ErrMsg = ErrMsg("invalid replacement value (a %s)");
+    pub const BUFFER_SELF: ErrMsg = ErrMsg("cannot put buffer into itself");
+    pub const BUFFER_BADOPT: ErrMsg = ErrMsg("bad options table");
+    pub const BUFFER_BADENC: ErrMsg = ErrMsg("cannot serialize '%s'");
+    pub const BUFFER_BADDEC: ErrMsg = ErrMsg("cannot deserialize tag 0x%02x");
+    pub const BUFFER_BADDICTX: ErrMsg = ErrMsg("cannot deserialize dictionary index %d");
+    pub const BUFFER_DEPTH: ErrMsg = ErrMsg("too deep to serialize");
+    pub const BUFFER_DUPKEY: ErrMsg = ErrMsg("duplicate table key");
+    pub const BUFFER_EOB: ErrMsg = ErrMsg("unexpected end of buffer");
+    pub const BUFFER_LEFTOV: ErrMsg = ErrMsg("left-over data in buffer");
     pub const BADMODN: ErrMsg = ErrMsg("name conflict for module '%s'");
     pub const NOJIT: ErrMsg = ErrMsg("JIT compiler permanently disabled by build option");
     pub const JITOPT: ErrMsg = ErrMsg("unknown or malformed optimization flag '%s'");

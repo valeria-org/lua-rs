@@ -1,0 +1,20 @@
+-- string.buffer with cdata (needs the FFI library).
+local buffer = require("string.buffer")
+local ffi = require("ffi")
+local function e(...) print(pcall(...)) end
+local function hex(s) return (s:gsub(".", function(c) return string.format("%02x", c:byte()) end)) end
+print(hex(buffer.encode(1LL)), hex(buffer.encode(-2LL)), hex(buffer.encode(18446744073709551614ULL)), hex(buffer.encode(1i)))
+print(buffer.decode(buffer.encode(5LL)), buffer.decode(buffer.encode(5ULL)), buffer.decode(buffer.encode(2i)))
+print(hex(buffer.encode(ffi.new("long", 3))), hex(buffer.encode(ffi.new("uint64_t", 4))))
+e(buffer.encode, ffi.new("int", 1))
+e(buffer.encode, ffi.new("char[3]"))
+local b = buffer.new()
+local p, n = b:reserve(8)
+ffi.copy(p, "cdata!", 6); b:commit(6); print(b:tostring())
+local r, len = b:ref(); print(ffi.string(r, len))
+b:putcdata(ffi.cast("const char *", "xyz"), 2); print(b:tostring())
+local arr = ffi.new("char[4]", "abc"); b:set(arr, 3); print(b:get())
+e(b.putcdata, b, 1, 1)
+e(b.putcdata, b, arr, -1)
+e(b.set, b, arr)
+print(ffi.string(buffer.new():put("ptr"), 3))

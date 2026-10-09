@@ -297,11 +297,14 @@ fn nd_similar(nd: &[u32; 64], mut ndhi: u32, mut r: usize, hilen: u32, mut prec:
 struct W<'a> {
     b: &'a mut Vec<u8>,
     p: usize,
+    /// Size requested by the (single) `lj_buf_more` call of the conversion.
+    reserve: u32,
 }
 
 impl W<'_> {
     /// `lj_buf_more`: make room for `n` bytes (plus slack for over-emitted digits).
     fn more(&mut self, n: u32) {
+        self.reserve = n;
         let need = self.p + n as usize + 16;
         if self.b.len() < need {
             self.b.resize(need, 0);
@@ -334,11 +337,19 @@ impl W<'_> {
 
 /// `lj_strfmt_putfnum`: append `n` formatted according to an FP format (`%a %e %f %g`).
 pub fn put_fnum(out: &mut Vec<u8>, sf: SFormat, n: f64) {
+    put_fnum_reserve(out, sf, n);
+}
+
+/// [`put_fnum`], also returning the size upstream requests with `lj_buf_more` for this
+/// conversion (string buffers expose their remaining capacity, so callers writing into one
+/// reserve exactly this much).
+pub fn put_fnum_reserve(out: &mut Vec<u8>, sf: SFormat, n: f64) -> u32 {
     let start = out.len();
-    let mut w = W { b: out, p: start };
+    let mut w = W { b: out, p: start, reserve: 0 };
     wfnum(&mut w, sf, n);
-    let end = w.p;
+    let (end, reserve) = (w.p, w.reserve);
     out.truncate(end);
+    reserve
 }
 
 /// `lj_strfmt_putnum`: append `n` formatted as `%.14g`.
