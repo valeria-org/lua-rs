@@ -25,6 +25,9 @@ pub const GC_FIXED: u8 = 0x02;
 pub const GC_FINALIZED: u8 = 0x04;
 /// Cdata registered in the FFI finalizer table. Upstream `LJ_GC_CDATA_FIN`.
 pub const GC_CDATA_FIN: u8 = 0x08;
+/// Freed object kept in the heap's quarantine (GC stress mode in debug builds): its value has
+/// been dropped and only the header is still valid. Dereferencing it panics.
+pub const GC_DEAD: u8 = 0x80;
 
 /// Type tag stored in every object header, used by the collector to find userdata/cdata during
 /// finalizer separation and to skip leaf objects on the gray stack.
@@ -48,6 +51,14 @@ impl GcKind {
     #[inline]
     pub fn is_leaf(self) -> bool {
         matches!(self, GcKind::Str | GcKind::CData)
+    }
+
+    /// Objects whose traversal upstream's incremental marker charges as GC work
+    /// (`propagatemark`: tables, functions, prototypes, threads). Strings, userdata, cdata and
+    /// upvalues are marked directly, at no cost.
+    #[inline]
+    pub fn charged_traversal(self) -> bool {
+        matches!(self, GcKind::Table | GcKind::Func | GcKind::Proto | GcKind::Thread)
     }
 }
 
@@ -160,7 +171,10 @@ impl<T> Hash for Gc<T> {
 impl<T> Deref for Gc<T> {
     type Target = T;
     #[inline]
+    #[cfg_attr(debug_assertions, track_caller)]
     fn deref(&self) -> &T {
+        #[cfg(debug_assertions)]
+        self.assert_live();
         // SAFETY: by the rooting rule a live handle points to an allocated, initialized GcBox.
         unsafe { &(*self.ptr.as_ptr()).value }
     }
@@ -173,6 +187,17 @@ impl<T> fmt::Debug for Gc<T> {
 }
 
 impl<T> Gc<T> {
+    /// Panic if the object was freed (only detectable while it sits in the stress-mode
+    /// quarantine, see [`Heap::enable_quarantine`]).
+    #[cfg(debug_assertions)]
+    #[inline]
+    #[track_caller]
+    fn assert_live(&self) {
+        if self.header().has(GC_DEAD) {
+            use_after_free(self.header().kind());
+        }
+    }
+
     /// Object header (mark/fixed/finalizer flags).
     #[inline]
     pub fn header(&self) -> &GcHeader {
@@ -212,6 +237,14 @@ impl<T> Gc<T> {
     pub fn ptr_eq(a: Gc<T>, b: Gc<T>) -> bool {
         a.ptr == b.ptr
     }
+}
+
+#[cfg(debug_assertions)]
+#[cold]
+#[inline(never)]
+#[track_caller]
+fn use_after_free(kind: GcKind) -> ! {
+    panic!("use of a freed GC object ({kind:?})");
 }
 
 // -- Accounting ---------------------------------------------------------------------------------
@@ -266,6 +299,10 @@ impl Marker {
         let h = g.header();
         if h.is_marked() {
             return;
+        }
+        #[cfg(debug_assertions)]
+        if h.has(GC_DEAD) {
+            use_after_free(h.kind());
         }
         h.set_flag(GC_MARKED);
         if !T::KIND.is_leaf() {
@@ -356,6 +393,7 @@ impl ObjRef {
 pub struct Heap {
     objects: Vec<NonNull<GcBox<dyn Trace>>>,
     total: usize,
+    quarantine: Option<Quarantine>,
 }
 
 impl Default for Heap {
@@ -366,7 +404,17 @@ impl Default for Heap {
 
 impl Heap {
     pub fn new() -> Heap {
-        Heap { objects: Vec::new(), total: 0 }
+        Heap { objects: Vec::new(), total: 0, quarantine: None }
+    }
+
+    /// Debugging aid used by the GC stress mode: from now on, swept objects are dropped but
+    /// their memory is kept (header flagged [`GC_DEAD`]) for a while, so that a dangling `Gc`
+    /// is not silently backed by a reused allocation. In debug builds, dereferencing or marking
+    /// a dead object panics. Release builds have no checks, so this is a no-op there.
+    pub fn enable_quarantine(&mut self) {
+        if cfg!(debug_assertions) {
+            self.quarantine.get_or_insert_with(Quarantine::default);
+        }
     }
 
     /// Allocate and register an object. Never collects.
@@ -400,26 +448,87 @@ impl Heap {
     }
 
     /// Free every unmarked, unfixed object; clear marks of survivors and recompute the live size.
-    /// Returns the new total.
-    pub fn sweep(&mut self) -> usize {
-        let mut live = 0usize;
+    pub fn sweep(&mut self) -> Swept {
+        let mut swept = Swept { live: 0, traversal: 0 };
+        let quarantine = &mut self.quarantine;
         self.objects.retain(|&p| {
             // SAFETY: every pointer in the list is a live boxed GcBox created by `alloc`.
             let b = unsafe { &*p.as_ptr() };
             let flags = b.header.flags.get();
             if flags & (GC_MARKED | GC_FIXED) != 0 {
                 b.header.flags.set(flags & !GC_MARKED);
-                live += b.value.size();
+                let size = b.value.size();
+                swept.live += size;
+                if b.header.kind.charged_traversal() {
+                    swept.traversal += size;
+                }
                 true
             } else {
-                // SAFETY: unreachable object, removed from the list; created by Box::into_raw.
-                drop(unsafe { Box::from_raw(p.as_ptr()) });
+                match quarantine {
+                    // SAFETY: unreachable object, removed from the list; created by Box::into_raw.
+                    None => drop(unsafe { Box::from_raw(p.as_ptr()) }),
+                    Some(q) => q.hold(p),
+                }
                 false
             }
         });
         take_debt();
-        self.total = live;
-        live
+        self.total = swept.live;
+        swept
+    }
+}
+
+/// Outcome of [`Heap::sweep`].
+#[derive(Clone, Copy, Debug)]
+pub struct Swept {
+    /// Bytes of all survivors (the new heap total).
+    pub live: usize,
+    /// Bytes of the surviving objects that upstream charges for traversal
+    /// ([`GcKind::charged_traversal`]): the mark work of a cycle over the same heap.
+    pub traversal: usize,
+}
+
+/// Freed heap cells whose deallocation is deferred (see [`Heap::enable_quarantine`]).
+#[derive(Default)]
+struct Quarantine {
+    cells: std::collections::VecDeque<(NonNull<u8>, Layout)>,
+}
+
+impl Quarantine {
+    /// Cells kept before the oldest is released (bounds the memory held by dead headers).
+    const MAX_CELLS: usize = 1 << 18;
+
+    /// Drop the object's value, flag the cell dead and keep its memory.
+    fn hold(&mut self, p: NonNull<GcBox<dyn Trace>>) {
+        let raw = p.as_ptr();
+        // SAFETY: `p` is an unreachable cell created by `Box::into_raw` in `Heap::alloc` and just
+        // removed from the object list; its value is dropped exactly once here and never accessed
+        // again (`Gc::deref` and `Marker::mark` check `GC_DEAD` first), and the memory is freed
+        // in `release` with the layout of the original `Box` allocation.
+        unsafe {
+            let layout = Layout::for_value(&*raw);
+            (*raw).header.flags.set(GC_DEAD);
+            std::ptr::drop_in_place(&raw mut (*raw).value);
+            self.cells.push_back((p.cast::<u8>(), layout));
+        }
+        if self.cells.len() > Self::MAX_CELLS
+            && let Some(c) = self.cells.pop_front()
+        {
+            Self::release(c);
+        }
+    }
+
+    fn release((p, layout): (NonNull<u8>, Layout)) {
+        // SAFETY: allocated by `Box::new` (global allocator) with this layout; freed once.
+        unsafe { alloc::dealloc(p.as_ptr(), layout) };
+    }
+}
+
+impl Drop for Quarantine {
+    fn drop(&mut self) {
+        for c in self.cells.drain(..) {
+            Self::release(c);
+        }
     }
 }
 

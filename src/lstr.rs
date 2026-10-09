@@ -146,6 +146,11 @@ impl StrTab {
     pub fn is_empty(&self) -> bool {
         self.num == 0
     }
+    /// Number of hash chains (`g->str.mask + 1`).
+    #[inline]
+    pub fn chains(&self) -> usize {
+        self.mask + 1
+    }
 
     /// Intern `s`, allocating a new string object in `heap` if not present (`lj_str_new`).
     pub fn intern(&mut self, heap: &mut Heap, s: &[u8]) -> Gc<LuaStr> {

@@ -47,10 +47,26 @@ pub struct GcState {
     pub stepmul: u32,
     debt: usize,
     estimate: usize,
+    /// Mark work of the last cycle: bytes of the reachable objects upstream charges for
+    /// traversal (see [`crate::gc::Swept::traversal`]).
+    traversal: usize,
     /// Work credited towards the next full cycle by incremental steps.
     work: usize,
     /// Number of completed cycles.
     pub cycles: u64,
+    /// GC stress mode, a debugging aid for rooting bugs: enabled by setting the environment
+    /// variable `LUAJIT_RS_GCSTRESS` to a value other than `0` (read once in [`Vm::new`]).
+    /// Every GC safe point ([`Vm::gc_check`]) then runs a full collection unless the collector
+    /// is stopped, so a value held across a safe point without being rooted is freed right
+    /// away. In debug builds freed objects are also quarantined
+    /// ([`crate::gc::Heap::enable_quarantine`]), which turns a later use into a deterministic
+    /// panic. Costs one predictable branch per safe point when off.
+    pub stress: bool,
+}
+
+/// Read the `LUAJIT_RS_GCSTRESS` switch (see [`GcState::stress`]).
+fn gc_stress_from_env() -> bool {
+    std::env::var_os("LUAJIT_RS_GCSTRESS").is_some_and(|v| !v.is_empty() && v != "0")
 }
 
 /// The global state.
@@ -95,6 +111,10 @@ impl Vm {
     /// Empty state: registry, globals, main thread, fixed metamethod names; no libraries.
     pub fn new() -> Vm {
         let mut heap = Heap::new();
+        let stress = gc_stress_from_env();
+        if stress {
+            heap.enable_quarantine();
+        }
         let mut strtab = StrTab::new(STR_SEED);
         let empty_str = strtab.intern(&mut heap, b"");
         empty_str.fix();
@@ -130,8 +150,10 @@ impl Vm {
                 stepmul: GC_STEPMUL_DEFAULT,
                 debt: 0,
                 estimate: total,
+                traversal: total,
                 work: 0,
                 cycles: 0,
+                stress,
             },
         }
     }
@@ -275,15 +297,30 @@ impl Vm {
         self.heap.total()
     }
 
-    /// `lj_gc_check`: run a GC step if the threshold is reached. Call only at safe points.
+    /// `lj_gc_check`: run a GC step if the threshold is reached (in stress mode: a full
+    /// collection unless the collector is stopped). Call only at safe points.
     /// Returns true if a step ran.
+    #[inline]
     pub fn gc_check(&mut self) -> bool {
+        if self.gc.stress {
+            return self.gc_stress_collect();
+        }
         if self.heap.total() >= self.gc.threshold {
             self.gc_step_once();
             true
         } else {
             false
         }
+    }
+
+    #[cold]
+    #[inline(never)]
+    fn gc_stress_collect(&mut self) -> bool {
+        if !self.gc_is_running() {
+            return false;
+        }
+        self.gc_full();
+        true
     }
 
     /// `lj_gc_fullgc`. Finalizers are queued, not run.
@@ -343,8 +380,7 @@ impl Vm {
             self.gc.debt += total - self.gc.threshold;
         }
         self.gc.work = self.gc.work.saturating_add(lim);
-        let cost = total + self.heap.object_count() * GC_SWEEPCOST;
-        if self.gc.work >= cost {
+        if self.gc.work >= self.cycle_cost() {
             self.collect();
             self.gc.work = 0;
             self.gc.debt = 0;
@@ -359,6 +395,17 @@ impl Vm {
             self.gc.threshold = total;
             0
         }
+    }
+
+    /// Work of one incremental cycle as upstream's `gc_onestep` charges it: traversing the
+    /// reachable tables/functions/prototypes/threads (`propagatemark`; estimated by the last
+    /// cycle's), then `GCSWEEPCOST` per string hash chain and per other object (garbage
+    /// included). Garbage bytes cost nothing, so heap growth in allocation-heavy loops stays
+    /// proportional to the live heap.
+    fn cycle_cost(&self) -> usize {
+        let strings = self.strtab.len();
+        let others = self.heap.object_count().saturating_sub(strings);
+        self.gc.traversal + (self.strtab.chains() + others) * GC_SWEEPCOST
     }
 
     fn mark_roots(&self, m: &mut Marker) {
@@ -450,7 +497,9 @@ impl Vm {
             self.pending_finalizers.push_back(Value::CData(c));
         }
         self.strtab.purge();
-        self.gc.estimate = self.heap.sweep();
+        let swept = self.heap.sweep();
+        self.gc.estimate = swept.live;
+        self.gc.traversal = swept.traversal;
         self.gc.cycles += 1;
     }
 
