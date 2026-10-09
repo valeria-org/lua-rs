@@ -53,6 +53,7 @@ fn itype_index(v: Value) -> u32 {
         Value::Str(_) => 4,
         Value::Thread(_) => 6,
         Value::Func(_) => 8,
+        Value::Proto(_) => 7,
         Value::CData(_) => 10,
         Value::Table(_) => 11,
         Value::Udata(_) => 12,
@@ -252,12 +253,18 @@ impl Vm {
                 pc += 1;
                 let opb = ins.op_byte();
                 let op = Op::from_u8(opb).expect("valid opcode");
-                if self.rt.hook.mask != 0 && !self.rt.hook.active {
+                if self.rt.hook.mask != 0 {
                     let m = self.rt.hook.mask;
-                    let ins_hook = m & (hook::LUA_MASKLINE | hook::LUA_MASKCOUNT) != 0 && opb < Op::FUNCF as u8;
-                    if ins_hook || (m & hook::LUA_MASKRET != 0 && op.is_ret()) {
+                    if m & hook::HOOK_PROFILE != 0 && hook::PROFILE_PENDING.load(std::sync::atomic::Ordering::Relaxed) {
                         save!();
-                        self.hook_ins(th, fidx, &pt, pc as u32, ins_hook)?;
+                        self.hook_profile(th, fidx, &pt, pc as u32)?;
+                    }
+                    if !self.rt.hook.active {
+                        let ins_hook = m & (hook::LUA_MASKLINE | hook::LUA_MASKCOUNT) != 0 && opb < Op::FUNCF as u8;
+                        if ins_hook || (m & hook::LUA_MASKRET != 0 && op.is_ret()) {
+                            save!();
+                            self.hook_ins(th, fidx, &pt, pc as u32, ins_hook)?;
+                        }
                     }
                 }
                 refresh!();

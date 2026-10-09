@@ -19,7 +19,7 @@ pub mod ffid;
 mod call;
 mod coro;
 mod err;
-mod hook;
+pub mod hook;
 mod interp;
 mod load;
 mod meta;

@@ -3,6 +3,9 @@
 
 pub mod base;
 pub mod coroutine;
+pub mod debug;
+pub mod jit;
+pub mod package;
 
 use crate::error::LuaResult;
 use crate::func::{NativeFn, NativeImpl};
@@ -18,6 +21,9 @@ pub type LibFn = (&'static str, NativeFn, u8);
 /// here.
 pub fn open_libs(vm: &mut Vm) -> LuaResult<()> {
     base::open_base(vm)?;
+    package::open_package(vm)?;
+    debug::open_debug(vm)?;
+    jit::open_jit(vm)?;
     Ok(())
 }
 

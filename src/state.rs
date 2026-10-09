@@ -409,6 +409,12 @@ impl Vm {
 
     /// One complete stop-the-world cycle.
     fn collect(&mut self) {
+        let oldst = crate::vm::hook::set_vmstate(crate::vm::hook::VMSTATE_GC);
+        self.collect_inner();
+        crate::vm::hook::set_vmstate(oldst);
+    }
+
+    fn collect_inner(&mut self) {
         let mut m = Marker::new(Some(self.mm_name(MM::Mode)), self.ffi_fin);
         self.mark_roots(&mut m);
         m.propagate();
@@ -427,6 +433,7 @@ impl Vm {
                 Value::Func(o) => !o.header().is_marked(),
                 Value::Thread(o) => !o.header().is_marked(),
                 Value::CData(o) => !o.header().is_marked(),
+                Value::Proto(o) => !o.header().is_marked(),
                 Value::Nil | Value::Bool(_) | Value::Num(_) | Value::LightUd(_) => false,
             });
         }

@@ -82,6 +82,7 @@ impl Vm {
         self.rt.nccalls += 1;
         let old_yield = std::mem::replace(&mut self.rt.can_yield, true);
         self.rt.runs.push(Run { hook_oldpc: None });
+        let oldst = super::hook::set_vmstate(super::hook::VMSTATE_INTERP);
         let first = if fresh {
             co.set(CO_FUNC_SLOT + 1, Value::Nil);
             self.precall(co, CO_FUNC_SLOT, nargs, FrameKind::Cp(ErrFunc::None), -1, false)
@@ -89,6 +90,7 @@ impl Vm {
             self.ret(co, dst, nargs)
         };
         let r = self.run(co, 0, first, true);
+        super::hook::set_vmstate(oldst);
         self.rt.runs.pop();
         self.rt.can_yield = old_yield;
         self.rt.nccalls -= 1;

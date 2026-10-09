@@ -45,31 +45,49 @@ pub(crate) fn install_default_handlers(vm: &mut Vm) {
     let _ = vm.registry.set_str(key, Value::Table(t));
 }
 
+/// Event index of the `BC` event (`VMEVENT_HASH(LJ_VMEVENT_BC)`).
+fn vmevent_bc_idx() -> i32 {
+    vmevent_hash(b"bc")
+}
+
 impl Vm {
-    /// `lj_vmevent_send(L, ERRFIN, ...)`: report an error raised by a finalizer.
-    pub(crate) fn vmevent_errfin(&mut self, err: Value) {
-        let key = self.new_str(VMEVENTS_REGKEY.as_bytes());
-        let Value::Table(t) = self.registry.get_str(key) else { return };
-        let f = t.get_int(VMEVENT_ERRFIN);
-        if !matches!(f, Value::Func(_)) {
-            return;
+    /// `lj_vmevent_prepare`: the handler for event `idx`, unless events are disabled (a
+    /// handler is running).
+    fn vmevent_handler(&mut self, idx: i32) -> Option<Value> {
+        if self.rt.hook.vmevent {
+            return None;
         }
+        let key = self.new_str(VMEVENTS_REGKEY.as_bytes());
+        let Value::Table(t) = self.registry.get_str(key) else { return None };
+        let f = t.get_int(idx);
+        if matches!(f, Value::Func(_)) { Some(f) } else { None }
+    }
+
+    /// `lj_vmevent_call`: run handler `f` with `args` on the VM thread, protected, with hooks
+    /// and further events disabled. Failures are reported on stderr.
+    fn vmevent_call(&mut self, f: Value, args: &[Value]) {
         let cur = self.cur_thread;
         let th = self.vm_thread();
         self.cur_thread = th;
         let top = th.top();
-        if th.max_stack().saturating_sub(top) < crate::thread::LJ_STACK_MIN && self.grow_stack(th, crate::thread::LJ_STACK_MIN).is_err() {
+        let need = crate::thread::LJ_STACK_MIN + args.len();
+        if th.max_stack().saturating_sub(top) < need && self.grow_stack(th, need).is_err() {
             self.cur_thread = cur;
             return;
         }
         th.set(top, f);
         th.set(top + 1, Value::Nil);
-        th.set(top + 2, err);
-        th.set_top(top + 3);
+        for (i, &a) in args.iter().enumerate() {
+            th.set(top + 2 + i, a);
+        }
+        th.set_top(top + 2 + args.len());
         let oldh = self.rt.hook.active;
+        let oldev = self.rt.hook.vmevent;
         self.rt.hook.active = true;
-        let r = self.call_at(th, top, 1, FrameKind::Cp(ErrFunc::None), 0);
+        self.rt.hook.vmevent = true;
+        let r = self.call_at(th, top, args.len(), FrameKind::Cp(ErrFunc::None), 0);
         self.rt.hook.active = oldh;
+        self.rt.hook.vmevent = oldev;
         th.set_top(top);
         if let Err(e) = r {
             self.rt.thrown = None;
@@ -83,5 +101,40 @@ impl Vm {
             let _ = o.write_all(b"\n");
         }
         self.cur_thread = cur;
+    }
+
+    /// `lj_vmevent_send(L, ERRFIN, ...)`: report an error raised by a finalizer.
+    pub(crate) fn vmevent_errfin(&mut self, err: Value) {
+        if let Some(f) = self.vmevent_handler(VMEVENT_ERRFIN) {
+            self.vmevent_call(f, &[err]);
+        }
+    }
+
+    /// `lj_vmevent_send(L, BC, ...)` for every prototype of a freshly parsed chunk, in the order
+    /// upstream's parser finishes them (children before their parent, in source order). `f`
+    /// is the new main-chunk closure; it is anchored on the stack while handlers run.
+    pub(crate) fn vmevent_bc(&mut self, f: crate::gc::Gc<crate::func::Function>) {
+        if self.vmevent_handler(vmevent_bc_idx()).is_none() {
+            return;
+        }
+        let Some(pt) = f.proto() else { return };
+        let mut order = Vec::new();
+        fn walk(pt: crate::gc::Gc<crate::func::Proto>, out: &mut Vec<crate::gc::Gc<crate::func::Proto>>) {
+            for k in pt.kgc.iter() {
+                if let crate::func::KGc::Proto(c) = k {
+                    walk(*c, out);
+                }
+            }
+            out.push(pt);
+        }
+        walk(pt, &mut order);
+        let th = self.cur_thread;
+        self.push(Value::Func(f));
+        for p in order {
+            // Re-lookup: a handler may detach itself.
+            let Some(h) = self.vmevent_handler(vmevent_bc_idx()) else { break };
+            self.vmevent_call(h, &[Value::Proto(p)]);
+        }
+        th.set_top(th.top() - 1);
     }
 }

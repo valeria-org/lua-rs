@@ -221,6 +221,7 @@ impl Vm {
     pub(crate) fn call_native(&mut self, th: Gc<Thread>) -> LuaResult<Flow> {
         let fr = th.current_frame().expect("native frame");
         let Function::Native { f, .. } = &*fr.func else { unreachable!("native frame") };
+        super::hook::set_vmstate(super::hook::VMSTATE_C);
         let r = match *f {
             NativeImpl::Rust(nf) => nf(self),
             NativeImpl::C(cf) => match self.rt.c_call {
@@ -228,6 +229,7 @@ impl Vm {
                 None => Err(self.error_msg_bytes(b"C function called without the C API")),
             },
         };
+        super::hook::set_vmstate(super::hook::VMSTATE_INTERP);
         match r {
             Ok(TAILCALL) => {
                 // FFH_TAILCALL: the callable was stored in the native's function slot.
@@ -374,8 +376,10 @@ impl Vm {
         let old_yield = std::mem::replace(&mut self.rt.can_yield, false);
         self.rt.runs.push(Run { hook_oldpc: None });
         let entry = th.frame_count();
+        let oldst = super::hook::set_vmstate(super::hook::VMSTATE_INTERP);
         let first = self.precall(th, func_slot, nargs, kind, nres, false);
         let r = self.run(th, entry, first, false);
+        super::hook::set_vmstate(oldst);
         self.rt.runs.pop();
         self.rt.can_yield = old_yield;
         self.rt.nccalls -= 1;

@@ -107,6 +107,7 @@ fn key_hash(key: Value) -> u32 {
         Value::Thread(t) => hash_ptr(t.addr()),
         Value::Udata(u) => hash_ptr(u.addr()),
         Value::CData(c) => hash_ptr(c.addr()),
+        Value::Proto(p) => hash_ptr(p.addr()),
         Value::Nil => 0,
     }
 }

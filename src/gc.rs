@@ -284,6 +284,7 @@ impl Marker {
             Value::Thread(t) => self.mark(t),
             Value::Udata(u) => self.mark(u),
             Value::CData(c) => self.mark(c),
+            Value::Proto(p) => self.mark(p),
             Value::Nil | Value::Bool(_) | Value::Num(_) | Value::LightUd(_) => {}
         }
     }
