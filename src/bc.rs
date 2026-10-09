@@ -301,7 +301,12 @@ const _: () = assert!(Op::FUNCV as u8 + 2 == Op::JFUNCV as u8);
 impl Op {
     #[inline]
     pub fn from_u8(x: u8) -> Option<Op> {
-        Op::ALL.get(x as usize).copied()
+        if (x as usize) < Op::ALL.len() {
+            // SAFETY: `Op` is `repr(u8)` with implicit discriminants `0..Op::ALL.len()`.
+            Some(unsafe { std::mem::transmute::<u8, Op>(x) })
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn name(self) -> &'static str {

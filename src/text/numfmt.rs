@@ -354,6 +354,14 @@ pub fn put_fnum_reserve(out: &mut Vec<u8>, sf: SFormat, n: f64) -> u32 {
 
 /// `lj_strfmt_putnum`: append `n` formatted as `%.14g`.
 pub fn put_num(out: &mut Vec<u8>, n: f64) {
+    // Integers in the int32 range (at most 10 digits) print as plain decimals under `%.14g`;
+    // -0 is excluded because it prints as "-0".
+    if let Some(k) = crate::value::num2int_check(n)
+        && (k != 0 || n.to_bits() == 0)
+    {
+        super::strfmt::put_int(out, k);
+        return;
+    }
     put_fnum(out, SFormat::G14, n);
 }
 
@@ -362,6 +370,18 @@ pub fn fmt_num(n: f64) -> Vec<u8> {
     let mut v = Vec::with_capacity(super::strfmt::MAXBUF_NUM);
     put_num(&mut v, n);
     v
+}
+
+/// Call `f` with `n` formatted like [`fmt_num`], without a heap allocation for integers.
+pub fn with_num<R>(n: f64, f: impl FnOnce(&[u8]) -> R) -> R {
+    if let Some(k) = crate::value::num2int_check(n)
+        && (k != 0 || n.to_bits() == 0)
+    {
+        let mut buf = [0u8; super::strfmt::MAXBUF_INT];
+        let len = super::strfmt::wint(&mut buf, 0, k);
+        return f(&buf[..len]);
+    }
+    f(&fmt_num(n))
 }
 
 fn wfnum(w: &mut W<'_>, sf: SFormat, n: f64) {

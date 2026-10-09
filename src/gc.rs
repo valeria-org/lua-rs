@@ -394,11 +394,78 @@ impl ObjRef {
     }
 }
 
+/// Cells of at most this many bytes are recycled through the heap's free lists.
+const POOL_MAX: usize = 256;
+/// Size-class granularity and alignment of pooled cells.
+const POOL_GRAIN: usize = 16;
+const POOL_CLASSES: usize = POOL_MAX / POOL_GRAIN;
+
+/// Size class of a cell layout, if it is pooled.
+#[inline]
+fn pool_class(l: Layout) -> Option<usize> {
+    (l.size() <= POOL_MAX && l.align() <= POOL_GRAIN).then(|| l.size().max(1).div_ceil(POOL_GRAIN) - 1)
+}
+
+#[inline]
+fn class_layout(c: usize) -> Layout {
+    // SAFETY: non-zero multiple of the power-of-two alignment, far below `isize::MAX`.
+    unsafe { Layout::from_size_align_unchecked((c + 1) * POOL_GRAIN, POOL_GRAIN) }
+}
+
+/// Free cells of the pooled size classes, linked through their first word. Allocation-heavy
+/// code frees and reallocates cells of the same few sizes at a high rate, which the system
+/// allocator handles poorly in bulk (sweeps free thousands of cells at once).
+struct Pool {
+    head: [*mut u8; POOL_CLASSES],
+    count: [usize; POOL_CLASSES],
+}
+
+impl Pool {
+    #[inline]
+    fn take(&mut self, c: usize) -> *mut u8 {
+        let p = self.head[c];
+        if p.is_null() {
+            // SAFETY: the class layout has a non-zero size.
+            let p = unsafe { alloc::alloc(class_layout(c)) };
+            if p.is_null() {
+                alloc::handle_alloc_error(class_layout(c));
+            }
+            return p;
+        }
+        // SAFETY: free cells store the next free cell of their class in their first word.
+        self.head[c] = unsafe { *(p as *mut *mut u8) };
+        self.count[c] -= 1;
+        p
+    }
+
+    #[inline]
+    fn give(&mut self, c: usize, p: *mut u8) {
+        // SAFETY: `p` is a dead cell of class `c` (at least one aligned word).
+        unsafe { *(p as *mut *mut u8) = self.head[c] };
+        self.head[c] = p;
+        self.count[c] += 1;
+    }
+
+    /// Return free cells to the system allocator until at most `keep` remain in total.
+    fn trim(&mut self, keep: usize) {
+        let mut total: usize = self.count.iter().sum();
+        for c in (0..POOL_CLASSES).rev() {
+            while total > keep && self.count[c] > 0 {
+                let p = self.take(c);
+                // SAFETY: allocated with the class layout by `take`.
+                unsafe { alloc::dealloc(p, class_layout(c)) };
+                total -= 1;
+            }
+        }
+    }
+}
+
 /// List of all heap objects plus byte accounting.
 pub struct Heap {
     objects: Vec<NonNull<GcBox<dyn Trace>>>,
     total: usize,
     quarantine: Option<Quarantine>,
+    pool: Pool,
 }
 
 impl Default for Heap {
@@ -409,12 +476,17 @@ impl Default for Heap {
 
 impl Heap {
     pub fn new() -> Heap {
-        Heap { objects: Vec::new(), total: 0, quarantine: None }
+        Heap {
+            objects: Vec::new(),
+            total: 0,
+            pool: Pool { head: [std::ptr::null_mut(); POOL_CLASSES], count: [0; POOL_CLASSES] },
+            quarantine: None,
+        }
     }
 
     /// Debugging aid used by the GC stress mode: from now on, swept objects are dropped but
     /// their memory is kept (header flagged [`GC_DEAD`]) for a while, so that a dangling `Gc`
-    /// is not silently backed by a reused allocation. In debug builds, dereferencing or marking
+    /// is not silently backed by a reused cell. In debug builds, dereferencing or marking
     /// a dead object panics. Release builds have no checks, so this is a no-op there.
     pub fn enable_quarantine(&mut self) {
         if cfg!(debug_assertions) {
@@ -425,14 +497,55 @@ impl Heap {
     /// Allocate and register an object. Never collects.
     pub fn alloc<T: GcObject>(&mut self, value: T) -> Gc<T> {
         let size = value.size();
-        let raw = Box::into_raw(Box::new(GcBox { header: GcHeader { flags: Cell::new(0), kind: T::KIND }, value }));
-        // SAFETY: Box::into_raw never returns null. Ownership moves to the object list and is
-        // released exactly once by `sweep` or `Drop for Heap`.
+        let layout = Layout::new::<GcBox<T>>();
+        let raw = match pool_class(layout) {
+            Some(c) => self.pool.take(c),
+            None => {
+                // SAFETY: `GcBox` contains a header, so the layout has a non-zero size.
+                let p = unsafe { alloc::alloc(layout) };
+                if p.is_null() {
+                    alloc::handle_alloc_error(layout);
+                }
+                p
+            }
+        } as *mut GcBox<T>;
+        // SAFETY: `raw` is a fresh, suitably sized and aligned allocation. Ownership moves to
+        // the object list and is released exactly once by `sweep` or `Drop for Heap`.
+        unsafe { raw.write(GcBox { header: GcHeader { flags: Cell::new(0), kind: T::KIND }, value }) };
+        // SAFETY: allocation failure was handled above.
         let ptr = unsafe { NonNull::new_unchecked(raw) };
         let dynp: NonNull<GcBox<dyn Trace>> = ptr;
         self.objects.push(dynp);
         self.total += size;
         Gc { ptr }
+    }
+
+    /// Drop the object in cell `p` and release the cell (or, with the quarantine enabled, keep
+    /// it as a dead cell for a while).
+    ///
+    /// # Safety
+    /// `p` must come from `alloc` and not be used afterwards.
+    unsafe fn free(pool: &mut Pool, quarantine: &mut Option<Quarantine>, p: NonNull<GcBox<dyn Trace>>) {
+        // SAFETY: `p` is a live, initialized cell (caller contract).
+        let layout = unsafe { Layout::for_value(p.as_ref()) };
+        match quarantine {
+            None => {
+                // SAFETY: as above; the object is dropped exactly once.
+                unsafe { std::ptr::drop_in_place(p.as_ptr()) };
+                release_cell(pool, p.cast(), layout);
+            }
+            Some(q) => {
+                // SAFETY: as above. Only the value is dropped; the header stays valid and flags
+                // the cell dead, which `Gc::deref` and `Marker::mark` check before any access.
+                unsafe {
+                    (*p.as_ptr()).header.flags.set(GC_DEAD);
+                    std::ptr::drop_in_place(&raw mut (*p.as_ptr()).value);
+                }
+                if let Some((old, l)) = q.hold(p.cast(), layout) {
+                    release_cell(pool, old, l);
+                }
+            }
+        }
     }
 
     /// Bytes in use, including pending size deltas reported through `account`.
@@ -455,9 +568,10 @@ impl Heap {
     /// Free every unmarked, unfixed object; clear marks of survivors and recompute the live size.
     pub fn sweep(&mut self) -> Swept {
         let mut swept = Swept { live: 0, traversal: 0 };
-        let quarantine = &mut self.quarantine;
+        let before = self.objects.len();
+        let (pool, quarantine) = (&mut self.pool, &mut self.quarantine);
         self.objects.retain(|&p| {
-            // SAFETY: every pointer in the list is a live boxed GcBox created by `alloc`.
+            // SAFETY: every pointer in the list is a live cell created by `alloc`.
             let b = unsafe { &*p.as_ptr() };
             let flags = b.header.flags.get();
             if flags & (GC_MARKED | GC_FIXED) != 0 {
@@ -469,17 +583,27 @@ impl Heap {
                 }
                 true
             } else {
-                match quarantine {
-                    // SAFETY: unreachable object, removed from the list; created by Box::into_raw.
-                    None => drop(unsafe { Box::from_raw(p.as_ptr()) }),
-                    Some(q) => q.hold(p),
-                }
+                // SAFETY: unreachable object, removed from the list.
+                unsafe { Heap::free(pool, quarantine, p) };
                 false
             }
         });
+        // The program will likely allocate about as many cells until the next collection as
+        // this one freed: keep that many (or as many as are live), release the rest.
+        let freed = before - self.objects.len();
+        self.pool.trim(freed.max(self.objects.len()));
         take_debt();
         self.total = swept.live;
         swept
+    }
+}
+
+/// Return a dead cell of `layout` (allocated by `Heap::alloc`) to its pool or the allocator.
+fn release_cell(pool: &mut Pool, p: NonNull<u8>, layout: Layout) {
+    match pool_class(layout) {
+        Some(c) => pool.give(c, p.as_ptr()),
+        // SAFETY: allocated by `Heap::alloc` with this exact layout.
+        None => unsafe { alloc::dealloc(p.as_ptr(), layout) },
     }
 }
 
@@ -493,57 +617,37 @@ pub struct Swept {
     pub traversal: usize,
 }
 
-/// Freed heap cells whose deallocation is deferred (see [`Heap::enable_quarantine`]).
+/// Dead cells whose release is deferred (see [`Heap::enable_quarantine`]).
 #[derive(Default)]
 struct Quarantine {
     cells: std::collections::VecDeque<(NonNull<u8>, Layout)>,
 }
 
 impl Quarantine {
-    /// Cells kept before the oldest is released (bounds the memory held by dead headers).
+    /// Cells kept before the oldest is released (bounds the memory held by dead cells).
     const MAX_CELLS: usize = 1 << 18;
 
-    /// Drop the object's value, flag the cell dead and keep its memory.
-    fn hold(&mut self, p: NonNull<GcBox<dyn Trace>>) {
-        let raw = p.as_ptr();
-        // SAFETY: `p` is an unreachable cell created by `Box::into_raw` in `Heap::alloc` and just
-        // removed from the object list; its value is dropped exactly once here and never accessed
-        // again (`Gc::deref` and `Marker::mark` check `GC_DEAD` first), and the memory is freed
-        // in `release` with the layout of the original `Box` allocation.
-        unsafe {
-            let layout = Layout::for_value(&*raw);
-            (*raw).header.flags.set(GC_DEAD);
-            std::ptr::drop_in_place(&raw mut (*raw).value);
-            self.cells.push_back((p.cast::<u8>(), layout));
-        }
-        if self.cells.len() > Self::MAX_CELLS
-            && let Some(c) = self.cells.pop_front()
-        {
-            Self::release(c);
-        }
-    }
-
-    fn release((p, layout): (NonNull<u8>, Layout)) {
-        // SAFETY: allocated by `Box::new` (global allocator) with this layout; freed once.
-        unsafe { alloc::dealloc(p.as_ptr(), layout) };
-    }
-}
-
-impl Drop for Quarantine {
-    fn drop(&mut self) {
-        for c in self.cells.drain(..) {
-            Self::release(c);
-        }
+    /// Keep a dead cell; returns the oldest one once the quarantine is full.
+    fn hold(&mut self, p: NonNull<u8>, layout: Layout) -> Option<(NonNull<u8>, Layout)> {
+        self.cells.push_back((p, layout));
+        if self.cells.len() > Self::MAX_CELLS { self.cells.pop_front() } else { None }
     }
 }
 
 impl Drop for Heap {
     fn drop(&mut self) {
+        let mut quarantine = self.quarantine.take();
         for &p in &self.objects {
-            // SAFETY: each pointer was created by Box::into_raw in `alloc` and is freed once.
-            drop(unsafe { Box::from_raw(p.as_ptr()) });
+            // SAFETY: each pointer was created by `alloc` and is freed once.
+            unsafe { Heap::free(&mut self.pool, &mut None, p) };
         }
         self.objects.clear();
+        if let Some(q) = &mut quarantine {
+            for (p, l) in q.cells.drain(..) {
+                release_cell(&mut self.pool, p, l);
+            }
+        }
+        self.pool.trim(0);
         take_debt();
     }
 }

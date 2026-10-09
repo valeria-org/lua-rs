@@ -66,14 +66,6 @@ const ITYPENAME: [&str; 14] = [
     "table", "userdata", "number",
 ];
 
-#[inline]
-fn kstr(pt: &Proto, d: u32) -> Value {
-    match pt.kgc[d as usize] {
-        KGc::Str(s) => Value::Str(s),
-        _ => Value::Nil,
-    }
-}
-
 impl Vm {
     /// Apply a metamethod continuation to the (now top) Lua frame with result `res`.
     pub(crate) fn apply_cont(&mut self, th: Gc<Thread>, c: Cont, res: Value) -> LuaResult<Flow> {
@@ -178,6 +170,42 @@ impl Vm {
         self.new_lua_function(pt, uvs, parent.env())
     }
 
+    /// Instruction/return/profile hook dispatch before executing the instruction at `pc - 1`
+    /// (`vm_inshook`, `vm_rethook`, `vm_profhook`). Returns the flow to leave the interpreter
+    /// with if a C hook yielded.
+    #[cold]
+    #[inline(never)]
+    fn dispatch_hook(&mut self, th: Gc<Thread>, fidx: usize, pt: &Gc<Proto>, pc: usize, op: Op) -> LuaResult<Option<Flow>> {
+        let m = self.rt.hook.mask;
+        if m & hook::HOOK_PROFILE != 0 && hook::PROFILE_PENDING.load(std::sync::atomic::Ordering::Relaxed) {
+            th.set_frame_pc(fidx, pc as u32);
+            self.hook_profile(th, fidx, pt, pc as u32)?;
+        }
+        if !self.rt.hook.active && !std::mem::take(&mut self.rt.hook_skip) {
+            let ins_hook = m & (hook::LUA_MASKLINE | hook::LUA_MASKCOUNT) != 0 && (op as u8) < Op::FUNCF as u8;
+            if ins_hook || (m & hook::LUA_MASKRET != 0 && op.is_ret()) {
+                th.set_frame_pc(fidx, pc as u32);
+                let multres = self.rt.multres;
+                match self.hook_ins(th, fidx, pt, pc as u32, ins_hook) {
+                    Err(e) if e.kind == ErrorKind::Yield => {
+                        return Ok(Some(self.hook_yield(th, fidx, pc, multres, e.value)));
+                    }
+                    r => r?,
+                }
+            }
+        }
+        Ok(None)
+    }
+
+    /// FORI/FORL with non-number control slots (string operands, or after `debug.setlocal`):
+    /// coerce in place (`lj_meta_for`) and return the numbers.
+    #[cold]
+    fn for_coerce(&mut self, th: Gc<Thread>, ra: usize) -> LuaResult<(f64, f64, f64)> {
+        self.meta_for(ra)?;
+        let num = |v: Value| v.as_num().expect("coerced by meta_for");
+        Ok((num(th.get(ra)), num(th.get(ra + 1)), num(th.get(ra + 2))))
+    }
+
     /// Execute Lua frames on `th` until a run ends, a yield happens, or an error is raised.
     #[allow(clippy::neg_cmp_op_on_partial_ord)] // NaN semantics of ISGE/ISGT.
     pub(crate) fn interp(&mut self, th: Gc<Thread>) -> LuaResult<Flow> {
@@ -186,38 +214,50 @@ impl Vm {
             let fr = th.frame(fidx).expect("lua frame");
             let func = fr.func;
             let pt = func.proto().expect("lua frame");
+            // The frame keeps `func` and thereby `pt` alive while it runs, and prototypes are
+            // immutable apart from their flags, so this view stays valid.
+            let bc: &[Ins] = &pt.bc;
+            let knum: &[f64] = &pt.knum;
             let base = fr.base as usize;
             let mut pc = fr.pc as usize;
             let fs = pt.framesize as usize;
 
-            // Fast slot access through a pointer to the stack, refreshed before each
-            // instruction. Within an instruction, `get!`/`set!` are only used where no stack
-            // reallocation can have happened since the refresh: helpers that run Lua code or
-            // grow this thread's stack are followed by `continue 'reload`, `continue` or
-            // direct `th.get`/`th.set` accesses.
-            let mut stk: *mut Value;
-            let mut slen: usize;
+            // Fast slot access through `fp`, a pointer to stack slot `base`, with `flen` slots
+            // available from there. `refresh!` reloads both; it must run after anything that
+            // may reallocate this thread's stack (growth, natives, hooks, finalizers at GC
+            // points) before the next `slot!`/`get!`/`set!`. Helpers that run Lua code are
+            // followed by `continue 'reload`, which refreshes.
+            let mut fp: *mut Value;
+            let mut flen: usize;
             macro_rules! refresh {
                 () => {{
                     // SAFETY: short-lived access to obtain the buffer pointer and length.
                     let v = unsafe { th.stack_mut() };
-                    stk = v.as_mut_ptr();
-                    slen = v.len();
+                    fp = v.as_mut_ptr().wrapping_add(base);
+                    flen = v.len().saturating_sub(base);
+                }};
+            }
+            refresh!();
+            // Reference to slot `base + i` (nil beyond the stack), valid until the next store.
+            macro_rules! slot {
+                ($i:expr) => {{
+                    let i = ($i) as usize;
+                    // SAFETY: `base + i` is below the stack length and the buffer was not
+                    // reallocated since `refresh!`.
+                    if i < flen { unsafe { &*fp.add(i) } } else { &Value::Nil }
                 }};
             }
             macro_rules! get {
-                ($i:expr) => {{
-                    let i = base + ($i) as usize;
-                    // SAFETY: `i < slen` and the buffer was not reallocated since `refresh!`.
-                    if i < slen { unsafe { *stk.add(i) } } else { Value::Nil }
-                }};
+                ($i:expr) => {
+                    *slot!($i)
+                };
             }
             macro_rules! set {
                 ($i:expr, $v:expr) => {{
                     let v = $v;
-                    let i = base + ($i) as usize;
-                    // SAFETY: as for `get!`.
-                    if i < slen { unsafe { *stk.add(i) = v } } else { th.set(i, v) }
+                    let i = ($i) as usize;
+                    // SAFETY: as for `slot!`.
+                    if i < flen { unsafe { *fp.add(i) = v } } else { th.set(base + i, v) }
                 }};
             }
             macro_rules! save {
@@ -244,13 +284,13 @@ impl Vm {
             }
             macro_rules! branch {
                 ($j:expr) => {
-                    pc = (pc as i64 + ($j) as i64) as usize
+                    pc = (pc as isize + ($j) as isize) as usize
                 };
             }
             // Branch to the target of the JMP following a comparison if `cond`.
             macro_rules! cond_jump {
                 ($cond:expr) => {{
-                    let j = pt.bc[pc].j();
+                    let j = bc[pc].j();
                     pc += 1;
                     if $cond {
                         branch!(j);
@@ -262,67 +302,64 @@ impl Vm {
                     save!();
                     th.set_top(base + fs);
                     self.gc_safe();
+                    refresh!();
                 }};
             }
-
-            loop {
-                let ins: Ins = pt.bc[pc];
-                pc += 1;
-                let opb = ins.op_byte();
-                let op = Op::from_u8(opb).expect("valid opcode");
-                if self.rt.hook.mask != 0 {
-                    let m = self.rt.hook.mask;
-                    if m & hook::HOOK_PROFILE != 0 && hook::PROFILE_PENDING.load(std::sync::atomic::Ordering::Relaxed) {
+            macro_rules! kstr {
+                ($d:expr) => {
+                    match pt.kgc[($d) as usize] {
+                        KGc::Str(s) => s,
+                        _ => unreachable!("string constant"),
+                    }
+                };
+            }
+            // Result of a metamethod-aware helper: the value, or call the metamethod.
+            macro_rules! mm_call {
+                ($m:expr, $c:expr) => {
+                    match $m {
+                        Meta::Done(v) => v,
+                        Meta::Call { cont, mo, a, b } => flow!(self.mm_call(th, cont, mo, a, b, $c)),
+                    }
+                };
+            }
+            // Decoded current instruction, declared here so the macros below can refer to it.
+            let mut ins: Ins;
+            let mut op: Op;
+            let mut a: u32;
+            // Numeric comparison with fallback to `__lt`/`__le`.
+            macro_rules! comp {
+                ($f:expr) => {{
+                    let (pa, pd) = (slot!(a), slot!(ins.d()));
+                    if let Value::Num(x) = *pa
+                        && let Value::Num(y) = *pd
+                    {
+                        cond_jump!(($f)(x, y));
+                    } else {
+                        let (va, vd) = (*pa, *pd);
                         save!();
-                        self.hook_profile(th, fidx, &pt, pc as u32)?;
+                        let c = mm_call!(self.meta_comp(va, vd, op as u8 - Op::ISLT as u8)?, None);
+                        cond_jump!(c);
                     }
-                    if !self.rt.hook.active && !std::mem::take(&mut self.rt.hook_skip) {
-                        let ins_hook = m & (hook::LUA_MASKLINE | hook::LUA_MASKCOUNT) != 0 && opb < Op::FUNCF as u8;
-                        if ins_hook || (m & hook::LUA_MASKRET != 0 && op.is_ret()) {
-                            save!();
-                            let multres = self.rt.multres;
-                            match self.hook_ins(th, fidx, &pt, pc as u32, ins_hook) {
-                                Err(e) if e.kind == ErrorKind::Yield => {
-                                    return Ok(self.hook_yield(th, fidx, pc, multres, e.value));
-                                }
-                                r => r?,
-                            }
-                        }
-                    }
-                }
-                refresh!();
-                let a = ins.a();
-                match op {
-                    // -- Comparisons -----------------------------------------------------------
-                    Op::ISLT | Op::ISGE | Op::ISLE | Op::ISGT => {
-                        let (va, vd) = (get!(a), get!(ins.d()));
-                        if let (Value::Num(x), Value::Num(y)) = (va, vd) {
-                            let c = match op {
-                                Op::ISLT => x < y,
-                                Op::ISGE => !(x < y),
-                                Op::ISLE => x <= y,
-                                _ => !(x <= y),
-                            };
-                            cond_jump!(c);
-                        } else {
-                            save!();
-                            match self.meta_comp(va, vd, opb - Op::ISLT as u8)? {
-                                Meta::Done(c) => cond_jump!(c),
-                                Meta::Call { cont, mo, a, b } => flow!(self.mm_call(th, cont, mo, a, b, None)),
-                            }
-                        }
-                    }
-                    Op::ISEQV | Op::ISNEV => {
-                        let ne = op == Op::ISNEV;
-                        let (va, vd) = (get!(a), get!(ins.d()));
+                }};
+            }
+            macro_rules! eqv {
+                ($ne:expr) => {{
+                    let ne: bool = $ne;
+                    let (pa, pd) = (slot!(a), slot!(ins.d()));
+                    if let Value::Num(x) = *pa
+                        && let Value::Num(y) = *pd
+                    {
+                        cond_jump!((x == y) != ne);
+                    } else {
+                        let (va, vd) = (*pa, *pd);
                         match (va, vd) {
-                            (Value::Num(x), Value::Num(y)) => cond_jump!((x == y) != ne),
                             (Value::CData(_), _) | (_, Value::CData(_)) => {
                                 save!();
                                 match self.meta_equal_cd(va, vd, ne) {
                                     None => cond_jump!(ne),
-                                    Some(Meta::Call { cont, mo, a, b }) => flow!(self.mm_call(th, cont, mo, a, b, None)),
-                                    Some(Meta::Done(_)) => unreachable!(),
+                                    Some(m) => {
+                                        mm_call!(m, None);
+                                    }
                                 }
                             }
                             _ if va.raw_equal(vd) => cond_jump!(!ne),
@@ -330,48 +367,201 @@ impl Vm {
                                 save!();
                                 match self.meta_equal(va, vd, ne) {
                                     None => cond_jump!(ne),
-                                    Some(Meta::Call { cont, mo, a, b }) => flow!(self.mm_call(th, cont, mo, a, b, None)),
-                                    Some(Meta::Done(_)) => unreachable!(),
+                                    Some(m) => {
+                                        mm_call!(m, None);
+                                    }
                                 }
                             }
                             _ => cond_jump!(ne),
                         }
                     }
-                    Op::ISEQS | Op::ISNES | Op::ISEQN | Op::ISNEN | Op::ISEQP | Op::ISNEP => {
-                        let ne = opb & 1 != 0;
-                        let va = get!(a);
-                        let d = ins.d();
-                        let k = match op {
-                            Op::ISEQS | Op::ISNES => kstr(&pt, d),
-                            Op::ISEQN | Op::ISNEN => Value::Num(pt.knum[d as usize]),
-                            _ => kpri(d),
-                        };
-                        if let Value::CData(_) = va {
-                            save!();
-                            match self.meta_equal_cd(va, k, ne) {
-                                None => cond_jump!(ne),
-                                Some(Meta::Call { cont, mo, a, b }) => flow!(self.mm_call(th, cont, mo, a, b, None)),
-                                Some(Meta::Done(_)) => unreachable!(),
+                }};
+            }
+            // Equality with a constant (string, number or primitive).
+            macro_rules! eqk {
+                ($ne:expr, $k:expr) => {{
+                    let ne: bool = $ne;
+                    let va = get!(a);
+                    let k: Value = $k;
+                    if let Value::CData(_) = va {
+                        save!();
+                        match self.meta_equal_cd(va, k, ne) {
+                            None => cond_jump!(ne),
+                            Some(m) => {
+                                mm_call!(m, None);
                             }
-                        } else {
-                            cond_jump!(va.raw_equal(k) != ne);
                         }
+                    } else {
+                        cond_jump!(va.raw_equal(k) != ne);
                     }
-
-                    // -- Unary test and copy ---------------------------------------------------
-                    Op::ISTC | Op::ISFC | Op::IST | Op::ISF => {
-                        let v = get!(ins.d());
-                        let t = v.is_truthy();
-                        let want = matches!(op, Op::ISTC | Op::IST);
-                        if t == want {
-                            if matches!(op, Op::ISTC | Op::ISFC) {
+                }};
+            }
+            // Test (and copy) D: jump if its truthiness is `$want`.
+            macro_rules! truth {
+                ($want:expr, $copy:expr) => {{
+                    let v = get!(ins.d());
+                    if v.is_truthy() == $want {
+                        if $copy {
+                            set!(a, v);
+                        }
+                        cond_jump!(true);
+                    } else {
+                        pc += 1;
+                    }
+                }};
+            }
+            macro_rules! arith_slow {
+                ($mm:expr, $rb:expr, $rc:expr, $bs:expr, $cs:expr) => {{
+                    save!();
+                    let n = mm_call!(self.meta_arith($mm, $rb, $rc, $bs, $cs)?, None);
+                    set!(a, Value::Num(n));
+                }};
+            }
+            // Binary arithmetic: `vn` = variable op number constant, `nv` = constant op
+            // variable, `vv` = two variables.
+            macro_rules! arith {
+                ($mm:expr, $f:expr, vn) => {{
+                    let (bb, cc) = (ins.b(), ins.c());
+                    let pb = slot!(bb);
+                    let y = knum[cc as usize];
+                    if let Value::Num(x) = *pb {
+                        set!(a, Value::Num(($f)(x, y)));
+                    } else {
+                        arith_slow!($mm, *pb, Value::Num(y), Some(base + bb as usize), None)
+                    }
+                }};
+                ($mm:expr, $f:expr, nv) => {{
+                    let (bb, cc) = (ins.b(), ins.c());
+                    let pb = slot!(bb);
+                    let x = knum[cc as usize];
+                    if let Value::Num(y) = *pb {
+                        set!(a, Value::Num(($f)(x, y)));
+                    } else {
+                        arith_slow!($mm, Value::Num(x), *pb, None, Some(base + bb as usize))
+                    }
+                }};
+                ($mm:expr, $f:expr, vv) => {{
+                    let (bb, cc) = (ins.b(), ins.c());
+                    let (pb, pc_) = (slot!(bb), slot!(cc));
+                    if let Value::Num(x) = *pb
+                        && let Value::Num(y) = *pc_
+                    {
+                        set!(a, Value::Num(($f)(x, y)));
+                    } else {
+                        arith_slow!($mm, *pb, *pc_, Some(base + bb as usize), Some(base + cc as usize))
+                    }
+                }};
+            }
+            macro_rules! bitop {
+                ($f:expr) => {{
+                    let (bb, cc) = (ins.b(), ins.c());
+                    let (pb, pc_) = (slot!(bb), slot!(cc));
+                    if let Value::Num(x) = *pb
+                        && let Value::Num(y) = *pc_
+                    {
+                        let r: i32 = ($f)(num2bit(x), num2bit(y));
+                        set!(a, Value::Num(r as f64));
+                    } else {
+                        let (rb, rc) = (*pb, *pc_);
+                        save!();
+                        let r = self.meta_bitop(op, rb, rc, Some(base + bb as usize), Some(base + cc as usize))?;
+                        set!(a, r);
+                    }
+                }};
+            }
+            // Table loads: `v` is the raw result of `t[k]` for `o` = table `t`; it is final
+            // unless it is nil and the metatable has `__index`.
+            macro_rules! tget_slow {
+                ($o:expr, $k:expr, $oslot:expr) => {{
+                    save!();
+                    let v = mm_call!(self.meta_tget($o, $k, $oslot)?, None);
+                    set!(a, v);
+                }};
+            }
+            macro_rules! tget_done {
+                ($t:expr, $v:expr, $o:expr, $k:expr) => {{
+                    let v: Value = $v;
+                    if !v.is_nil() {
+                        set!(a, v);
+                    } else {
+                        match self.fast_mm($t.metatable(), MM::Index) {
+                            None => set!(a, v),
+                            Some(mo) => {
+                                save!();
+                                let v = mm_call!(self.meta_tget_index($o, mo, $k)?, None);
                                 set!(a, v);
                             }
-                            cond_jump!(true);
-                        } else {
-                            pc += 1;
                         }
                     }
+                }};
+            }
+            macro_rules! tset_slow {
+                ($o:expr, $k:expr, $v:expr, $oslot:expr) => {{
+                    save!();
+                    let v = $v;
+                    mm_call!(self.meta_tset($o, $k, v, $oslot)?, Some(v));
+                }};
+            }
+            // `nil_ok` check of the table store fast paths: no `__newindex` for table `t`.
+            macro_rules! no_newindex {
+                ($t:expr) => {
+                    || self.fast_mm($t.metatable(), MM::Newindex).is_none()
+                };
+            }
+            macro_rules! fori {
+                ($idx:expr, $stop:expr, $step:expr) => {{
+                    let (idx, stop, step): (f64, f64, f64) = ($idx, $stop, $step);
+                    set!(a + 3, Value::Num(idx));
+                    let enter = if step.is_sign_negative() { idx >= stop } else { stop >= idx };
+                    if !enter {
+                        branch!(ins.j());
+                    }
+                }};
+            }
+            macro_rules! forl {
+                ($idx:expr, $stop:expr, $step:expr) => {{
+                    let (idx, stop, step): (f64, f64, f64) = ($idx, $stop, $step);
+                    let idx = idx + step;
+                    set!(a, Value::Num(idx));
+                    set!(a + 3, Value::Num(idx));
+                    let cont = if step.is_sign_negative() { idx >= stop } else { stop >= idx };
+                    if cont {
+                        branch!(ins.j());
+                    }
+                }};
+            }
+
+            loop {
+                ins = bc[pc];
+                pc += 1;
+                op = Op::from_u8(ins.op_byte()).expect("valid opcode");
+                if self.rt.hook.mask != 0 {
+                    if let Some(f) = self.dispatch_hook(th, fidx, &pt, pc, op)? {
+                        return Ok(f);
+                    }
+                    refresh!();
+                }
+                a = ins.a();
+                match op {
+                    // -- Comparisons -----------------------------------------------------------
+                    Op::ISLT => comp!(|x: f64, y: f64| x < y),
+                    Op::ISGE => comp!(|x: f64, y: f64| !(x < y)),
+                    Op::ISLE => comp!(|x: f64, y: f64| x <= y),
+                    Op::ISGT => comp!(|x: f64, y: f64| !(x <= y)),
+                    Op::ISEQV => eqv!(false),
+                    Op::ISNEV => eqv!(true),
+                    Op::ISEQS => eqk!(false, Value::Str(kstr!(ins.d()))),
+                    Op::ISNES => eqk!(true, Value::Str(kstr!(ins.d()))),
+                    Op::ISEQN => eqk!(false, Value::Num(knum[ins.d() as usize])),
+                    Op::ISNEN => eqk!(true, Value::Num(knum[ins.d() as usize])),
+                    Op::ISEQP => eqk!(false, kpri(ins.d())),
+                    Op::ISNEP => eqk!(true, kpri(ins.d())),
+
+                    // -- Unary test and copy ---------------------------------------------------
+                    Op::ISTC => truth!(true, true),
+                    Op::ISFC => truth!(false, true),
+                    Op::IST => truth!(true, false),
+                    Op::ISF => truth!(false, false),
                     Op::ISTYPE | Op::ISNUM => {
                         let v = get!(a);
                         let tp = ins.d();
@@ -399,12 +589,8 @@ impl Vm {
                         match get!(d) {
                             Value::Num(x) => set!(a, Value::Num(-x)),
                             o => {
-                                save!();
                                 let s = Some(base + d as usize);
-                                match self.meta_arith(MM::Unm, o, o, s, s)? {
-                                    Meta::Done(n) => set!(a, Value::Num(n)),
-                                    Meta::Call { cont, mo, a, b } => flow!(self.mm_call(th, cont, mo, a, b, None)),
-                                }
+                                arith_slow!(MM::Unm, o, o, s, s)
                             }
                         }
                     }
@@ -415,53 +601,35 @@ impl Vm {
                             Value::Table(t) => set!(a, Value::Num(t.len() as f64)),
                             o => {
                                 save!();
-                                match self.meta_len(o, Some(base + d as usize))? {
-                                    Meta::Done(v) => set!(a, v),
-                                    Meta::Call { cont, mo, a, b } => flow!(self.mm_call(th, cont, mo, a, b, None)),
-                                }
+                                let v = mm_call!(self.meta_len(o, Some(base + d as usize))?, None);
+                                set!(a, v);
                             }
                         }
                     }
 
                     // -- Binary arithmetic -----------------------------------------------------
-                    Op::ADDVN | Op::SUBVN | Op::MULVN | Op::DIVVN | Op::MODVN | Op::ADDNV | Op::SUBNV
-                    | Op::MULNV | Op::DIVNV | Op::MODNV | Op::ADDVV | Op::SUBVV | Op::MULVV | Op::DIVVV
-                    | Op::MODVV | Op::POW => {
-                        let (bb, cc) = (ins.b(), ins.c());
-                        let (rb, rc, bs, cs) = if op == Op::POW {
-                            (get!(bb), get!(cc), Some(base + bb as usize), Some(base + cc as usize))
-                        } else {
-                            match (opb - Op::ADDVN as u8) / 5 {
-                                0 => (get!(bb), Value::Num(pt.knum[cc as usize]), Some(base + bb as usize), None),
-                                1 => (Value::Num(pt.knum[cc as usize]), get!(bb), None, Some(base + bb as usize)),
-                                _ => (get!(bb), get!(cc), Some(base + bb as usize), Some(base + cc as usize)),
-                            }
-                        };
-                        let mm = op.mm().expect("arith mm");
-                        if let (Value::Num(x), Value::Num(y)) = (rb, rc) {
-                            let r = match mm {
-                                MM::Add => x + y,
-                                MM::Sub => x - y,
-                                MM::Mul => x * y,
-                                MM::Div => x / y,
-                                MM::Mod => modf(x, y),
-                                _ => x.powf(y),
-                            };
-                            set!(a, Value::Num(r));
-                        } else {
-                            save!();
-                            match self.meta_arith(mm, rb, rc, bs, cs)? {
-                                Meta::Done(n) => set!(a, Value::Num(n)),
-                                Meta::Call { cont, mo, a, b } => flow!(self.mm_call(th, cont, mo, a, b, None)),
-                            }
-                        }
-                    }
+                    Op::ADDVN => arith!(MM::Add, |x: f64, y: f64| x + y, vn),
+                    Op::SUBVN => arith!(MM::Sub, |x: f64, y: f64| x - y, vn),
+                    Op::MULVN => arith!(MM::Mul, |x: f64, y: f64| x * y, vn),
+                    Op::DIVVN => arith!(MM::Div, |x: f64, y: f64| x / y, vn),
+                    Op::MODVN => arith!(MM::Mod, modf, vn),
+                    Op::ADDNV => arith!(MM::Add, |x: f64, y: f64| x + y, nv),
+                    Op::SUBNV => arith!(MM::Sub, |x: f64, y: f64| x - y, nv),
+                    Op::MULNV => arith!(MM::Mul, |x: f64, y: f64| x * y, nv),
+                    Op::DIVNV => arith!(MM::Div, |x: f64, y: f64| x / y, nv),
+                    Op::MODNV => arith!(MM::Mod, modf, nv),
+                    Op::ADDVV => arith!(MM::Add, |x: f64, y: f64| x + y, vv),
+                    Op::SUBVV => arith!(MM::Sub, |x: f64, y: f64| x - y, vv),
+                    Op::MULVV => arith!(MM::Mul, |x: f64, y: f64| x * y, vv),
+                    Op::DIVVV => arith!(MM::Div, |x: f64, y: f64| x / y, vv),
+                    Op::MODVV => arith!(MM::Mod, modf, vv),
+                    Op::POW => arith!(MM::Pow, f64::powf, vv),
                     Op::CAT => {
                         save!();
                         let (bb, cc) = (ins.b() as usize, ins.c() as usize);
                         match self.meta_cat(base + cc, cc - bb)? {
                             Meta::Done(()) => {
-                                set!(a, get!(bb));
+                                th.set(base + a as usize, th.get(base + bb));
                                 gc_point!();
                             }
                             Meta::Call { cont: Cont::Cat { top }, mo, a, b } => {
@@ -485,30 +653,15 @@ impl Vm {
                             }
                         }
                     }
-                    Op::BAND | Op::BOR | Op::BXOR | Op::BSHL | Op::BSHR | Op::BSAR => {
-                        let (bb, cc) = (ins.b(), ins.c());
-                        let (rb, rc) = (get!(bb), get!(cc));
-                        if let (Value::Num(x), Value::Num(y)) = (rb, rc) {
-                            let (x, y) = (num2bit(x), num2bit(y));
-                            let sh = (y as u32) & 31;
-                            let r = match op {
-                                Op::BAND => x & y,
-                                Op::BOR => x | y,
-                                Op::BXOR => x ^ y,
-                                Op::BSHL => ((x as u32) << sh) as i32,
-                                Op::BSHR => ((x as u32) >> sh) as i32,
-                                _ => x >> sh,
-                            };
-                            set!(a, Value::Num(r as f64));
-                        } else {
-                            save!();
-                            let r = self.meta_bitop(op, rb, rc, Some(base + bb as usize), Some(base + cc as usize))?;
-                            set!(a, r);
-                        }
-                    }
+                    Op::BAND => bitop!(|x: i32, y: i32| x & y),
+                    Op::BOR => bitop!(|x: i32, y: i32| x | y),
+                    Op::BXOR => bitop!(|x: i32, y: i32| x ^ y),
+                    Op::BSHL => bitop!(|x: i32, y: i32| ((x as u32) << (y as u32 & 31)) as i32),
+                    Op::BSHR => bitop!(|x: i32, y: i32| ((x as u32) >> (y as u32 & 31)) as i32),
+                    Op::BSAR => bitop!(|x: i32, y: i32| x >> (y as u32 & 31)),
 
                     // -- Constants -------------------------------------------------------------
-                    Op::KSTR => set!(a, kstr(&pt, ins.d())),
+                    Op::KSTR => set!(a, Value::Str(kstr!(ins.d()))),
                     Op::KCDATA => {
                         let v = match pt.kgc[ins.d() as usize] {
                             KGc::CData(c) => Value::CData(c),
@@ -517,7 +670,7 @@ impl Vm {
                         set!(a, v);
                     }
                     Op::KSHORT => set!(a, Value::Num(ins.d() as u16 as i16 as f64)),
-                    Op::KNUM => set!(a, Value::Num(pt.knum[ins.d() as usize])),
+                    Op::KNUM => set!(a, Value::Num(knum[ins.d() as usize])),
                     Op::KPRI => set!(a, kpri(ins.d())),
                     Op::KNIL => {
                         for i in a..=ins.d() {
@@ -526,11 +679,11 @@ impl Vm {
                     }
 
                     // -- Upvalues and closures -------------------------------------------------
-                    Op::UGET => set!(a, func.upval(ins.d() as usize).expect("upvalue").get()),
-                    Op::USETV => func.upval(a as usize).expect("upvalue").set(get!(ins.d())),
-                    Op::USETS => func.upval(a as usize).expect("upvalue").set(kstr(&pt, ins.d())),
-                    Op::USETN => func.upval(a as usize).expect("upvalue").set(Value::Num(pt.knum[ins.d() as usize])),
-                    Op::USETP => func.upval(a as usize).expect("upvalue").set(kpri(ins.d())),
+                    Op::UGET => set!(a, func.lua_upvals()[ins.d() as usize].get().get()),
+                    Op::USETV => func.lua_upvals()[a as usize].get().set(get!(ins.d())),
+                    Op::USETS => func.lua_upvals()[a as usize].get().set(Value::Str(kstr!(ins.d()))),
+                    Op::USETN => func.lua_upvals()[a as usize].get().set(Value::Num(knum[ins.d() as usize])),
+                    Op::USETP => func.lua_upvals()[a as usize].get().set(kpri(ins.d())),
                     Op::UCLO => {
                         th.close_upvals((base + a as usize) as u32);
                         branch!(ins.j());
@@ -539,7 +692,7 @@ impl Vm {
                         gc_point!();
                         let KGc::Proto(cpt) = pt.kgc[ins.d() as usize] else { unreachable!("FNEW proto") };
                         let f = self.new_closure(th, cpt, func, base);
-                        set!(a, Value::Func(f));
+                        th.set(base + a as usize, Value::Func(f));
                     }
 
                     // -- Tables ----------------------------------------------------------------
@@ -551,32 +704,52 @@ impl Vm {
                             asize = 0x801;
                         }
                         let t = self.new_table(asize, d >> 11)?;
-                        set!(a, Value::Table(t));
+                        th.set(base + a as usize, Value::Table(t));
                     }
                     Op::TDUP => {
                         gc_point!();
                         let KGc::Table(kt) = pt.kgc[ins.d() as usize] else { unreachable!("TDUP table") };
                         let t = self.dup_table(kt);
-                        set!(a, Value::Table(t));
+                        th.set(base + a as usize, Value::Table(t));
                     }
-                    Op::GGET | Op::TGETV | Op::TGETS | Op::TGETB => {
-                        let (o, k, oslot) = match op {
-                            Op::GGET => (Value::Table(func.env()), kstr(&pt, ins.d()), None),
-                            Op::TGETV => (get!(ins.b()), get!(ins.c()), Some(base + ins.b() as usize)),
-                            Op::TGETS => (get!(ins.b()), kstr(&pt, ins.c()), Some(base + ins.b() as usize)),
-                            _ => (get!(ins.b()), Value::Num(ins.c() as f64), Some(base + ins.b() as usize)),
-                        };
-                        if let Value::Table(t) = o {
-                            let v = t.get(k);
-                            if !v.is_nil() || self.fast_mm(t.metatable(), MM::Index).is_none() {
-                                set!(a, v);
-                                continue;
-                            }
+                    Op::GGET => {
+                        let k = kstr!(ins.d());
+                        let t = func.env();
+                        tget_done!(t, t.get_str(k), Value::Table(t), Value::Str(k))
+                    }
+                    Op::TGETS => {
+                        let bb = ins.b();
+                        let po = slot!(bb);
+                        let k = kstr!(ins.c());
+                        if let Value::Table(t) = *po {
+                            tget_done!(t, t.get_str(k), *po, Value::Str(k))
+                        } else {
+                            tget_slow!(*po, Value::Str(k), Some(base + bb as usize))
                         }
-                        save!();
-                        match self.meta_tget(o, k, oslot)? {
-                            Meta::Done(v) => set!(a, v),
-                            Meta::Call { cont, mo, a, b } => flow!(self.mm_call(th, cont, mo, a, b, None)),
+                    }
+                    Op::TGETV => {
+                        let bb = ins.b();
+                        let (po, pk) = (slot!(bb), slot!(ins.c()));
+                        if let Value::Table(t) = *po {
+                            let v = match *pk {
+                                Value::Num(n) => t.get_num(n),
+                                Value::Str(s) => t.get_str(s),
+                                k => t.get(k),
+                            };
+                            tget_done!(t, v, *po, *pk)
+                        } else {
+                            tget_slow!(*po, *pk, Some(base + bb as usize))
+                        }
+                    }
+                    Op::TGETB => {
+                        let bb = ins.b();
+                        let o = get!(bb);
+                        let c = ins.c();
+                        match o {
+                            Value::Table(t) => {
+                                tget_done!(t, t.get_int(c as i32), o, Value::Num(c as f64))
+                            }
+                            _ => tget_slow!(o, Value::Num(c as f64), Some(base + bb as usize)),
                         }
                     }
                     Op::TGETR => {
@@ -592,25 +765,56 @@ impl Vm {
                         };
                         set!(a, v);
                     }
-                    Op::GSET | Op::TSETV | Op::TSETS | Op::TSETB => {
-                        let (o, k, oslot) = match op {
-                            Op::GSET => (Value::Table(func.env()), kstr(&pt, ins.d()), None),
-                            Op::TSETV => (get!(ins.b()), get!(ins.c()), Some(base + ins.b() as usize)),
-                            Op::TSETS => (get!(ins.b()), kstr(&pt, ins.c()), Some(base + ins.b() as usize)),
-                            _ => (get!(ins.b()), Value::Num(ins.c() as f64), Some(base + ins.b() as usize)),
-                        };
+                    Op::GSET => {
+                        let k = kstr!(ins.d());
+                        let t = func.env();
+                        let v = get!(a);
+                        if !t.store_str(k, v, no_newindex!(t)) {
+                            tset_slow!(Value::Table(t), Value::Str(k), v, None);
+                        }
+                    }
+                    Op::TSETS => {
+                        let bb = ins.b();
+                        let o = get!(bb);
+                        let k = kstr!(ins.c());
                         let v = get!(a);
                         if let Value::Table(t) = o
-                            && !t.get(k).is_nil()
+                            && t.store_str(k, v, no_newindex!(t))
                         {
-                            t.set_existing(k, v);
                             continue;
                         }
-                        save!();
-                        match self.meta_tset(o, k, v, oslot)? {
-                            Meta::Done(()) => {}
-                            Meta::Call { cont, mo, a, b } => flow!(self.mm_call(th, cont, mo, a, b, Some(v))),
+                        tset_slow!(o, Value::Str(k), v, Some(base + bb as usize));
+                    }
+                    Op::TSETV => {
+                        let bb = ins.b();
+                        let (po, pk) = (slot!(bb), slot!(ins.c()));
+                        let v = get!(a);
+                        if let Value::Table(t) = *po {
+                            let done = match *pk {
+                                Value::Num(n) => {
+                                    let k = num2int(n);
+                                    (k as f64 == n && t.store_array(k as u32, v, no_newindex!(t)))
+                                        || t.store(Value::Num(n), v, no_newindex!(t))
+                                }
+                                Value::Str(s) => t.store_str(s, v, no_newindex!(t)),
+                                k => t.store(k, v, no_newindex!(t)),
+                            };
+                            if done {
+                                continue;
+                            }
                         }
+                        tset_slow!(*po, *pk, v, Some(base + bb as usize));
+                    }
+                    Op::TSETB => {
+                        let bb = ins.b();
+                        let (o, v) = (get!(bb), get!(a));
+                        let c = ins.c();
+                        if let Value::Table(t) = o
+                            && t.store_array(c, v, no_newindex!(t))
+                        {
+                            continue;
+                        }
+                        tset_slow!(o, Value::Num(c as f64), v, Some(base + bb as usize));
                     }
                     Op::TSETR => {
                         if let Value::Table(t) = get!(ins.b()) {
@@ -628,7 +832,7 @@ impl Vm {
                     Op::TSETM => {
                         // The parser guarantees a table below the values.
                         let Value::Table(t) = get!(a - 1) else { continue };
-                        let start = pt.knum[ins.d() as usize].to_bits() as u32 as i32;
+                        let start = knum[ins.d() as usize].to_bits() as u32 as i32;
                         let n = self.rt.multres;
                         if n > 0 {
                             let need = start as i64 + n as i64 - 1;
@@ -653,19 +857,71 @@ impl Vm {
                             nargs += self.rt.multres;
                         }
                         let slot = base + a as usize;
-                        if let Value::Func(f) = th.get(slot)
-                            && !f.is_lua()
-                        {
-                            // Natives return here directly; keep the frame state.
-                            save!();
-                            match self.precall(th, slot, nargs, FrameKind::Lua, ins.b() as i32 - 1, true)? {
-                                Flow::Continue => {
-                                    if th.frame_count() - 1 == fidx {
-                                        continue;
+                        if let Value::Func(f) = get!(a) {
+                            match &*f {
+                                Function::Lua { proto: cpt, .. } => {
+                                    // Fast path of `precall` for Lua functions (BC_FUNCF /
+                                    // BC_FUNCV) without call hook or stack growth.
+                                    let nres = ins.b() as i32 - 1;
+                                    let cbase = slot + 2;
+                                    // Frame-link slot: never a GC reference (see `precall`).
+                                    set!(a as usize + 1, Value::Nil);
+                                    let np = cpt.numparams as usize;
+                                    if self.rt.hook.mask & hook::LUA_MASKCALL == 0 {
+                                        if !cpt.is_vararg() {
+                                            let ntop = cbase + cpt.framesize as usize;
+                                            if ntop <= th.max_stack() {
+                                                save!();
+                                                for i in cbase + nargs..cbase + np {
+                                                    th.set(i, Value::Nil);
+                                                }
+                                                let mut nf = Frame::new(FrameKind::Lua, f, cbase as u32, nres);
+                                                nf.pc = 1;
+                                                th.push_frame(nf);
+                                                th.set_top(ntop);
+                                                continue 'reload;
+                                            }
+                                        } else {
+                                            // Move the function and fixed parameters above the
+                                            // varargs.
+                                            let nbase = cbase + nargs + 2;
+                                            let ntop = nbase + cpt.framesize as usize;
+                                            if ntop <= th.max_stack() {
+                                                save!();
+                                                th.set(nbase - 2, Value::Func(f));
+                                                th.set(nbase - 1, Value::Nil);
+                                                for i in 0..np {
+                                                    if i < nargs {
+                                                        th.set(nbase + i, th.get(cbase + i));
+                                                        th.set(cbase + i, Value::Nil);
+                                                    } else {
+                                                        th.set(nbase + i, Value::Nil);
+                                                    }
+                                                }
+                                                let mut nf = Frame::new(FrameKind::Lua, f, nbase as u32, nres);
+                                                nf.vdelta = (nargs + 2) as u32;
+                                                nf.pc = 1;
+                                                th.push_frame(nf);
+                                                th.set_top(ntop);
+                                                continue 'reload;
+                                            }
+                                        }
                                     }
-                                    continue 'reload;
                                 }
-                                f => return Ok(f),
+                                Function::Native { .. } => {
+                                    // Natives return here directly; keep the frame state.
+                                    save!();
+                                    match self.precall(th, slot, nargs, FrameKind::Lua, ins.b() as i32 - 1, true)? {
+                                        Flow::Continue => {
+                                            if th.frame_count() - 1 == fidx {
+                                                refresh!();
+                                                continue;
+                                            }
+                                            continue 'reload;
+                                        }
+                                        f => return Ok(f),
+                                    }
+                                }
                             }
                         }
                         flow!(self.precall(th, slot, nargs, FrameKind::Lua, ins.b() as i32 - 1, true))
@@ -702,7 +958,7 @@ impl Vm {
                         if let Some(idx) = as_keyindex(get!(a - 1))
                             && let Value::Table(t) = get!(a - 2)
                         {
-                            let iterl = pt.bc[pc];
+                            let iterl = bc[pc];
                             pc += 1;
                             if let Some((nidx, k, v)) = t.next_at(idx) {
                                 set!(a, k);
@@ -734,8 +990,8 @@ impl Vm {
                     }
                     Op::VARG => {
                         let nparams = ins.c() as usize;
-                        let fr = th.frame(fidx).expect("frame");
-                        let vstart = base - fr.vdelta as usize + nparams;
+                        let vdelta = th.frame(fidx).expect("lua frame").vdelta as usize;
+                        let vstart = base - vdelta + nparams;
                         let vend = base - 2;
                         let nvar = vend.saturating_sub(vstart);
                         let dst = base + a as usize;
@@ -745,6 +1001,7 @@ impl Vm {
                                 save!();
                                 th.set_top(dst);
                                 self.grow_stack(th, nvar)?;
+                                refresh!();
                             }
                             for i in 0..nvar {
                                 th.set(dst + i, th.get(vstart + i));
@@ -763,43 +1020,64 @@ impl Vm {
                             Op::RETM => ins.d() as usize + self.rt.multres,
                             _ => ins.d() as usize - 1,
                         };
-                        flow!(self.ret(th, base + a as usize, n))
+                        let first = base + a as usize;
+                        // Fast path of `ret` for a return to the calling Lua frame without
+                        // stack growth.
+                        let fr = th.frame(fidx).expect("lua frame");
+                        if fr.kind == FrameKind::Lua {
+                            let dest = fr.call_slot() as usize;
+                            let cnt = if fr.nres >= 0 { fr.nres as usize } else { n };
+                            let slen = base + flen;
+                            if first + n <= slen && dest + cnt <= slen {
+                                let stk = fp.wrapping_sub(base);
+                                // SAFETY: `stk` is the start of the stack buffer (`flen` was
+                                // derived from `base <= len`), all indexes are below its length
+                                // (checked above, and `dest < first`), and it was not
+                                // reallocated since `refresh!`. The ascending copy never
+                                // overwrites unread sources because `dest < first`.
+                                unsafe {
+                                    for i in 0..n {
+                                        *stk.add(dest + i) = *stk.add(first + i);
+                                    }
+                                    for i in n..cnt {
+                                        *stk.add(dest + i) = Value::Nil;
+                                    }
+                                }
+                                self.rt.multres = n;
+                                th.pop_frame();
+                                let caller = th.frame(fidx - 1).expect("lua caller");
+                                let ctop = caller.base as usize + caller.func.proto().map_or(0, |p| p.framesize as usize);
+                                th.set_top(ctop.max(dest + cnt));
+                                continue 'reload;
+                            }
+                        }
+                        flow!(self.ret(th, first, n))
                     }
 
                     // -- Loops and branches ----------------------------------------------------
                     Op::FORI | Op::JFORI => {
-                        let ra = base + a as usize;
-                        if !matches!((th.get(ra), th.get(ra + 1), th.get(ra + 2)), (Value::Num(_), Value::Num(_), Value::Num(_))) {
+                        if let Value::Num(idx) = get!(a)
+                            && let Value::Num(stop) = get!(a + 1)
+                            && let Value::Num(step) = get!(a + 2)
+                        {
+                            fori!(idx, stop, step)
+                        } else {
                             save!();
-                            self.meta_for(ra)?;
-                        }
-                        let (Value::Num(idx), Value::Num(stop), Value::Num(step)) = (th.get(ra), th.get(ra + 1), th.get(ra + 2))
-                        else {
-                            unreachable!()
-                        };
-                        th.set(ra + 3, Value::Num(idx));
-                        let enter = if step.is_sign_negative() { idx >= stop } else { stop >= idx };
-                        if !enter {
-                            branch!(ins.j());
+                            let (idx, stop, step) = self.for_coerce(th, base + a as usize)?;
+                            fori!(idx, stop, step)
                         }
                     }
                     Op::FORL | Op::IFORL | Op::JFORL => {
-                        let ra = base + a as usize;
                         // The slots can only be non-numbers after `debug.setlocal`.
-                        if !matches!((th.get(ra), th.get(ra + 1), th.get(ra + 2)), (Value::Num(_), Value::Num(_), Value::Num(_))) {
+                        if let Value::Num(idx) = get!(a)
+                            && let Value::Num(stop) = get!(a + 1)
+                            && let Value::Num(step) = get!(a + 2)
+                        {
+                            forl!(idx, stop, step)
+                        } else {
                             save!();
-                            self.meta_for(ra)?;
-                        }
-                        let (Value::Num(idx), Value::Num(stop), Value::Num(step)) = (th.get(ra), th.get(ra + 1), th.get(ra + 2))
-                        else {
-                            unreachable!("coerced by meta_for")
-                        };
-                        let idx = idx + step;
-                        th.set(ra, Value::Num(idx));
-                        th.set(ra + 3, Value::Num(idx));
-                        let cont = if step.is_sign_negative() { idx >= stop } else { stop >= idx };
-                        if cont {
-                            branch!(ins.j());
+                            let (idx, stop, step) = self.for_coerce(th, base + a as usize)?;
+                            forl!(idx, stop, step)
                         }
                     }
                     Op::ITERL | Op::IITERL | Op::JITERL => {

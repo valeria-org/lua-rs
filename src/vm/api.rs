@@ -226,8 +226,7 @@ impl Vm {
             match self.arg(n) {
                 Value::Str(s) => return Ok(s),
                 Value::Num(x) => {
-                    let b = crate::text::strfmt::fmt_num(x);
-                    let s = self.new_str(&b);
+                    let s = self.num_str(x);
                     self.set_arg(n, Value::Str(s));
                     return Ok(s);
                 }
@@ -571,12 +570,14 @@ impl Vm {
     pub fn to_str(&mut self, v: Value) -> Option<Gc<LuaStr>> {
         match v {
             Value::Str(s) => Some(s),
-            Value::Num(n) => {
-                let b = crate::text::strfmt::fmt_num(n);
-                Some(self.new_str(&b))
-            }
+            Value::Num(n) => Some(self.num_str(n)),
             _ => None,
         }
+    }
+
+    /// `lj_strfmt_num`: number → interned string (`%.14g`).
+    pub fn num_str(&mut self, n: f64) -> Gc<LuaStr> {
+        crate::text::numfmt::with_num(n, |b| self.new_str(b))
     }
 
     /// `lua_tonumber`: number or numeric string (`lj_strscan_number`).

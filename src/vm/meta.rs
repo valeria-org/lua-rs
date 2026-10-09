@@ -40,10 +40,28 @@ pub fn arith_op(mm: MM, x: f64, y: f64) -> f64 {
     }
 }
 
+/// `lj_vm_floor` (`vm_floor_sse`): `floor` with SSE2 arithmetic only. Without SSE4.1 (the
+/// baseline x86-64 target) `f64::floor` is a libm call. Exact for all inputs; relies on the
+/// default round-to-nearest mode like upstream.
+#[inline]
+pub fn floor(x: f64) -> f64 {
+    const TWO52: f64 = 4503599627370496.0;
+    let ax = x.abs();
+    if ax >= TWO52 || ax.is_nan() {
+        return x; // Integral, infinite or NaN.
+    }
+    let sign = x.to_bits() & (1 << 63);
+    let mut r = f64::from_bits(((ax + TWO52) - TWO52).to_bits() | sign);
+    if r > x {
+        r -= 1.0;
+    }
+    f64::from_bits(r.to_bits() | sign)
+}
+
 /// `lj_vm_modi` / `vm_mod`: `a - floor(a/b)*b`.
 #[inline]
 pub fn modf(a: f64, b: f64) -> f64 {
-    a - (a / b).floor() * b
+    a - floor(a / b) * b
 }
 
 /// `lj_num2bit`: number to 32-bit integer for bit operations (round-to-nearest-even via the
@@ -53,11 +71,7 @@ pub fn num2bit(n: f64) -> i32 {
     (n + 6755399441055744.0).to_bits() as u32 as i32
 }
 
-/// `lj_num2int` on x86-64 (`cvttsd2si`): truncation; NaN and out-of-range give `i32::MIN`.
-#[inline]
-pub fn num2int(n: f64) -> i32 {
-    if n > -2147483649.0 && n < 2147483648.0 { n as i32 } else { i32::MIN }
-}
+pub use crate::value::num2int;
 
 /// `str2num`: number or number-convertible string.
 #[inline]
@@ -96,10 +110,7 @@ impl Vm {
     pub fn tostring_basic(&mut self, o: Value) -> Gc<LuaStr> {
         match o {
             Value::Str(s) => s,
-            Value::Num(n) => {
-                let b = crate::text::strfmt::fmt_num(n);
-                self.new_str(&b)
-            }
+            Value::Num(n) => self.num_str(n),
             Value::Nil => self.new_str(b"nil"),
             Value::Bool(false) => self.new_str(b"false"),
             Value::Bool(true) => self.new_str(b"true"),
@@ -122,11 +133,28 @@ impl Vm {
     /// `lj_meta_tget`: resolve `o[k]` through the `__index` chain. `slot` is the stack slot of
     /// `o` for error messages.
     pub(crate) fn meta_tget(&mut self, o: Value, k: Value, slot: Option<usize>) -> LuaResult<Meta<Value>> {
+        self.tget_chain(o, k, slot, 0)
+    }
+
+    /// `lj_meta_tget` for the interpreter, after the raw lookup of `k` in table `o` returned nil
+    /// and the `__index` metamethod of `o` was found to be `mo`.
+    pub(crate) fn meta_tget_index(&mut self, o: Value, mo: Value, k: Value) -> LuaResult<Meta<Value>> {
+        if let Value::Func(_) = mo {
+            return Ok(Meta::Call { cont: Cont::Ra, mo, a: o, b: k });
+        }
+        self.tget_chain(mo, k, None, 1)
+    }
+
+    /// The `lj_meta_tget` loop from chain link `start` on.
+    fn tget_chain(&mut self, o: Value, k: Value, slot: Option<usize>, start: usize) -> LuaResult<Meta<Value>> {
         let mut o = o;
-        for lp in 0..LJ_MAX_IDXCHAIN {
+        for lp in start..LJ_MAX_IDXCHAIN {
             let mo;
             if let Value::Table(t) = o {
-                let v = t.get(k);
+                let v = match k {
+                    Value::Str(s) => t.get_str(s),
+                    _ => t.get(k),
+                };
                 if !v.is_nil() {
                     return Ok(Meta::Done(v));
                 }
@@ -390,7 +418,9 @@ impl Vm {
                     break;
                 }
             }
-            let mut buf: Vec<u8> = Vec::new();
+            // Upstream concatenates in the global temporary buffer; reuse one likewise.
+            let mut buf = std::mem::take(&mut self.rt.tmpbuf);
+            buf.clear();
             for i in o..=top {
                 match th.get(i) {
                     Value::Str(s) => buf.extend_from_slice(s.as_bytes()),
@@ -402,6 +432,9 @@ impl Vm {
                 return Err(self.err_msg(ErrMsg::STROV));
             }
             let s = self.new_str(&buf);
+            if buf.capacity() <= super::TMPBUF_KEEP {
+                self.rt.tmpbuf = buf;
+            }
             th.set(o, Value::Str(s));
             top = o;
             if left == 0 {
@@ -421,5 +454,50 @@ impl Vm {
             }
         }
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::floor;
+
+    #[test]
+    fn floor_matches_libm() {
+        let mut xs = vec![
+            0.0,
+            -0.0,
+            0.5,
+            -0.5,
+            1.0,
+            -1.0,
+            2.5,
+            -2.5,
+            2.7,
+            -2.7,
+            1e-300,
+            -1e-300,
+            4503599627370495.5,
+            -4503599627370495.5,
+            4503599627370496.0,
+            -4503599627370497.0,
+            1e300,
+            f64::INFINITY,
+            f64::NEG_INFINITY,
+            f64::MIN_POSITIVE,
+            -f64::MIN_POSITIVE,
+        ];
+        let mut s = 0x1234_5678_9abc_def0u64;
+        for _ in 0..100_000 {
+            s ^= s << 13;
+            s ^= s >> 7;
+            s ^= s << 17;
+            xs.push(f64::from_bits(s));
+            xs.push((s % 2_000_001) as f64 / 1000.0 - 1000.0);
+        }
+        // NaNs are returned unchanged (like upstream), so only their NaN-ness is compared.
+        for x in xs.into_iter().filter(|x| !x.is_nan()) {
+            assert_eq!(floor(x).to_bits(), x.floor().to_bits(), "floor({x:e})");
+        }
+        assert!(floor(f64::NAN).is_nan());
     }
 }

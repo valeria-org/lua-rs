@@ -5,33 +5,50 @@ use std::fmt;
 
 use crate::gc::{Gc, GcBox, GcKind, GcObject, Heap, Marker, Trace};
 
+/// Strings shorter than this (leaving room for the NUL) are stored inside the object.
+const INLINE: usize = 16;
+
+/// Content followed by a NUL byte (not part of the string).
+enum Bytes {
+    Inline([u8; INLINE]),
+    Heap(Box<[u8]>),
+}
+
 /// An interned, immutable Lua string (`GCstr`).
 pub struct LuaStr {
     hash: u32,
     sid: u32,
+    len: u32,
     reserved: Cell<u8>,
     chain: Cell<Option<Gc<LuaStr>>>,
-    /// Content followed by a NUL byte (not part of the string).
-    bytes: Box<[u8]>,
+    bytes: Bytes,
 }
 
 impl LuaStr {
+    /// Content followed by its NUL byte, plus unused inline space.
+    #[inline]
+    fn data(&self) -> &[u8] {
+        match &self.bytes {
+            Bytes::Inline(b) => b,
+            Bytes::Heap(b) => b,
+        }
+    }
     #[inline]
     pub fn as_bytes(&self) -> &[u8] {
-        &self.bytes[..self.bytes.len() - 1]
+        &self.data()[..self.len as usize]
     }
     /// Content followed by a NUL byte, for C strings (`strdata`).
     #[inline]
     pub fn as_bytes_with_nul(&self) -> &[u8] {
-        &self.bytes
+        &self.data()[..self.len as usize + 1]
     }
     #[inline]
     pub fn len(&self) -> usize {
-        self.bytes.len() - 1
+        self.len as usize
     }
     #[inline]
     pub fn is_empty(&self) -> bool {
-        self.bytes.len() == 1
+        self.len == 0
     }
     /// Content hash used by the intern table.
     #[inline]
@@ -71,7 +88,11 @@ impl fmt::Debug for LuaStr {
 impl Trace for LuaStr {
     fn trace(&self, _m: &mut Marker) {}
     fn size(&self) -> usize {
-        std::mem::size_of::<GcBox<LuaStr>>() + self.bytes.len()
+        let heap = match &self.bytes {
+            Bytes::Inline(_) => 0,
+            Bytes::Heap(b) => b.len(),
+        };
+        std::mem::size_of::<GcBox<LuaStr>>() + heap
     }
 }
 
@@ -167,14 +188,19 @@ impl StrTab {
         let g = heap.alloc(LuaStr {
             hash,
             sid,
+            len: s.len() as u32,
             reserved: Cell::new(0),
             chain: Cell::new(None),
-            bytes: {
-                // Trailing NUL (not part of the content) so the C API can hand out C strings.
+            // Trailing NUL (not part of the content) so the C API can hand out C strings.
+            bytes: if s.len() < INLINE {
+                let mut b = [0u8; INLINE];
+                b[..s.len()].copy_from_slice(s);
+                Bytes::Inline(b)
+            } else {
                 let mut b = Vec::with_capacity(s.len() + 1);
                 b.extend_from_slice(s);
                 b.push(0);
-                b.into_boxed_slice()
+                Bytes::Heap(b.into_boxed_slice())
             },
         });
         let slot = hash as usize & self.mask;
