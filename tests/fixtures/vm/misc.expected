@@ -1,0 +1,36 @@
+0	1	2	b	b	c
+done
+3
+1	2	3
+11	21	12
+2
+1	10
+2	20
+3	30
+55
+10
+7
+4
+1
+1.5
+2.5
+0.1
+0.2
+0.3
+true	true
+envx
+false	'setfenv' cannot change environment of given object
+false	bad argument #1 to '?' (invalid level)
+true
+nil	true	inf	-inf	true	0.33333333333333	9.007199254741e+15	100	-0	1e+15	1e+16	123456789012
+31	100	nil	16	255	1295	-255	nil	3
+false	nil
+3	3
+function	nil	table	string	number	boolean	thread	userdata
+1	2	3
+3	1	4	5
+1	2	3
+nil	nil	1
+300
+true	true	true	true
+-1	1	1.5	0.5	true	1.4142135623731	true

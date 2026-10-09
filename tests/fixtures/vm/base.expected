@@ -1,0 +1,36 @@
+false	stack overflow
+false	stack overflow
+3
+false	bad argument #1 to '?' (index out of range)
+false	bad argument #1 to '?' (index out of range)
+b	c
+0
+false	'setfenv' cannot change environment of given object
+false	bad argument #1 to '?' (invalid level)
+true	true
+function: builtin#29	nil	inf	-0	9.2233720368548e+18
+16	12	10	35	2	nil	nil	16
+false	bad argument #2 to '?' (base out of range)
+true	nil	nil
+false	bad argument #1 to '?' (invalid option 'bogus')
+1	2	2	3	nil	nil
+false	too many results to unpack
+nil	function	false	invalid key to 'next'
+Lua 5.1
+userdata	table
+false	bad argument #1 to '?' (boolean or proxy expected)
+locked	false	cannot change a protected metatable
+false	bad argument #1 to '?' (table expected, got number)
+false	bad argument #2 to '?' (nil or table expected)
+2	nil	[string "syntax error here"]:1: '=' expected near 'error'
+5
+42
+nil	attempt to load chunk with wrong mode
+nil	attempt to load chunk with wrong mode
+false	bad argument #1 to '?' (value expected)
+false	custom
+false	assertion failed!
+false	msg
+false	42
+table
+false	bad argument #1 to '?' (value expected)

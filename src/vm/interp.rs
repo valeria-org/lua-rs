@@ -161,6 +161,7 @@ impl Vm {
     }
 
     /// Execute Lua frames on `th` until a run ends, a yield happens, or an error is raised.
+    #[allow(clippy::neg_cmp_op_on_partial_ord)] // NaN semantics of ISGE/ISGT.
     pub(crate) fn interp(&mut self, th: Gc<Thread>) -> LuaResult<Flow> {
         'reload: loop {
             let fidx = th.frame_count() - 1;

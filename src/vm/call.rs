@@ -219,33 +219,31 @@ impl Vm {
 
     /// Run the native function of the top frame and process its return.
     pub(crate) fn call_native(&mut self, th: Gc<Thread>) -> LuaResult<Flow> {
-        loop {
-            let fr = th.current_frame().expect("native frame");
-            let Function::Native { f, .. } = &*fr.func else { unreachable!("native frame") };
-            let r = match *f {
-                NativeImpl::Rust(nf) => nf(self),
-                NativeImpl::C(cf) => match self.rt.c_call {
-                    Some(h) => h(self, cf),
-                    None => Err(self.error_msg_bytes(b"C function called without the C API")),
-                },
-            };
-            match r {
-                Ok(TAILCALL) => {
-                    // FFH_TAILCALL: the callable was stored in the native's function slot.
-                    let fr = th.pop_frame().expect("native frame");
-                    let base = fr.base as usize;
-                    let nargs = th.top() - base;
-                    return self.precall(th, base - 2, nargs, fr.kind, fr.nres, false);
-                }
-                Ok(n) => {
-                    self.gc_safe();
-                    let top = th.top();
-                    let n = n.min(top.saturating_sub(th.current_frame().map_or(0, |f| f.base as usize)));
-                    return self.ret(th, top - n, n);
-                }
-                Err(e) if e.kind == ErrorKind::Yield => return Ok(Flow::Yield),
-                Err(e) => return Err(e),
+        let fr = th.current_frame().expect("native frame");
+        let Function::Native { f, .. } = &*fr.func else { unreachable!("native frame") };
+        let r = match *f {
+            NativeImpl::Rust(nf) => nf(self),
+            NativeImpl::C(cf) => match self.rt.c_call {
+                Some(h) => h(self, cf),
+                None => Err(self.error_msg_bytes(b"C function called without the C API")),
+            },
+        };
+        match r {
+            Ok(TAILCALL) => {
+                // FFH_TAILCALL: the callable was stored in the native's function slot.
+                let fr = th.pop_frame().expect("native frame");
+                let base = fr.base as usize;
+                let nargs = th.top() - base;
+                self.precall(th, base - 2, nargs, fr.kind, fr.nres, false)
             }
+            Ok(n) => {
+                self.gc_safe();
+                let top = th.top();
+                let n = n.min(top.saturating_sub(th.current_frame().map_or(0, |f| f.base as usize)));
+                self.ret(th, top - n, n)
+            }
+            Err(e) if e.kind == ErrorKind::Yield => Ok(Flow::Yield),
+            Err(e) => Err(e),
         }
     }
 

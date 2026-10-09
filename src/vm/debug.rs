@@ -144,7 +144,7 @@ pub(crate) fn slotname(pt: &Proto, ip: u32, mut slot: u32) -> Option<(&'static s
         while ip > 1 {
             ip -= 1;
             let ins = bc[ip];
-            let Some(op) = Op::from_u8(ins.op_byte()) else { return None };
+            let op = Op::from_u8(ins.op_byte())?;
             let ra = ins.a();
             match op.mode_a() {
                 BCMode::Base => {
@@ -420,8 +420,7 @@ impl Vm {
         out.extend_from_slice(b"stack traceback:");
         let mut level = level;
         let mut lim = TRACEBACK_LEVELS1;
-        loop {
-            let Some(fr) = self.get_stack(th, level) else { break };
+        while let Some(fr) = self.get_stack(th, level) {
             level += 1;
             if level > lim {
                 if self.get_stack(th, level + TRACEBACK_LEVELS2).is_none() {

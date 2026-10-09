@@ -1,0 +1,19 @@
+add	sub	mul	div	mod	pow	unmtrue
+cat(T,x)	cat(x,T)	1cat(T,2)	abcat(T,cd)
+0	true	false	true	false	true	false
+call	3	1	2	3
+idx:foo	idx:1	idx:true
+false	false
+lt	false	false
+false
+false	meta.lua:26: attempt to compare two table values
+1	2	nil
+	a=1	b=3	2	3
+false	meta.lua:34: loop in gettable
+false	meta.lua:36: loop in settable
+10100	100
+42	true	8
+4
+7	x7
+TS
+false	true

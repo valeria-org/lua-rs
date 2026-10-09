@@ -51,6 +51,11 @@ pub const LJ_MAX_CCALLS: u32 = 1000;
 /// current frame, like for Rust natives).
 pub type CCallHook = fn(&mut Vm, CFunction) -> LuaResult<usize>;
 
+/// `FfiHooks::checkbit64` signature.
+pub type CheckBit64Fn = fn(&mut Vm, Gc<CData>, &mut u32) -> LuaResult<u64>;
+/// `FfiHooks::tonumber` signature.
+pub type CdataToNumberFn = fn(&mut Vm, Gc<CData>) -> LuaResult<Option<f64>>;
+
 /// Hooks the FFI library installs so the core VM can handle cdata where upstream calls into
 /// the FFI directly.
 #[derive(Clone, Copy, Default)]
@@ -58,9 +63,9 @@ pub struct FfiHooks {
     /// `lj_carith_checkbit64` for a cdata operand of a bit operator: convert the cdata to 64
     /// bits; set `*id` to `CTID_UINT64` for uint64 operands, or to `CTID_INT64` if it is still 0.
     /// Errors with upstream's messages for non-integer cdata.
-    pub checkbit64: Option<fn(&mut Vm, Gc<CData>, &mut u32) -> LuaResult<u64>>,
+    pub checkbit64: Option<CheckBit64Fn>,
     /// `tonumber(cdata)`: the number for numeric/complex/enum cdata, `None` otherwise.
-    pub tonumber: Option<fn(&mut Vm, Gc<CData>) -> LuaResult<Option<f64>>>,
+    pub tonumber: Option<CdataToNumberFn>,
 }
 
 /// One activation of the interpreter (upstream: a C frame / `cframe`).
@@ -72,6 +77,7 @@ pub(crate) struct Run {
 }
 
 /// VM-side runtime state stored in [`Vm::rt`].
+#[derive(Default)]
 pub struct Runtime {
     /// Hook function and mask (`g->hookf`, `g->hookmask`, `g->hookcount`, `g->hookcstart`).
     pub(crate) hook: hook::HookState,
@@ -95,23 +101,6 @@ pub struct Runtime {
     pub c_call: Option<CCallHook>,
     /// FFI integration points.
     pub ffi: FfiHooks,
-}
-
-impl Default for Runtime {
-    fn default() -> Self {
-        Runtime {
-            hook: hook::HookState::default(),
-            can_yield: false,
-            nccalls: 0,
-            runs: Vec::new(),
-            multres: 0,
-            in_finalizers: false,
-            thrown: None,
-            vmthread: None,
-            c_call: None,
-            ffi: FfiHooks::default(),
-        }
-    }
 }
 
 impl Runtime {

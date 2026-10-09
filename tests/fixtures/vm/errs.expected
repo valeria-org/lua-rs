@@ -1,0 +1,43 @@
+errs.lua:2: attempt to index local 'a' (a nil value)
+errs.lua:3: attempt to index global 'undefinedglobal' (a nil value)
+errs.lua:4: attempt to index field 'x' (a nil value)
+errs.lua:5: attempt to index field 'x' (a nil value)
+errs.lua:6: attempt to perform arithmetic on local 's' (a string value)
+errs.lua:7: attempt to perform arithmetic on a table value
+errs.lua:8: attempt to perform arithmetic on local 'a' (a table value)
+errs.lua:9: attempt to compare two table values
+errs.lua:10: attempt to compare number with string
+errs.lua:11: attempt to compare table with number
+errs.lua:12: attempt to concatenate a nil value
+errs.lua:13: attempt to concatenate local 't' (a table value)
+errs.lua:14: attempt to get length of a nil value
+errs.lua:15: attempt to get length of local 'n' (a number value)
+errs.lua:16: attempt to call method 'nomethod' (a nil value)
+errs.lua:17: attempt to call global 'undefinedf' (a nil value)
+errs.lua:18: attempt to call field 'field' (a nil value)
+errs.lua:19: attempt to call upvalue 'up' (a nil value)
+errs.lua:20: attempt to perform arithmetic on a table value
+errs.lua:21: idx foo
+errs.lua:22: table index is nil
+errs.lua:23: table index is NaN
+table index is nil
+errs.lua:25: 'for' initial value must be a number
+errs.lua:26: 'for' limit must be a number
+errs.lua:27: 'for' step must be a number
+errs.lua:28: attempt to index local 'x' (a boolean value)
+errs.lua:29: attempt to call a string value
+nil
+nil
+table
+lvl0
+errs.lua:34: 42
+errs.lua:35: deep
+bad argument #2 to '?' (nil or table expected)
+bad argument #1 to '?' (table expected, got number)
+invalid key to 'next'
+errs.lua:39: attempt to perform arithmetic on a table value
+errs.lua:40: attempt to perform arithmetic on a string value
+errs.lua:41: attempt to index field 'b' (a nil value)
+errs.lua:42: attempt to index a string value
+errs.lua:43: attempt to index a number value
+errs.lua:44: attempt to call local 'a' (a number value)

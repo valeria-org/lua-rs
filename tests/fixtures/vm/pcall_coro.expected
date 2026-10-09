@@ -1,0 +1,21 @@
+ok
+false	cannot resume running coroutine
+true
+true
+false	cannot resume dead coroutine
+false	pcall_coro.lua:8: boom
+table
+false	boom
+nil
+false
+1
+false	nil
+false	nil
+false	x
+false	pcall_coro.lua:17: x
+false	pcall_coro.lua:19: lvl2
+false	attempt to call a nil value
+3	1	2
+false	H:pcall_coro.lua:23: e
+false	error in error handling
+false	pcall_coro.lua:25: attempt to call local 'x' (a nil value)

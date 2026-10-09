@@ -1,0 +1,53 @@
+suspended
+start	1	2
+true	3
+suspended
+got	10
+true	20
+got2	x	y
+true	done	99
+dead
+false	cannot resume dead coroutine
+3	nil	nil
+true	1
+pcall result	false	coro.lua:20: errA
+true	2
+pcall yield	true	B
+true	3
+dead
+yielded	foo
+yielded	add
+yielded	lt
+yielded	cat
+yielded	eq
+yielded	call5
+yielded	nibar
+yielded	unm
+1	foo!
+2	add!
+3	yes
+4	acat!
+5	true
+6	call5!
+7	0
+8	unm!
+gen	1
+gen	2
+gen	3
+false	coro.lua:57: oops
+dead	false	cannot resume dead coroutine
+false	bad argument #1 to '?' (coroutine expected)
+false	bad argument #1 to '?' (coroutine expected)
+false	nil
+true	true
+false	attempt to yield across C-call boundary
+running
+normal
+false	cannot resume running coroutine
+dead
+1
+true	1	nil	3
+1	3
+true	1
+true	false	error in error handling
+100

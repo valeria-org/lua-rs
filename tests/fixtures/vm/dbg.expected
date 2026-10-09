@@ -1,0 +1,60 @@
+currentline=5 isvararg=false lastlinedefined=9 linedefined=3 name=f namewhat=local nparams=2 nups=1 short_src=dbg.lua source=@dbg.lua what=Lua 
+currentline=10 lastlinedefined=36 linedefined=0 namewhat= short_src=dbg.lua source=@dbg.lua what=main 
+a	b	c	(*temporary)	function: builtin#29
+currentline=5 isvararg=false lastlinedefined=9 linedefined=3 name=m namewhat=field nparams=2 nups=1 short_src=dbg.lua source=@dbg.lua what=Lua 
+currentline=12 lastlinedefined=36 linedefined=0 namewhat= short_src=dbg.lua source=@dbg.lua what=main 
+a	b	c	(*temporary)	function: builtin#29
+currentline=-1 isvararg=true lastlinedefined=-1 linedefined=-1 namewhat= nparams=0 nups=1 short_src=[C] source==[C] what=C 
+lastlinedefined=9 linedefined=3 short_src=dbg.lua source=@dbg.lua what=Lua 
+lastlinedefined=36 linedefined=0 short_src=dbg.lua source=@dbg.lua what=main 
+msg
+stack traceback:
+	dbg.lua:17: in main chunk
+stack traceback:
+	dbg.lua:18: in main chunk
+deep
+stack traceback:
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	...
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:19: in function 'rec'
+	dbg.lua:20: in main chunk
+stack traceback:
+	[C]: in function 'yield'
+	dbg.lua:21: in function <dbg.lua:21>
+false	dbg.lua:24: attempt to call local 'y' (a nil value)
+stack traceback:
+	dbg.lua: in function <dbg.lua:24>
+(*vararg)	(*vararg)	nil
+false	dbg.lua:29: attempt to index local 'q' (a nil value)
+stack traceback:
+	dbg.lua:29: in function <dbg.lua:29>
+	[C]: in function 'xpcall'
+	dbg.lua:29: in main chunk
+in index
+stack traceback:
+	dbg.lua:31: in main chunk
+false	x
+iter
+stack traceback:
+	dbg.lua:33: in main chunk
+gen
+stack traceback:
+	dbg.lua:34: in main chunk
+currentline=35 lastlinedefined=36 linedefined=0 short_src=dbg.lua source=@dbg.lua what=main 

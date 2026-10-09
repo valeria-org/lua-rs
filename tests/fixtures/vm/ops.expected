@@ -1,0 +1,49 @@
+true	false	true	false	false	true	false	true	false	false
+true	true	true	true	true	true
+true	true	true	true	false	false	true	true
+dflt	nil	zero-true	nil	true	false	-3	4
+4	4	2	7	6	6	1.5	3	1	1	9	8
+11	17	6	4	4	9	-2	3
+inf	-inf	true	-1	1	0.25	true	-inf
+1.5	str	true	1	three	v	10	32767	-32768	65536	1e+100
+nil	nil	nil	nil	nil
+ab12.5c	1	-0	1e+100
+s	2.5	true	nil
+1	1	3	31
+1	2	3
+5
+1	2	one	f	t	self	nil	1
+5	5
+4	7	7	9
+100	100
+5	5
+nil
+0	nil	nil
+1	1	nil	1
+3	1	2	1	2	3
+3
+1	nil	3	nil
+2
+t	1
+1	1	2	3
+3
+42	50	43
+123
+321
+0,0.25,0.5,0.75,1,
+123
+246
+3
+10
+3
+10
+3	90
+brk	1
+brk	2
+goto	1
+goto	2
+cont	2
+cont	4
+1	7	6	-6	16	16	15	1073741820	1	-2147483648	2	1
+3	nil	d	false	false	true	nil	1
+24	gt
