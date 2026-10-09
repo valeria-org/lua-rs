@@ -52,7 +52,7 @@ show(ffi.C.strlen("abc"), ffi.C.strcmp("a", "b") < 0, ffi.C.abs(-5), ffi.C.floor
 show(ffi.string(ffi.C.strerror(2)))
 local out = ffi.new("char[64]")
 show(ffi.C.snprintf(out, 64, "%d-%s-%.2f", ffi.new("int", 42), "str", 1.5), ffi.string(out))
-local p = ffi.cast("int *", ffi.new("int[3]", 1, 2, 3))
+local a3 = ffi.new("int[3]", 1, 2, 3) local p = ffi.cast("int *", a3) -- a3 keeps p's memory alive
 show(p[0], p[1], p[2])
 show(ffi.cast("uintptr_t", 0), ffi.cast("void *", 0) == nil, ffi.new("void *") == nil, ffi.cast("int", 3.7))
 show(ffi.cast("int8_t", 300), ffi.cast("uint16_t", -1), ffi.cast("double", 5LL), ffi.cast("int64_t", "x" == "x" and 1 or 0))

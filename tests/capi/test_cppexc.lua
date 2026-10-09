@@ -27,9 +27,9 @@ show(pcall(cp.alloc, function() return "foo", error end), cp.isalloc())
 show(pcall(cp.alloc, function() return "foo", cp.throw end), cp.isalloc())
 -- usereg
 show(cp.usereg(100, 51, function() cp.usereg(100, 40, error, "foo") end, false))
--- state still usable
-local t = {}
-for i = 1, 10 do t[i] = pcall(cp.catch, function() local x = {i}; cp.throw("loop"..i) end) end
+-- state still usable (the thrown char* points into a Lua string: keep the strings reachable)
+local t, msgs = {}, {}
+for i = 1, 10 do msgs[i] = "loop"..i; t[i] = pcall(cp.catch, function() local x = {i}; cp.throw(msgs[i]) end) end
 print(#t)
 show(select('#', pcall(cp.catch, function(...) return ... end, 1, 2, 3)))
 -- error from inside catch (Lua error)

@@ -1,0 +1,6 @@
+stale link slot	finalized
+weak key	true	nil
+coroutine collected	true	11	13
+closed upvalue	16
+shared upvalue	b1	true
+--- exit 0

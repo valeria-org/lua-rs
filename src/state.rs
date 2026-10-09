@@ -484,14 +484,22 @@ impl Vm {
                 Value::Nil | Value::Bool(_) | Value::Num(_) | Value::LightUd(_) => false,
             });
         }
-        // Resurrect unreachable cdata with finalizers (lj_cdata_free during sweep).
-        let fin: Vec<Gc<CData>> = self
-            .heap
-            .objects()
-            .rev()
-            .filter_map(|o| o.downcast::<CData>())
-            .filter(|c| !c.header().is_marked() && c.has_finalizer())
-            .collect();
+        // Unreachable objects about to be swept: resurrect cdata with finalizers (lj_cdata_free)
+        // and close the open upvalues of threads (lj_state_free); their slot values were
+        // marked through the upvalues.
+        let mut fin: Vec<Gc<CData>> = Vec::new();
+        for o in self.heap.objects().rev() {
+            if o.header().is_marked() {
+                continue;
+            }
+            if let Some(c) = o.downcast::<CData>() {
+                if c.has_finalizer() {
+                    fin.push(c);
+                }
+            } else if let Some(t) = o.downcast::<Thread>() {
+                t.close_upvals(0);
+            }
+        }
         for c in fin {
             c.header().set_flag(GC_MARKED | GC_FINALIZED);
             self.pending_finalizers.push_back(Value::CData(c));
@@ -772,6 +780,24 @@ mod tests {
         }
         assert!(vm.gc.cycles > before);
         assert!(vm.heap.object_count() < 100_000);
+    }
+
+    #[test]
+    fn stress_mode_collects_at_every_check() {
+        let mut vm = Vm::new();
+        vm.gc.stress = true;
+        vm.gc_full();
+        let n = vm.heap.object_count();
+        let cycles = vm.gc.cycles;
+        vm.empty_table();
+        assert!(vm.gc_check());
+        assert_eq!(vm.heap.object_count(), n);
+        assert_eq!(vm.gc.cycles, cycles + 1);
+        // A stopped collector (or running finalizers) is respected.
+        vm.gc_stop();
+        vm.empty_table();
+        assert!(!vm.gc_check());
+        assert_eq!(vm.heap.object_count(), n + 1);
     }
 
     #[test]

@@ -1,0 +1,25 @@
+true	y1A1!,y2A1!,y3A1!,y4A1!,y5A1!	Rzed?	table
+true	y1A40!,y2A40!,y3A40!,y4A40!,y5A40!	Rzed?	table
+1315
+false	table	boom	dead
+false	cannot resume dead coroutine
+false	stress_coro.lua:31: wrapped err
+11	up1+
+1041	up4+
+71	up7+
+1101	up10+
+240
+99	two2	3
+144	true	30
+cannot resume dead coroutine
+done	dead
+a	loc	localX
+tbmsg
+stack traceback:
+	[C]: in function 'yield'
+	stress_coro.lua:74: in function <stress_coro.lua:74>
+stress_coro.lua
+nil
+true
+bottom123456789101112131415161718192021222324252627282930
+--- exit 0

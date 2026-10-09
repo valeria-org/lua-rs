@@ -115,6 +115,9 @@ impl Vm {
             }
         };
         let base = func_slot + 2;
+        // The frame-link slot holds the return PC upstream, never a GC reference: drop whatever
+        // stale value it held, which would otherwise stay reachable for the call's duration.
+        th.set(base - 1, Value::Nil);
         th.push_frame(Frame::new(kind, f, base as u32, nres));
         if let Some(pt) = f.proto() {
             let fidx = th.frame_count() - 1;

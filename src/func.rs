@@ -261,12 +261,12 @@ impl UpVal {
 }
 
 impl Trace for UpVal {
+    /// An open upvalue marks the value in its slot but not its thread (upstream `gc_mark_uv`):
+    /// a coroutine reachable only through upvalues of closures it created is collected, and the
+    /// collector closes its open upvalues first (`lj_state_free`), see `Vm::collect`.
     fn trace(&self, m: &mut Marker) {
         match self.state.get() {
-            UpState::Open { thread, slot } => {
-                m.mark(thread);
-                m.mark_value(thread.get(slot as usize));
-            }
+            UpState::Open { thread, slot } => m.mark_value(thread.get(slot as usize)),
             UpState::Closed(v) => m.mark_value(v),
         }
     }

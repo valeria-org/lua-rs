@@ -171,9 +171,14 @@ fn embed_matches_reference() {
         };
         check(name, &run(&ours), reference.as_deref().map(run));
     }
-    // Regression check for rooting bugs: collect at every GC check point (EMBED_GCSTRESS) and
-    // still produce the reference output.
-    let o = Command::new(&ours).current_dir(&dir).env("EMBED_GCSTRESS", "1").output().expect("run embed");
+    // Regression check for rooting bugs: collect at every GC check point (EMBED_GCSTRESS sets
+    // the pacing, LUAJIT_RS_GCSTRESS the stress mode) and still produce the reference output.
+    let o = Command::new(&ours)
+        .current_dir(&dir)
+        .env("EMBED_GCSTRESS", "1")
+        .env("LUAJIT_RS_GCSTRESS", "1")
+        .output()
+        .expect("run embed");
     let reference = reference.as_deref().map(|r| result(Command::new(r).current_dir(&dir).output().expect("run embed")));
     check("embed", &result(o), reference);
 }

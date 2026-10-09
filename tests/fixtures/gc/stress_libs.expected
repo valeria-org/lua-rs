@@ -1,0 +1,45 @@
+true	bee1
+1	newval
+nil	bee1
+true	false
+true	stress_libs.lua	2	Lua
+table
+hello5
+m1	true
+udenv
+rec:17 rec:17 rec:17 rec:17 rec:17 ?:18
+msg1
+stack traceback:
+	stress_libs.lua:19: in main chunk
+	[C]: at 
+9	table: 0x?
+9	table: 0x?
+21	1	4	0	true	false
+true
+true	a
+291
+50	line50
+closed file	false	attempt to use a closed file
+line1
+gcmod!	gcmod!
+v2	gcmod2
+true
+  0.3|1|z	 33.3|64|zz
+cba	3	5	key	val
+671.02
+true
+000000ff	255	-2147483648
+200	e300	e101
+e300,e299,e298	200
+1
+0	nil
+xstr11str4040
+ystr11str4040
+1	2	3
+true	nil	stress_libs.lua:87: reader err
+nil	stress_libs.lua:88: reader function must return a string
+stack traceback:
+	[C]: in function 'load'
+	stress_libs.lua:88: in main chunk
+	[C]: at 0x?
+--- exit 0

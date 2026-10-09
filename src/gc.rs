@@ -3,6 +3,11 @@
 //! Port of the object-management parts of lj_gc.c, adapted to a non-incremental (stop-the-world)
 //! mark & sweep collector. The collection driver (roots, weak tables, finalizers, pacing) lives in
 //! `crate::state`; this module provides the mechanics.
+//!
+//! Debugging aid: with `LUAJIT_RS_GCSTRESS=1` in the environment every GC safe point runs a full
+//! collection (see `crate::state::GcState::stress`), and debug builds keep freed objects in a
+//! quarantine ([`Heap::enable_quarantine`]) so that using a handle that was not rooted across a
+//! safe point panics with "use of a freed GC object" instead of reading reused memory.
 
 use std::alloc::{self, Layout};
 use std::cell::Cell;
@@ -586,5 +591,39 @@ impl Drop for AlignedBytes {
         let layout = Layout::from_size_align(self.len.max(1), self.align).expect("invalid layout");
         // SAFETY: allocated in `new` with the same layout.
         unsafe { alloc::dealloc(self.ptr.as_ptr(), layout) };
+    }
+}
+
+#[cfg(all(test, debug_assertions))]
+mod tests {
+    use super::*;
+    use crate::lstr::StrTab;
+
+    /// A swept string, interned and dropped again, with its heap and table.
+    fn swept_string(heap: &mut Heap) -> Gc<crate::lstr::LuaStr> {
+        let mut st = StrTab::new(0);
+        let s = st.intern(heap, b"gone");
+        st.purge();
+        heap.sweep();
+        assert_eq!(heap.object_count(), 0);
+        s
+    }
+
+    #[test]
+    #[should_panic(expected = "use of a freed GC object (Str)")]
+    fn quarantine_turns_use_after_free_into_panic() {
+        let mut heap = Heap::new();
+        heap.enable_quarantine();
+        let s = swept_string(&mut heap);
+        let _ = s.len();
+    }
+
+    #[test]
+    #[should_panic(expected = "use of a freed GC object (Str)")]
+    fn quarantine_catches_marking_freed_objects() {
+        let mut heap = Heap::new();
+        heap.enable_quarantine();
+        let s = swept_string(&mut heap);
+        Marker::new(None, None).mark(s);
     }
 }

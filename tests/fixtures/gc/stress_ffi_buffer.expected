@@ -1,0 +1,20 @@
+0,1,2,3,4,5,6,7,8,9	true
+63	0
+false	stress_ffi_buffer.lua:31: cberror
+free1 free4 free5 free6 free7 free8 replaced
+pt(6,3)	foo@6	6	true	pt(4,2)pt(5,2.5)
+13	1	10
+n=1 s=x1	n=50 s=x50	abc
+60100ULL	8585ULL
+weak cdata	0
+141	<1> <2> <3> <4> <5> 
+reference-targetxxxxxxxxxx
+1:v1;2:v2;3:v3;4:v4;5:v5;6:v6;	92
+92	7:v7;
+1	four	<mt>	ten
+deeps	inf	9.007199254741e+15	12345678901234LL	104
+false	unexpected end of buffer
+false	stress_ffi_buffer.lua:105: tserr
+bc
+true	x
+--- exit 0

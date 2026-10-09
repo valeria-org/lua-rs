@@ -1,0 +1,19 @@
+16	36	4
+0	20	0
+1
+f6 f5 f4 f3 f2 f1 inner	3
+7
+true	val	true
+0
+after errfin
+cg
+3	3	200
+true	true
+keys ok
+3000
+5000
+true	true
+end
+--- stderr
+ERROR in finalizer: stress_weak_fin.lua:60: finerr
+--- exit 0
