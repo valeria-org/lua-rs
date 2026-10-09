@@ -1,4 +1,5 @@
 stale link slot	finalized
+stale link slot (Lua callee)	finalized	3
 weak key	true	nil
 coroutine collected	true	11	13
 closed upvalue	16

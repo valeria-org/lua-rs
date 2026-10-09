@@ -13,6 +13,17 @@ end
 full()
 print("stale link slot", held)
 
+-- Same for the frame-link slot of a call to a Lua function: `u` is left in the argument slot
+-- of getmetatable(u), two slots above the block; full() is then called from that height.
+local held2
+do
+  local u = newproxy(true)
+  getmetatable(u).__gc = function(o) held2 = "finalized" end
+end
+local a, b = 1, 2
+full()
+print("stale link slot (Lua callee)", held2, a + b)
+
 local wk = setmetatable({}, {__mode = "k"})
 local fin
 do
