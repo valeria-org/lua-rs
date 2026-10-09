@@ -110,10 +110,7 @@ impl Vm {
     pub fn tostring_basic(&mut self, o: Value) -> Gc<LuaStr> {
         match o {
             Value::Str(s) => s,
-            Value::Num(n) => {
-                let b = crate::text::strfmt::fmt_num(n);
-                self.new_str(&b)
-            }
+            Value::Num(n) => self.num_str(n),
             Value::Nil => self.new_str(b"nil"),
             Value::Bool(false) => self.new_str(b"false"),
             Value::Bool(true) => self.new_str(b"true"),
@@ -421,7 +418,9 @@ impl Vm {
                     break;
                 }
             }
-            let mut buf: Vec<u8> = Vec::new();
+            // Upstream concatenates in the global temporary buffer; reuse one likewise.
+            let mut buf = std::mem::take(&mut self.rt.tmpbuf);
+            buf.clear();
             for i in o..=top {
                 match th.get(i) {
                     Value::Str(s) => buf.extend_from_slice(s.as_bytes()),
@@ -433,6 +432,9 @@ impl Vm {
                 return Err(self.err_msg(ErrMsg::STROV));
             }
             let s = self.new_str(&buf);
+            if buf.capacity() <= super::TMPBUF_KEEP {
+                self.rt.tmpbuf = buf;
+            }
             th.set(o, Value::Str(s));
             top = o;
             if left == 0 {

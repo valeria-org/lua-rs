@@ -47,6 +47,9 @@ use crate::value::Value;
 /// out; this keeps the Rust stack bounded instead.
 pub const LJ_MAX_CCALLS: u32 = 1000;
 
+/// Largest capacity of [`Runtime::tmpbuf`] kept for reuse after a concatenation.
+const TMPBUF_KEEP: usize = 1 << 20;
+
 /// Dispatcher for `NativeImpl::C` functions, installed by the C API: it must run the C
 /// function with a `lua_State*` for `vm`, convert a `lua_error` unwind into `Err`, and return
 /// the number of results the C function returned (the results are the top values of the
@@ -118,6 +121,8 @@ pub struct Runtime {
     pub ffi: FfiHooks,
     /// C API global state (panic function, allocator, hooks, unwinding bookkeeping).
     pub(crate) capi: crate::capi::CApiGlobal,
+    /// Reusable scratch buffer for string concatenation (upstream's `g->tmpbuf`).
+    pub(crate) tmpbuf: Vec<u8>,
 }
 
 impl Runtime {
