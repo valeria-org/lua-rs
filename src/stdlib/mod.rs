@@ -2,7 +2,14 @@
 //! lib_init.c (`luaL_openlibs`).
 
 pub mod base;
+pub mod bit;
+pub mod buffer;
 pub mod coroutine;
+pub mod libinit;
+pub mod math;
+pub mod serialize;
+pub mod string;
+pub mod table;
 
 use crate::error::LuaResult;
 use crate::func::{NativeFn, NativeImpl};
@@ -18,6 +25,10 @@ pub type LibFn = (&'static str, NativeFn, u8);
 /// here.
 pub fn open_libs(vm: &mut Vm) -> LuaResult<()> {
     base::open_base(vm)?;
+    table::open_table(vm)?;
+    string::open_string(vm)?;
+    math::open_math(vm)?;
+    bit::open_bit(vm)?;
     Ok(())
 }
 
