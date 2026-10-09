@@ -3,7 +3,7 @@
 //! * `embed.c` embeds `libluajit.so` (state creation, stack ops, tables, userdata, closures,
 //!   registry refs, errors, coroutines with C yields, reader-based loads, dump, debug API,
 //!   hooks, tracebacks, buffers, panics). Its output with our library must equal its output
-//!   with the reference `libluajit.so`.
+//!   with the reference `libluajit.so`, also when collecting at every GC check point.
 //! * `cmod.c` is a C module loaded by the `luajit` binary through `require`/`package.loadlib`
 //!   (`test_cmod.lua`).
 //! * lua-cjson (vendored in `tests/capi/lua-cjson`) is built from source and exercised through
@@ -171,6 +171,11 @@ fn embed_matches_reference() {
         };
         check(name, &run(&ours), reference.as_deref().map(run));
     }
+    // Regression check for rooting bugs: collect at every GC check point (EMBED_GCSTRESS) and
+    // still produce the reference output.
+    let o = Command::new(&ours).current_dir(&dir).env("EMBED_GCSTRESS", "1").output().expect("run embed");
+    let reference = reference.as_deref().map(|r| result(Command::new(r).current_dir(&dir).output().expect("run embed")));
+    check("embed", &result(o), reference);
 }
 
 /// Run a Lua script from `tests/capi` (copied to `dir`) with `bin`, cwd `dir`.

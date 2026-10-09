@@ -317,6 +317,10 @@ int main(int argc, char **argv)
   lua_State *L = luaL_newstate();
   int status, i, r1, r2, r3;
   luaL_openlibs(L);
+  if (getenv("EMBED_GCSTRESS")) {  /* Collect at every GC check point. */
+    lua_gc(L, LUA_GCSETPAUSE, 0);
+    lua_gc(L, LUA_GCSETSTEPMUL, 1000000);
+  }
 
   if (argc > 1 && strcmp(argv[1], "panic") == 0) {
     lua_pushstring(L, "unprotected!");
@@ -793,8 +797,8 @@ int main(int argc, char **argv)
   lua_gc(L, LUA_GCSTOP, 0);
   printf("gc running after stop %d\n", lua_gc(L, LUA_GCISRUNNING, 0));
   lua_gc(L, LUA_GCRESTART, 0);
-  printf("gc setpause old %d\n", lua_gc(L, LUA_GCSETPAUSE, 150));
-  printf("gc setpause old %d\n", lua_gc(L, LUA_GCSETPAUSE, 200));
+  r1 = lua_gc(L, LUA_GCSETPAUSE, 150);
+  printf("gc setpause roundtrip %d\n", lua_gc(L, LUA_GCSETPAUSE, r1) == 150);
   printf("gc bad option %d\n", lua_gc(L, 42, 0));
   printf("setmode engine on %d off %d\n", luaJIT_setmode(L, 0, LUAJIT_MODE_ENGINE | LUAJIT_MODE_ON), luaJIT_setmode(L, 0, LUAJIT_MODE_ENGINE | LUAJIT_MODE_OFF));
   {
