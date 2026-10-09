@@ -1,0 +1,35 @@
+11ULL	cdata
+45	42 str 3.142 A 123456789012 4000000000 ff 1.5
+1|2|3|4|5|6|7|8|1.500000|2.500000|3.500000|4.500000|5.500000|6.500000|7.500000|8.500000|9.500000|10.500000
+3	2	ctype<struct 109>
+-3LL	-2LL
+24	2.25	7	1234
+3.25	xyz
+true	llo	true
+5	0+2i
+false	wrong number of arguments for function call
+false	wrong number of arguments for function call
+false	bad argument #1 to '?' (cannot convert 'number' to 'const char *')
+false	bad argument #1 to '?' (cannot convert 'string' to 'int')
+false	calls.lua:44: missing declaration for symbol 'nonexistent_function_xyz'
+false	calls.lua:45: missing declaration for symbol 'this_is_undeclared'
+false	calls.lua:46: attempt to write to constant location
+0
+34	34	5
+1	2	3	4	5	7	8	9	true
+42	cdata
+2
+false	bad callback
+false	calls.lua:66: bad callback
+1.5	2.25	3LL	true	65
+3.75
+false	calls.lua:70: boom 7
+false	calls.lua:74: in qsort
+void cb
+abc
+false	cannot convert 'function' to 'int (*)()'
+false	cannot convert 'function' to 'struct 192 (*)()'
+false	calls.lua:80: cannot convert 'nil' to 'int'
+4ULL	ctype<uint64_t (*)()>	ctype<uint64_t ()>
+true
+true

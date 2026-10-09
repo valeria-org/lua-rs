@@ -152,7 +152,7 @@ fn getconst(cts: &CTState, ct: CTypeID) -> Value {
 }
 
 /// Get C data value and convert it to a Lua value (`lj_cdata_get`).
-pub fn cdata_get(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sp: *mut u8) -> LuaResult<Value> {
+pub(crate) fn cdata_get(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sp: *mut u8) -> LuaResult<Value> {
     let sinfo = cts.get(s).info;
     if ctype_isconstval(sinfo) {
         return Ok(getconst(cts, s));
@@ -178,7 +178,7 @@ pub fn cdata_get(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sp: *mut u8) -> Lua
 }
 
 /// Convert a Lua value and store it into C data (`lj_cdata_set`).
-pub fn cdata_set(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, qual: CTInfo) -> LuaResult<()> {
+pub(crate) fn cdata_set(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, qual: CTInfo) -> LuaResult<()> {
     let dinfo = cts.get(d).info;
     let mut qual = qual;
     if ctype_isconstval(dinfo) {

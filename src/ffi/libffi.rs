@@ -1169,14 +1169,14 @@ pub fn luaopen_ffi(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 /// `ctype_loadffi`: the hook the lexer and the bytecode reader use for FFI constants.
-fn load_ffi(vm: &mut Vm) -> LuaResult<()> {
+pub(crate) fn load_ffi(vm: &mut Vm) -> LuaResult<()> {
     open_ffi(vm).map(|_| ())
 }
 
 /// Register the FFI with the standard library setup (`lj_lib_preload` of lib_init.c): the
-/// `ffi` module goes to `package.preload` and the lexer/bytecode loader hook is installed.
+/// `ffi` module goes to `package.preload`. (The lexer/bytecode loader hook is installed by
+/// `Vm::new_state`.)
 pub fn preload_ffi(vm: &mut Vm) -> LuaResult<()> {
-    crate::parse::set_ffi_loader(load_ffi);
     let pk = vm.new_str(b"_PRELOAD");
     let preload = match vm.registry.get_str(pk) {
         Value::Table(t) => t,

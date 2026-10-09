@@ -21,6 +21,7 @@ struct CDArith {
 
 /// Check arguments for arithmetic metamethods (`carith_checkarg`). `nums` provides the
 /// storage for number operands. Returns false if an operand is not convertible.
+#[allow(clippy::needless_range_loop)] // `i` indexes both operands and the stack.
 fn checkarg(vm: &mut Vm, cts: &mut CTState, ca: &mut CDArith, nums: &mut [f64; 2]) -> LuaResult<bool> {
     if vm.nargs() < 2 {
         return Err(vm.type_error(1, "cdata"));
@@ -86,7 +87,7 @@ fn checkarg(vm: &mut Vm, cts: &mut CTState, ca: &mut CDArith, nums: &mut [f64; 2
             }
             _ => {
                 ca.ct[i] = None;
-                ca.p[i] = 1usize as *const u8; // To make it unequal.
+                ca.p[i] = std::ptr::without_provenance(1); // To make it unequal.
                 ok = false;
             }
         }
@@ -95,6 +96,7 @@ fn checkarg(vm: &mut Vm, cts: &mut CTState, ca: &mut CDArith, nums: &mut [f64; 2
 }
 
 /// Pointer arithmetic (`carith_ptr`).
+#[allow(clippy::needless_late_init)]
 fn carith_ptr(vm: &mut Vm, cts: &mut CTState, ca: &CDArith, mm: MM) -> LuaResult<Option<Value>> {
     let (Some(ctp0), Some(ct1)) = (ca.ct[0], ca.ct[1]) else { return Ok(None) };
     let mut ctp = ctp0;
@@ -247,6 +249,7 @@ fn operand_meta(vm: &mut Vm, cts: &CTState, o: Value, mm: MM) -> Option<Value> {
 }
 
 /// Handle ctype arithmetic metamethods (`lj_carith_meta`).
+#[allow(clippy::needless_range_loop)] // `i` indexes both operands and the stack.
 fn carith_meta(vm: &mut Vm, cts: &CTState, ca: &CDArith, mm: MM) -> LuaResult<usize> {
     let mut tv = operand_meta(vm, cts, vm.arg(1), mm);
     if tv.is_none() && vm.nargs() >= 2 {
@@ -367,7 +370,7 @@ pub fn check64(vm: &mut Vm, cd: Gc<CData>, narg: u32, id: &mut u32) -> LuaResult
 
 /// Unsigned 64 bit division (`lj_carith_divu64`).
 pub fn divu64(a: u64, b: u64) -> u64 {
-    if b == 0 { 1 << 63 } else { a / b }
+    a.checked_div(b).unwrap_or(1 << 63)
 }
 
 /// Signed 64 bit division (`lj_carith_divi64`).

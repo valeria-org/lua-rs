@@ -2,7 +2,9 @@
 //! and aggregate initializers.
 //!
 //! All conversions work on raw memory through raw pointers, exactly like upstream: the
-//! destination and source pointers must be valid for the sizes implied by the C types.
+//! destination and source pointers must be valid for the sizes implied by the C types. That
+//! contract is upheld by the FFI library code (cdata payloads, stack temporaries), so the
+//! conversion functions are crate-internal.
 //! Unaligned access is used throughout (packed structs).
 
 use std::ptr;
@@ -222,10 +224,8 @@ pub fn compatptr(cts: &CTState, d: CTypeID, s: CTypeID, flags: CTInfo) -> bool {
     } else if ctype_ispointer(dct.info) {
         // Check child types for compatibility.
         return compatptr(cts, d, s, flags | CCF_SAME);
-    } else if ctype_isstruct(dct.info) {
-        if d != s {
-            return false; // Must be exact same type for struct/union.
-        }
+    } else if ctype_isstruct(dct.info) && d != s {
+        return false; // Must be exact same type for struct/union.
     }
     // NYI: structural equality of functions.
     true
@@ -236,7 +236,7 @@ pub fn compatptr(cts: &CTState, d: CTypeID, s: CTypeID, flags: CTInfo) -> bool {
 /// Convert C type to C type (`lj_cconv_ct_ct`). Caveat: expects raw C types.
 ///
 /// `dp`/`sp` must be valid for the sizes of `d`/`s`.
-pub fn ct_ct(
+pub(crate) fn ct_ct(
     vm: &mut Vm,
     cts: &CTState,
     d: CTypeID,
@@ -578,7 +578,7 @@ pub fn cdata_new(vm: &mut Vm, id: CTypeID, sz: CTSize) -> crate::gc::Gc<crate::c
 }
 
 /// Allocate a cdata holding a reference to `p` of type `id` (`lj_cdata_newref`).
-pub fn cdata_newref(vm: &mut Vm, cts: &mut CTState, p: *const u8, id: CTypeID) -> LuaResult<Value> {
+pub(crate) fn cdata_newref(vm: &mut Vm, cts: &mut CTState, p: *const u8, id: CTypeID) -> LuaResult<Value> {
     let refid = cts.intern(ctinfo_ref(id), CTSIZE_PTR).map_err(|e| ffi_err(vm, e))?;
     let cd = cdata_new(vm, refid, CTSIZE_PTR);
     // SAFETY: the cdata owns 8 bytes.
@@ -588,7 +588,7 @@ pub fn cdata_newref(vm: &mut Vm, cts: &mut CTState, p: *const u8, id: CTypeID) -
 
 /// Convert C type to Lua value (`lj_cconv_tv_ct`). Caveat: expects the raw C type `s`;
 /// `sid` is the type id used for references.
-pub fn tv_ct(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sid: CTypeID, sp: *const u8) -> LuaResult<Value> {
+pub(crate) fn tv_ct(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sid: CTypeID, sp: *const u8) -> LuaResult<Value> {
     let sct = *cts.get(s);
     let sinfo = sct.info;
     if ctype_isnum(sinfo) {
@@ -619,7 +619,7 @@ pub fn tv_ct(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sid: CTypeID, sp: *cons
 }
 
 /// Convert bitfield to Lua value (`lj_cconv_tv_bf`).
-pub fn tv_bf(vm: &mut Vm, cts: &CTState, s: CTypeID, sp: *const u8) -> LuaResult<Value> {
+pub(crate) fn tv_bf(vm: &mut Vm, cts: &CTState, s: CTypeID, sp: *const u8) -> LuaResult<Value> {
     let info = cts.get(s).info;
     debug_assert!(ctype_isbitfield(info), "bitfield expected");
     let csz = ctype_bitcsz(info);
@@ -784,7 +784,7 @@ fn substruct_tab(
 
 /// Convert Lua value to C type (`lj_cconv_ct_tv`). Caveat: expects the raw C type `d`.
 /// `dp` must be valid for the size of `d`.
-pub fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, mut flags: CTInfo) -> LuaResult<()> {
+pub(crate) fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, mut flags: CTInfo) -> LuaResult<()> {
     let mut d = d;
     let mut sid = CTID_P_VOID;
     let mut tmpptr: usize;
@@ -927,7 +927,7 @@ pub fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, 
 }
 
 /// Convert Lua value to bitfield (`lj_cconv_bf_tv`).
-pub fn bf_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value) -> LuaResult<()> {
+pub(crate) fn bf_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value) -> LuaResult<()> {
     let info = cts.get(d).info;
     debug_assert!(ctype_isbitfield(info), "bitfield expected");
     let mut val: u32 = 0;
@@ -1050,7 +1050,7 @@ pub fn multi_init(cts: &CTState, d: CTypeID, o: Value) -> bool {
 }
 
 /// Initialize C type with Lua values (`lj_cconv_ct_init`). Caveat: expects the raw C type.
-pub fn ct_init(vm: &mut Vm, cts: &mut CTState, d: CTypeID, sz: CTSize, dp: *mut u8, o: &[Value]) -> LuaResult<()> {
+pub(crate) fn ct_init(vm: &mut Vm, cts: &mut CTState, d: CTypeID, sz: CTSize, dp: *mut u8, o: &[Value]) -> LuaResult<()> {
     let dinfo = cts.get(d).info;
     if o.is_empty() {
         // SAFETY: dp is valid for sz bytes.

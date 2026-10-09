@@ -589,7 +589,8 @@ fn scan_raw(s: &[u8], o: &mut Val, opt: u32) -> Fmt {
         }
         if at(s, p) >= b'A' {
             // Parse "inf", "infinity" or "nan".
-            let mut tmp = f64::NAN;
+            // setnanV: the canonical (x86 default) NaN, sign bit set.
+            let mut tmp = f64::from_bits(0xfff8_0000_0000_0000);
             if casecmp(at(s, p), b'i') && casecmp(at(s, p + 1), b'n') && casecmp(at(s, p + 2), b'f') {
                 tmp = if neg { f64::NEG_INFINITY } else { f64::INFINITY };
                 p += 3;

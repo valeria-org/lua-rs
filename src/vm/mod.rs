@@ -60,6 +60,7 @@ pub type CdataToNumberFn = fn(&mut Vm, Gc<CData>) -> LuaResult<Option<f64>>;
 
 /// Hooks the FFI library installs so the core VM can handle cdata where upstream calls into
 /// the FFI directly.
+#[allow(clippy::type_complexity)]
 #[derive(Clone, Copy, Default)]
 pub struct FfiHooks {
     /// `lj_carith_checkbit64` for a cdata operand of a bit operator: convert the cdata to 64
@@ -147,6 +148,8 @@ impl Vm {
     pub fn new_state() -> Vm {
         let mut vm = Vm::new();
         vmevent::install_default_handlers(&mut vm);
+        // ctype_loadffi: FFI constants in source or bytecode load the FFI on demand.
+        crate::parse::set_ffi_loader(crate::ffi::libffi::load_ffi);
         vm
     }
 }

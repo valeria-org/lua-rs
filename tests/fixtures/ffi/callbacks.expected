@@ -1,0 +1,6 @@
+false	callbacks.lua:3: attempt to yield across C-call boundary
+false	table	9
+1	2	3	7	8	9
+false	callbacks.lua:21: too many callbacks	891
+77
+20000	19999

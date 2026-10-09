@@ -1,0 +1,26 @@
+false	traceback.lua:3: 'int64_t' has no member named 'foo'
+stack traceback:
+	traceback.lua:3: in function <traceback.lua:2>
+	[C]: in function 'xpcall'
+	traceback.lua:2: in main chunk
+false	traceback.lua:6: attempt to perform arithmetic on 'int64_t' and 'table'
+stack traceback:
+	traceback.lua:6: in function <traceback.lua:5>
+	[C]: in function 'xpcall'
+	traceback.lua:5: in main chunk
+false	traceback.lua:10: 'int [3]' has no member named 'y'
+stack traceback:
+	traceback.lua:10: in function <traceback.lua:8>
+	[C]: in function 'xpcall'
+	traceback.lua:8: in main chunk
+false	traceback.lua:12: 'int64_t' has no member named 'z'
+stack traceback:
+	traceback.lua:12: in function '__index'
+	traceback.lua:13: in function <traceback.lua:13>
+	[C]: in function 'xpcall'
+	traceback.lua:13: in main chunk
+false	cannot convert 'table' to 'int'
+stack traceback:
+	[builtin#180]: at 0xADDR
+	[C]: in function 'xpcall'
+	traceback.lua:14: in main chunk
