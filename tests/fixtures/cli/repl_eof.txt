@@ -1,0 +1,5 @@
+x = "--[[" ..
+"<eof>"
+print(x)
+error(nil)
+print(1,
