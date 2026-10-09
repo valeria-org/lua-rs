@@ -1,0 +1,71 @@
+stack traceback:
+	main.lua:3: in main chunk
+	[C]: at 0x?
+msg
+stack traceback:
+	main.lua:4: in main chunk
+	[C]: at 0x?
+msg
+stack traceback:
+	[C]: at 0x?
+12
+stack traceback:
+	main.lua:6: in main chunk
+	[C]: at 0x?
+false	table
+nil
+1
+nil
+lvl0
+stack traceback:
+	[C]: in function 'traceback'
+	main.lua:11: in main chunk
+	[C]: at 0x?
+lvl50
+stack traceback:
+stack traceback:
+	[C]: in function 'yield'
+	main.lua:15: in function <main.lua:13>
+comsg
+stack traceback:
+	[C]: in function 'yield'
+	main.lua:15: in function <main.lua:13>
+comsg
+stack traceback:
+	main.lua:15: in function <main.lua:13>
+table: 0x?
+-1	15	nil
+x	y	2
+y	y	99
+false	bad argument #2 to '?' (level out of range)
+C
+false	main.lua:16: dead
+stack traceback:
+	[C]: in function 'error'
+	main.lua:16: in function <main.lua:13>
+deep
+stack traceback:
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	...
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:30: in function 'deep'
+	main.lua:31: in main chunk
+	[C]: at 0x?
+stack traceback:
+--- exit 0

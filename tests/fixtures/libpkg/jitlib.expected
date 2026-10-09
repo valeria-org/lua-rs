@@ -1,0 +1,83 @@
+table	true	true
+4	table
+arch	x64
+attach	function
+flush	function
+off	function
+on	function
+os	Linux
+security	function
+status	function
+version	LuaJIT 2.1.1788856981
+version_num	20199
+LuaJIT 2.1.1788856981	20199	Linux	x64	false
+false	JIT compiler permanently disabled by build option
+true
+true
+false	bad argument #1 to '?' (function expected, got function)
+true
+false	bad argument #1 to '?' (function expected, got number)
+false	JIT compiler permanently disabled by build option
+prng	1
+strhash	1
+strid	1
+mcode	1
+false	bad argument #1 to '?' (invalid option 'x')
+false	bad argument #1 to '?' (string expected, got no value)
+true	nil
+bytecodes	5
+children	false
+currentline	12
+gcconsts	1
+isvararg	true
+lastlinedefined	12
+linedefined	12
+loc	main.lua:12
+nconsts	1
+params	1
+proto	proto
+source	@main.lua
+stackslots	4
+upvalues	0
+main.lua:0	nil
+0	1123	45060
+1	295	46337
+2	554	46209
+3	66322	45441
+4	197194	45828
+5
+6
+7
+8
+9
+10
+1.5	nil	s
+false	bad argument #1 to '?' (function expected, got function)
+f
+29	number	1
+proto	main.lua:22
+false	bad argument #1 to '?' (function expected, got no value)
+false	bad argument #1 to '?' (function expected, got number)
+@main.lua
+bc	proto	chunk:1
+bc	proto	chunk:1
+bc	proto	chunk:1
+bc	proto	chunk:0
+1
+false	bad argument #1 to '?' (function expected, got no value)
+true
+nested ok
+events	3
+nested ok
+string	table	print	true
+true	true
+[builtin#155]|dumpstack;main.lua:46|main.lua:0;@0x?|@0x?
+@0x?;main.lua:0;dumpstack;
+[builtin#155] lf lf;main.lua:49 main.lua:0 main.lua:0;@0x? @0x? @0x?;
+
+false	bad argument #1 to '?' (string expected, got no value)
+false	bad argument #2 to '?' (function expected, got number)
+samples	true
+--- stderr
+VM handler failed: main.lua:34: handler err
+--- exit 0

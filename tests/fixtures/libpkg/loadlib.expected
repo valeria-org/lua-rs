@@ -1,0 +1,36 @@
+/x/?.lua;./?.lua;/usr/local/share/luajit-2.1/?.lua;/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua;
+;./?.so;/usr/local/lib/lua/5.1/?.so;/usr/local/lib/lua/5.1/loadall.so;/y/?.so;./?.so;/usr/local/lib/lua/5.1/?.so;/usr/local/lib/lua/5.1/loadall.so;
+function	nil	nil
+nil	/usr/lib/x86_64-linux-gnu/libm.so.6: undefined symbol: nosuchsym_xyz	init
+nil	/nonexistent/libfoo.so: cannot open shared object file: No such file or directory	open
+true
+nil	/nonexistent/libfoo.so: cannot open shared object file: No such file or directory	open
+userdata	true
+function
+false	bad argument #1 to '?' (_LOADLIB expected, got number)
+false	bad argument #1 to '?' (string expected, got no value)
+false	bad argument #2 to '?' (string expected, got no value)
+false	error loading module 'libm' from file '/usr/lib/x86_64-linux-gnu/libm.so.6':
+	/usr/lib/x86_64-linux-gnu/libm.so.6: undefined symbol: luaopen_libm
+false	module 'libm.sub' not found:
+	no field package.preload['libm.sub']
+	no file '/x/libm/sub.lua'
+	no file './libm/sub.lua'
+	no file '/usr/local/share/luajit-2.1/libm/sub.lua'
+	no file '/usr/local/share/lua/5.1/libm/sub.lua'
+	no file '/usr/local/share/lua/5.1/libm/sub/init.lua'
+	no file './libm/sub.so'
+	no file '/usr/lib/x86_64-linux-gnu/libm/sub.so.6'
+	no module 'libm.sub' in file '/usr/lib/x86_64-linux-gnu/libm.so.6'
+false	module 'm.foo' not found:
+	no field package.preload['m.foo']
+	no file '/x/m/foo.lua'
+	no file './m/foo.lua'
+	no file '/usr/local/share/luajit-2.1/m/foo.lua'
+	no file '/usr/local/share/lua/5.1/m/foo.lua'
+	no file '/usr/local/share/lua/5.1/m/foo/init.lua'
+	no file '/usr/lib/x86_64-linux-gnu/libm/foo.so.6'
+	no module 'm.foo' in file '/usr/lib/x86_64-linux-gnu/libm.so.6'
+false	error loading module 'm' from file '/usr/lib/x86_64-linux-gnu/libm.so.6':
+	/usr/lib/x86_64-linux-gnu/libm.so.6: undefined symbol: luaopen_m
+--- exit 0

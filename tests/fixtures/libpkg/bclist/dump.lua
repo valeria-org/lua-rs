@@ -1,0 +1,6 @@
+local f = assert(loadfile("main.lua"))
+require("jit.bc").dump(f, io.stdout, true)
+local bc = require("jit.bc")
+print(bc.line(f, 1), bc.line(f, 1000))
+local tg = bc.targets(f)
+local n = 0 for k in pairs(tg) do n = n + 1 end print("targets", n)

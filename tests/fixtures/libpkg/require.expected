@@ -1,0 +1,66 @@
+loading m1	m1
+number
+m1	true
+loading m2	m2
+true	true
+false	error loading module 'm3' from file './m3.lua':
+	./m3.lua:1: unexpected symbol near '='
+false	./m4.lua:1: boom in m4
+false	loop or previous error loading module 'm4'
+false	./m5.lua:1: loop or previous error loading module 'm5'
+false	module 'nonexistent' not found:
+	no field package.preload['nonexistent']
+	no file './nonexistent.lua'
+	no file './nonexistent/init.lua'
+	no file './nonexistent.so'
+false	module 'a.nope' not found:
+	no field package.preload['a.nope']
+	no file './a/nope.lua'
+	no file './a/nope/init.lua'
+	no file './a/nope.so'
+	no file './a.so'
+true	m6	
+hi from m6	true
+sub.init
+a.b	a.	true
+table: 0x?
+false	table: 0x?
+set by m8
+preload	pre
+42
+false	bad argument #1 to '?' (string expected, got no value)
+false	bad argument #1 to '?' (string expected, got table)
+table: 0x?
+false	module 'zz' not found:
+	no field package.preload['zz']
+	no file '7'
+	no file './zz.so'
+false	'package.preload' must be a table
+false	'package.loaders' must be a table
+false	module 'zz' not found:
+false	module 'zz' not found:
+	mine zz12
+./m1.lua
+./a/b.lua
+nil	
+	no file './a.b.lua'
+./a/b.lua
+nil	
+	no file './nope.lua'
+	no file 'xnopey'
+false	bad argument #2 to '?' (string expected, got no value)
+false	bad argument #1 to '?' (string expected, got no value)
+false	'module' not called from a Lua function
+true
+false	bad argument #1 to '?' (table expected, got number)
+false	name conflict for module 'x.y'
+q.r.s	q.r.	true	true
+true
+opt1	q.r.s
+opt2
+--- stderr
+luajit: main.lua:53: attempt to call global 'pcall' (a nil value)
+stack traceback:
+	main.lua:53: in main chunk
+	[C]: at 0x?
+--- exit 1

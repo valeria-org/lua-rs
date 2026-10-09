@@ -1,0 +1,100 @@
+  currentline	4
+  func	function
+  isvararg	true
+  lastlinedefined	12
+  linedefined	2
+  name	lvl2
+  namewhat	local
+  nparams	2
+  nups	0
+  short_src	main.lua
+  source	@main.lua
+  what	Lua
+---
+  currentline	13
+  lastlinedefined	73
+  linedefined	0
+  namewhat	
+  short_src	main.lua
+  source	@main.lua
+  what	main
+a	b	c	info	(*vararg)	(*vararg)	nil
+c	100	nil	(*vararg)
+va	y
+nil
+false	bad argument #1 to '?' (function or level expected)
+false	bad argument #2 to '?' (invalid option)
+false	bad argument #2 to '?' (invalid option)
+false	bad argument #1 to '?' (function or level expected)
+p currentline	-1
+p func	function
+p isvararg	true
+p lastlinedefined	-1
+p linedefined	-1
+p namewhat	
+p nparams	0
+p nups	1
+p short_src	[C]
+p source	=[C]
+p what	C
+L activelines	table
+L isvararg	true
+L lastlinedefined	12
+L linedefined	2
+L nparams	2
+L nups	0
+L short_src	main.lua
+L source	@main.lua
+L what	Lua
+al 10	true
+al 11	true
+al 3	true
+al 4	true
+al 5	true
+al 6	true
+al 7	true
+al 8	true
+al 9	true
+nil
+23
+false	bad argument #1 to '?' (level out of range)
+false	bad argument #2 to '?' (number expected, got no value)
+false	bad argument #2 to '?' (number expected, got no value)
+a	b	nil	nil
+nil
+false	bad argument #1 to '?' (level out of range)
+false	bad argument #3 to '?' (value expected)
+up1	up2	nil
+up2	5
+false	bad argument #3 to '?' (value expected)
+false	bad argument #1 to '?' (function expected, got number)
+false	bad argument #2 to '?' (number expected, got no value)
+	tostring
+	thread: 0x?
+true	false	userdata
+false	bad argument #2 to '?' (index out of range)
+false	bad argument #2 to '?' (index out of range)
+true	userdata: 0x?
+20	true
+false	bad argument #1 to '?' (Lua function expected)
+false	bad argument #3 to '?' (Lua function expected)
+false	bad argument #2 to '?' (index out of range)
+false	bad argument #4 to '?' (index out of range)
+true	table
+nil	true	1
+false	bad argument #2 to '?' (nil or table expected)
+true	foo5
+true
+nil
+true	9
+nil
+locked	true
+false	bad argument #1 to '?' (value expected)
+true	true	nil	true
+true	true
+false	'setfenv' cannot change environment of given object
+false	bad argument #2 to '?' (table expected, got no value)
+false	bad argument #1 to '?' (value expected)
+true	true	true
+nil	nil
+--- exit 0

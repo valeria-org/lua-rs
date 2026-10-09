@@ -28,7 +28,7 @@ fn command(args: &[&str]) -> Command {
 }
 
 fn have_libs() -> bool {
-    command(&["-e", "assert(package and os and jit)"]).stderr(Stdio::null()).status().is_ok_and(|s| s.success())
+    command(&["-e", "assert(package and os and jit and string)"]).stderr(Stdio::null()).status().is_ok_and(|s| s.success())
 }
 
 fn normalize(s: &[u8]) -> String {
@@ -412,12 +412,32 @@ fn jit_unknown() {
 }
 #[test]
 fn bc_list() {
-    check(Case { args: &["-bl", "-e", "x=1"], stdin: None, env: &[], libs: true, out: r###""###, err: r###"luajit: unknown luaJIT command or jit.* modules not installed
-"###, code: 1 });
+    check(Case { args: &["-bl", "-e", "x=1"], stdin: None, env: &[], libs: true, out: r###"-- BYTECODE -- "x=1":0-1
+0001    KSHORT   0   1
+0002    GSET     0   0      ; "x"
+0003    RET0     0   1
+
+"###, err: r###""###, code: 0 });
 }
 #[test]
 fn bc_usage() {
-    check(Case { args: &["-b"], stdin: None, env: &[], libs: true, out: r###""###, err: r###"luajit: unknown luaJIT command or jit.* modules not installed
+    check(Case { args: &["-b"], stdin: None, env: &[], libs: true, out: r###""###, err: r###"Save LuaJIT bytecode: luajit -b[options] input output
+  -l        Only list bytecode.
+  -s        Strip debug info (default).
+  -g        Keep debug info.
+  -W        Generate 32 bit (non-GC64) bytecode.
+  -X        Generate 64 bit (GC64) bytecode.
+  -d        Generate bytecode in deterministic manner.
+  -n name   Set module name (default: auto-detect from input name).
+  -t type   Set output file type (default: auto-detect from output name).
+  -a arch   Override architecture for object files (default: native).
+  -o os     Override OS for object files (default: native).
+  -F name   Override filename (default: input filename).
+  -e chunk  Use chunk string as input.
+  --        Stop handling options.
+  -         Use stdin as input and/or stdout as output.
+
+File types: c cc h obj o raw (default)
 "###, code: 1 });
 }
 #[test]

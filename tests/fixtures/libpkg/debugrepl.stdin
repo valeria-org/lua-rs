@@ -1,0 +1,8 @@
+print("hello", x)
+x = x + 1
+error("oops")
+error({})
+syntax error here
+error(42)
+cont
+print("not run")

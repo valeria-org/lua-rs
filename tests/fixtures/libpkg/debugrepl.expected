@@ -1,0 +1,8 @@
+hello	1
+after	2
+--- stderr
+lua_debug> lua_debug> lua_debug> (debug command):1: oops
+lua_debug> (error object is not a string)
+lua_debug> (debug command):1: '=' expected near 'error'
+lua_debug> (debug command):1: 42
+lua_debug> --- exit 0
