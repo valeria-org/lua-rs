@@ -285,7 +285,7 @@ unsafe fn bc_dump_len(p: *const u8) -> usize {
 }
 
 /// `luaL_loadbuffer(L, bcdata, ~0, name)` for embedded bytecode.
-fn load_bcdata(vm: &mut Vm, data: *const u8, name: &[u8]) -> LuaResult<Gc<crate::func::Function>> {
+fn load_bcdata(vm: &mut Vm, data: *const u8, name: &[u8]) -> LuaResult<Value> {
     // SAFETY: the symbol was exported as a bytecode dump (`luaJIT_BC_*` convention).
     let buf = unsafe { std::slice::from_raw_parts(data, bc_dump_len(data)) };
     vm.load(buf, cstr(name), None)
@@ -387,7 +387,7 @@ fn ll_loadfunc(
                     vm.push(m);
                     return match load_bcdata(vm, bc, name) {
                         Ok(f) => {
-                            vm.push(Value::Func(f));
+                            vm.push(f);
                             Ok(Ok(()))
                         }
                         Err(e) if e.kind == ErrorKind::Yield => Err(e),
@@ -542,7 +542,7 @@ fn lj_cf_package_loader_lua(vm: &mut Vm) -> LuaResult<usize> {
                 cn.extend_from_slice(LUA_LJDIR.as_bytes());
                 cn.extend_from_slice(file.as_bytes());
                 return match vm.load(src, &cn, None) {
-                    Ok(f) => vm.ret1(Value::Func(f)),
+                    Ok(f) => vm.ret1(f),
                     Err(e) if e.kind == ErrorKind::Yield => Err(e),
                     Err(e) => {
                         vm.rt_clear_thrown();
@@ -555,7 +555,7 @@ fn lj_cf_package_loader_lua(vm: &mut Vm) -> LuaResult<usize> {
         }
     };
     match vm.load_file(Some(&filename), None) {
-        Ok(f) => vm.ret1(Value::Func(f)),
+        Ok(f) => vm.ret1(f),
         Err(e) if e.kind == ErrorKind::Yield => Err(e),
         Err(e) => {
             vm.rt_clear_thrown();
@@ -634,7 +634,7 @@ fn lj_cf_package_loader_preload(vm: &mut Vm) -> LuaResult<usize> {
     );
     if !bc.is_null() {
         match load_bcdata(vm, bc, name.as_bytes()) {
-            Ok(f) => return vm.ret1(Value::Func(f)),
+            Ok(f) => return vm.ret1(f),
             Err(e) if e.kind == ErrorKind::Yield => return Err(e),
             Err(_) => vm.rt_clear_thrown(),
         }

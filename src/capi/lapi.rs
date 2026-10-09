@@ -1188,14 +1188,14 @@ pub unsafe extern "C-unwind" fn lua_cpcall(L: *mut lua_State, func: lua_CFunctio
 /// Push the result of a load: the function, or the error object (returning its status).
 /// Then run the GC check (`lj_gc_check` after `lj_vm_cpcall` in `lua_loadx`): only once the
 /// result is on the stack, since it is not reachable from anywhere else.
-pub(crate) fn load_status(vm: &mut Vm, r: LuaResult<Gc<Function>>) -> c_int {
+pub(crate) fn load_status(vm: &mut Vm, r: LuaResult<Value>) -> c_int {
     let st = match r {
         Ok(f) => {
-            vm.push(Value::Func(f));
+            vm.push(f);
             0
         }
         Err(e) => {
-            vm.rt.thrown = None;
+            vm.rt_clear_thrown();
             vm.push(e.value);
             e.status()
         }
@@ -1353,7 +1353,7 @@ pub unsafe extern "C-unwind" fn lua_resume(L: *mut lua_State, narg: c_int) -> c_
             crate::error::LUA_ERRRUN
         }
         Err(e) => {
-            vm.rt.thrown = None;
+            vm.rt_clear_thrown();
             co.push(e.value);
             e.status()
         }

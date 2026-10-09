@@ -112,6 +112,9 @@ pub struct Runtime {
     pub(crate) thrown: Option<crate::value::Value>,
     /// Dedicated thread for finalizers and VM event handlers (`vmthread(g)`). Rooted.
     pub(crate) vmthread: Option<Gc<crate::thread::Thread>>,
+    /// GC objects created by loads in progress whose reader may run Lua code (upstream keeps
+    /// them on the Lua stack or in the parser's constant tables). Rooted.
+    pub(crate) load_anchors: Vec<crate::value::Value>,
     /// Dispatcher for C functions (installed by the C API).
     pub c_call: Option<CCallHook>,
     /// FFI integration points.
@@ -128,6 +131,9 @@ impl Runtime {
         }
         if let Some(t) = self.vmthread {
             m.mark(t);
+        }
+        for &v in &self.load_anchors {
+            m.mark_value(v);
         }
     }
 }

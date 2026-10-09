@@ -1,0 +1,89 @@
+nil /nonexistent/dir/file: No such file or directory 2
+nil /nonexistent/dir/file: No such file or directory 2
+nil .: Is a directory 21
+true nil conform_io.tmp: Invalid argument 22
+true nil conform_io.tmp: No such file or directory 2
+nil /nonexistent/file: No such file or directory 2
+nil /nonexistent/a: No such file or directory 2
+nil .: Invalid argument 22
+file nil file
+file true
+true
+16 2 16
+false bad argument #2 to '?' (invalid option 'bogus')
+true true false bad argument #2 to '?' (invalid option 'weird')
+true
+true
+closed file file (closed)
+false attempt to use a closed file
+false attempt to use a closed file
+false attempt to use a closed file
+false attempt to use a closed file
+line1
+2
+3.5
+
+
+la
+st
+
+nil
+nil
+nil
+false bad argument #2 to '?' (invalid format)
+false bad argument #2 to '?' (invalid option)
+line1 2 3.5  l ast
+line1
+ 2
+
+nil Bad file descriptor 9
+31 1000 -0.5 7 nan inf 12 nil nil 
+[a][b][][c]
+[a
+][b
+][
+][c]
+<a
+><b
+><
+c>
+{a}{b}{}{c}
+true nil
+a b  c true
+false bad argument #1 to '?' (/nonexistent: No such file or directory)
+true
+via io.write
+false bad argument #1 to '?' (/nonexistent: No such file or directory)
+false bad argument #1 to '?' (/nonexistent/x: No such file or directory)
+via io.write
+appended
+VIA io.write
+appended
+popen-out
+
+true
+true
+true
+true nil true: Invalid argument 22
+tmpdata
+number number nil set
+946728000
+981676800
+false field 'day' missing in date table
+false field 'year' missing in date table
+1970-01-01 00:00:00 Fri Jan  1 00:00:00 1971 09/09/01 01:46:40 AM Sunday September 252 36 0 01 GMT %
+2009 2 13 23 31 30 6 44 false
+boolean
+true +0000
+true %Q
+23
+5 5 false bad argument #1 to '?' (number expected, got no value)
+true 512 0
+true C C nil false bad argument #2 to '?' (invalid option 'bogus')
+string true
+true nil conform_io.tmp: No such file or directory 2
+false
+false
+true nil cannot close standard file
+end
+--- exit 0

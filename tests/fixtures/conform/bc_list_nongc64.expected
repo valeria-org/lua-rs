@@ -1,0 +1,402 @@
+-- BYTECODE -- loadreader.lua:5-5
+0001    UGET     0   0      ; n
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; n
+0004    UGET     0   1      ; s
+0005    MOV      1   0
+0006    TGETS    0   0   0  ; "sub"
+0007    UGET     2   2      ; i
+0008    UGET     3   2      ; i
+0009    UGET     4   3      ; step
+0010    ADDVV    3   3   4
+0011    SUBVN    3   3   0  ; 1
+0012    CALL     0   2   4
+0013    UGET     1   2      ; i
+0014    UGET     2   3      ; step
+0015    ADDVV    1   1   2
+0016    USETV    2   1      ; i
+0017    RET1     0   2
+
+-- BYTECODE -- loadreader.lua:3-7
+0001    KSHORT   2   1
+0002    KSHORT   3   0
+0003    GGET     4   0      ; "load"
+0004    FNEW     5   1      ; loadreader.lua:5
+0005    CALL     4   3   2
+0006    MOV      6   3
+0007    ISF          4
+0008    JMP      7 => 0011
+0009    KSTR     7   2      ; "ok"
+0010    JMP      8 => 0012
+0011 => MOV      7   5
+0012 => UCLO     0 => 0013
+0013 => RET      6   3
+
+-- BYTECODE -- loadreader.lua:20-20
+0001    UGET     0   0      ; k
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; k
+0004    UGET     0   1      ; parts
+0005    UGET     1   0      ; k
+0006    TGETV    0   0   1
+0007    RET1     0   2
+
+-- BYTECODE -- loadreader.lua:22-22
+0001    UGET     0   0      ; k
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; k
+0004    UGET     0   1      ; parts
+0005    UGET     1   0      ; k
+0006    TGETV    0   0   1
+0007    RET1     0   2
+
+-- BYTECODE -- loadreader.lua:24-24
+0001    UGET     0   0      ; k
+0002    ADDVN    0   0   0  ; 1
+0003    USETV    0   0      ; k
+0004    UGET     0   0      ; k
+0005    ISNEN    0   1      ; 2
+0006    JMP      0 => 0010
+0007    GGET     0   0      ; "error"
+0008    KSTR     1   1      ; "boom"
+0009    CALL     0   1   2
+0010 => KSTR     0   2      ; "return 1"
+0011    RET1     0   2
+
+-- BYTECODE -- loadreader.lua:26-26
+0001    KSHORT   0   1
+0002    RET1     0   2
+
+-- BYTECODE -- loadreader.lua:40-48
+0001    UGET     0   0      ; gc
+0002    ISF          0
+0003    JMP      1 => 0006
+0004    GGET     0   0      ; "collectgarbage"
+0005    CALL     0   1   1
+0006 => UGET     0   1      ; s
+0007    MOV      1   0
+0008    TGETS    0   0   1  ; "sub"
+0009    UGET     2   2      ; i
+0010    UGET     3   2      ; i
+0011    UGET     4   3      ; step
+0012    ADDVV    3   3   4
+0013    SUBVN    3   3   0  ; 1
+0014    CALL     0   2   4
+0015    UGET     1   2      ; i
+0016    UGET     2   3      ; step
+0017    ADDVV    1   1   2
+0018    USETV    2   1      ; i
+0019    TNEW     1   0
+0020    KSHORT   2   1
+0021    KSHORT   3   5
+0022    KSHORT   4   1
+0023    FORI     2 => 0031
+0024 => KSTR     6   2      ; "str"
+0025    MOV      7   5
+0026    KSTR     8   3      ; "n"
+0027    MOV      9   5
+0028    CAT      6   6   9
+0029    TSETV    6   1   5
+0030    FORL     2 => 0024
+0031 => RET1     0   2
+
+-- BYTECODE -- loadreader.lua:38-49
+0001    KSHORT   3   1
+0002    FNEW     4   0      ; loadreader.lua:40
+0003    UCLO     0 => 0004
+0004 => RET1     4   2
+
+-- BYTECODE -- loadreader.lua:64-74
+0001    UGET     0   0      ; done
+0002    ISF          0
+0003    JMP      1 => 0006
+0004    KPRI     0   0
+0005    RET1     0   2
+0006 => USETP    0   2      ; done
+0007    UGET     0   1      ; depth
+0008    ADDVN    0   0   0  ; 1
+0009    USETV    1   0      ; depth
+0010    UGET     0   1      ; depth
+0011    KSHORT   1   5
+0012    ISGE     0   1
+0013    JMP      0 => 0031
+0014    GGET     0   0      ; "load"
+0015    UGET     1   2      ; rec
+0016    KSTR     2   1      ; "return "
+0017    UGET     3   1      ; depth
+0018    CAT      2   2   3
+0019    CALL     1   0   2
+0020    CALLM    0   2   0
+0021    GGET     1   2      ; "collectgarbage"
+0022    CALL     1   1   1
+0023    KSTR     1   1      ; "return "
+0024    GGET     2   3      ; "tostring"
+0025    MOV      3   0
+0026    CALL     3   0   1
+0027    CALLM    2   2   0
+0028    KSTR     3   4      ; " + 100"
+0029    CAT      1   1   3
+0030    RET1     1   2
+0031 => UGET     0   3      ; s
+0032    RET1     0   2
+
+-- BYTECODE -- loadreader.lua:62-75
+0001    KPRI     1   1
+0002    FNEW     2   0      ; loadreader.lua:64
+0003    UCLO     0 => 0004
+0004 => RET1     2   2
+
+-- BYTECODE -- loadreader.lua:0-77
+0001    FNEW     0   0      ; loadreader.lua:3
+0002    GGET     1   1      ; "string"
+0003    TGETS    1   1   2  ; "dump"
+0004    GGET     2   3      ; "loadstring"
+0005    KSTR     3   4      ; "local a = {1,2,x=3}; return function() r"~
+0006    CALL     2   0   2
+0007    CALLM    1   2   0
+0008    GGET     2   5      ; "print"
+0009    LEN      3   1
+0010    MOV      4   0
+0011    MOV      5   1
+0012    KSHORT   6   1
+0013    CALL     4   2   3
+0014    MOV      5   0
+0015    MOV      6   1
+0016    KSHORT   7   3
+0017    CALL     5   2   3
+0018    MOV      6   0
+0019    MOV      7   1
+0020    KSHORT   8   7
+0021    CALL     6   2   3
+0022    MOV      7   0
+0023    MOV      8   1
+0024    KSHORT   9 1000
+0025    CALL     7   0   3
+0026    CALLM    2   1   4
+0027    GGET     2   1      ; "string"
+0028    TGETS    2   2   2  ; "dump"
+0029    GGET     3   3      ; "loadstring"
+0030    KSTR     4   6      ; "return 1"
+0031    CALL     3   2   2
+0032    KPRI     4   2
+0033    CALL     2   2   3
+0034    GGET     3   5      ; "print"
+0035    LEN      4   2
+0036    MOV      5   0
+0037    MOV      6   2
+0038    KSHORT   7   1
+0039    CALL     5   2   3
+0040    MOV      6   0
+0041    MOV      7   2
+0042    KSHORT   8   2
+0043    CALL     6   2   3
+0044    MOV      7   0
+0045    MOV      8   2
+0046    KSHORT   9   5
+0047    CALL     7   0   3
+0048    CALLM    3   1   3
+0049    GGET     3   5      ; "print"
+0050    MOV      4   0
+0051    MOV      6   1
+0052    TGETS    5   1   7  ; "sub"
+0053    KSHORT   7   1
+0054    KSHORT   8  20
+0055    CALL     5   2   4
+0056    KSHORT   6   1
+0057    CALL     4   2   3
+0058    MOV      5   0
+0059    MOV      6   1
+0060    KSTR     7   8      ; "x"
+0061    CAT      6   6   7
+0062    KSHORT   7   1
+0063    CALL     5   2   3
+0064    MOV      6   0
+0065    MOV      7   1
+0066    KSTR     8   9      ; "\000\000"
+0067    CAT      7   7   8
+0068    KSHORT   8   1
+0069    CALL     6   0   3
+0070    CALLM    3   1   2
+0071    GGET     3   5      ; "print"
+0072    MOV      4   0
+0073    KSTR     5   6      ; "return 1"
+0074    KSHORT   6   1
+0075    CALL     4   2   3
+0076    MOV      5   0
+0077    KSTR     6   6      ; "return 1"
+0078    KSHORT   7 100
+0079    CALL     5   2   3
+0080    MOV      6   0
+0081    KSTR     7  10      ; "--x\nreturn"
+0082    KSHORT   8   2
+0083    CALL     6   0   3
+0084    CALLM    3   1   2
+0085    GGET     3   5      ; "print"
+0086    MOV      4   0
+0087    KSTR     5  11      ; "#!x\nreturn 1"
+0088    KSHORT   6   1
+0089    CALL     4   0   3
+0090    CALLM    3   1   0
+0091    GGET     3   5      ; "print"
+0092    MOV      4   0
+0093    KSTR     5  12      ; "﻿return 1"
+0094    KSHORT   6   1
+0095    CALL     4   0   3
+0096    CALLM    3   1   0
+0097    GGET     3   5      ; "print"
+0098    MOV      4   0
+0099    KSTR     5  12      ; "﻿return 1"
+0100    KSHORT   6   3
+0101    CALL     4   0   3
+0102    CALLM    3   1   0
+0103    GGET     3   5      ; "print"
+0104    MOV      4   0
+0105    KSTR     5  13      ; "*a = 123"
+0106    KSHORT   6   1
+0107    CALL     4   0   3
+0108    CALLM    3   1   0
+0109    GGET     3   5      ; "print"
+0110    MOV      4   0
+0111    KSTR     5  14      ; "x = = 1"
+0112    KSHORT   6   1
+0113    CALL     4   0   3
+0114    CALLM    3   1   0
+0115    TDUP     3  15
+0116    TNEW     4   0
+0117    TSETB    4   3   3
+0118    KSHORT   4   0
+0119    GGET     5   5      ; "print"
+0120    GGET     6  16      ; "pcall"
+0121    GGET     7  17      ; "load"
+0122    FNEW     8  18      ; loadreader.lua:20
+0123    CALL     6   0   3
+0124    CALLM    5   1   0
+0125    TDUP     5  19
+0126    TNEW     6   0
+0127    TSETB    6   5   3
+0128    MOV      3   5
+0129    KSHORT   4   0
+0130    GGET     5   5      ; "print"
+0131    GGET     6  17      ; "load"
+0132    FNEW     7  20      ; loadreader.lua:22
+0133    CALL     6   0   2
+0134    CALLM    5   1   0
+0135    KSHORT   4   0
+0136    GGET     5   5      ; "print"
+0137    GGET     6  16      ; "pcall"
+0138    GGET     7  17      ; "load"
+0139    FNEW     8  21      ; loadreader.lua:24
+0140    CALL     6   0   3
+0141    CALLM    5   1   0
+0142    GGET     5  17      ; "load"
+0143    KSTR     6   6      ; "return 1"
+0144    KSTR     7   8      ; "x"
+0145    KSTR     8  22      ; "tW"
+0146    CALL     5   2   4
+0147    GGET     6   5      ; "print"
+0148    GGET     7  23      ; "type"
+0149    MOV      8   5
+0150    CALL     7   2   2
+0151    GGET     8   1      ; "string"
+0152    TGETS    8   8   2  ; "dump"
+0153    MOV      9   5
+0154    CALL     8   2   2
+0155    LEN      8   8
+0156    KSHORT   9   0
+0157    ISLT     9   8
+0158    JMP      8 => 0161
+0159    KPRI     8   1
+0160    JMP      9 => 0162
+0161 => KPRI     8   2
+0162 => GGET     9  17      ; "load"
+0163    GGET    10   1      ; "string"
+0164    TGETS   10  10   2  ; "dump"
+0165    FNEW    11  24      ; loadreader.lua:26
+0166    CALL    10   2   2
+0167    KSTR    11  25      ; "y"
+0168    KSTR    12  26      ; "bW"
+0169    CALL     9   0   4
+0170    CALLM    6   1   2
+0171    GGET     6   5      ; "print"
+0172    GGET     7  17      ; "load"
+0173    KSTR     8   6      ; "return 1"
+0174    KSTR     9   8      ; "x"
+0175    KSTR    10  27      ; "b"
+0176    CALL     7   0   4
+0177    CALLM    6   1   0
+0178    KSTR     6  28      ; "local t = {1, 2, "three", x = "ex", [10]"~
+0179    FNEW     7  29      ; loadreader.lua:38
+0180    GGET     8  30      ; "ipairs"
+0181    TDUP     9  31
+0182    CALL     8   4   2
+0183    JMP     11 => 0238
+0184 => GGET    13  32      ; "assert"
+0185    GGET    14  17      ; "load"
+0186    MOV     15   7
+0187    MOV     16   6
+0188    MOV     17  12
+0189    KPRI    18   2
+0190    CALL    15   2   4
+0191    KSTR    16  33      ; "=src"
+0192    CALL    14   0   3
+0193    CALLM   13   2   0
+0194    GGET    14   5      ; "print"
+0195    MOV     15  12
+0196    MOV     16  13
+0197    CALL    16   0   1
+0198    CALLM   14   1   1
+0199    GGET    14   1      ; "string"
+0200    TGETS   14  14   2  ; "dump"
+0201    MOV     15  13
+0202    CALL    14   2   2
+0203    GGET    15  32      ; "assert"
+0204    GGET    16  17      ; "load"
+0205    MOV     17   7
+0206    MOV     18  14
+0207    MOV     19  12
+0208    KPRI    20   2
+0209    CALL    17   2   4
+0210    KSTR    18  34      ; "=dump"
+0211    CALL    16   0   3
+0212    CALLM   15   2   0
+0213    GGET    16   5      ; "print"
+0214    MOV     17  12
+0215    MOV     18  15
+0216    CALL    18   0   1
+0217    CALLM   16   1   1
+0218    GGET    16   1      ; "string"
+0219    TGETS   16  16   2  ; "dump"
+0220    MOV     17  13
+0221    KPRI    18   2
+0222    CALL    16   2   3
+0223    GGET    17  32      ; "assert"
+0224    GGET    18  17      ; "load"
+0225    MOV     19   7
+0226    MOV     20  16
+0227    MOV     21  12
+0228    KPRI    22   2
+0229    CALL    19   2   4
+0230    KSTR    20  35      ; "=sdump"
+0231    CALL    18   0   3
+0232    CALLM   17   2   0
+0233    GGET    18   5      ; "print"
+0234    MOV     19  12
+0235    MOV     20  17
+0236    CALL    20   0   1
+0237    CALLM   18   1   1
+0238 => ITERC   11   3   3
+0239    ITERL   11 => 0184
+0240    KSHORT   8   0
+0241    FNEW     9  36      ; loadreader.lua:62
+0242    GGET    10   5      ; "print"
+0243    GGET    11  17      ; "load"
+0244    MOV     12   9
+0245    KSTR    13  37      ; "return 7"
+0246    CALL    12   0   2
+0247    CALLM   11   2   0
+0248    CALL    11   0   1
+0249    CALLM   10   1   0
+0250    UCLO     0 => 0251
+0251 => RET0     0   1
+
+--- exit 0

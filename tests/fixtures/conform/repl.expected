@@ -1,0 +1,20 @@
+LuaJIT 2.1.1788856981 -- Copyright (C) 2005-2026 Mike Pall. https://luajit.org/
+JIT: OFF
+> > 20
+> >> 10	11
+> 5
+> >> >> 1
+2
+> > > > >> > > --- stderr
+stdin:1: boom
+stack traceback:
+	[C]: in function 'error'
+	stdin:1: in main chunk
+	[C]: at 0x?
+(error object is not a string)
+stdin:1: unexpected symbol near '='
+stdin:1: attempt to call global 'undefinedfn' (a nil value)
+stack traceback:
+	stdin:1: in main chunk
+	[C]: at 0x?
+--- exit 3

@@ -442,7 +442,7 @@ fn lj_cf_debug_debug(vm: &mut Vm) -> LuaResult<usize> {
         }
         let r = match vm.load(&line, b"=(debug command)", None) {
             Ok(f) => {
-                vm.push(Value::Func(f));
+                vm.push(f);
                 vm.pcall(0, 0, None).map(|_| ())
             }
             Err(e) => Err(e),

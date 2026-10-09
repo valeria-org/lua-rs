@@ -90,7 +90,7 @@ impl Vm {
         self.rt.hook.vmevent = oldev;
         th.set_top(top);
         if let Err(e) = r {
-            self.rt.thrown = None;
+            self.rt_clear_thrown();
             let msg = match e.value {
                 Value::Str(s) => s.as_bytes().to_vec(),
                 _ => b"?".to_vec(),
@@ -111,13 +111,21 @@ impl Vm {
     }
 
     /// `lj_vmevent_send(L, BC, ...)` for every prototype of a freshly parsed chunk, in the order
-    /// upstream's parser finishes them (children before their parent, in source order). `f`
-    /// is the new main-chunk closure; it is anchored on the stack while handlers run.
-    pub(crate) fn vmevent_bc(&mut self, f: crate::gc::Gc<crate::func::Function>) {
+    /// upstream's parser finishes them (children before their parent, in source order). `chunk`
+    /// is the new main-chunk closure (or prototype, for non-native loads); it is anchored on
+    /// the stack while handlers run.
+    pub(crate) fn vmevent_bc(&mut self, chunk: Value) {
         if self.vmevent_handler(vmevent_bc_idx()).is_none() {
             return;
         }
-        let Some(pt) = f.proto() else { return };
+        let pt = match chunk {
+            Value::Func(f) => match f.proto() {
+                Some(pt) => pt,
+                None => return,
+            },
+            Value::Proto(pt) => pt,
+            _ => return,
+        };
         let mut order = Vec::new();
         fn walk(pt: crate::gc::Gc<crate::func::Proto>, out: &mut Vec<crate::gc::Gc<crate::func::Proto>>) {
             for k in pt.kgc.iter() {
@@ -129,7 +137,7 @@ impl Vm {
         }
         walk(pt, &mut order);
         let th = self.cur_thread;
-        self.push(Value::Func(f));
+        self.push(chunk);
         for p in order {
             // Re-lookup: a handler may detach itself.
             let Some(h) = self.vmevent_handler(vmevent_bc_idx()) else { break };

@@ -479,7 +479,7 @@ impl Vm {
                 if !hook {
                     self.rt.hook.active = false;
                 }
-                self.rt.thrown = None;
+                self.rt_clear_thrown();
                 return self.ret(th, pbase, 2);
             }
         }
@@ -541,7 +541,7 @@ impl Vm {
             self.gc.threshold = oldt;
             th.set_top(top);
             if let Err(e) = r {
-                self.rt.thrown = None;
+                self.rt_clear_thrown();
                 self.vmevent_errfin(e.value);
             }
             self.cur_thread = cur;
