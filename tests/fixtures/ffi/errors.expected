@@ -1,0 +1,17 @@
+false	errors.lua:2: declaration specifier expected near '<eof>'
+false	errors.lua:3: cannot convert 'table' to 'int'
+false	errors.lua:4: too many initializers for 'struct 102'
+false	errors.lua:5: cannot convert 'string' to 'int'
+true
+false	bad argument #1 to '?' (C type expected, got number)
+false	bad argument #1 to '?' (cannot convert 'number' to 'const char *')
+false	errors.lua:9: missing declaration for symbol 'strlen'
+false	errors.lua:10: attempt to compare 'struct 105' with 'struct 105'
+false	errors.lua:11: attempt to concatenate 'int' and 'string'
+false	errors.lua:12: 'int' has no member named 'foo'
+false	errors.lua:13: attempt to compare 'int64_t' with 'void *'
+false	bad argument #1 to '?' (cannot convert 'string' to 'int')
+false	too many initializers for 'struct 107'
+false	errors.lua:16: missing declaration for symbol 'foo'
+false	'struct 109' is not callable
+false	errors.lua:18: 'int64_t' has no '__pairs' metamethod

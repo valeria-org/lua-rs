@@ -1977,7 +1977,7 @@ fn call_errors_and_errno() {
     let e = CCallState::new(&mut cts, fid, libc_sym("abs"), &mut Args(vec![A::D(1.0)])).err();
     assert_eq!(msg(e.unwrap()), "NYI: cannot call this C function (yet)");
 
-    // errno is saved right after the call.
+    // errno is the live C errno left by the call.
     ccall::set_errno(0);
     let (mut cc, _) = call(
         &mut cts,

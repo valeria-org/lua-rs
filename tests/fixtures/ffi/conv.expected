@@ -1,0 +1,279 @@
+int8_t 0 -> 0
+int8_t 1 -> 1
+int8_t -1 -> -1
+int8_t 127.9 -> 127
+int8_t -128.5 -> -128
+int8_t 255 -> -1
+int8_t 300 -> 44
+int8_t 65535.5 -> -1
+int8_t 2147483648 -> 0
+int8_t -2147483648 -> 0
+int8_t 4294967301 -> 5
+int8_t 9.007199254741e+15 -> 0
+int8_t -9.2233720368548e+18 -> 0
+int8_t 1.844674407371e+19 -> 0
+int8_t 1e+300 -> 0
+int8_t nan -> 0
+int8_t inf -> 0
+uint8_t 0 -> 0
+uint8_t 1 -> 1
+uint8_t -1 -> 255
+uint8_t 127.9 -> 127
+uint8_t -128.5 -> 128
+uint8_t 255 -> 255
+uint8_t 300 -> 44
+uint8_t 65535.5 -> 255
+uint8_t 2147483648 -> 0
+uint8_t -2147483648 -> 0
+uint8_t 4294967301 -> 5
+uint8_t 9.007199254741e+15 -> 0
+uint8_t -9.2233720368548e+18 -> 0
+uint8_t 1.844674407371e+19 -> 0
+uint8_t 1e+300 -> 0
+uint8_t nan -> 0
+uint8_t inf -> 0
+int16_t 0 -> 0
+int16_t 1 -> 1
+int16_t -1 -> -1
+int16_t 127.9 -> 127
+int16_t -128.5 -> -128
+int16_t 255 -> 255
+int16_t 300 -> 300
+int16_t 65535.5 -> -1
+int16_t 2147483648 -> 0
+int16_t -2147483648 -> 0
+int16_t 4294967301 -> 5
+int16_t 9.007199254741e+15 -> 0
+int16_t -9.2233720368548e+18 -> 0
+int16_t 1.844674407371e+19 -> 0
+int16_t 1e+300 -> 0
+int16_t nan -> 0
+int16_t inf -> 0
+uint16_t 0 -> 0
+uint16_t 1 -> 1
+uint16_t -1 -> 65535
+uint16_t 127.9 -> 127
+uint16_t -128.5 -> 65408
+uint16_t 255 -> 255
+uint16_t 300 -> 300
+uint16_t 65535.5 -> 65535
+uint16_t 2147483648 -> 0
+uint16_t -2147483648 -> 0
+uint16_t 4294967301 -> 5
+uint16_t 9.007199254741e+15 -> 0
+uint16_t -9.2233720368548e+18 -> 0
+uint16_t 1.844674407371e+19 -> 0
+uint16_t 1e+300 -> 0
+uint16_t nan -> 0
+uint16_t inf -> 0
+int32_t 0 -> 0
+int32_t 1 -> 1
+int32_t -1 -> -1
+int32_t 127.9 -> 127
+int32_t -128.5 -> -128
+int32_t 255 -> 255
+int32_t 300 -> 300
+int32_t 65535.5 -> 65535
+int32_t 2147483648 -> -2147483648
+int32_t -2147483648 -> -2147483648
+int32_t 4294967301 -> 5
+int32_t 9.007199254741e+15 -> 0
+int32_t -9.2233720368548e+18 -> 0
+int32_t 1.844674407371e+19 -> 0
+int32_t 1e+300 -> 0
+int32_t nan -> 0
+int32_t inf -> 0
+uint32_t 0 -> 0
+uint32_t 1 -> 1
+uint32_t -1 -> 4294967295
+uint32_t 127.9 -> 127
+uint32_t -128.5 -> 4294967168
+uint32_t 255 -> 255
+uint32_t 300 -> 300
+uint32_t 65535.5 -> 65535
+uint32_t 2147483648 -> 2147483648
+uint32_t -2147483648 -> 2147483648
+uint32_t 4294967301 -> 5
+uint32_t 9.007199254741e+15 -> 0
+uint32_t -9.2233720368548e+18 -> 0
+uint32_t 1.844674407371e+19 -> 0
+uint32_t 1e+300 -> 0
+uint32_t nan -> 0
+uint32_t inf -> 0
+int64_t 0 -> 0LL
+int64_t 1 -> 1LL
+int64_t -1 -> -1LL
+int64_t 127.9 -> 127LL
+int64_t -128.5 -> -128LL
+int64_t 255 -> 255LL
+int64_t 300 -> 300LL
+int64_t 65535.5 -> 65535LL
+int64_t 2147483648 -> 2147483648LL
+int64_t -2147483648 -> -2147483648LL
+int64_t 4294967301 -> 4294967301LL
+int64_t 9.007199254741e+15 -> 9007199254740992LL
+int64_t -9.2233720368548e+18 -> -9223372036854775808LL
+int64_t 1.844674407371e+19 -> -9223372036854775808LL
+int64_t 1e+300 -> -9223372036854775808LL
+int64_t nan -> -9223372036854775808LL
+int64_t inf -> -9223372036854775808LL
+uint64_t 0 -> 0ULL
+uint64_t 1 -> 1ULL
+uint64_t -1 -> 18446744073709551615ULL
+uint64_t 127.9 -> 127ULL
+uint64_t -128.5 -> 18446744073709551488ULL
+uint64_t 255 -> 255ULL
+uint64_t 300 -> 300ULL
+uint64_t 65535.5 -> 65535ULL
+uint64_t 2147483648 -> 2147483648ULL
+uint64_t -2147483648 -> 18446744071562067968ULL
+uint64_t 4294967301 -> 4294967301ULL
+uint64_t 9.007199254741e+15 -> 9007199254740992ULL
+uint64_t -9.2233720368548e+18 -> 9223372036854775808ULL
+uint64_t 1.844674407371e+19 -> 0ULL
+uint64_t 1e+300 -> 9223372036854775808ULL
+uint64_t nan -> 9223372036854775808ULL
+uint64_t inf -> 9223372036854775808ULL
+float 0 -> 0
+float 1 -> 1
+float -1 -> -1
+float 127.9 -> 127.90000152588
+float -128.5 -> -128.5
+float 255 -> 255
+float 300 -> 300
+float 65535.5 -> 65535.5
+float 2147483648 -> 2147483648
+float -2147483648 -> -2147483648
+float 4294967301 -> 4294967296
+float 9.007199254741e+15 -> 9.007199254741e+15
+float -9.2233720368548e+18 -> -9.2233720368548e+18
+float 1.844674407371e+19 -> 1.844674407371e+19
+float 1e+300 -> inf
+float nan -> nan
+float inf -> inf
+double 0 -> 0
+double 1 -> 1
+double -1 -> -1
+double 127.9 -> 127.9
+double -128.5 -> -128.5
+double 255 -> 255
+double 300 -> 300
+double 65535.5 -> 65535.5
+double 2147483648 -> 2147483648
+double -2147483648 -> -2147483648
+double 4294967301 -> 4294967301
+double 9.007199254741e+15 -> 9.007199254741e+15
+double -9.2233720368548e+18 -> -9.2233720368548e+18
+double 1.844674407371e+19 -> 1.844674407371e+19
+double 1e+300 -> 1e+300
+double nan -> nan
+double inf -> inf
+bool 0 -> 0
+bool 1 -> 1
+bool -1 -> 1
+bool 127.9 -> 1
+bool -128.5 -> 1
+bool 255 -> 1
+bool 300 -> 1
+bool 65535.5 -> 1
+bool 2147483648 -> 1
+bool -2147483648 -> 1
+bool 4294967301 -> 1
+bool 9.007199254741e+15 -> 1
+bool -9.2233720368548e+18 -> 1
+bool 1.844674407371e+19 -> 1
+bool 1e+300 -> 1
+bool nan -> 1
+bool inf -> 1
+char 0 -> 0
+char 1 -> 1
+char -1 -> -1
+char 127.9 -> 127
+char -128.5 -> -128
+char 255 -> -1
+char 300 -> 44
+char 65535.5 -> -1
+char 2147483648 -> 0
+char -2147483648 -> 0
+char 4294967301 -> 5
+char 9.007199254741e+15 -> 0
+char -9.2233720368548e+18 -> 0
+char 1.844674407371e+19 -> 0
+char 1e+300 -> 0
+char nan -> 0
+char inf -> 0
+long 0 -> 0LL
+long 1 -> 1LL
+long -1 -> -1LL
+long 127.9 -> 127LL
+long -128.5 -> -128LL
+long 255 -> 255LL
+long 300 -> 300LL
+long 65535.5 -> 65535LL
+long 2147483648 -> 2147483648LL
+long -2147483648 -> -2147483648LL
+long 4294967301 -> 4294967301LL
+long 9.007199254741e+15 -> 9007199254740992LL
+long -9.2233720368548e+18 -> -9223372036854775808LL
+long 1.844674407371e+19 -> -9223372036854775808LL
+long 1e+300 -> -9223372036854775808LL
+long nan -> -9223372036854775808LL
+long inf -> -9223372036854775808LL
+unsigned long 0 -> 0ULL
+unsigned long 1 -> 1ULL
+unsigned long -1 -> 18446744073709551615ULL
+unsigned long 127.9 -> 127ULL
+unsigned long -128.5 -> 18446744073709551488ULL
+unsigned long 255 -> 255ULL
+unsigned long 300 -> 300ULL
+unsigned long 65535.5 -> 65535ULL
+unsigned long 2147483648 -> 2147483648ULL
+unsigned long -2147483648 -> 18446744071562067968ULL
+unsigned long 4294967301 -> 4294967301ULL
+unsigned long 9.007199254741e+15 -> 9007199254740992ULL
+unsigned long -9.2233720368548e+18 -> 9223372036854775808ULL
+unsigned long 1.844674407371e+19 -> 0ULL
+unsigned long 1e+300 -> 9223372036854775808ULL
+unsigned long nan -> 9223372036854775808ULL
+unsigned long inf -> 9223372036854775808ULL
+cdata<int>: 0xADDR	cdata<bool>: 0xADDR	cdata<bool>: 0xADDR	cdata<bool>: 0xADDR
+1	1
+false	cannot convert 'string' to 'int'
+false	cannot convert 'table' to 'int'
+false	cannot convert 'number' to 'int *'
+false	cannot convert 'nil' to 'double'
+false	cannot convert 'function' to 'int'
+cdata<int>: 0xADDR	cdata<unsigned char>: 0xADDR	-1LL	18446744073709551615ULL
+cdata<int *>: 0xADDR	cdata<void *>: 0xADDR	77LL
+cdata<double>: 0xADDR	cdata<float>: 0xADDR	cdata<int>: 0xADDR
+false	bad argument #1 to '?' (invalid C type)
+false	bad argument #2 to '?' (value expected)
+true
+1.5-2i	1.5	-2	1.5	3+0i	5+6i
+nan+infI	1e+100-1e-100i
+cdata<enum 105>: 6	6	cdata<enum 105>: 5	true	true
+false	cannot convert 'string' to 'enum 105'
+5	cdata<enum 105>: 1
+abcd	4
+1	2	3	3
+7	7
+1	2	3	0
+false	too many initializers for 'int [2]'
+1	2	0	0	16
+1	2.5	hi	3	4
+9	8	x	1	2
+false	too many initializers for 'struct S'
+1065353216	1	63
+1	-3	true	12345	4
+-1
+7
+false
+0	3	5
+16	20
+32	48	0	0
+8	1	8
+false	conv.lua:68: 'struct S' has no member named 'zz'
+false	conv.lua:69: 'struct S' cannot be indexed with 'number'
+false	conv.lua:70: 'struct 119' has no member named 'zz'
+false	conv.lua:72: attempt to write to constant location
+28	32	nil	8

@@ -6,7 +6,6 @@
 //! [`CCallResult`], so this module only deals with C types and raw bytes.
 
 use std::alloc::Layout;
-use std::cell::Cell;
 use std::ffi::c_void;
 use std::mem::offset_of;
 use std::ptr::NonNull;
@@ -205,28 +204,22 @@ pub fn func_type(cts: &CTState, ctid: CTypeID) -> Option<(CTypeID, CTSize)> {
     ctype_isfunc(cts.get(ct).info).then_some((ct, sz))
 }
 
-thread_local! {
-    static SAVED_ERRNO: Cell<i32> = const { Cell::new(0) };
-}
-
 fn errno_location() -> *mut i32 {
     // SAFETY: __errno_location has no preconditions and returns the
     // thread-local errno address.
     unsafe { libc::__errno_location() }
 }
 
-/// `ffi.errno()`: the errno value saved after the last C call on this thread
-/// (or the value set with [`set_errno`]).
+/// `ffi.errno()`: the current C `errno` of this thread.
 pub fn errno() -> i32 {
-    SAVED_ERRNO.with(|e| e.get())
+    // SAFETY: errno_location returns a valid pointer to this thread's errno.
+    unsafe { *errno_location() }
 }
 
-/// `ffi.errno(newerr)`: set the errno value seen by the next C call and
-/// return the previous saved value.
+/// `ffi.errno(newerr)`: set the C `errno` and return the previous value.
 pub fn set_errno(newerr: i32) -> i32 {
     // SAFETY: errno_location returns a valid pointer to this thread's errno.
-    unsafe { *errno_location() = newerr };
-    SAVED_ERRNO.with(|e| e.replace(newerr))
+    unsafe { std::ptr::replace(errno_location(), newerr) }
 }
 
 /// Aligned heap storage for an aggregate (struct/complex) return value.
@@ -624,21 +617,15 @@ impl CCallState {
         &self.regs
     }
 
-    /// Perform the call (`lj_vm_ffi_call`), saving `errno` afterwards.
+    /// Perform the call (`lj_vm_ffi_call`).
     ///
     /// # Safety
     /// The function pointer must point to a function with the declared C
     /// type, and all pointer arguments must satisfy its requirements.
     pub unsafe fn call(&mut self) {
-        let e = errno_location();
-        // SAFETY: e is this thread's errno; the register image is fully set up
-        // and the caller guarantees the callee matches its declaration.
-        unsafe {
-            *e = SAVED_ERRNO.with(|s| s.get());
-            luajit_rs_vm_ffi_call(&mut self.regs);
-            let err = *e;
-            SAVED_ERRNO.with(|s| s.set(err));
-        }
+        // SAFETY: the register image is fully set up and the caller guarantees
+        // the callee matches its declaration.
+        unsafe { luajit_rs_vm_ffi_call(&mut self.regs) };
     }
 
     /// Get the results of the call (`ccall_get_results`).

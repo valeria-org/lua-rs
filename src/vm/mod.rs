@@ -29,6 +29,7 @@ pub use api::TAILCALL;
 pub use debug::{DebugInfo, FrameRef};
 pub use err::{ErrMsg, fmt_msg};
 pub use meta::{modf, num2bit, num2int, obj_ptr};
+pub(crate) use meta::Meta;
 pub use debug::InfoTarget;
 pub use hook::{HookEvent, HookFn, LUA_MASKCALL, LUA_MASKCOUNT, LUA_MASKLINE, LUA_MASKRET};
 pub use vmevent::{VMEVENT_ERRFIN, VMEVENTS_REGKEY, vmevent_hash};
@@ -38,6 +39,7 @@ use crate::error::LuaResult;
 use crate::func::CFunction;
 use crate::gc::Gc;
 use crate::state::Vm;
+use crate::value::Value;
 
 /// Maximum nesting of Rust-level re-entries into the VM (native → `Vm::call`, coroutine
 /// resumes, metamethods called from natives, error handlers, hooks, finalizers). Exceeding it
@@ -58,6 +60,7 @@ pub type CdataToNumberFn = fn(&mut Vm, Gc<CData>) -> LuaResult<Option<f64>>;
 
 /// Hooks the FFI library installs so the core VM can handle cdata where upstream calls into
 /// the FFI directly.
+#[allow(clippy::type_complexity)]
 #[derive(Clone, Copy, Default)]
 pub struct FfiHooks {
     /// `lj_carith_checkbit64` for a cdata operand of a bit operator: convert the cdata to 64
@@ -66,6 +69,16 @@ pub struct FfiHooks {
     pub checkbit64: Option<CheckBit64Fn>,
     /// `tonumber(cdata)`: the number for numeric/complex/enum cdata, `None` otherwise.
     pub tonumber: Option<CdataToNumberFn>,
+    /// Cdata branch of `lj_carith_check64` (bit library): like `checkbit64`, but conversion
+    /// errors are argument errors for `narg`.
+    pub check64: Option<fn(&mut Vm, Gc<CData>, u32, &mut u32) -> LuaResult<u64>>,
+    /// `lj_cconv_ct_tv` of a value to `const void *` with argument-error context `narg`.
+    pub toptr: Option<fn(&mut Vm, Value, u32) -> LuaResult<*const u8>>,
+    /// Read pointer of a `string.buffer` userdata (`SBufExt.r`), installed by the buffer
+    /// library; used when the FFI converts such a userdata to a pointer.
+    pub bufptr: Option<fn(&crate::udata::Userdata) -> *const u8>,
+    /// `ctype_raw(cts, id)`: info and size of the raw C type of ctype id `id`.
+    pub ctype_raw: Option<fn(&Vm, u32) -> (u32, u32)>,
 }
 
 /// One activation of the interpreter (upstream: a C frame / `cframe`).
@@ -135,6 +148,8 @@ impl Vm {
     pub fn new_state() -> Vm {
         let mut vm = Vm::new();
         vmevent::install_default_handlers(&mut vm);
+        // ctype_loadffi: FFI constants in source or bytecode load the FFI on demand.
+        crate::parse::set_ffi_loader(crate::ffi::libffi::load_ffi);
         vm
     }
 }

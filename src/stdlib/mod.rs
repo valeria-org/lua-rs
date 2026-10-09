@@ -28,6 +28,8 @@ pub fn open_libs(vm: &mut Vm) -> LuaResult<()> {
     os::open_os(vm)?;
     debug::open_debug(vm)?;
     jit::open_jit(vm)?;
+    // lj_lib_preload: modules loaded on demand through package.preload.
+    crate::ffi::libffi::preload_ffi(vm)?;
     Ok(())
 }
 

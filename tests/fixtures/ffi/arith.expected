@@ -1,0 +1,35 @@
+9LL	-3LL	49LL	3LL	1LL	-1LL	343LL	-7LL	10ULL	4ULL	18446744073709551612ULL	6ULL	1ULL	1ULL	9ULL
+-3LL	-1LL	-9223372036854775808LL	9223372036854775808ULL	-9223372036854775808LL	-9223372036854775808LL	0LL
+0LL	9223372036854775807LL	1LL	-1LL	1LL	12157665459056928801ULL
+true	true	true	true	false	true	true	false	true	true	true
+6LL	10LL	2LL	-1LL
+1LL	false	true
+false	arith.lua:11: attempt to perform arithmetic on 'int64_t' and 'string'
+false	arith.lua:12: attempt to concatenate 'int64_t' and 'string'
+false	arith.lua:13: attempt to concatenate 'string' and 'int64_t'
+false	arith.lua:14: attempt to get length of 'int64_t'
+false	arith.lua:15: attempt to compare 'int64_t' with 'string'
+false	arith.lua:16: attempt to perform arithmetic on 'int64_t' and 'table'
+false	arith.lua:17: attempt to perform arithmetic on 'int64_t' and 'nil'
+false	arith.lua:18: attempt to perform arithmetic on 'struct 102' and 'number'
+false	arith.lua:19: attempt to compare 'struct 104' with 'number'
+3	2	2	3	-3	true	true	true	true	true	true
+false	true	true	true
+false	arith.lua:26: attempt to perform arithmetic on 'int *' and 'int *'
+false	arith.lua:27: attempt to perform arithmetic on 'int *' and 'number'
+false	arith.lua:28: attempt to perform arithmetic on 'char *' and 'int *'
+false	arith.lua:29: attempt to perform arithmetic on 'void *' and 'number'
+4	2	0	1
+8	ctype<int (&)[2]>
+11LL	true	false	true
+false	arith.lua:37: cannot convert 'string' to 'enum 112'
+true	false
+true	true
+false	arith.lua:41: attempt to compare 'int *' with 'char *'
+false	false	false	false
+0LL	-9223372036854775808LL	18446744073709551615ULL	0+1i	0-1.5i	1-0i
+ctype<int>	ctype<struct 117>	ctype<int (*)()>	ctype<int &>	ctype<const char *const>
+3ULL	cdata<int64_t *>: NULL	cdata<enum 124>: -5
+5	1.844674407371e+19	-3	nil	0	9
+cdata	cdata	ffi
+false

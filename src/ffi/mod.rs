@@ -1,15 +1,21 @@
 //! The LuaJIT FFI: C type system, C declaration parser, C calls, callbacks and
 //! C library namespaces (x86-64 SysV only).
 //!
-//! This layer works purely on C types, raw bytes and byte-string names. The
-//! conversions between Lua values and C data (lj_cconv, lj_carith, lj_cdata,
-//! lib_ffi) are built on top of it.
+//! The core layer (`ctype`, `cparse`, `ccall`, `callback`, `clib`) works purely
+//! on C types, raw bytes and byte-string names. The conversions between Lua
+//! values and C data (`cconv`, `carith`, `cdata`) and the `ffi` library itself
+//! (`libffi`) are built on top of it, with the per-VM state in `state`.
 
 pub mod callback;
+pub mod carith;
 pub mod ccall;
+pub mod cconv;
+pub mod cdata;
 pub mod clib;
 pub mod cparse;
 pub mod ctype;
+pub mod libffi;
+pub mod state;
 
 /// An error raised by the FFI core, classified by how upstream throws it.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -70,6 +76,20 @@ pub mod errmsg {
     pub const FFI_BADCBACK: &str = "bad callback";
     pub const FFI_CBACKOV: &str = "too many callbacks";
     pub const FFI_NYICALL: &str = "NYI: cannot call this C function (yet)";
+    pub const FFI_INITOV: &str = "too many initializers for '%s'";
+    pub const FFI_BADCONV: &str = "cannot convert '%s' to '%s'";
+    pub const FFI_BADLEN: &str = "attempt to get length of '%s'";
+    pub const FFI_BADCONCAT: &str = "attempt to concatenate '%s' and '%s'";
+    pub const FFI_BADARITH: &str = "attempt to perform arithmetic on '%s' and '%s'";
+    pub const FFI_BADCOMP: &str = "attempt to compare '%s' with '%s'";
+    pub const FFI_BADCALL: &str = "'%s' is not callable";
+    pub const FFI_BADMEMBER: &str = "'%s' has no member named '%s'";
+    pub const FFI_BADIDX: &str = "'%s' cannot be indexed";
+    pub const FFI_BADIDXW: &str = "'%s' cannot be indexed with '%s'";
+    pub const FFI_BADMM: &str = "'%s' has no '%s' metamethod";
+    pub const FFI_WRCONST: &str = "attempt to write to constant location";
+    pub const FFI_NODECL: &str = "missing declaration for symbol '%s'";
+    pub const FFI_NYIPACKBIT: &str = "NYI: packed bit fields";
 }
 
 #[cfg(test)]

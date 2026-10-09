@@ -1,0 +1,45 @@
+vec2(4, 6)	vec2(-2, -2)	11	vec2(2, 4)	false	true	true	false	25	vec2(-1, -2)	cat	10
+5	42	div	mod	pow
+foo=5
+pair	x	1
+false	cannot change a protected metatable
+false	bad argument #1 to '?' (invalid C type)
+false	bad argument #2 to '?' (table expected, got no value)
+false	meta.lua:36: 'struct 102' has no member named 'nope'
+true	1
+vec2(5, 6)	5	61
+new	ctype<struct 106>	5
+10	idx:zz
+gc cnt	10
+gc cnt2	17
+fins	3
+false	bad argument #1 to '?' (cdata expected, got number)
+false	bad argument #1 to '?' (invalid C type)
+20	true
+32	8
+false	true	true	false	true	true
+true	true	false
+false	wrong number of type parameters
+false	bad argument #1 to '?' (wrong number of type parameters)
+false	wrong number of type parameters
+false	bad argument #2 to '?' (type parameter expected, got table)
+false	declaration specifier expected near '<eof>'
+false	attempt to redefine 'foo'
+false	bad argument #2 to '?' (value expected)
+false	bad argument #2 to '?' (value expected)
+false	bad argument #1 to '?' (C type expected, got no value)
+false	bad argument #1 to '?' (size of C type is unknown or too large)
+false	bad argument #1 to '?' (C type expected, got nil)
+10	13	16
+10	10	10
+false	meta.lua:84: attempt to write to constant location
+hello	hel
+AAAAo
+true
+abc
+false	bad argument #2 to '?' (value expected)
+false	bad argument #1 to '?' (value expected)
+lua
+false	libnonexistent_lib_xyz.so: cannot open shared object file: No such file or directory
+userdata	5ULL
+table
