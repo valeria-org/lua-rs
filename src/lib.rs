@@ -17,3 +17,5 @@ pub mod text;
 pub mod ffi;
 pub mod parse;
 pub mod bcdump;
+pub mod vm;
+pub mod stdlib;

@@ -4,7 +4,7 @@
 use std::cell::{Cell, UnsafeCell};
 use std::fmt;
 
-use crate::func::UpVal;
+use crate::func::{Function, UpVal};
 use crate::gc::{self, Gc, GcBox, GcKind, GcObject, Marker, Trace};
 use crate::table::Table;
 use crate::value::Value;
@@ -25,43 +25,97 @@ pub const LJ_STACK_ERREX: usize = 1 + 2 * LJ_STACK_MIN;
 /// Coroutine status.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum ThreadStatus {
-    /// Created, not yet resumed.
+    /// Created with its function on the stack, not yet resumed.
     Fresh,
+    /// The currently executing thread.
     Running,
+    /// Yielded.
     Suspended,
-    /// Resumed another coroutine.
+    /// Resumed another coroutine (upstream: `cframe != NULL` but not current).
     Normal,
+    /// Returned or died with an error. A thread that died with an error keeps its frames for
+    /// inspection (`debug.traceback(co)`), as upstream does.
     Dead,
 }
 
-/// Kind of a call frame.
+/// Where an error handler of a protected C call (`Vm::pcall`) comes from (`cframe_errfunc`).
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub enum FrameKind {
-    Lua,
-    Native,
-    /// Protected call boundary (pcall/xpcall).
-    Pcall,
-    /// Continuation of a metamethod or other internal call.
-    Cont,
+pub enum ErrFunc {
+    /// Inherit the handler of an enclosing protected call (errfunc -1, used for finalizers).
+    Inherit,
+    /// No handler (errfunc 0).
+    None,
+    /// Handler stored in this stack slot.
+    Slot(u32),
 }
 
-/// A call frame record. Initial layout; the VM owns its evolution.
+/// Continuation of a metamethod call made by the interpreter (`lj_cont_*`). Applied to the
+/// Lua frame below when the metamethod frame returns; the instruction that triggered the call
+/// is at `pc - 1` of that frame.
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum Cont {
+    /// Store the first result into slot A (`lj_cont_ra`).
+    Ra,
+    /// Discard the results (`lj_cont_nop`).
+    Nop,
+    /// Branch to the following JMP's target if the result is true (`lj_cont_condt`).
+    CondT,
+    /// Branch if the result is false (`lj_cont_condf`).
+    CondF,
+    /// Continue a `CAT` (`lj_cont_cat`): store the result at slot `top - 1` (relative to the Lua
+    /// frame's base) and keep concatenating from there.
+    Cat { top: u32 },
+}
+
+/// How a frame was entered, which decides how it returns (upstream frame link type).
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum FrameKind {
+    /// Called by a `CALL*`/`ITERC`/`ITERN` of the Lua frame below (`FRAME_LUA`).
+    Lua,
+    /// Called from Rust (`Vm::call`, coroutine entry): returning ends an interpreter run
+    /// (`FRAME_C`).
+    C,
+    /// Protected call from Rust (`Vm::pcall`, finalizers): ends a run and catches errors
+    /// (`FRAME_CP`).
+    Cp(ErrFunc),
+    /// Metamethod call from the Lua frame below (`FRAME_CONT`).
+    Cont(Cont),
+    /// Called by the `pcall`/`xpcall` builtin whose frame is directly below (`FRAME_PCALL`,
+    /// `hook` = `FRAME_PCALLH`: the pcall ran inside a hook).
+    Pcall { hook: bool },
+}
+
+/// A call frame record. The callee is at stack slot `base - 2` (GC64/FR2 layout: `base - 1`
+/// is the frame-link slot), arguments/locals start at `base`.
 #[derive(Clone, Copy, Debug)]
 pub struct Frame {
-    pub kind: FrameKind,
     /// The called function (kept alive by the frame).
-    pub func: Value,
+    pub func: Gc<Function>,
     /// First argument / local slot.
     pub base: u32,
-    /// Saved bytecode position (Lua frames).
+    /// Lua frames: index of the next instruction to execute (upstream's saved PC, which points
+    /// after the current instruction).
     pub pc: u32,
-    /// Expected number of results (-1 = multiple).
-    pub nresults: i32,
+    /// Number of results wanted by the caller (-1 = all). Unused for `Cont` frames.
+    pub nres: i32,
+    /// Vararg Lua frames: number of slots the frame was moved up by `FUNCV` (upstream's
+    /// `FRAME_VARG` delta); the varargs lie below the relocated callee slot. 0 otherwise.
+    pub vdelta: u32,
+    pub kind: FrameKind,
+    /// Placeholder frame for a failed protected call of a non-callable value (upstream's dummy
+    /// frame with the thread as function, see `lj_err_optype_call`); skipped by debug levels.
+    pub dummy: bool,
 }
 
 impl Frame {
-    pub fn new(kind: FrameKind, func: Value, base: u32) -> Frame {
-        Frame { kind, func, base, pc: 0, nresults: -1 }
+    pub fn new(kind: FrameKind, func: Gc<Function>, base: u32, nres: i32) -> Frame {
+        Frame { func, base, pc: 0, nres, vdelta: 0, kind, dummy: false }
+    }
+
+    /// Slot where the caller placed the callee (before any vararg relocation).
+    #[inline]
+    pub fn call_slot(&self) -> u32 {
+        self.base - 2 - self.vdelta
     }
 }
 
@@ -84,6 +138,8 @@ pub struct Thread {
     /// Open upvalues sorted by slot (ascending).
     openupval: UnsafeCell<Vec<Gc<UpVal>>>,
     env: Cell<Gc<Table>>,
+    /// An error handler is running on this thread (upstream `L->status == LUA_ERRERR`).
+    errerr: Cell<bool>,
 }
 
 impl fmt::Debug for Thread {
@@ -102,6 +158,7 @@ impl Thread {
             status: Cell::new(ThreadStatus::Fresh),
             openupval: UnsafeCell::new(Vec::new()),
             env: Cell::new(env),
+            errerr: Cell::new(false),
         }
     }
 
@@ -261,6 +318,17 @@ impl Thread {
         // SAFETY: short-lived exclusive access, no re-entrancy.
         unsafe { (&mut *self.frames.get())[i] = f };
     }
+    /// Drop all frames at index `n` and above.
+    pub fn truncate_frames(&self, n: usize) {
+        // SAFETY: short-lived exclusive access, no re-entrancy.
+        unsafe { (*self.frames.get()).truncate(n) };
+    }
+    /// Update the saved PC of frame `i`.
+    #[inline]
+    pub fn set_frame_pc(&self, i: usize, pc: u32) {
+        // SAFETY: short-lived exclusive access, no re-entrancy.
+        unsafe { (&mut *self.frames.get())[i].pc = pc };
+    }
 
     // -- Status / env --
 
@@ -279,6 +347,15 @@ impl Thread {
     #[inline]
     pub fn set_env(&self, t: Gc<Table>) {
         self.env.set(t);
+    }
+    /// True while an error handler runs on this thread (`LUA_ERRERR` status).
+    #[inline]
+    pub fn errerr(&self) -> bool {
+        self.errerr.get()
+    }
+    #[inline]
+    pub fn set_errerr(&self, b: bool) {
+        self.errerr.set(b);
     }
 
     // -- Open upvalues (lj_func_finduv / lj_func_closeuv) --
@@ -331,7 +408,7 @@ impl Trace for Thread {
         // SAFETY: as above.
         let frames = unsafe { &*self.frames.get() };
         for f in frames {
-            m.mark_value(f.func);
+            m.mark(f.func);
         }
         // SAFETY: as above.
         let uvs = unsafe { &*self.openupval.get() };

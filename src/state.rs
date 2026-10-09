@@ -81,6 +81,8 @@ pub struct Vm {
     pub io_input: Value,
     pub io_output: Value,
     pub gc: GcState,
+    /// Interpreter runtime state (hooks, run stack, C-call depth, FFI/C API dispatch hooks).
+    pub rt: crate::vm::Runtime,
 }
 
 impl Default for Vm {
@@ -121,6 +123,7 @@ impl Vm {
             ffi: None,
             io_input: Value::Nil,
             io_output: Value::Nil,
+            rt: crate::vm::Runtime::default(),
             gc: GcState {
                 threshold: 4 * total,
                 pause: GC_PAUSE_DEFAULT,
@@ -381,6 +384,7 @@ impl Vm {
         }
         m.mark_value(self.io_input);
         m.mark_value(self.io_output);
+        self.rt.trace(m);
     }
 
     /// `lj_gc_separateudata`: queue unreachable (or, with `all`, every) userdata with a `__gc`
