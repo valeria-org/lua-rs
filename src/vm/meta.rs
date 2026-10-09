@@ -47,7 +47,7 @@ pub fn arith_op(mm: MM, x: f64, y: f64) -> f64 {
 pub fn floor(x: f64) -> f64 {
     const TWO52: f64 = 4503599627370496.0;
     let ax = x.abs();
-    if !(ax < TWO52) {
+    if ax >= TWO52 || ax.is_nan() {
         return x; // Integral, infinite or NaN.
     }
     let sign = x.to_bits() & (1 << 63);
