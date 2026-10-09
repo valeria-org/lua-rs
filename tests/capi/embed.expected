@@ -218,6 +218,7 @@ upvalueid joined 1
 joined call -> 2
 tocfunction roundtrip 1 iscfunction 1
 builtin: iscfunction 1
+results 2: unpack called through lua_tocfunction
 Lua function: iscfunction 0 tocfunction NULL 1
 lightuserdata: type userdata isuserdata 1 same ptr 1 topointer 1
 topointer table non-null 1, of nil null 1

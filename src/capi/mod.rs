@@ -18,9 +18,11 @@
 //! has its base at slot 0 (main thread) or 2 (coroutines, as upstream's `lj_state_new`).
 //!
 //! # Errors
-//! An error raised by an API function (or `lua_error`) unwinds through the C frames with
-//! `std::panic::resume_unwind` and a private payload, and is caught where the VM called into
-//! C ([`call_c`], readers, hooks, ...) and turned back into a [`LuaError`]. Without any such
+//! An error raised by an API function (or `lua_error`) unwinds through the C frames as an
+//! exception of a private class (`_Unwind_RaiseException`, see `unwind`), and is caught where
+//! the VM called into C ([`call_c`], readers, hooks, ...) and turned back into a [`LuaError`].
+//! Unlike a Rust panic payload, the exception may be caught and destroyed by C++ `catch (...)`
+//! blocks, as with upstream LuaJIT. Without any such
 //! catch point (an unprotected error in a host program), the panic function runs and the
 //! process exits with `EXIT_FAILURE`, as upstream.
 //!
@@ -41,11 +43,12 @@
 pub mod lapi;
 pub mod lauxlib;
 pub mod linit;
+mod thunk;
+mod unwind;
 mod vararg;
 
 use std::cell::Cell;
 use std::ffi::{c_char, c_int, c_void};
-use std::panic::{AssertUnwindSafe, catch_unwind, resume_unwind};
 
 use crate::error::{ErrorKind, LuaError, LuaResult};
 use crate::func::{CFunction, Function};
@@ -206,13 +209,6 @@ impl Default for CApiGlobal {
     }
 }
 
-/// Private unwind payload carrying a Lua error through C frames.
-struct Thrown(LuaError);
-
-// SAFETY: the payload never leaves the OS thread that runs the VM; `Send` is only required by
-// the `resume_unwind` signature.
-unsafe impl Send for Thrown {}
-
 /// Point the VM's shared handle cell at `vm` (the borrow C code will derive from).
 #[inline]
 fn refresh(vm: &mut Vm) -> *const Cell<*mut Vm> {
@@ -265,32 +261,33 @@ pub(crate) unsafe fn api<R>(L: *mut lua_State, f: impl FnOnce(&mut Vm, Gc<Thread
 /// Raise `e` in C code: unwind to the innermost catch point, or call the panic function and
 /// exit if there is none (`lj_err_throw` without a C frame to unwind to).
 pub(crate) fn throw(vm: &mut Vm, e: LuaError) -> ! {
-    if vm.rt.capi.catchers == 0 {
-        let th = vm.cur_thread;
-        vm.push(e.value);
-        if let Some(p) = vm.rt.capi.panic {
-            let L = state_of(vm, th);
-            // SAFETY: calling the user's panic function with a valid state.
-            unsafe { p(L.cast()) };
-        }
-        std::process::exit(libc::EXIT_FAILURE);
+    let e = if vm.rt.capi.catchers > 0 { unwind::raise(e) } else { e };
+    let th = vm.cur_thread;
+    vm.push(e.value);
+    if let Some(p) = vm.rt.capi.panic {
+        let L = state_of(vm, th);
+        // SAFETY: calling the user's panic function with a valid state.
+        unsafe { p(L.cast()) };
     }
-    resume_unwind(Box::new(Thrown(e)))
+    std::process::exit(libc::EXIT_FAILURE);
 }
 
 /// Run `f` (which calls into C) as a catch point: a C API error raised inside comes back as
-/// `Err`. Foreign panics keep unwinding.
+/// `Err`; a foreign exception (C++) becomes the error `C++ exception` (`LJ_ERR_ERRCPP`, no
+/// error handler applied, as upstream). Rust panics keep unwinding.
 pub(crate) fn protect<R>(vm: &mut Vm, f: impl FnOnce() -> R) -> LuaResult<R> {
     vm.rt.capi.catchers += 1;
     refresh(vm);
-    let r = catch_unwind(AssertUnwindSafe(f));
+    let r = unwind::pcall_c(f);
     vm.rt.capi.catchers -= 1;
     match r {
         Ok(v) => Ok(v),
-        Err(p) => match p.downcast::<Thrown>() {
-            Ok(t) => Err(t.0),
-            Err(p) => resume_unwind(p),
-        },
+        Err(unwind::Caught::Lua(e)) => Err(e),
+        Err(unwind::Caught::Foreign) => {
+            let v = Value::Str(vm.new_str(b"C++ exception"));
+            vm.rt.thrown = Some(v);
+            Err(LuaError::new(ErrorKind::Run, v))
+        }
     }
 }
 

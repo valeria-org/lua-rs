@@ -8,6 +8,8 @@
 //!   (`test_cmod.lua`).
 //! * lua-cjson (vendored in `tests/capi/lua-cjson`) is built from source and exercised through
 //!   `require` (`test_cjson.lua`).
+//! * The C API tests of the upstream test suite (`tests/capi/upstream`: `ctest.c`,
+//!   `cpptest.cpp` with C++ exceptions crossing Lua frames) run with their Lua drivers.
 //!
 //! Expected outputs come from the reference build (`~/projects/luajit-ref/luajit/src`; its
 //! `libluajit.so` is built with `make XCFLAGS=-DLUAJIT_DISABLE_JIT` if missing). Without the
@@ -225,4 +227,40 @@ fn lua_cjson_from_source() {
     let ours = run_script(&our_bin(), &dir, "test_cjson.lua", "");
     let reference = ref_bin().map(|b| run_script(&b, &dir, "test_cjson.lua", ""));
     check("cjson", &ours, reference);
+}
+
+fn have_gxx() -> bool {
+    Command::new("g++").arg("--version").output().is_ok_and(|o| o.status.success())
+}
+
+/// Upstream misc/api_call.lua, misc/hook_active.lua (ctest.c) and misc/catch_wrap.lua
+/// (cpptest.cpp): they print nothing and exit 0 on success.
+#[test]
+fn upstream_ctest_cpptest() {
+    if !have_gcc() {
+        eprintln!("SKIPPED: gcc not found, C API tests need a C compiler");
+        return;
+    }
+    let dir = scratch("upstream");
+    let up = src_dir().join("upstream");
+    let inc = format!("-I{}", include_dir().display());
+    let so = dir.join("ctest.so");
+    gcc(&["-shared".as_ref(), "-fPIC".as_ref(), "-O1".as_ref(), inc.as_ref(), up.join("ctest.c").as_os_str(), "-o".as_ref(), so.as_os_str()]);
+    let mut scripts = vec!["api_call.lua", "hook_active.lua"];
+    if have_gxx() {
+        let so = dir.join("cpptest.so");
+        let o = Command::new("g++")
+            .args(["-shared".as_ref(), "-fPIC".as_ref(), "-O1".as_ref(), std::ffi::OsStr::new(&inc), up.join("cpptest.cpp").as_os_str(), "-o".as_ref(), so.as_os_str()])
+            .output()
+            .expect("run g++");
+        assert!(o.status.success(), "g++ failed:\n{}", String::from_utf8_lossy(&o.stderr));
+        scripts.push("catch_wrap.lua");
+    } else {
+        eprintln!("SKIPPED catch_wrap.lua: g++ not found");
+    }
+    for s in scripts {
+        std::fs::copy(up.join(s), dir.join(s)).expect("copy script");
+        let out = run_script(&our_bin(), &dir, s, "");
+        assert_eq!(out, "[exit 0]\n", "{s} failed");
+    }
 }

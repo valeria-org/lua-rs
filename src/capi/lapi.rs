@@ -600,7 +600,10 @@ pub unsafe extern "C-unwind" fn lua_objlen(L: *mut lua_State, idx: c_int) -> usi
     }
 }
 
-/// `lua_tocfunction`: the C function of a C closure (NULL for Lua and built-in functions).
+/// `lua_tocfunction`: the C function of a C closure; for a Rust native without upvalues
+/// (library functions, builtins) a C entry point that runs it on the caller's frame, like a
+/// direct call of upstream's C implementation. NULL for Lua functions and for Rust natives
+/// with upvalues (their Rust code reads its own upvalues, which a direct call cannot supply).
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn lua_tocfunction(L: *mut lua_State, idx: c_int) -> Option<lua_CFunction> {
     // SAFETY: `L` is a live state.
@@ -608,7 +611,9 @@ pub unsafe extern "C-unwind" fn lua_tocfunction(L: *mut lua_State, idx: c_int) -
     match idx_val(vm, th, idx) {
         Value::Func(f) => match &*f {
             Function::Native { f: NativeImpl::C(cf), .. } => Some(*cf),
-            _ => None,
+            Function::Native { f: NativeImpl::Rust(nf), upvals, .. } if upvals.is_empty() => Some(super::thunk::thunk_of(*nf)),
+            Function::Native { .. } => None,
+            Function::Lua { .. } => None,
         },
         _ => None,
     }

@@ -678,6 +678,21 @@ int main(int argc, char **argv)
   printf("tocfunction roundtrip %d iscfunction %d\n", lua_tocfunction(L, -1) == upfn, lua_iscfunction(L, -1));
   lua_getglobal(L, "print");
   printf("builtin: iscfunction %d\n", lua_iscfunction(L, -1));
+  {
+    lua_CFunction uf;
+    int top = lua_gettop(L);
+    lua_getglobal(L, "unpack");
+    uf = lua_tocfunction(L, -1);
+    lua_settop(L, 0);
+    lua_createtable(L, 2, 0);
+    lua_pushliteral(L, "unpack called through");
+    lua_rawseti(L, -2, 1);
+    lua_pushliteral(L, "lua_tocfunction");
+    lua_rawseti(L, -2, 2);
+    top = uf(L);
+    printf("results %d: %s %s\n", top, lua_tostring(L, -2), lua_tostring(L, -1));
+    lua_settop(L, 0);
+  }
   luaL_loadstring(L, "return 1");
   printf("Lua function: iscfunction %d tocfunction NULL %d\n", lua_iscfunction(L, -1), lua_tocfunction(L, -1) == NULL);
   lua_settop(L, 0);
