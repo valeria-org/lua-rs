@@ -92,6 +92,8 @@ pub struct Runtime {
     pub(crate) multres: usize,
     /// Finalizers are currently being run (prevents re-entrant draining).
     pub(crate) in_finalizers: bool,
+    /// Skip the instruction hook once: the instruction is re-executed after a hook yield.
+    pub(crate) hook_skip: bool,
     /// Value of the last error whose handler was already applied (`lj_err_run` ran), so that
     /// outer runs rethrow it without calling the handler again. Rooted.
     pub(crate) thrown: Option<crate::value::Value>,

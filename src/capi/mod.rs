@@ -29,7 +29,14 @@
 //! the value is reachable; the collector only runs at the API's GC check points (allocating
 //! functions) and inside calls into Lua.
 
-#![allow(non_camel_case_types, non_snake_case)]
+//!
+//! # Safety
+//! All exported functions follow the contracts of the Lua 5.1 reference manual: every
+//! `lua_State*` must be a live handle of a live state, indices must be valid for the function,
+//! and pointer arguments must be valid as documented there. Per-function `# Safety` sections
+//! are omitted for that reason.
+
+#![allow(non_camel_case_types, non_snake_case, clippy::missing_safety_doc)]
 
 pub mod lapi;
 pub mod lauxlib;

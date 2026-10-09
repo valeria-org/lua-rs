@@ -24,6 +24,12 @@ type of 100: -1 (no value), type of upvalue: -1
 xmove: L top 2, L1 top 2, L1[1]=2
 tothread roundtrip 1, pushthread main 1, L1 0, L1 top 3
 pushthread value equal 1
+dead	false	cannot resume dead coroutine
+print(coroutine.status(T1), coroutine.resume(T1)): ok
+suspended	true	12
+print(coroutine.status(T1), coroutine.resume(T1, 12)): ok
+dead	false	cannot resume dead coroutine
+print(coroutine.status(T1), coroutine.resume(T1)): ok
 == tables
 [get] top=3: <table> 'v' 30
 objlen 4
@@ -132,6 +138,8 @@ resume3 status 0 (lua_status 0)
 [co] top=2: 'fin' 99
 resume error: 2 [string "error('in coroutine')"]:1: in coroutine (lua_status 2)
 resume dead: 2 cannot resume non-suspended coroutine
+hook yields: 10 steps, status 0
+[hook co] top=4: 15 1 2 3
 plain C function via lua_resume
 resume C: 0 top 2
 == load and dump
@@ -188,6 +196,50 @@ upvalue 3 (nil)
 setupvalue up2
 [upvalues] top=2: 1 'changed'
 C upvalue name ''
+== more
+setfenv on C function 1
+[environ] top=2: 'envtag' false
+getfenv is globals 1
+setfenv on number 0 top 4
+setlocal v top 0
+getinfo f/L: function table
+local now	patched
+local v = 'orig' setlocal_fn() print('local now', v): ok
+getmetafield 1 (null), missing 0
+callmeta 1 top 1, missing 0
+number metatable index	true
+print('number metatable index', (5).f ~= nil): ok
+false	[string "print(pcall(function() return (5).f end))"]:1: attempt to index a number value
+print(pcall(function() return (5).f end)): ok
+upvalue-1
+print(uplib.up()): ok
+upvalueid distinct 1
+upvalueid joined 1
+joined call -> 2
+tocfunction roundtrip 1 iscfunction 1
+builtin: iscfunction 1
+Lua function: iscfunction 0 tocfunction NULL 1
+lightuserdata: type userdata isuserdata 1 same ptr 1 topointer 1
+topointer table non-null 1, of nil null 1
+wrapcfunc on 1
+upvalue-1	2	1
+print(uplib.up(), newcounter(1)()): ok
+wrapper calls 3, off 1
+upvalue-1
+print(uplib.up()): ok
+wrapper calls after off 3
+loadfile status 0
+file chunk returned from file
+dofile 0 top 1
+fileresult 3: [fileresult] top=3: <nil> 'somefile: No such file or directory' 2
+fileresult ok 1
+execresult 3: [exec] top=3: <nil> 'exit' 3
+execresult 3: [exec] top=3: true 'exit' 0
+true	200
+print(pcall(function() local t = {} for i = 1, 200 do t[i] = i end return select('#', unpack(t)) end)): ok
+dumpstack at top level: ''
+isnumber/tonumberx: 16 16 1 bad 0
+[copy] top=2: 1 1
 == auxiliary
 gsub: bye world, bye moon
 buffer len 13897 tail 2999,|12.5xy top 1

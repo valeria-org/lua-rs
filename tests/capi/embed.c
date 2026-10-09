@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #include "lua.h"
 #include "lauxlib.h"
@@ -254,6 +255,56 @@ static int cpcall_fn(lua_State *L)
   return 0;
 }
 
+static void yield_hook(lua_State *L, lua_Debug *ar)
+{
+  if (ar->event == LUA_HOOKCOUNT) lua_yield(L, 0);
+}
+
+static int getenvtag(lua_State *L)
+{
+  lua_getfield(L, LUA_ENVIRONINDEX, "tag");
+  lua_pushvalue(L, LUA_ENVIRONINDEX);
+  lua_pushvalue(L, LUA_GLOBALSINDEX);
+  lua_pushboolean(L, lua_rawequal(L, -1, -2));
+  lua_remove(L, -2);
+  lua_remove(L, -2);
+  return 2;
+}
+
+static int setlocal_fn(lua_State *L)
+{
+  lua_Debug ar;
+  const char *n;
+  lua_getstack(L, 1, &ar);
+  lua_pushstring(L, "patched");
+  n = lua_setlocal(L, &ar, 1);
+  printf("setlocal %s top %d\n", n ? n : "(null)", lua_gettop(L));
+  lua_getinfo(L, "fL", &ar);
+  printf("getinfo f/L: %s %s\n", luaL_typename(L, -2), luaL_typename(L, -1));
+  lua_pop(L, 2);
+  return 0;
+}
+
+static int wrapper_calls;
+static int cwrapper(lua_State *L, lua_CFunction f)
+{
+  wrapper_calls++;
+  return f(L);
+}
+
+static int upfn(lua_State *L)
+{
+  lua_pushvalue(L, lua_upvalueindex(1));
+  return 1;
+}
+
+static const luaL_Reg uplib[] = { { "up", upfn }, { NULL, NULL } };
+
+static void profile_cb(void *data, lua_State *L, int samples, int vmstate)
+{
+  (void)data; (void)L; (void)samples; (void)vmstate;
+}
+
 static int panicf(lua_State *L)
 {
   printf("custom panic: %s\n", lua_tostring(L, -1));
@@ -327,6 +378,13 @@ int main(int argc, char **argv)
     printf("tothread roundtrip %d, pushthread main %d, L1 %d, L1 top %d\n", r1, r2, r3, lua_gettop(L1));
     printf("pushthread value equal %d\n", lua_tothread(L, -1) == L);
     lua_settop(L, 0);
+    L1 = lua_newthread(L);
+    lua_setglobal(L, "T1");
+    dostring(L, "print(coroutine.status(T1), coroutine.resume(T1))");
+    lua_getglobal(L1, "tostring");
+    dostring(L, "print(coroutine.status(T1), coroutine.resume(T1, 12))");
+    dostring(L, "print(coroutine.status(T1), coroutine.resume(T1))");
+    lua_pushnil(L); lua_setglobal(L, "T1");
   }
 
   printf("== tables\n");
@@ -475,6 +533,17 @@ int main(int argc, char **argv)
     printf("resume dead: %d %s\n", status, lua_tostring(co, -1));
     lua_settop(L, 0);
     co = lua_newthread(L);
+    {
+      int steps = 0;
+      luaL_loadstring(co, "local s = 0 for i = 1, 5 do s = s + i end local t = {} for i = 1, 3 do t[i] = i end return s, unpack(t)");
+      lua_sethook(co, yield_hook, LUA_MASKCOUNT, 3);
+      while ((status = lua_resume(co, 0)) == LUA_YIELD) steps++;
+      lua_sethook(co, NULL, 0, 0);
+      printf("hook yields: %d steps, status %d\n", steps, status);
+      stack_dump(co, "hook co");
+    }
+    lua_settop(L, 0);
+    co = lua_newthread(L);
     lua_getglobal(co, "print");
     lua_pushstring(co, "plain C function via lua_resume");
     printf("resume C: %d top %d\n", lua_resume(co, 1), lua_gettop(co));
@@ -551,6 +620,134 @@ int main(int argc, char **argv)
   printf("C upvalue name '%s'\n", lua_getupvalue(L, -1, 1));
   lua_settop(L, 0);
 
+
+  printf("== more\n");
+  lua_pushcfunction(L, getenvtag);
+  lua_newtable(L);
+  lua_pushliteral(L, "envtag");
+  lua_setfield(L, -2, "tag");
+  printf("setfenv on C function %d\n", lua_setfenv(L, -2));
+  lua_call(L, 0, 2);
+  stack_dump(L, "environ");
+  lua_settop(L, 0);
+  lua_pushcfunction(L, getenvtag);
+  lua_getfenv(L, -1);
+  printf("getfenv is globals %d\n", lua_rawequal(L, -1, LUA_GLOBALSINDEX));
+  lua_pushnumber(L, 1);
+  lua_newtable(L);
+  printf("setfenv on number %d top %d\n", lua_setfenv(L, -2), lua_gettop(L));
+  lua_settop(L, 0);
+  lua_register(L, "setlocal_fn", setlocal_fn);
+  dostring(L, "local v = 'orig' setlocal_fn() print('local now', v)");
+  lua_newtable(L);
+  lua_newtable(L);
+  lua_pushliteral(L, "__tostring"); lua_pushcfunction(L, getenvtag); lua_rawset(L, -3);
+  lua_pushliteral(L, "__index"); lua_pushliteral(L, "idx"); lua_rawset(L, -3);
+  lua_setmetatable(L, -2);
+  printf("getmetafield %d %s, missing %d\n", luaL_getmetafield(L, 1, "__index"), lua_tostring(L, -1), luaL_getmetafield(L, 1, "__nothing"));
+  lua_pop(L, 1);
+  printf("callmeta %d top %d, missing %d\n", luaL_callmeta(L, 1, "__tostring"), lua_gettop(L), luaL_callmeta(L, 1, "__len"));
+  lua_settop(L, 0);
+  lua_pushnumber(L, 5);
+  lua_newtable(L);
+  lua_pushliteral(L, "__index");
+  lua_newtable(L);
+  lua_pushcfunction(L, upfn);
+  lua_setfield(L, -2, "f");
+  lua_rawset(L, -3);
+  lua_setmetatable(L, 1);
+  dostring(L, "print('number metatable index', (5).f ~= nil)");
+  lua_pushnil(L);
+  lua_setmetatable(L, 1);
+  dostring(L, "print(pcall(function() return (5).f end))");
+  lua_settop(L, 0);
+  lua_pushliteral(L, "upvalue-1");
+  luaL_openlib(L, "uplib", uplib, 1);
+  lua_settop(L, 0);
+  dostring(L, "print(uplib.up())");
+  luaL_loadstring(L, "local a, b = 1, 2 return function() return a end, function() return b end");
+  lua_call(L, 0, 2);
+  printf("upvalueid distinct %d\n", lua_upvalueid(L, 1, 1) != lua_upvalueid(L, 2, 1));
+  lua_upvaluejoin(L, 1, 1, 2, 1);
+  printf("upvalueid joined %d\n", lua_upvalueid(L, 1, 1) == lua_upvalueid(L, 2, 1));
+  lua_pushvalue(L, 1);
+  lua_call(L, 0, 1);
+  printf("joined call -> %s\n", lua_tostring(L, -1));
+  lua_settop(L, 0);
+  lua_pushcfunction(L, upfn);
+  printf("tocfunction roundtrip %d iscfunction %d\n", lua_tocfunction(L, -1) == upfn, lua_iscfunction(L, -1));
+  lua_getglobal(L, "print");
+  printf("builtin: iscfunction %d\n", lua_iscfunction(L, -1));
+  luaL_loadstring(L, "return 1");
+  printf("Lua function: iscfunction %d tocfunction NULL %d\n", lua_iscfunction(L, -1), lua_tocfunction(L, -1) == NULL);
+  lua_settop(L, 0);
+  lua_pushlightuserdata(L, &wrapper_calls);
+  printf("lightuserdata: type %s isuserdata %d same ptr %d topointer %d\n", luaL_typename(L, -1), lua_isuserdata(L, -1), lua_touserdata(L, -1) == &wrapper_calls, lua_topointer(L, -1) == &wrapper_calls);
+  lua_newtable(L);
+  printf("topointer table non-null %d, of nil null %d\n", lua_topointer(L, -1) != NULL, lua_topointer(L, 10) == NULL);
+  lua_settop(L, 0);
+  lua_pushlightuserdata(L, (void *)cwrapper);
+  printf("wrapcfunc on %d\n", luaJIT_setmode(L, -1, LUAJIT_MODE_WRAPCFUNC | LUAJIT_MODE_ON));
+  lua_settop(L, 0);
+  dostring(L, "print(uplib.up(), newcounter(1)())");
+  printf("wrapper calls %d, off %d\n", wrapper_calls, luaJIT_setmode(L, 0, LUAJIT_MODE_WRAPCFUNC | LUAJIT_MODE_OFF));
+  dostring(L, "print(uplib.up())");
+  printf("wrapper calls after off %d\n", wrapper_calls);
+  lua_settop(L, 0);
+  status = luaL_loadstring(L, "local function deep(n) if n == 0 then return end deep(n - 1) end deep(10)");
+  lua_call(L, 0, 0);
+  {
+    FILE *f = fopen("embed_tmp.lua", "w");
+    fputs("#!/shebang line\nreturn ... or 'from file'\n", f);
+    fclose(f);
+    status = luaL_loadfile(L, "embed_tmp.lua");
+    printf("loadfile status %d\n", status);
+    lua_call(L, 0, 1);
+    printf("file chunk returned %s\n", lua_tostring(L, -1));
+    lua_settop(L, 0);
+    status = luaL_dofile(L, "embed_tmp.lua");
+    printf("dofile %d top %d\n", status, lua_gettop(L));
+    remove("embed_tmp.lua");
+    lua_settop(L, 0);
+  }
+  errno = ENOENT;
+  printf("fileresult %d: ", luaL_fileresult(L, 0, "somefile"));
+  stack_dump(L, "fileresult");
+  lua_settop(L, 0);
+  printf("fileresult ok %d\n", luaL_fileresult(L, 1, NULL));
+  lua_settop(L, 0);
+  printf("execresult %d: ", luaL_execresult(L, system("exit 3")));
+  stack_dump(L, "exec");
+  lua_settop(L, 0);
+  printf("execresult %d: ", luaL_execresult(L, system("true")));
+  stack_dump(L, "exec");
+  lua_settop(L, 0);
+  lua_register(L, "checkstack", newcounter);
+  dostring(L, "print(pcall(function() local t = {} for i = 1, 200 do t[i] = i end return select('#', unpack(t)) end))");
+  {
+    size_t len;
+    const char *d;
+    luaJIT_profile_start(L, "i10", profile_cb, NULL);
+    luaJIT_profile_stop(L);
+    d = luaJIT_profile_dumpstack(L, "pl|", 3, &len);
+    printf("dumpstack at top level: '%.*s'\n", (int)len, d);
+  }
+  printf("isnumber/tonumberx: ");
+  lua_pushliteral(L, " 0x1p4 ");
+  {
+    int ok;
+    lua_Number n = lua_tonumberx(L, -1, &ok);
+    lua_Integer k = lua_tointegerx(L, -1, &ok);
+    printf("%g %ld %d", n, (long)k, ok);
+    lua_pushliteral(L, "zz");
+    lua_tointegerx(L, -1, &ok);
+    printf(" bad %d\n", ok);
+  }
+  lua_settop(L, 0);
+  lua_pushnumber(L, 1); lua_pushnumber(L, 2);
+  lua_copy(L, 1, 2);
+  stack_dump(L, "copy");
+  lua_settop(L, 0);
   printf("== auxiliary\n");
   printf("gsub: %s\n", luaL_gsub(L, "hello world, hello moon", "hello", "bye"));
   lua_settop(L, 0);

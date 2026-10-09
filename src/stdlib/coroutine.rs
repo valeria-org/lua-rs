@@ -34,6 +34,9 @@ fn lj_cf_coroutine_status(vm: &mut Vm) -> LuaResult<usize> {
         b"running"
     } else {
         match co.status() {
+            // A fresh thread without a function (`lua_newthread`) is dead, as upstream's
+            // `L->top == L->base` check.
+            ThreadStatus::Fresh if vm.resume_check(co).is_some() => b"dead",
             ThreadStatus::Suspended | ThreadStatus::Fresh => b"suspended",
             ThreadStatus::Normal | ThreadStatus::Running => b"normal",
             ThreadStatus::Dead => b"dead",

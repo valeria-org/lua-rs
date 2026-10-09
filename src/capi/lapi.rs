@@ -654,21 +654,36 @@ pub unsafe extern "C-unwind" fn lua_topointer(L: *mut lua_State, idx: c_int) -> 
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn lua_pushnil(L: *mut lua_State) {
     // SAFETY: `L` is a live state.
-    unsafe { api(L, |vm, _| Ok(vm.push(Value::Nil))) }
+    unsafe {
+        api(L, |vm, _| {
+            vm.push(Value::Nil);
+            Ok(())
+        })
+    }
 }
 
 /// `lua_pushnumber`.
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn lua_pushnumber(L: *mut lua_State, n: lua_Number) {
     // SAFETY: `L` is a live state.
-    unsafe { api(L, |vm, _| Ok(vm.push(Value::Num(canon(n))))) }
+    unsafe {
+        api(L, |vm, _| {
+            vm.push(Value::Num(canon(n)));
+            Ok(())
+        })
+    }
 }
 
 /// `lua_pushinteger`.
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn lua_pushinteger(L: *mut lua_State, n: lua_Integer) {
     // SAFETY: `L` is a live state.
-    unsafe { api(L, |vm, _| Ok(vm.push(Value::Num(n as f64)))) }
+    unsafe {
+        api(L, |vm, _| {
+            vm.push(Value::Num(n as f64));
+            Ok(())
+        })
+    }
 }
 
 /// `lua_pushlstring`.
@@ -726,14 +741,24 @@ pub unsafe extern "C-unwind" fn lua_pushcclosure(L: *mut lua_State, f: lua_CFunc
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn lua_pushboolean(L: *mut lua_State, b: c_int) {
     // SAFETY: `L` is a live state.
-    unsafe { api(L, |vm, _| Ok(vm.push(Value::Bool(b != 0)))) }
+    unsafe {
+        api(L, |vm, _| {
+            vm.push(Value::Bool(b != 0));
+            Ok(())
+        })
+    }
 }
 
 /// `lua_pushlightuserdata`.
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn lua_pushlightuserdata(L: *mut lua_State, p: *mut c_void) {
     // SAFETY: `L` is a live state.
-    unsafe { api(L, |vm, _| Ok(vm.push(Value::LightUd(p as usize)))) }
+    unsafe {
+        api(L, |vm, _| {
+            vm.push(Value::LightUd(p as usize));
+            Ok(())
+        })
+    }
 }
 
 /// `lua_pushthread`: returns 1 for the main thread.
@@ -1248,7 +1273,9 @@ pub unsafe extern "C-unwind" fn lua_yield(L: *mut lua_State, nresults: c_int) ->
             let n = nresults.max(0) as usize;
             let base = base_of(vm, th);
             let f = th.top() - n;
-            if f > base {
+            // Regular yield: move the results down. A yield from a hook keeps them on top
+            // (the interpreter adds a pseudo-frame, see `Cont::Hook`).
+            if !vm.rt.hook.active && f > base {
                 for i in 0..n {
                     th.set(base + i, th.get(f + i));
                 }

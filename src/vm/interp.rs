@@ -4,13 +4,13 @@
 //! `lj_cont_condf`).
 
 use crate::bc::{Ins, MM, Op};
-use crate::error::LuaResult;
+use crate::error::{ErrorKind, LuaResult};
 use crate::func::{
     Function, KGc, PROTO_CLC_BITS, PROTO_CLCOUNT, PROTO_UV_IMMUTABLE, PROTO_UV_LOCAL, Proto,
 };
 use crate::gc::Gc;
 use crate::state::Vm;
-use crate::thread::{Cont, FrameKind, Thread};
+use crate::thread::{Cont, Frame, FrameKind, Thread};
 use crate::value::Value;
 
 use super::call::Flow;
@@ -94,6 +94,10 @@ impl Vm {
                 }
                 th.set_frame_pc(fidx, npc as u32);
             }
+            Cont::Hook { multres } => {
+                self.rt.multres = multres as usize;
+                self.rt.hook_skip = true;
+            }
             Cont::Cat { top } => {
                 let t = base + top as usize;
                 let b = base + ins.b() as usize;
@@ -117,6 +121,19 @@ impl Vm {
             }
         }
         Ok(Flow::Continue)
+    }
+
+    /// A C hook yielded (`lua_yield` inside a line/count hook): add a pseudo-frame that
+    /// re-executes the hooked instruction (at `pc - 1`) on resume (`lua_yield` hook path and
+    /// `lj_cont_hook`). The yielded values are the top `n` values of the stack.
+    fn hook_yield(&mut self, th: Gc<Thread>, fidx: usize, pc: usize, multres: usize, n: Value) -> Flow {
+        th.set_frame_pc(fidx, pc as u32 - 1);
+        let func = th.frame(fidx).expect("lua frame").func;
+        let mut d = Frame::new(FrameKind::Cont(Cont::Hook { multres: multres as u32 }), func, th.top() as u32, 0);
+        d.dummy = true;
+        th.push_frame(d);
+        self.rt.multres = n.as_num().map_or(0, |x| x as usize);
+        Flow::Yield
     }
 
     /// Resolve `__call` for the object in `slot` (in place, `lj_meta_call`); returns the new
@@ -259,11 +276,17 @@ impl Vm {
                         save!();
                         self.hook_profile(th, fidx, &pt, pc as u32)?;
                     }
-                    if !self.rt.hook.active {
+                    if !self.rt.hook.active && !std::mem::take(&mut self.rt.hook_skip) {
                         let ins_hook = m & (hook::LUA_MASKLINE | hook::LUA_MASKCOUNT) != 0 && opb < Op::FUNCF as u8;
                         if ins_hook || (m & hook::LUA_MASKRET != 0 && op.is_ret()) {
                             save!();
-                            self.hook_ins(th, fidx, &pt, pc as u32, ins_hook)?;
+                            let multres = self.rt.multres;
+                            match self.hook_ins(th, fidx, &pt, pc as u32, ins_hook) {
+                                Err(e) if e.kind == ErrorKind::Yield => {
+                                    return Ok(self.hook_yield(th, fidx, pc, multres, e.value));
+                                }
+                                r => r?,
+                            }
                         }
                     }
                 }
