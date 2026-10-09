@@ -16,3 +16,4 @@ pub mod state;
 pub mod text;
 pub mod ffi;
 pub mod parse;
+pub mod bcdump;

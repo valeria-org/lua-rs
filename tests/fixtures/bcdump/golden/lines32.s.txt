@@ -1,0 +1,13 @@
+proto 0
+params=0 framesize=2 vararg=true children=true firstline=0 numline=0
+source 3d3f
+bc 00000263 02000047 00000133 80000032 0002014c
+lines 0 0 0 0 0
+kgc 0 proto
+proto 0.0
+params=0 framesize=1 vararg=false children=false firstline=0 numline=0
+source 3d3f
+bc 00000160 0000002d 00000016 0000002e 0000002d 0002004c
+lines 0 0 0 0 0 0
+uvname 0 
+knum 0 3ff0000000000000
