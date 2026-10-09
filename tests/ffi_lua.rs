@@ -204,6 +204,13 @@ fn metamethod_error_tracebacks() {
     run_fixture("traceback");
 }
 
+/// Error messages with and without caller positions (`cannot convert`, `too many
+/// initializers`, `has no member named`, `is not callable`, missing declarations, ...).
+#[test]
+fn error_messages() {
+    run_fixture("errors");
+}
+
 /// Yield across a callback, errors with non-string values, nested callbacks, callback slot
 /// exhaustion and reuse, GC stress with cdata.
 #[test]
