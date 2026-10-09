@@ -140,6 +140,8 @@ pub struct Thread {
     env: Cell<Gc<Table>>,
     /// An error handler is running on this thread (upstream `L->status == LUA_ERRERR`).
     errerr: Cell<bool>,
+    /// The C API handle (`lua_State*`) of this thread, created on first use by `capi`.
+    pub(crate) capi: std::cell::OnceCell<Box<crate::capi::LuaState>>,
 }
 
 impl fmt::Debug for Thread {
@@ -159,6 +161,7 @@ impl Thread {
             openupval: UnsafeCell::new(Vec::new()),
             env: Cell::new(env),
             errerr: Cell::new(false),
+            capi: std::cell::OnceCell::new(),
         }
     }
 

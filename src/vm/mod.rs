@@ -101,6 +101,8 @@ pub struct Runtime {
     pub c_call: Option<CCallHook>,
     /// FFI integration points.
     pub ffi: FfiHooks,
+    /// C API global state (panic function, allocator, hooks, unwinding bookkeeping).
+    pub(crate) capi: crate::capi::CApiGlobal,
 }
 
 impl Runtime {
@@ -134,6 +136,7 @@ impl Vm {
     /// [`crate::stdlib::open_libs`].
     pub fn new_state() -> Vm {
         let mut vm = Vm::new();
+        vm.rt.c_call = Some(crate::capi::call_c);
         vmevent::install_default_handlers(&mut vm);
         vm
     }
