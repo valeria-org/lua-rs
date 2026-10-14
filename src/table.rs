@@ -119,7 +119,11 @@ struct Node {
     next: u32,
 }
 
-const NIL_NODE: Node = Node { val: Value::Nil, key: Value::Nil, next: NO_NODE };
+const NIL_NODE: Node = Node {
+    val: Value::Nil,
+    key: Value::Nil,
+    next: NO_NODE,
+};
 
 /// Mutable table storage (accessed only inside `Table` methods, never across calls).
 #[derive(Clone)]
@@ -145,7 +149,11 @@ impl Inner {
     }
     #[inline]
     fn hmask(&self) -> u32 {
-        if self.node.is_empty() { 0 } else { self.node.len() as u32 - 1 }
+        if self.node.is_empty() {
+            0
+        } else {
+            self.node.len() as u32 - 1
+        }
     }
     #[inline]
     fn mainpos(&self, key: Value) -> u32 {
@@ -157,7 +165,8 @@ impl Inner {
     }
 
     fn bytes(&self) -> usize {
-        self.array.capacity() * std::mem::size_of::<Value>() + self.node.capacity() * std::mem::size_of::<Node>()
+        self.array.capacity() * std::mem::size_of::<Value>()
+            + self.node.capacity() * std::mem::size_of::<Node>()
     }
 
     fn new_hpart(&mut self, hbits: u32) -> Result<(), TabError> {
@@ -238,7 +247,8 @@ impl Inner {
         if (key as u32) < self.asize() {
             self.array[key as usize]
         } else {
-            self.find_int(key).map_or(Value::Nil, |n| self.node[n as usize].val)
+            self.find_int(key)
+                .map_or(Value::Nil, |n| self.node[n as usize].val)
         }
     }
 
@@ -358,7 +368,9 @@ impl Inner {
                     if nn == NO_NODE {
                         break;
                     }
-                    if !self.node[nn as usize].val.is_nil() && self.mainpos(self.node[nn as usize].key) == n {
+                    if !self.node[nn as usize].val.is_nil()
+                        && self.mainpos(self.node[nn as usize].key) == n
+                    {
                         self.node[fnode as usize].next = self.node[nn as usize].next;
                         self.node[nn as usize].next = self.node[n as usize].next;
                         self.node[n as usize].next = nn;
@@ -575,7 +587,11 @@ impl Inner {
             return lo;
         }
         // Without a hash part, there's an implicit nil after the last element.
-        if !self.node.is_empty() { self.len_slow(hi) } else { hi }
+        if !self.node.is_empty() {
+            self.len_slow(hi)
+        } else {
+            hi
+        }
     }
 }
 
@@ -584,7 +600,11 @@ fn countint(key: Value, bins: &mut [u32; MAX_ABITS as usize]) -> u32 {
         && let Some(k) = num2int_check(x)
         && (k as u32) < MAX_ASIZE
     {
-        bins[if k > 2 { fls((k - 1) as u32) as usize } else { 0 }] += 1;
+        bins[if k > 2 {
+            fls((k - 1) as u32) as usize
+        } else {
+            0
+        }] += 1;
         return 1;
     }
     0
@@ -653,11 +673,19 @@ impl Table {
         if asize > MAX_ASIZE {
             return Err(TabError::Overflow);
         }
-        let mut inner = Inner { array: vec![Value::Nil; asize as usize], node: Vec::new(), freetop: 0 };
+        let mut inner = Inner {
+            array: vec![Value::Nil; asize as usize],
+            node: Vec::new(),
+            freetop: 0,
+        };
         if hbits > 0 {
             inner.new_hpart(hbits)?;
         }
-        Ok(Table { inner: UnsafeCell::new(inner), meta: Cell::new(None), nomm: Cell::new(!0) })
+        Ok(Table {
+            inner: UnsafeCell::new(inner),
+            meta: Cell::new(None),
+            nomm: Cell::new(!0),
+        })
     }
 
     /// `lj_tab_new_ah`: sizes as in `lua_createtable(L, narr, nrec)`.
@@ -674,7 +702,11 @@ impl Table {
                 n.val = Value::Nil;
             }
         }
-        Table { inner: UnsafeCell::new(inner), meta: Cell::new(None), nomm: Cell::new(0) }
+        Table {
+            inner: UnsafeCell::new(inner),
+            meta: Cell::new(None),
+            nomm: Cell::new(0),
+        }
     }
 
     /// Size of the array part (`asize`, includes slot 0).
@@ -726,7 +758,8 @@ impl Table {
     #[inline]
     pub fn get_str(&self, key: Gc<LuaStr>) -> Value {
         let t = self.inner();
-        t.find_str(key).map_or(Value::Nil, |n| t.node[n as usize].val)
+        t.find_str(key)
+            .map_or(Value::Nil, |n| t.node[n as usize].val)
     }
     /// `lj_tab_getinth` / `lj_tab_get` for a number key.
     #[inline]
@@ -742,7 +775,9 @@ impl Table {
     /// `__newindex`) holds. Returns false, storing nothing, otherwise.
     #[inline]
     pub fn store_array(&self, k: u32, val: Value, nil_ok: impl FnOnce() -> bool) -> bool {
-        let Some(&old) = self.inner().array.get(k as usize) else { return false };
+        let Some(&old) = self.inner().array.get(k as usize) else {
+            return false;
+        };
         if !old.is_nil() || nil_ok() {
             // SAFETY: short-lived exclusive access. `nil_ok` may read tables (even this one)
             // but never resizes them, so slot `k` still exists. The size does not change, so
@@ -760,7 +795,9 @@ impl Table {
     #[inline]
     pub fn store_str(&self, key: Gc<LuaStr>, val: Value, nil_ok: impl FnOnce() -> bool) -> bool {
         let t = self.inner();
-        let Some(n) = t.find_str(key) else { return false };
+        let Some(n) = t.find_str(key) else {
+            return false;
+        };
         if !t.node[n as usize].val.is_nil() || nil_ok() {
             // SAFETY: as in `store_array`; node `n` still exists.
             unsafe { (&mut *self.inner.get()).node[n as usize].val = val };
@@ -825,7 +862,9 @@ impl Table {
     /// no slot (VM fast paths: store only if `get` found a non-nil value).
     pub fn set_existing(&self, key: Value, val: Value) -> bool {
         self.nomm.set(0);
-        let Some(s) = self.inner().slot(key) else { return false };
+        let Some(s) = self.inner().slot(key) else {
+            return false;
+        };
         // SAFETY: short-lived exclusive access; the size does not change, so there is
         // nothing to report to the GC.
         unsafe { (&mut *self.inner.get()).write(s, val) };
@@ -1096,7 +1135,10 @@ mod tests {
         assert_eq!(t.len(), 4);
         // luajit: t=table.new(5,0) (asize 6); t[1]=1 t[2]=2 t[4]=4; print(#t) --> 2
         let t = Table::new(6, 0).unwrap();
-        for (i, v) in [Some(1.0), Some(2.0), None, Some(4.0), None].iter().enumerate() {
+        for (i, v) in [Some(1.0), Some(2.0), None, Some(4.0), None]
+            .iter()
+            .enumerate()
+        {
             t.set_int(i as i32 + 1, v.map_or(Value::Nil, n)).unwrap();
         }
         assert_eq!(t.len(), 2);
@@ -1114,7 +1156,9 @@ mod tests {
         let mut heap = Heap::new();
         let mut st = StrTab::new(1);
         let t = Table::new(0, 0).unwrap();
-        let names: Vec<_> = (0..20).map(|i| st.intern(&mut heap, format!("k{i}").as_bytes())).collect();
+        let names: Vec<_> = (0..20)
+            .map(|i| st.intern(&mut heap, format!("k{i}").as_bytes()))
+            .collect();
         for (i, s) in names.iter().enumerate() {
             t.set(Value::Str(*s), n(i as f64)).unwrap();
         }
@@ -1213,12 +1257,39 @@ mod tests {
             t.set(k, n(1.0)).unwrap();
         }
         let b = Value::Bool;
-        let expect1 = [b(false), b(true), n(0.25), n(3.75), n(1.5), n(0.5), n(-0.5), n(-3.0), n(7.0), n(1e10), n(2.5), n(100.0)];
+        let expect1 = [
+            b(false),
+            b(true),
+            n(0.25),
+            n(3.75),
+            n(1.5),
+            n(0.5),
+            n(-0.5),
+            n(-3.0),
+            n(7.0),
+            n(1e10),
+            n(2.5),
+            n(100.0),
+        ];
         assert_eq!(keys(&t), expect1);
         t.set(n(2.5), Value::Nil).unwrap();
         t.set(n(0.125), n(1.0)).unwrap();
         t.set(n(9.5), n(1.0)).unwrap();
-        let expect2 = [b(false), b(true), n(9.5), n(0.25), n(3.75), n(1.5), n(0.125), n(0.5), n(-0.5), n(-3.0), n(7.0), n(1e10), n(100.0)];
+        let expect2 = [
+            b(false),
+            b(true),
+            n(9.5),
+            n(0.25),
+            n(3.75),
+            n(1.5),
+            n(0.125),
+            n(0.5),
+            n(-0.5),
+            n(-3.0),
+            n(7.0),
+            n(1e10),
+            n(100.0),
+        ];
         assert_eq!(keys(&t), expect2);
     }
 
@@ -1228,7 +1299,9 @@ mod tests {
         // fractional numbers; values sometimes nil (deletion).
         let mut seed: u64 = 12345;
         let mut rnd = move || {
-            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1442695040888963407);
+            seed = seed
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
             (seed >> 33) as u32
         };
         let t = Table::new(0, 0).unwrap();
@@ -1241,7 +1314,11 @@ mod tests {
                 2 => (r % 300) as f64 + 0.5,
                 _ => (r % 5000) as f64,
             };
-            let v = if rnd() % 3 == 0 { None } else { Some(step as f64) };
+            let v = if rnd() % 3 == 0 {
+                None
+            } else {
+                Some(step as f64)
+            };
             t.set(n(k), v.map_or(Value::Nil, n)).unwrap();
             model.retain(|&(mk, _)| mk != k);
             if let Some(v) = v {

@@ -1,4 +1,5 @@
-From the LuaJIT test suite (LuaJIT-test-cleanup, commit 014708b, MIT license like LuaJIT):
+From https://github.com/LuaJIT/LuaJIT-test-cleanup at commit
+014708bceb70550a3ab8d539cff14d9085ca9cb8 (MIT license like LuaJIT):
 src/ctest.c, src/cpptest.cpp, misc/api_call.lua, misc/hook_active.lua, misc/catch_wrap.lua,
 sysdep/catch_cpp.lua.
 Unmodified. Built and run by tests/capi.rs.

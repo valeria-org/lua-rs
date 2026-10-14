@@ -103,7 +103,11 @@ const LUAJIT_MODE_ON: c_int = 0x0100;
 /// modes on fails, turning them off succeeds; `LUAJIT_MODE_WRAPCFUNC` installs/removes the C
 /// function call wrapper (a light userdata at `idx`).
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaJIT_setmode(L: *mut lua_State, idx: c_int, mode: c_int) -> c_int {
+pub unsafe extern "C-unwind" fn luaJIT_setmode(
+    L: *mut lua_State,
+    idx: c_int,
+    mode: c_int,
+) -> c_int {
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, th| {
@@ -111,17 +115,24 @@ pub unsafe extern "C-unwind" fn luaJIT_setmode(L: *mut lua_State, idx: c_int, mo
                 return Err(vm.err_caller(ErrMsg::NOGCMM));
             }
             Ok(match mode & LUAJIT_MODE_MASK {
-                LUAJIT_MODE_ENGINE | LUAJIT_MODE_FUNC | LUAJIT_MODE_ALLFUNC | LUAJIT_MODE_ALLSUBFUNC => {
-                    (mode & LUAJIT_MODE_ON == 0) as c_int
-                }
+                LUAJIT_MODE_ENGINE
+                | LUAJIT_MODE_FUNC
+                | LUAJIT_MODE_ALLFUNC
+                | LUAJIT_MODE_ALLSUBFUNC => (mode & LUAJIT_MODE_ON == 0) as c_int,
                 LUAJIT_MODE_WRAPCFUNC => {
                     if mode & LUAJIT_MODE_ON != 0 {
                         if idx == 0 {
                             return Ok(0);
                         }
                         let base = base_of(vm, th);
-                        let slot = if idx > 0 { base + idx as usize - 1 } else { (th.top() as i64 + idx as i64) as usize };
-                        let Value::LightUd(p) = th.get(slot) else { return Ok(0) };
+                        let slot = if idx > 0 {
+                            base + idx as usize - 1
+                        } else {
+                            (th.top() as i64 + idx as i64) as usize
+                        };
+                        let Value::LightUd(p) = th.get(slot) else {
+                            return Ok(0);
+                        };
                         if p == 0 {
                             return Ok(0);
                         }
@@ -145,23 +156,30 @@ pub unsafe extern "C-unwind" fn luaJIT_setmode(L: *mut lua_State, idx: c_int, mo
 pub extern "C-unwind" fn luaJIT_version_2_1_1788856981() {}
 
 /// `luaJIT_profile_callback`.
-pub type luaJIT_profile_callback = unsafe extern "C-unwind" fn(*mut c_void, *mut lua_State, c_int, c_int);
+pub type luaJIT_profile_callback =
+    unsafe extern "C-unwind" fn(*mut c_void, *mut lua_State, c_int, c_int);
 
 /// `luaJIT_profile_start` (lj_profile.c): sample with the given mode (`i<ms>` interval) and
 /// call `cb(data, L, samples, vmstate)` from the interpreter, with `L` the profiled thread.
 /// A Lua error raised by the callback is discarded (the callback runs with hooks disabled, at a
 /// point where the profiled code cannot be unwound).
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaJIT_profile_start(L: *mut lua_State, mode: *const c_char, cb: luaJIT_profile_callback, data: *mut c_void) {
+pub unsafe extern "C-unwind" fn luaJIT_profile_start(
+    L: *mut lua_State,
+    mode: *const c_char,
+    cb: luaJIT_profile_callback,
+    data: *mut c_void,
+) {
     // SAFETY: `L` is a live state; `mode` is a C string.
     unsafe {
         let mode = cstr(mode);
         api(L, |vm, _| {
-            let cb: crate::stdlib::jit::ProfileCallback = Box::new(move |vm: &mut Vm, samples: i32, vmstate: u8| {
-                let th = vm.cur_thread;
-                let L = state_of(vm, th);
-                let _ = protect(vm, || cb(data, L, samples, vmstate as c_int));
-            });
+            let cb: crate::stdlib::jit::ProfileCallback =
+                Box::new(move |vm: &mut Vm, samples: i32, vmstate: u8| {
+                    let th = vm.cur_thread;
+                    let L = state_of(vm, th);
+                    let _ = protect(vm, || cb(data, L, samples, vmstate as c_int));
+                });
             crate::stdlib::jit::profile_start(vm, mode, cb);
             Ok(())
         })
@@ -183,7 +201,12 @@ pub unsafe extern "C-unwind" fn luaJIT_profile_stop(L: *mut lua_State) {
 /// `luaJIT_profile_dumpstack`: compact stack dump of `L` (`lj_debug_dumpstack`). The result
 /// stays valid until the next call.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaJIT_profile_dumpstack(L: *mut lua_State, fmt: *const c_char, depth: c_int, len: *mut usize) -> *const c_char {
+pub unsafe extern "C-unwind" fn luaJIT_profile_dumpstack(
+    L: *mut lua_State,
+    fmt: *const c_char,
+    depth: c_int,
+    len: *mut usize,
+) -> *const c_char {
     // SAFETY: `L` is a live state; `fmt` is a C string; `len` is valid.
     unsafe {
         let fmt = cstr(fmt);

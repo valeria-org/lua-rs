@@ -4,40 +4,43 @@
 //! The algorithm converts the double to a fixed-precision base-1e9 representation
 //! ("nd" format) and rounds half-to-even exactly, so results match glibc printf.
 
-use super::strfmt::{F_ALT, F_LEFT, F_PLUS, F_SPACE, F_UPPER, F_ZERO, SFormat, T_FP_E, T_FP_F, wint};
+use super::strfmt::{
+    F_ALT, F_LEFT, F_PLUS, F_SPACE, F_UPPER, F_ZERO, SFormat, T_FP_E, T_FP_F, wint,
+};
 
 /* -- Precomputed tables -------------------------------------------------- */
 
 /// Rescale factors to push the exponent of a number towards zero.
 static RESCALE_E: [i16; 32] = [
-    -308, -289, -270, -250, -231, -212, -193, -173, -154, -135, -115, -96, -77, -58, -38, 0, 0, 0, 39,
-    58, 77, 96, 116, 135, 154, 174, 193, 212, 231, 251, 270, 289,
+    -308, -289, -270, -250, -231, -212, -193, -173, -154, -135, -115, -96, -77, -58, -38, 0, 0, 0,
+    39, 58, 77, 96, 116, 135, 154, 174, 193, 212, 231, 251, 270, 289,
 ];
 static RESCALE_N: [f64; 32] = [
     1e308, 1e289, 1e270, 1e250, 1e231, 1e212, 1e193, 1e173, 1e154, 1e135, 1e115, 1e96, 1e77, 1e58,
-    1e38, 1e0, 1e0, 1e0, 1e-39, 1e-58, 1e-77, 1e-96, 1e-116, 1e-135, 1e-154, 1e-174, 1e-193, 1e-212,
-    1e-231, 1e-251, 1e-270, 1e-289,
+    1e38, 1e0, 1e0, 1e0, 1e-39, 1e-58, 1e-77, 1e-96, 1e-116, 1e-135, 1e-154, 1e-174, 1e-193,
+    1e-212, 1e-231, 1e-251, 1e-270, 1e-289,
 ];
 
 /// For p in range -70 through 57, pairs (m, e) such that 4*2^p <= (u8)m*10^e,
 /// and is the smallest value for which this holds.
 static FOUR_ULP_M_E: [i8; 256] = [
-    34, -21, 68, -21, 14, -20, 28, -20, 55, -20, 2, -19, 3, -19, 5, -19, 9, -19, -82, -18, 35, -18, 7,
-    -17, -117, -17, 28, -17, 56, -17, 112, -16, -33, -16, 45, -16, 89, -16, -78, -15, 36, -15, 72,
-    -15, -113, -14, 29, -14, 57, -14, 114, -13, -28, -13, 46, -13, 91, -12, -74, -12, 37, -12, 73,
-    -12, 15, -11, 3, -11, 59, -11, 2, -10, 3, -10, 5, -10, 1, -9, -69, -9, 38, -9, 75, -9, 15, -7, 3,
-    -7, 6, -7, 12, -6, -17, -7, 48, -7, 96, -7, -65, -6, 39, -6, 77, -6, -103, -5, 31, -5, 62, -5,
-    123, -4, -11, -4, 49, -4, 98, -4, -60, -3, 4, -2, 79, -3, 16, -2, 32, -2, 63, -2, 2, -1, 25, 0,
-    5, 1, 1, 2, 2, 2, 4, 2, 8, 2, 16, 2, 32, 2, 64, 2, -128, 2, 26, 2, 52, 2, 103, 3, -51, 3, 41, 4,
-    82, 4, -92, 4, 33, 4, 66, 4, -124, 5, 27, 5, 53, 5, 105, 6, 21, 6, 42, 6, 84, 6, 17, 7, 34, 7,
-    68, 7, 2, 8, 3, 8, 6, 8, 108, 9, -41, 9, 43, 10, 86, 9, -84, 10, 35, 10, 69, 10, -118, 11, 28,
-    11, 55, 12, 11, 13, 22, 13, 44, 13, 88, 13, -80, 13, 36, 13, 71, 13, -115, 14, 29, 14, 57, 14,
-    113, 15, -30, 15, 46, 15, 91, 15, 19, 16, 37, 16, 73, 16, 2, 17, 3, 17, 6, 17,
+    34, -21, 68, -21, 14, -20, 28, -20, 55, -20, 2, -19, 3, -19, 5, -19, 9, -19, -82, -18, 35, -18,
+    7, -17, -117, -17, 28, -17, 56, -17, 112, -16, -33, -16, 45, -16, 89, -16, -78, -15, 36, -15,
+    72, -15, -113, -14, 29, -14, 57, -14, 114, -13, -28, -13, 46, -13, 91, -12, -74, -12, 37, -12,
+    73, -12, 15, -11, 3, -11, 59, -11, 2, -10, 3, -10, 5, -10, 1, -9, -69, -9, 38, -9, 75, -9, 15,
+    -7, 3, -7, 6, -7, 12, -6, -17, -7, 48, -7, 96, -7, -65, -6, 39, -6, 77, -6, -103, -5, 31, -5,
+    62, -5, 123, -4, -11, -4, 49, -4, 98, -4, -60, -3, 4, -2, 79, -3, 16, -2, 32, -2, 63, -2, 2,
+    -1, 25, 0, 5, 1, 1, 2, 2, 2, 4, 2, 8, 2, 16, 2, 32, 2, 64, 2, -128, 2, 26, 2, 52, 2, 103, 3,
+    -51, 3, 41, 4, 82, 4, -92, 4, 33, 4, 66, 4, -124, 5, 27, 5, 53, 5, 105, 6, 21, 6, 42, 6, 84, 6,
+    17, 7, 34, 7, 68, 7, 2, 8, 3, 8, 6, 8, 108, 9, -41, 9, 43, 10, 86, 9, -84, 10, 35, 10, 69, 10,
+    -118, 11, 28, 11, 55, 12, 11, 13, 22, 13, 44, 13, 88, 13, -80, 13, 36, 13, 71, 13, -115, 14,
+    29, 14, 57, 14, 113, 15, -30, 15, 46, 15, 91, 15, 19, 16, 37, 16, 73, 16, 2, 17, 3, 17, 6, 17,
 ];
 
 /// min(2^32-1, 10^e-1) for e in range 0 through 10.
-static NDIGITS_DEC_THRESHOLD: [u32; 11] =
-    [0, 9, 99, 999, 9999, 99999, 999999, 9999999, 99999999, 999999999, 0xffffffff];
+static NDIGITS_DEC_THRESHOLD: [u32; 11] = [
+    0, 9, 99, 999, 9999, 99999, 999999, 9999999, 99999999, 999999999, 0xffffffff,
+];
 
 /* -- Helper functions ---------------------------------------------------- */
 
@@ -136,10 +139,15 @@ fn nd_div2k(nd: &mut [u32; 64], mut ndhi: u32, mut k: u32, sf: SFormat) -> u32 {
     }
     if k > 18 && sf.fp() != SFormat(T_FP_F).fp() {
         // (For %f, precision must not be limited here or nd_round cannot round to even.)
-        let floorlog2 = (ndhi.wrapping_mul(29).wrapping_add(fls(nd[ndhi as usize])).wrapping_sub(k)) as i32;
+        let floorlog2 = (ndhi
+            .wrapping_mul(29)
+            .wrapping_add(fls(nd[ndhi as usize]))
+            .wrapping_sub(k)) as i32;
         let floorlog10 = (floorlog2 as f64 * 0.30102999566398114) as i32;
         stop1 = (62 + (floorlog10 - sf.prec_raw() as i32) / 9) as u32;
-        stop2 = 61u32.wrapping_add(ndhi).wrapping_sub(((sf.prec_raw() as i32) / 8) as u32);
+        stop2 = 61u32
+            .wrapping_add(ndhi)
+            .wrapping_sub(((sf.prec_raw() as i32) / 8) as u32);
     }
     // Real logic.
     while k >= 9 {
@@ -243,7 +251,11 @@ fn nd_round(nd: &mut [u32; 64], ndlo: u32, ndhi: u32, e: i32) -> u32 {
         false
     } else if buf[d as usize] == b'5' {
         // Must check for round to even.
-        let odd = if d != 0 { buf[d as usize - 1] & 1 } else { (nd[((i + 1) & 0x3f) as usize] & 1) as u8 };
+        let odd = if d != 0 {
+            buf[d as usize - 1] & 1
+        } else {
+            (nd[((i + 1) & 0x3f) as usize] & 1) as u8
+        };
         // Round up '[13579]5.*' or '[02468]5[^0]*'.
         odd != 0 || buf[(d as usize + 1)..].iter().any(|&c| c != b'0') || {
             // Check remaining fraction.
@@ -260,7 +272,11 @@ fn nd_round(nd: &mut [u32; 64], ndlo: u32, ndhi: u32, e: i32) -> u32 {
     } else {
         true
     };
-    if round_up { nd_add_m10e(nd, ndhi, 5, e) } else { ndhi }
+    if round_up {
+        nd_add_m10e(nd, ndhi, 5, e)
+    } else {
+        ndhi
+    }
 }
 
 /// Test whether two "nd" values are equal in their most significant digits.
@@ -345,7 +361,11 @@ pub fn put_fnum(out: &mut Vec<u8>, sf: SFormat, n: f64) {
 /// reserve exactly this much).
 pub fn put_fnum_reserve(out: &mut Vec<u8>, sf: SFormat, n: f64) -> u32 {
     let start = out.len();
-    let mut w = W { b: out, p: start, reserve: 0 };
+    let mut w = W {
+        b: out,
+        p: start,
+        reserve: 0,
+    };
     wfnum(&mut w, sf, n);
     let (end, reserve) = (w.p, w.reserve);
     out.truncate(end);
@@ -426,7 +446,11 @@ fn wfnum(w: &mut W<'_>, sf: SFormat, n: f64) {
         w.put(ch as u8);
     } else if sf.fp() == SFormat(super::strfmt::T_FP_A).fp() {
         // %a
-        let hexdig: &[u8; 18] = if has(F_UPPER) { b"0123456789ABCDEFPX" } else { b"0123456789abcdefpx" };
+        let hexdig: &[u8; 18] = if has(F_UPPER) {
+            b"0123456789ABCDEFPX"
+        } else {
+            b"0123456789abcdefpx"
+        };
         let mut e = ((hi(t) >> 20) & 0x7ff) as i32;
         let mut prefix: u8 = 0;
         let mut eprefix = b'+';
@@ -443,14 +467,22 @@ fn wfnum(w: &mut W<'_>, sf: SFormat, n: f64) {
             e -= 1023;
         } else if t != 0 {
             // Non-zero denormal - normalise it.
-            let shift = if hi(t) != 0 { 20 - fls(hi(t)) } else { 52 - fls(lo(t)) };
+            let shift = if hi(t) != 0 {
+                20 - fls(hi(t))
+            } else {
+                52 - fls(lo(t))
+            };
             e = -1022 - shift as i32;
             t <<= shift;
         }
         // abs(n) == t * 2^(e - 52); if n != 0, bit 52 of t is the highest set bit.
         if (prec as i32) < 0 {
             // Default precision: use smallest precision giving exact result.
-            prec = if lo(t) != 0 { 13 - ffs(lo(t)) / 4 } else { 5 - ffs(hi(t) | 0x100000) / 4 };
+            prec = if lo(t) != 0 {
+                13 - ffs(lo(t)) / 4
+            } else {
+                5 - ffs(hi(t) | 0x100000) / 4
+            };
         } else if prec < 13 {
             // Precision is sufficiently low as to maybe require rounding.
             t += 1u64 << (51 - prec * 4);
@@ -459,7 +491,11 @@ fn wfnum(w: &mut W<'_>, sf: SFormat, n: f64) {
             eprefix = b'-';
             e = -e;
         }
-        len = 5 + ndigits_dec(e as u32) + prec + (prefix != 0) as u32 + ((prec | (sfv & F_ALT)) != 0) as u32;
+        len = 5
+            + ndigits_dec(e as u32)
+            + prec
+            + (prefix != 0) as u32
+            + ((prec | (sfv & F_ALT)) != 0) as u32;
         w.more(width.max(len));
         if !has(F_LEFT | F_ZERO) {
             w.pad(&mut width, len, b' ');
@@ -631,7 +667,9 @@ fn wfnum(w: &mut W<'_>, sf: SFormat, n: f64) {
                     if prec >= maxprec {
                         prec = maxprec;
                     } else {
-                        ndlo = ndhi.wrapping_sub(((prec.wrapping_sub(hilen) as i32 + 9) / 9) as u32) & 0x3f;
+                        ndlo = ndhi
+                            .wrapping_sub(((prec.wrapping_sub(hilen) as i32 + 9) / 9) as u32)
+                            & 0x3f;
                     }
                     let mut i = prec
                         .wrapping_sub(hilen)

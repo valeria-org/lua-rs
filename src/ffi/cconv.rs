@@ -92,7 +92,13 @@ pub(crate) unsafe fn wr<T>(p: *mut u8, v: T) {
 #[inline]
 pub(crate) unsafe fn getptr(p: *const u8, sz: CTSize) -> *mut u8 {
     // SAFETY: guaranteed by the caller.
-    unsafe { if sz == 4 { rd::<u32>(p) as usize as *mut u8 } else { rd::<*mut u8>(p) } }
+    unsafe {
+        if sz == 4 {
+            rd::<u32>(p) as usize as *mut u8
+        } else {
+            rd::<*mut u8>(p)
+        }
+    }
 }
 
 /// `cdata_setptr`: store a pointer of size `sz` (4 or 8).
@@ -200,7 +206,11 @@ pub fn compatptr(cts: &CTState, d: CTypeID, s: CTypeID, flags: CTInfo) -> bool {
     }
     let (mut dqual, mut squal) = (0, 0);
     let d = childqual(cts, d, &mut dqual);
-    let s = if !ctype_isstruct(cts.get(s).info) { childqual(cts, s, &mut squal) } else { s };
+    let s = if !ctype_isstruct(cts.get(s).info) {
+        childqual(cts, s, &mut squal)
+    } else {
+        s
+    };
     let (dct, sct) = (*cts.get(d), *cts.get(s));
     if flags & CCF_SAME != 0 {
         if dqual != squal {
@@ -275,8 +285,14 @@ pub(crate) fn ct_ct_raw(
     let (mut dsize, mut ssize, mut dinfo, mut sinfo) = (dct.size, sct.size, dct.info, sct.info);
     let tmpptr: usize;
 
-    debug_assert!(!ctype_isenum(dinfo) && !ctype_isenum(sinfo), "unresolved enum");
-    debug_assert!(!ctype_isattrib(dinfo) && !ctype_isattrib(sinfo), "unstripped attribute");
+    debug_assert!(
+        !ctype_isenum(dinfo) && !ctype_isenum(sinfo),
+        "unresolved enum"
+    );
+    debug_assert!(
+        !ctype_isattrib(dinfo) && !ctype_isattrib(sinfo),
+        "unstripped attribute"
+    );
 
     if ctype_type(dinfo) > CT_MAYCONVERT || ctype_type(sinfo) > CT_MAYCONVERT {
         return Err((d, s));
@@ -380,7 +396,14 @@ pub(crate) fn ct_ct_raw(
                 let sc = cts.child(s);
                 ct_ct_raw(cts, dc, sc, dp, sp, flags)?;
                 let (dcs, scs) = (cts.get(dc).size as usize, cts.get(sc).size as usize);
-                return ct_ct_raw(cts, dc, sc, unsafe { dp.add(dcs) }, unsafe { sp.add(scs) }, flags);
+                return ct_ct_raw(
+                    cts,
+                    dc,
+                    sc,
+                    unsafe { dp.add(dcs) },
+                    unsafe { sp.add(scs) },
+                    flags,
+                );
             }
             Step::Copy // Otherwise this is easy.
         }
@@ -507,7 +530,11 @@ pub(crate) fn ct_ct_raw(
                     if ssize == 4 {
                         rd::<i32>(sp)
                     } else if sinfo & CTF_UNSIGNED == 0 {
-                        if ssize == 2 { rd::<i16>(sp) as i32 } else { rd::<i8>(sp) as i32 }
+                        if ssize == 2 {
+                            rd::<i16>(sp) as i32
+                        } else {
+                            rd::<i8>(sp) as i32
+                        }
                     } else if ssize == 2 {
                         rd::<u16>(sp) as i32
                     } else {
@@ -518,7 +545,13 @@ pub(crate) fn ct_ct_raw(
             } else if ssize == 4 {
                 unsafe { rd::<u32>(sp) as f64 }
             } else if ssize == 8 {
-                unsafe { if sinfo & CTF_UNSIGNED == 0 { rd::<i64>(sp) as f64 } else { rd::<u64>(sp) as f64 } }
+                unsafe {
+                    if sinfo & CTF_UNSIGNED == 0 {
+                        rd::<i64>(sp) as f64
+                    } else {
+                        rd::<u64>(sp) as f64
+                    }
+                }
             } else {
                 return Err((d, s)); // NYI: conversion from >64 bit integers.
             };
@@ -561,7 +594,11 @@ fn conv_i_i(dp: *mut u8, dsize: CTSize, sp: *const u8, ssize: CTSize, sinfo: CTI
     // SAFETY: dp/sp are valid for dsize/ssize bytes (caller of ct_ct_raw).
     unsafe {
         if dsize > ssize {
-            let fill = if sinfo & CTF_UNSIGNED == 0 && *sp.add(ssize as usize - 1) & 0x80 != 0 { 0xff } else { 0 };
+            let fill = if sinfo & CTF_UNSIGNED == 0 && *sp.add(ssize as usize - 1) & 0x80 != 0 {
+                0xff
+            } else {
+                0
+            };
             ptr::copy(sp, dp, ssize as usize);
             ptr::write_bytes(dp.add(ssize as usize), fill, (dsize - ssize) as usize);
         } else {
@@ -578,8 +615,15 @@ pub fn cdata_new(vm: &mut Vm, id: CTypeID, sz: CTSize) -> crate::gc::Gc<crate::c
 }
 
 /// Allocate a cdata holding a reference to `p` of type `id` (`lj_cdata_newref`).
-pub(crate) fn cdata_newref(vm: &mut Vm, cts: &mut CTState, p: *const u8, id: CTypeID) -> LuaResult<Value> {
-    let refid = cts.intern(ctinfo_ref(id), CTSIZE_PTR).map_err(|e| ffi_err(vm, e))?;
+pub(crate) fn cdata_newref(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    p: *const u8,
+    id: CTypeID,
+) -> LuaResult<Value> {
+    let refid = cts
+        .intern(ctinfo_ref(id), CTSIZE_PTR)
+        .map_err(|e| ffi_err(vm, e))?;
     let cd = cdata_new(vm, refid, CTSIZE_PTR);
     // SAFETY: the cdata owns 8 bytes.
     unsafe { wr::<*const u8>(cd.ptr(), p) };
@@ -588,7 +632,13 @@ pub(crate) fn cdata_newref(vm: &mut Vm, cts: &mut CTState, p: *const u8, id: CTy
 
 /// Convert C type to Lua value (`lj_cconv_tv_ct`). Caveat: expects the raw C type `s`;
 /// `sid` is the type id used for references.
-pub(crate) fn tv_ct(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sid: CTypeID, sp: *const u8) -> LuaResult<Value> {
+pub(crate) fn tv_ct(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    s: CTypeID,
+    sid: CTypeID,
+    sp: *const u8,
+) -> LuaResult<Value> {
     let sct = *cts.get(s);
     let sinfo = sct.info;
     if ctype_isnum(sinfo) {
@@ -601,7 +651,13 @@ pub(crate) fn tv_ct(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sid: CTypeID, sp
             }
         } else {
             // SAFETY: sp is valid for the bool's size (1 or 4).
-            let b = unsafe { if sct.size == 1 { *sp != 0 } else { rd::<i32>(sp) != 0 } };
+            let b = unsafe {
+                if sct.size == 1 {
+                    *sp != 0
+                } else {
+                    rd::<i32>(sp) != 0
+                }
+            };
             return Ok(Value::Bool(b));
         }
     } else if ctype_isrefarray(sinfo) || ctype_isstruct(sinfo) {
@@ -667,7 +723,14 @@ fn name_str(vm: &mut Vm, cts: &CTState, id: CTypeID) -> Option<crate::gc::Gc<cra
 }
 
 /// Convert table to array (`cconv_array_tab`).
-fn array_tab(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, t: crate::gc::Gc<Table>, flags: CTInfo) -> LuaResult<()> {
+fn array_tab(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    d: CTypeID,
+    dp: *mut u8,
+    t: crate::gc::Gc<Table>,
+    flags: CTInfo,
+) -> LuaResult<()> {
     let dc = cts.rawchild(d); // Array element type.
     let (size, esize) = (cts.get(d).size, cts.get(dc).size);
     let mut ofs: CTSize = 0;
@@ -776,7 +839,15 @@ fn substruct_tab(
         } else if ctype_isxattrib(df.info, CTA_SUBTYPE) {
             let sub = cts.rawchild(fid);
             // SAFETY: field offsets are within the struct.
-            substruct_tab(vm, cts, sub, unsafe { dp.add(df.size as usize) }, t, ip, flags)?;
+            substruct_tab(
+                vm,
+                cts,
+                sub,
+                unsafe { dp.add(df.size as usize) },
+                t,
+                ip,
+                flags,
+            )?;
         } // Ignore all other entries in the chain.
     }
     Ok(())
@@ -784,7 +855,14 @@ fn substruct_tab(
 
 /// Convert Lua value to C type (`lj_cconv_ct_tv`). Caveat: expects the raw C type `d`.
 /// `dp` must be valid for the size of `d`.
-pub(crate) fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, mut flags: CTInfo) -> LuaResult<()> {
+pub(crate) fn ct_tv(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    d: CTypeID,
+    dp: *mut u8,
+    o: Value,
+    mut flags: CTInfo,
+) -> LuaResult<()> {
     let mut d = d;
     let mut sid = CTID_P_VOID;
     let mut tmpptr: usize;
@@ -813,10 +891,16 @@ pub(crate) fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: 
             }
             let raw = cts.raw(sid);
             if ctype_isfunc(cts.get(raw).info) {
-                sid = cts.intern(ctinfo(CT_PTR, CTALIGN_PTR | sid), CTSIZE_PTR).map_err(|e| ffi_err(vm, e))?;
+                sid = cts
+                    .intern(ctinfo(CT_PTR, CTALIGN_PTR | sid), CTSIZE_PTR)
+                    .map_err(|e| ffi_err(vm, e))?;
                 s = sid;
             } else {
-                let s0 = if ctype_isenum(cts.get(raw).info) { cts.child(raw) } else { raw };
+                let s0 = if ctype_isenum(cts.get(raw).info) {
+                    cts.child(raw)
+                } else {
+                    raw
+                };
                 if ctype_isenum(cts.get(d).info) {
                     d = cts.child(d);
                 }
@@ -849,7 +933,9 @@ pub(crate) fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: 
                 }
                 // SAFETY: the destination holds at least sz bytes (or is a VLA of unknown
                 // size, as upstream); the string data is NUL-terminated.
-                unsafe { ptr::copy_nonoverlapping(str.as_bytes_with_nul().as_ptr(), dp, sz as usize) };
+                unsafe {
+                    ptr::copy_nonoverlapping(str.as_bytes_with_nul().as_ptr(), dp, sz as usize)
+                };
                 return Ok(());
             } else {
                 // Otherwise pass it as a const char[].
@@ -908,7 +994,8 @@ pub(crate) fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: 
                 Ok(Some(p)) => {
                     let slot = cts.cb.ptr2slot(p);
                     let mm = super::state::state(vm).miscmap;
-                    mm.set_int(slot as i32, Value::Func(f)).map_err(|e| vm.tab_error(e))?;
+                    mm.set_int(slot as i32, Value::Func(f))
+                        .map_err(|e| vm.tab_error(e))?;
                     // SAFETY: dp is valid for a pointer-sized destination (checked by
                     // callback_new: d is a 64 bit pointer type).
                     unsafe { wr::<*const u8>(dp, p.cast()) };
@@ -927,7 +1014,13 @@ pub(crate) fn ct_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: 
 }
 
 /// Convert Lua value to bitfield (`lj_cconv_bf_tv`).
-pub(crate) fn bf_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value) -> LuaResult<()> {
+pub(crate) fn bf_tv(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    d: CTypeID,
+    dp: *mut u8,
+    o: Value,
+) -> LuaResult<()> {
     let info = cts.get(d).info;
     debug_assert!(ctype_isbitfield(info), "bitfield expected");
     let mut val: u32 = 0;
@@ -937,7 +1030,11 @@ pub(crate) fn bf_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: 
         ct_tv(vm, cts, CTID_BOOL, &mut tmpbool, o, 0)?;
         val = tmpbool as u32;
     } else {
-        let did = if info & CTF_UNSIGNED != 0 { CTID_UINT32 } else { CTID_INT32 };
+        let did = if info & CTF_UNSIGNED != 0 {
+            CTID_UINT32
+        } else {
+            CTID_INT32
+        };
         ct_tv(vm, cts, did, ptr::from_mut(&mut val).cast(), o, 0)?;
     }
     let pos = ctype_bitpos(info);
@@ -965,7 +1062,14 @@ pub(crate) fn bf_tv(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: 
 // -- Initialize C type with Lua values ---------------------------------------------------------
 
 /// Initialize an array with Lua values (`cconv_array_init`).
-fn array_init(vm: &mut Vm, cts: &mut CTState, d: CTypeID, sz: CTSize, dp: *mut u8, o: &[Value]) -> LuaResult<()> {
+fn array_init(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    d: CTypeID,
+    sz: CTSize,
+    dp: *mut u8,
+    o: &[Value],
+) -> LuaResult<()> {
     let dc = cts.rawchild(d); // Array element type.
     let esize = cts.get(dc).size;
     if (o.len() as u64) * (esize as u64) > sz as u64 {
@@ -994,7 +1098,14 @@ fn array_init(vm: &mut Vm, cts: &mut CTState, d: CTypeID, sz: CTSize, dp: *mut u
 }
 
 /// Initialize a sub-struct/union with Lua values (`cconv_substruct_init`).
-fn substruct_init(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: &[Value], ip: &mut usize) -> LuaResult<()> {
+fn substruct_init(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    d: CTypeID,
+    dp: *mut u8,
+    o: &[Value],
+    ip: &mut usize,
+) -> LuaResult<()> {
     let dinfo = cts.get(d).info;
     let mut id = cts.get(d).sib as CTypeID;
     while id != 0 {
@@ -1050,7 +1161,14 @@ pub fn multi_init(cts: &CTState, d: CTypeID, o: Value) -> bool {
 }
 
 /// Initialize C type with Lua values (`lj_cconv_ct_init`). Caveat: expects the raw C type.
-pub(crate) fn ct_init(vm: &mut Vm, cts: &mut CTState, d: CTypeID, sz: CTSize, dp: *mut u8, o: &[Value]) -> LuaResult<()> {
+pub(crate) fn ct_init(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    d: CTypeID,
+    sz: CTSize,
+    dp: *mut u8,
+    o: &[Value],
+) -> LuaResult<()> {
     let dinfo = cts.get(d).info;
     if o.is_empty() {
         // SAFETY: dp is valid for sz bytes.

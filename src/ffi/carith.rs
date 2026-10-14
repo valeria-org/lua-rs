@@ -22,7 +22,12 @@ struct CDArith {
 /// Check arguments for arithmetic metamethods (`carith_checkarg`). `nums` provides the
 /// storage for number operands. Returns false if an operand is not convertible.
 #[allow(clippy::needless_range_loop)] // `i` indexes both operands and the stack.
-fn checkarg(vm: &mut Vm, cts: &mut CTState, ca: &mut CDArith, nums: &mut [f64; 2]) -> LuaResult<bool> {
+fn checkarg(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    ca: &mut CDArith,
+    nums: &mut [f64; 2],
+) -> LuaResult<bool> {
     if vm.nargs() < 2 {
         return Err(vm.type_error(1, "cdata"));
     }
@@ -44,7 +49,9 @@ fn checkarg(vm: &mut Vm, cts: &mut CTState, ca: &mut CDArith, nums: &mut [f64; 2
                 } else if ctype_isfunc(info) {
                     // SAFETY: function cdata hold the function pointer.
                     p = unsafe { rd::<*const u8>(p) };
-                    ct = cts.intern(ctinfo(CT_PTR, CTALIGN_PTR | id), CTSIZE_PTR).map_err(|e| ffi_err(vm, e))?;
+                    ct = cts
+                        .intern(ctinfo(CT_PTR, CTALIGN_PTR | id), CTSIZE_PTR)
+                        .map_err(|e| ffi_err(vm, e))?;
                 }
                 if ctype_isenum(cts.get(ct).info) {
                     ct = cts.child(ct);
@@ -98,14 +105,18 @@ fn checkarg(vm: &mut Vm, cts: &mut CTState, ca: &mut CDArith, nums: &mut [f64; 2
 /// Pointer arithmetic (`carith_ptr`).
 #[allow(clippy::needless_late_init)]
 fn carith_ptr(vm: &mut Vm, cts: &mut CTState, ca: &CDArith, mm: MM) -> LuaResult<Option<Value>> {
-    let (Some(ctp0), Some(ct1)) = (ca.ct[0], ca.ct[1]) else { return Ok(None) };
+    let (Some(ctp0), Some(ct1)) = (ca.ct[0], ca.ct[1]) else {
+        return Ok(None);
+    };
     let mut ctp = ctp0;
     let mut pp = ca.p[0];
     let idx: isize;
     let i0 = cts.get(ctp).info;
     let i1 = cts.get(ct1).info;
     if ctype_isptr(i0) || ctype_isrefarray(i0) {
-        if matches!(mm, MM::Sub | MM::Eq | MM::Lt | MM::Le) && (ctype_isptr(i1) || ctype_isrefarray(i1)) {
+        if matches!(mm, MM::Sub | MM::Eq | MM::Lt | MM::Le)
+            && (ctype_isptr(i1) || ctype_isrefarray(i1))
+        {
             let pp2 = ca.p[1];
             if mm == MM::Eq {
                 // Pointer equality. Incompatible pointers are ok.
@@ -132,14 +143,30 @@ fn carith_ptr(vm: &mut Vm, cts: &mut CTState, ca: &CDArith, mm: MM) -> LuaResult
             return Ok(None);
         }
         let mut x: isize = 0;
-        cconv::ct_ct(vm, cts, CTID_INT_PSZ, ct1, std::ptr::from_mut(&mut x).cast(), ca.p[1], 0)?;
+        cconv::ct_ct(
+            vm,
+            cts,
+            CTID_INT_PSZ,
+            ct1,
+            std::ptr::from_mut(&mut x).cast(),
+            ca.p[1],
+            0,
+        )?;
         idx = if mm == MM::Sub { x.wrapping_neg() } else { x };
     } else if mm == MM::Add && ctype_isnum(i0) && (ctype_isptr(i1) || ctype_isrefarray(i1)) {
         // Swap pointer and index.
         ctp = ct1;
         pp = ca.p[1];
         let mut x: isize = 0;
-        cconv::ct_ct(vm, cts, CTID_INT_PSZ, ctp0, std::ptr::from_mut(&mut x).cast(), ca.p[0], 0)?;
+        cconv::ct_ct(
+            vm,
+            cts,
+            CTID_INT_PSZ,
+            ctp0,
+            std::ptr::from_mut(&mut x).cast(),
+            ca.p[0],
+            0,
+        )?;
         idx = x;
     } else {
         return Ok(None);
@@ -150,7 +177,9 @@ fn carith_ptr(vm: &mut Vm, cts: &mut CTState, ca: &CDArith, mm: MM) -> LuaResult
         return Ok(None);
     }
     let pp = pp.wrapping_offset(idx.wrapping_mul(sz as i32 as isize)); // Compute pointer + index.
-    let id = cts.intern(ctinfo(CT_PTR, CTALIGN_PTR | cid), CTSIZE_PTR).map_err(|e| ffi_err(vm, e))?;
+    let id = cts
+        .intern(ctinfo(CT_PTR, CTALIGN_PTR | cid), CTSIZE_PTR)
+        .map_err(|e| ffi_err(vm, e))?;
     let cd = cdata_new(vm, id, CTSIZE_PTR);
     // SAFETY: the cdata owns 8 bytes.
     unsafe { wr::<*const u8>(cd.ptr(), pp) };
@@ -159,26 +188,58 @@ fn carith_ptr(vm: &mut Vm, cts: &mut CTState, ca: &CDArith, mm: MM) -> LuaResult
 
 /// 64 bit integer arithmetic (`carith_int64`).
 fn carith_int64(vm: &mut Vm, cts: &mut CTState, ca: &CDArith, mm: MM) -> LuaResult<Option<Value>> {
-    let (Some(c0), Some(c1)) = (ca.ct[0], ca.ct[1]) else { return Ok(None) };
+    let (Some(c0), Some(c1)) = (ca.ct[0], ca.ct[1]) else {
+        return Ok(None);
+    };
     let (t0, t1) = (*cts.get(c0), *cts.get(c1));
     if !(ctype_isnum(t0.info) && t0.size <= 8 && ctype_isnum(t1.info) && t1.size <= 8) {
         return Ok(None);
     }
-    let id = if (t0.info & CTF_UNSIGNED != 0 && t0.size == 8) || (t1.info & CTF_UNSIGNED != 0 && t1.size == 8) {
+    let id = if (t0.info & CTF_UNSIGNED != 0 && t0.size == 8)
+        || (t1.info & CTF_UNSIGNED != 0 && t1.size == 8)
+    {
         CTID_UINT64
     } else {
         CTID_INT64
     };
     let (mut u0, mut u1) = (0u64, 0u64);
-    cconv::ct_ct(vm, cts, id, c0, std::ptr::from_mut(&mut u0).cast(), ca.p[0], 0)?;
+    cconv::ct_ct(
+        vm,
+        cts,
+        id,
+        c0,
+        std::ptr::from_mut(&mut u0).cast(),
+        ca.p[0],
+        0,
+    )?;
     if mm != MM::Unm {
-        cconv::ct_ct(vm, cts, id, c1, std::ptr::from_mut(&mut u1).cast(), ca.p[1], 0)?;
+        cconv::ct_ct(
+            vm,
+            cts,
+            id,
+            c1,
+            std::ptr::from_mut(&mut u1).cast(),
+            ca.p[1],
+            0,
+        )?;
     }
     let signed = id == CTID_INT64;
     match mm {
         MM::Eq => return Ok(Some(Value::Bool(u0 == u1))),
-        MM::Lt => return Ok(Some(Value::Bool(if signed { (u0 as i64) < (u1 as i64) } else { u0 < u1 }))),
-        MM::Le => return Ok(Some(Value::Bool(if signed { (u0 as i64) <= (u1 as i64) } else { u0 <= u1 }))),
+        MM::Lt => {
+            return Ok(Some(Value::Bool(if signed {
+                (u0 as i64) < (u1 as i64)
+            } else {
+                u0 < u1
+            })));
+        }
+        MM::Le => {
+            return Ok(Some(Value::Bool(if signed {
+                (u0 as i64) <= (u1 as i64)
+            } else {
+                u0 <= u1
+            })));
+        }
         _ => {}
     }
     let r = match mm {
@@ -282,7 +343,10 @@ fn carith_meta(vm: &mut Vm, cts: &CTState, ca: &CDArith, mm: MM) -> LuaResult<us
         }
     }
     if (isenum ^ isstr) == 1 {
-        let m = msgf(errmsg::FFI_BADCONV, &[&repr[isstr as usize], &repr[isenum as usize]]);
+        let m = msgf(
+            errmsg::FFI_BADCONV,
+            &[&repr[isstr as usize], &repr[isenum as usize]],
+        );
         return Err(vm.err_callermsg(&m));
     }
     let em = match mm {
@@ -300,7 +364,10 @@ fn carith_meta(vm: &mut Vm, cts: &CTState, ca: &CDArith, mm: MM) -> LuaResult<us
 pub fn carith_op(vm: &mut Vm, mm: MM) -> LuaResult<usize> {
     let st = state(vm);
     let mut cts = st.cts.borrow_mut();
-    let mut ca = CDArith { p: [std::ptr::null(); 2], ct: [None; 2] };
+    let mut ca = CDArith {
+        p: [std::ptr::null(); 2],
+        ct: [None; 2],
+    };
     let mut nums = [0f64; 2];
     if checkarg(vm, &mut cts, &mut ca, &mut nums)? && mm != MM::Len && mm != MM::Concat {
         let r = match carith_int64(vm, &mut cts, &ca, mm)? {
@@ -346,13 +413,23 @@ fn cdata_bit64(vm: &mut Vm, cd: Gc<CData>, id: &mut u32, flags: CTInfo) -> LuaRe
         s = cts.child(s);
     }
     let sct = cts.get(s);
-    if (sct.info & (CTMASK_NUM | CTF_BOOL | CTF_FP | CTF_UNSIGNED)) == ctinfo(CT_NUM, CTF_UNSIGNED) && sct.size == 8 {
+    if (sct.info & (CTMASK_NUM | CTF_BOOL | CTF_FP | CTF_UNSIGNED)) == ctinfo(CT_NUM, CTF_UNSIGNED)
+        && sct.size == 8
+    {
         *id = CTID_UINT64; // Use uint64_t, since it has the highest rank.
     } else if *id == 0 {
         *id = CTID_INT64; // Use int64_t, unless already set.
     }
     let mut x = 0u64;
-    cconv::ct_ct(vm, &cts, *id, s, std::ptr::from_mut(&mut x).cast(), sp, flags)?;
+    cconv::ct_ct(
+        vm,
+        &cts,
+        *id,
+        s,
+        std::ptr::from_mut(&mut x).cast(),
+        sp,
+        flags,
+    )?;
     Ok(x)
 }
 
@@ -375,7 +452,11 @@ pub fn divu64(a: u64, b: u64) -> u64 {
 
 /// Signed 64 bit division (`lj_carith_divi64`).
 pub fn divi64(a: i64, b: i64) -> i64 {
-    if b == 0 || (a == i64::MIN && b == -1) { i64::MIN } else { a / b }
+    if b == 0 || (a == i64::MIN && b == -1) {
+        i64::MIN
+    } else {
+        a / b
+    }
 }
 
 /// Unsigned 64 bit modulo (`lj_carith_modu64`).

@@ -149,9 +149,17 @@ fn decode(dump: &[u8]) -> Vec<DProto> {
         let sizekn = r.uleb() as usize;
         let sizebc = r.uleb() as usize;
         let sizedbg = r.uleb();
-        let (firstline, numline) = if sizedbg != 0 { (r.uleb(), r.uleb()) } else { (0, 0) };
-        let bc: Vec<u32> = (0..sizebc).map(|_| u32::from_le_bytes(r.bytes(4).try_into().unwrap())).collect();
-        let uv: Vec<u16> = (0..sizeuv).map(|_| u16::from_le_bytes(r.bytes(2).try_into().unwrap())).collect();
+        let (firstline, numline) = if sizedbg != 0 {
+            (r.uleb(), r.uleb())
+        } else {
+            (0, 0)
+        };
+        let bc: Vec<u32> = (0..sizebc)
+            .map(|_| u32::from_le_bytes(r.bytes(4).try_into().unwrap()))
+            .collect();
+        let uv: Vec<u16> = (0..sizeuv)
+            .map(|_| u16::from_le_bytes(r.bytes(2).try_into().unwrap()))
+            .collect();
         let mut kgc = Vec::new();
         for _ in 0..sizekgc {
             let tp = r.uleb();
@@ -161,14 +169,19 @@ fn decode(dump: &[u8]) -> Vec<DProto> {
                     let narray = r.uleb();
                     let nhash = r.uleb();
                     let array = (0..narray).map(|_| ktabk(&mut r)).collect();
-                    let mut hash: Vec<(K, K)> = (0..nhash).map(|_| (ktabk(&mut r), ktabk(&mut r))).collect();
+                    let mut hash: Vec<(K, K)> =
+                        (0..nhash).map(|_| (ktabk(&mut r), ktabk(&mut r))).collect();
                     hash.sort_by(|a, b| a.partial_cmp(b).unwrap());
                     Kgc::Tab { array, hash }
                 }
                 2 | 3 => {
                     let lo = r.uleb() as u64;
                     let hi = r.uleb() as u64;
-                    if tp == 2 { Kgc::I64(hi << 32 | lo) } else { Kgc::U64(hi << 32 | lo) }
+                    if tp == 2 {
+                        Kgc::I64(hi << 32 | lo)
+                    } else {
+                        Kgc::U64(hi << 32 | lo)
+                    }
                 }
                 4 => {
                     let a = r.uleb() as u64;
@@ -347,14 +360,20 @@ fn flatten(pt: Gc<Proto>, out: &mut Vec<DProto>) {
 fn check(path: &Path) -> Result<(), String> {
     let name = path.file_name().unwrap().to_str().unwrap();
     let src = fs::read(path).unwrap();
-    let raw = fs::read(path.with_extension("lua.raw")).map_err(|e| format!("{name}: no dump: {e}"))?;
+    let raw =
+        fs::read(path.with_extension("lua.raw")).map_err(|e| format!("{name}: no dump: {e}"))?;
     let want = decode(&raw);
     let mut vm = Vm::new();
-    let pt = parse::parse(&mut vm, &src, format!("@{name}").as_bytes()).map_err(|_| format!("{name}: parse failed"))?;
+    let pt = parse::parse(&mut vm, &src, format!("@{name}").as_bytes())
+        .map_err(|_| format!("{name}: parse failed"))?;
     let mut got = Vec::new();
     flatten(pt, &mut got);
     if want.len() != got.len() {
-        return Err(format!("{name}: {} prototypes, want {}", got.len(), want.len()));
+        return Err(format!(
+            "{name}: {} prototypes, want {}",
+            got.len(),
+            want.len()
+        ));
     }
     for (i, (w, g)) in want.iter().zip(&got).enumerate() {
         if w != g {
@@ -375,7 +394,9 @@ fn check(path: &Path) -> Result<(), String> {
             } else {
                 "header"
             };
-            return Err(format!("{name}: prototype #{i} differs in {field}:\n  want: {w:?}\n  got:  {g:?}"));
+            return Err(format!(
+                "{name}: prototype #{i} differs in {field}:\n  want: {w:?}\n  got:  {g:?}"
+            ));
         }
     }
     Ok(())
@@ -393,7 +414,16 @@ fn prototypes_match_reference_dumps() {
     assert!(!files.is_empty());
     let failures: Vec<String> = files.iter().filter_map(|p| check(p).err()).collect();
     if !failures.is_empty() {
-        let shown: Vec<String> = failures.iter().take(10).map(|s| s.chars().take(2000).collect()).collect();
-        panic!("{} of {} fixtures differ:\n{}", failures.len(), files.len(), shown.join("\n"));
+        let shown: Vec<String> = failures
+            .iter()
+            .take(10)
+            .map(|s| s.chars().take(2000).collect())
+            .collect();
+        panic!(
+            "{} of {} fixtures differ:\n{}",
+            failures.len(),
+            files.len(),
+            shown.join("\n")
+        );
     }
 }

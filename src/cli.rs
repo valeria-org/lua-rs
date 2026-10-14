@@ -87,7 +87,9 @@ extern "C" fn laction(i: libc::c_int) {
 }
 
 fn print_usage() {
-    let prog = SMAIN.with(|s| s.borrow().progname.clone()).unwrap_or_default();
+    let prog = SMAIN
+        .with(|s| s.borrow().progname.clone())
+        .unwrap_or_default();
     let mut m = b"usage: ".to_vec();
     m.extend_from_slice(&prog);
     m.extend_from_slice(
@@ -197,7 +199,9 @@ fn docall(vm: &mut Vm, narg: usize, clear: bool) -> Result<(), Value> {
 }
 
 fn print_version() {
-    crate::stdlib::write_stdout(format!("{LUAJIT_VERSION} -- {LUAJIT_COPYRIGHT}. {LUAJIT_URL}\n").as_bytes());
+    crate::stdlib::write_stdout(
+        format!("{LUAJIT_VERSION} -- {LUAJIT_COPYRIGHT}. {LUAJIT_URL}\n").as_bytes(),
+    );
 }
 
 fn getfield(vm: &mut Vm, o: Value, k: &[u8]) -> LuaResult<Value> {
@@ -216,7 +220,11 @@ fn print_jit_status(vm: &mut Vm) -> LuaResult<()> {
     let n = vm.get_top();
     vm.push(f);
     let nres = vm.call(0, -1)?;
-    let mut out = if nres > 0 && vm.get((n + 1) as i32).is_truthy() { b"JIT: ON".to_vec() } else { b"JIT: OFF".to_vec() };
+    let mut out = if nres > 0 && vm.get((n + 1) as i32).is_truthy() {
+        b"JIT: ON".to_vec()
+    } else {
+        b"JIT: OFF".to_vec()
+    };
     for i in n + 2..=n + nres {
         let v = vm.get(i as i32);
         match vm.to_str(v) {
@@ -288,7 +296,11 @@ fn write_prompt(vm: &mut Vm, firstline: bool) -> LuaResult<()> {
     let g = Value::Table(vm.globals);
     let v = getfield(vm, g, if firstline { b"_PROMPT" } else { b"_PROMPT2" })?;
     let p = vm.to_str(v).map(|s| s.as_bytes().to_vec());
-    crate::stdlib::write_stdout(p.as_deref().unwrap_or(if firstline { LUA_PROMPT } else { LUA_PROMPT2 }));
+    crate::stdlib::write_stdout(p.as_deref().unwrap_or(if firstline {
+        LUA_PROMPT
+    } else {
+        LUA_PROMPT2
+    }));
     flush_stdout();
     Ok(())
 }
@@ -316,7 +328,9 @@ fn readline(vm: &mut Vm, firstline: bool) -> LuaResult<Option<Vec<u8>>> {
         return Ok(None);
     }
     // SAFETY: fgets NUL-terminated the buffer.
-    let mut line = unsafe { std::ffi::CStr::from_ptr(buf.as_ptr()) }.to_bytes().to_vec();
+    let mut line = unsafe { std::ffi::CStr::from_ptr(buf.as_ptr()) }
+        .to_bytes()
+        .to_vec();
     if line.last() == Some(&b'\n') {
         line.pop();
     }
@@ -331,7 +345,9 @@ fn readline(vm: &mut Vm, firstline: bool) -> LuaResult<Option<Vec<u8>>> {
 /// `loadline`: `None` at end of input; else the load result (function pushed on success).
 fn loadline(vm: &mut Vm) -> LuaResult<Option<Result<(), Value>>> {
     vm.set_top(0);
-    let Some(mut buf) = readline(vm, true)? else { return Ok(None) };
+    let Some(mut buf) = readline(vm, true)? else {
+        return Ok(None);
+    };
     loop {
         match vm.load(&buf, b"=stdin", None) {
             Ok(f) => {
@@ -339,7 +355,9 @@ fn loadline(vm: &mut Vm) -> LuaResult<Option<Result<(), Value>>> {
                 return Ok(Some(Ok(())));
             }
             Err(e) if incomplete(&e) => {
-                let Some(more) = readline(vm, false)? else { return Ok(None) };
+                let Some(more) = readline(vm, false)? else {
+                    return Ok(None);
+                };
                 buf.push(b'\n');
                 buf.extend_from_slice(&more);
             }
@@ -603,7 +621,11 @@ fn handle_luainit(vm: &mut Vm) -> Status {
         Some(init) => {
             use std::os::unix::ffi::OsStrExt;
             let init = init.as_bytes();
-            if init.first() == Some(&b'@') { dofile(vm, Some(&init[1..])) } else { dostring(vm, init, b"=LUA_INIT") }
+            if init.first() == Some(&b'@') {
+                dofile(vm, Some(&init[1..]))
+            } else {
+                dostring(vm, init, b"=LUA_INIT")
+            }
         }
     }
 }
@@ -671,8 +693,18 @@ fn run(argv: Vec<Vec<u8>>) -> i32 {
         Some(a) if !a.is_empty() => Some(a.clone()),
         _ => Some(LUA_PROGNAME.to_vec()),
     };
-    let argv = if argv.is_empty() { vec![Vec::new()] } else { argv };
-    SMAIN.with(|s| *s.borrow_mut() = Smain { argv, status: 0, progname });
+    let argv = if argv.is_empty() {
+        vec![Vec::new()]
+    } else {
+        argv
+    };
+    SMAIN.with(|s| {
+        *s.borrow_mut() = Smain {
+            argv,
+            status: 0,
+            progname,
+        }
+    });
     let mut vm = Vm::new_state();
     let pm = vm.native(pmain, FF_C, vec![]);
     vm.push(Value::Func(pm));
@@ -691,7 +723,10 @@ fn run(argv: Vec<Vec<u8>>) -> i32 {
 pub fn main() -> i32 {
     use std::os::unix::ffi::OsStringExt;
     let argv: Vec<Vec<u8>> = std::env::args_os().map(OsStringExt::into_vec).collect();
-    let h = std::thread::Builder::new().stack_size(256 << 20).spawn(move || run(argv)).expect("spawn");
+    let h = std::thread::Builder::new()
+        .stack_size(256 << 20)
+        .spawn(move || run(argv))
+        .expect("spawn");
     // Deliver SIGINT to the VM thread only (its signal handler installs the stop hook there).
     // SAFETY: blocking a signal in the calling thread.
     unsafe {

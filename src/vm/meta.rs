@@ -22,7 +22,12 @@ pub const LJ_MAX_IDXCHAIN: usize = 100;
 pub(crate) enum Meta<T> {
     Done(T),
     /// Call `mo(a, b)` (and for `__newindex` a third argument) with continuation `cont`.
-    Call { cont: Cont, mo: Value, a: Value, b: Value },
+    Call {
+        cont: Cont,
+        mo: Value,
+        a: Value,
+        b: Value,
+    },
 }
 
 /// `lj_vm_foldarith` for the arithmetic metamethod order (`MM_add` .. `MM_unm`).
@@ -132,21 +137,42 @@ impl Vm {
 
     /// `lj_meta_tget`: resolve `o[k]` through the `__index` chain. `slot` is the stack slot of
     /// `o` for error messages.
-    pub(crate) fn meta_tget(&mut self, o: Value, k: Value, slot: Option<usize>) -> LuaResult<Meta<Value>> {
+    pub(crate) fn meta_tget(
+        &mut self,
+        o: Value,
+        k: Value,
+        slot: Option<usize>,
+    ) -> LuaResult<Meta<Value>> {
         self.tget_chain(o, k, slot, 0)
     }
 
     /// `lj_meta_tget` for the interpreter, after the raw lookup of `k` in table `o` returned nil
     /// and the `__index` metamethod of `o` was found to be `mo`.
-    pub(crate) fn meta_tget_index(&mut self, o: Value, mo: Value, k: Value) -> LuaResult<Meta<Value>> {
+    pub(crate) fn meta_tget_index(
+        &mut self,
+        o: Value,
+        mo: Value,
+        k: Value,
+    ) -> LuaResult<Meta<Value>> {
         if let Value::Func(_) = mo {
-            return Ok(Meta::Call { cont: Cont::Ra, mo, a: o, b: k });
+            return Ok(Meta::Call {
+                cont: Cont::Ra,
+                mo,
+                a: o,
+                b: k,
+            });
         }
         self.tget_chain(mo, k, None, 1)
     }
 
     /// The `lj_meta_tget` loop from chain link `start` on.
-    fn tget_chain(&mut self, o: Value, k: Value, slot: Option<usize>, start: usize) -> LuaResult<Meta<Value>> {
+    fn tget_chain(
+        &mut self,
+        o: Value,
+        k: Value,
+        slot: Option<usize>,
+        start: usize,
+    ) -> LuaResult<Meta<Value>> {
         let mut o = o;
         for lp in start..LJ_MAX_IDXCHAIN {
             let mo;
@@ -165,11 +191,20 @@ impl Vm {
             } else {
                 mo = self.meta_lookup(o, MM::Index);
                 if mo.is_nil() {
-                    return Err(self.err_optype(o, if lp == 0 { slot } else { None }, ErrMsg::OPINDEX));
+                    return Err(self.err_optype(
+                        o,
+                        if lp == 0 { slot } else { None },
+                        ErrMsg::OPINDEX,
+                    ));
                 }
             }
             if let Value::Func(_) = mo {
-                return Ok(Meta::Call { cont: Cont::Ra, mo, a: o, b: k });
+                return Ok(Meta::Call {
+                    cont: Cont::Ra,
+                    mo,
+                    a: o,
+                    b: k,
+                });
             }
             o = mo;
         }
@@ -189,7 +224,13 @@ impl Vm {
 
     /// `lj_meta_tset`: perform `o[k] = v` through the `__newindex` chain. Returns the
     /// metamethod call (with `a = object`, `b = key`; the value is the third argument).
-    pub(crate) fn meta_tset(&mut self, o: Value, k: Value, v: Value, slot: Option<usize>) -> LuaResult<Meta<()>> {
+    pub(crate) fn meta_tset(
+        &mut self,
+        o: Value,
+        k: Value,
+        v: Value,
+        slot: Option<usize>,
+    ) -> LuaResult<Meta<()>> {
         let mut o = o;
         for lp in 0..LJ_MAX_IDXCHAIN {
             let mo;
@@ -209,11 +250,20 @@ impl Vm {
             } else {
                 mo = self.meta_lookup(o, MM::Newindex);
                 if mo.is_nil() {
-                    return Err(self.err_optype(o, if lp == 0 { slot } else { None }, ErrMsg::OPINDEX));
+                    return Err(self.err_optype(
+                        o,
+                        if lp == 0 { slot } else { None },
+                        ErrMsg::OPINDEX,
+                    ));
                 }
             }
             if let Value::Func(_) = mo {
-                return Ok(Meta::Call { cont: Cont::Nop, mo, a: o, b: k });
+                return Ok(Meta::Call {
+                    cont: Cont::Nop,
+                    mo,
+                    a: o,
+                    b: k,
+                });
             }
             o = mo;
         }
@@ -237,11 +287,20 @@ impl Vm {
         if mo.is_nil() {
             mo = self.meta_lookup(rc, mm);
             if mo.is_nil() {
-                let (o, s) = if str2num(rb).is_none() { (rb, bslot) } else { (rc, cslot) };
+                let (o, s) = if str2num(rb).is_none() {
+                    (rb, bslot)
+                } else {
+                    (rc, cslot)
+                };
                 return Err(self.err_optype(o, s, ErrMsg::OPARITH));
             }
         }
-        Ok(Meta::Call { cont: Cont::Ra, mo, a: rb, b: rc })
+        Ok(Meta::Call {
+            cont: Cont::Ra,
+            mo,
+            a: rb,
+            b: rc,
+        })
     }
 
     /// `lj_carith_checkbit64` for one operand.
@@ -269,13 +328,25 @@ impl Vm {
         let (mut id, mut id_ignore) = (0u32, 0u32);
         let mut b = self.checkbit64(rb, bslot, &mut id)?;
         let shift = (op as u8) >= (Op::BSHL as u8);
-        let mut c = if shift { self.checkbit64(rc, cslot, &mut id_ignore)? } else { self.checkbit64(rc, cslot, &mut id)? };
+        let mut c = if shift {
+            self.checkbit64(rc, cslot, &mut id_ignore)?
+        } else {
+            self.checkbit64(rc, cslot, &mut id)?
+        };
         if id != 0 {
             if let Value::Num(n) = rb {
-                b = if id == CTID_UINT64 { crate::text::num2u64(n) } else { crate::text::num2i64(n) as u64 };
+                b = if id == CTID_UINT64 {
+                    crate::text::num2u64(n)
+                } else {
+                    crate::text::num2i64(n) as u64
+                };
             }
             if let Value::Num(n) = rc {
-                c = if id == CTID_UINT64 { crate::text::num2u64(n) } else { crate::text::num2i64(n) as u64 };
+                c = if id == CTID_UINT64 {
+                    crate::text::num2u64(n)
+                } else {
+                    crate::text::num2i64(n) as u64
+                };
             }
         }
         let r = match op {
@@ -302,7 +373,15 @@ impl Vm {
             }
         };
         if id != 0 {
-            let cd = self.new_cdata(if id == CTID_UINT64 { CTID_UINT64 } else { CTID_INT64 }, 8, 8);
+            let cd = self.new_cdata(
+                if id == CTID_UINT64 {
+                    CTID_UINT64
+                } else {
+                    CTID_INT64
+                },
+                8,
+                8,
+            );
             // SAFETY: the cdata owns 8 bytes of 8-byte aligned storage.
             unsafe { (cd.ptr() as *mut u64).write(r) };
             Ok(Value::CData(cd))
@@ -318,7 +397,12 @@ impl Vm {
         if mo.is_nil() {
             return Err(self.err_optype(o, slot, ErrMsg::OPLEN));
         }
-        Ok(Meta::Call { cont: Cont::Ra, mo, a: o, b: Value::Nil })
+        Ok(Meta::Call {
+            cont: Cont::Ra,
+            mo,
+            a: o,
+            b: Value::Nil,
+        })
     }
 
     /// `lj_meta_equal` for two different tables or two different userdata: `None` = result
@@ -333,18 +417,32 @@ impl Vm {
                 return None;
             }
         }
-        Some(Meta::Call { cont: if ne { Cont::CondF } else { Cont::CondT }, mo, a: o1, b: o2 })
+        Some(Meta::Call {
+            cont: if ne { Cont::CondF } else { Cont::CondT },
+            mo,
+            a: o1,
+            b: o2,
+        })
     }
 
     /// `lj_meta_equal_cd`: equality with a cdata operand always consults `__eq` of the cdata
     /// (`o1mm`) — `ne` selects the inverted condition. `None` = no metamethod: result `ne`.
     pub(crate) fn meta_equal_cd(&mut self, o1: Value, o2: Value, ne: bool) -> Option<Meta<bool>> {
-        let o1mm = if matches!(o1, Value::CData(_)) { o1 } else { o2 };
+        let o1mm = if matches!(o1, Value::CData(_)) {
+            o1
+        } else {
+            o2
+        };
         let mo = self.meta_lookup(o1mm, MM::Eq);
         if mo.is_nil() {
             return None;
         }
-        Some(Meta::Call { cont: if ne { Cont::CondF } else { Cont::CondT }, mo, a: o1, b: o2 })
+        Some(Meta::Call {
+            cont: if ne { Cont::CondF } else { Cont::CondT },
+            mo,
+            a: o1,
+            b: o2,
+        })
     }
 
     /// `lj_meta_comp`: ordered comparison of non-numbers. `op` bit 0 = inverted condition, bit 1
@@ -352,25 +450,50 @@ impl Vm {
     pub(crate) fn meta_comp(&mut self, o1: Value, o2: Value, op: u8) -> LuaResult<Meta<bool>> {
         let (mut o1, mut o2, mut op) = (o1, o2, op);
         if matches!(o1, Value::CData(_)) || matches!(o2, Value::CData(_)) {
-            let cont = if op & 1 != 0 { Cont::CondF } else { Cont::CondT };
+            let cont = if op & 1 != 0 {
+                Cont::CondF
+            } else {
+                Cont::CondT
+            };
             let mm = if op & 2 != 0 { MM::Le } else { MM::Lt };
-            let mo = self.meta_lookup(if matches!(o1, Value::CData(_)) { o1 } else { o2 }, mm);
+            let mo = self.meta_lookup(
+                if matches!(o1, Value::CData(_)) {
+                    o1
+                } else {
+                    o2
+                },
+                mm,
+            );
             if mo.is_nil() {
                 return Err(self.err_comp(o1, o2));
             }
-            return Ok(Meta::Call { cont, mo, a: o1, b: o2 });
+            return Ok(Meta::Call {
+                cont,
+                mo,
+                a: o1,
+                b: o2,
+            });
         }
-        let same = o1.vtype() == o2.vtype() || (matches!(o1, Value::Bool(_)) && matches!(o2, Value::Bool(_)));
+        let same = o1.vtype() == o2.vtype()
+            || (matches!(o1, Value::Bool(_)) && matches!(o2, Value::Bool(_)));
         if !same {
             return Err(self.err_comp(o1, o2));
         }
         if let (Value::Str(a), Value::Str(b)) = (o1, o2) {
             let ord = a.as_bytes().cmp(b.as_bytes());
-            let res = if op & 2 != 0 { ord.is_le() } else { ord.is_lt() };
+            let res = if op & 2 != 0 {
+                ord.is_le()
+            } else {
+                ord.is_lt()
+            };
             return Ok(Meta::Done(res ^ (op & 1 != 0)));
         }
         loop {
-            let cont = if op & 1 != 0 { Cont::CondF } else { Cont::CondT };
+            let cont = if op & 1 != 0 {
+                Cont::CondF
+            } else {
+                Cont::CondT
+            };
             let mm = if op & 2 != 0 { MM::Le } else { MM::Lt };
             let mo = self.meta_lookup(o1, mm);
             let mo2 = self.meta_lookup(o2, mm);
@@ -382,7 +505,12 @@ impl Vm {
                 }
                 return Err(self.err_comp(o1, o2));
             }
-            return Ok(Meta::Call { cont, mo, a: o1, b: o2 });
+            return Ok(Meta::Call {
+                cont,
+                mo,
+                a: o1,
+                b: o2,
+            });
         }
     }
 
@@ -407,7 +535,12 @@ impl Vm {
                         return Err(self.err_optype(o, Some(s), ErrMsg::OPCAT));
                     }
                 }
-                return Ok(Meta::Call { cont: Cont::Cat { top: top as u32 }, mo, a, b });
+                return Ok(Meta::Call {
+                    cont: Cont::Cat { top: top as u32 },
+                    mo,
+                    a,
+                    b,
+                });
             }
             // Pick as many strings as possible from the top and concatenate them.
             let mut o = top;
@@ -447,7 +580,10 @@ impl Vm {
     /// error.
     pub(crate) fn meta_for(&mut self, slot: usize) -> LuaResult<()> {
         let th = self.cur_thread;
-        for (i, em) in [ErrMsg::FORINIT, ErrMsg::FORLIM, ErrMsg::FORSTEP].into_iter().enumerate() {
+        for (i, em) in [ErrMsg::FORINIT, ErrMsg::FORLIM, ErrMsg::FORSTEP]
+            .into_iter()
+            .enumerate()
+        {
             match str2num(th.get(slot + i)) {
                 Some(n) => th.set(slot + i, Value::Num(n)),
                 None => return Err(self.err_msg(em)),

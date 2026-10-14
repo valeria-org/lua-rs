@@ -50,8 +50,10 @@ pub const LIB_LOAD: &[(&str, LibOpen)] = &[
 /// that push the module table and return 1 (`luaopen_ffi`, `luaopen_string_buffer`): module
 /// name and opener. `luaL_openlibs` stores the ones named in [`LIB_PRELOAD`] in
 /// `package.preload` (`lj_lib_preload`).
-pub const LIB_MODULES: &[(&str, NativeFn)] =
-    &[("ffi", crate::ffi::libffi::luaopen_ffi), ("string.buffer", buffer::luaopen_string_buffer)];
+pub const LIB_MODULES: &[(&str, NativeFn)] = &[
+    ("ffi", crate::ffi::libffi::luaopen_ffi),
+    ("string.buffer", buffer::luaopen_string_buffer),
+];
 
 /// Names of [`LIB_MODULES`] entries that `luaL_openlibs` puts into `package.preload`.
 pub const LIB_PRELOAD: &[&str] = &["ffi"];
@@ -62,21 +64,27 @@ pub fn open_libs(vm: &mut Vm) -> LuaResult<()> {
     for &(_, open) in LIB_LOAD {
         open(vm)?;
     }
-    let n = LIB_MODULES.iter().filter(|(n, _)| LIB_PRELOAD.contains(n)).count();
+    let n = LIB_MODULES
+        .iter()
+        .filter(|(n, _)| LIB_PRELOAD.contains(n))
+        .count();
     if n > 0 {
         let key = vm.new_str(b"_PRELOAD");
         let t = match vm.registry.get_str(key) {
             Value::Table(t) => t,
             _ => {
                 let t = vm.new_table(0, crate::table::hsize2hbits(n as u32))?;
-                vm.registry.set_str(key, Value::Table(t)).map_err(|e| vm.tab_error(e))?;
+                vm.registry
+                    .set_str(key, Value::Table(t))
+                    .map_err(|e| vm.tab_error(e))?;
                 t
             }
         };
         for &(name, f) in LIB_MODULES.iter().filter(|(n, _)| LIB_PRELOAD.contains(n)) {
             let func = new_lib_fn(vm, f, crate::func::FF_C, Vec::new());
             let k = vm.new_str(name.as_bytes());
-            t.set_str(k, Value::Func(func)).map_err(|e| vm.tab_error(e))?;
+            t.set_str(k, Value::Func(func))
+                .map_err(|e| vm.tab_error(e))?;
         }
     }
     Ok(())
@@ -97,7 +105,12 @@ pub fn loaded_table(vm: &mut Vm) -> Gc<Table> {
 
 /// Create a native function for a library (environment = the globals table, as natives
 /// registered by `luaL_openlibs` get).
-pub fn new_lib_fn(vm: &mut Vm, f: NativeFn, ffid: u8, upvals: Vec<Value>) -> Gc<crate::func::Function> {
+pub fn new_lib_fn(
+    vm: &mut Vm,
+    f: NativeFn,
+    ffid: u8,
+    upvals: Vec<Value>,
+) -> Gc<crate::func::Function> {
     let env = vm.globals;
     vm.new_native(NativeImpl::Rust(f), ffid, upvals, env)
 }

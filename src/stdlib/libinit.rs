@@ -42,7 +42,9 @@ fn lib_create_table(vm: &mut Vm, libname: Option<&str>, hsize: u32) -> LuaResult
     let t = match vm.globals.get_str(key) {
         Value::Nil => {
             let t = vm.new_table(0, hsize2hbits(hsize))?;
-            vm.globals.set_str(key, Value::Table(t)).map_err(|e| vm.tab_error(e))?;
+            vm.globals
+                .set_str(key, Value::Table(t))
+                .map_err(|e| vm.tab_error(e))?;
             t
         }
         Value::Table(t) => t,
@@ -51,7 +53,9 @@ fn lib_create_table(vm: &mut Vm, libname: Option<&str>, hsize: u32) -> LuaResult
             return Err(vm.rt_error(&m));
         }
     };
-    loaded.set_str(key, Value::Table(t)).map_err(|e| vm.tab_error(e))?;
+    loaded
+        .set_str(key, Value::Table(t))
+        .map_err(|e| vm.tab_error(e))?;
     Ok(t)
 }
 
@@ -90,7 +94,8 @@ pub fn lib_register(
             debug_assert!(tag & LIBINIT_TAGMASK != LIBINIT_CF || len > 0);
             if len > 0 {
                 let k = vm.new_str(&init[p..p + len]);
-                tab.set_str(k, Value::Func(func)).map_err(|e| vm.tab_error(e))?;
+                tab.set_str(k, Value::Func(func))
+                    .map_err(|e| vm.tab_error(e))?;
             }
             p += len;
             ofn = Some(func);
@@ -102,7 +107,9 @@ pub fn lib_register(
                     let val = stack.pop().expect("libinit SET value");
                     match key {
                         Value::Str(s) if s.is_empty() => {
-                            let Value::Table(t) = val else { unreachable!("libinit env must be a table") };
+                            let Value::Table(t) = val else {
+                                unreachable!("libinit env must be a table")
+                            };
                             env = t;
                         }
                         _ => vm.raw_set(tab, key, val)?,
@@ -144,7 +151,8 @@ fn lib_read_lfunc(vm: &mut Vm, init: &[u8], mut p: usize, tab: Gc<Table>) -> Lua
     let pt = vm.new_proto(pt);
     let env = vm.cur_thread.env();
     let f = vm.new_lua_function(pt, Vec::new(), env);
-    tab.set_str(name, Value::Func(f)).map_err(|e| vm.tab_error(e))?;
+    tab.set_str(name, Value::Func(f))
+        .map_err(|e| vm.tab_error(e))?;
     Ok(p + n)
 }
 
@@ -155,7 +163,9 @@ pub fn preload_table(vm: &mut Vm) -> LuaResult<Gc<Table>> {
         Value::Table(t) => Ok(t),
         _ => {
             let t = vm.new_table(0, hsize2hbits(4))?;
-            vm.registry.set_str(key, Value::Table(t)).map_err(|e| vm.tab_error(e))?;
+            vm.registry
+                .set_str(key, Value::Table(t))
+                .map_err(|e| vm.tab_error(e))?;
             Ok(t)
         }
     }
@@ -166,7 +176,8 @@ pub fn lib_prereg(vm: &mut Vm, name: &str, f: NativeFn, env: Gc<Table>) -> LuaRe
     let pre = preload_table(vm)?;
     let func = vm.new_native(NativeImpl::Rust(f), crate::func::FF_C, Vec::new(), env);
     let k = vm.new_str(name.as_bytes());
-    pre.set_str(k, Value::Func(func)).map_err(|e| vm.tab_error(e))
+    pre.set_str(k, Value::Func(func))
+        .map_err(|e| vm.tab_error(e))
 }
 
 /// `lj_lib_postreg`: create builtin `f`, store it as field `name` of the running loader's
@@ -175,6 +186,7 @@ pub fn lib_postreg(vm: &mut Vm, f: NativeFn, ffid: u8, name: &str) -> LuaResult<
     let env = vm.current_env();
     let func = vm.new_native(NativeImpl::Rust(f), ffid, Vec::new(), env);
     let k = vm.new_str(name.as_bytes());
-    env.set_str(k, Value::Func(func)).map_err(|e| vm.tab_error(e))?;
+    env.set_str(k, Value::Func(func))
+        .map_err(|e| vm.tab_error(e))?;
     vm.ret1(Value::Func(func))
 }

@@ -37,7 +37,12 @@ pub fn cdata_setfin(vm: &mut Vm, cd: Gc<CData>, fin: Value) -> LuaResult<()> {
 /// Index C data by a Lua value (`lj_cdata_index`). Returns the C type, the pointer and the
 /// collected qualifiers; bit 0 of the qualifiers is set if the lookup failed (then the type
 /// is the resolved raw type for the metamethod lookup).
-pub fn cdata_index(vm: &mut Vm, cts: &CTState, cd: Gc<CData>, key: Value) -> LuaResult<(CTypeID, *mut u8, CTInfo)> {
+pub fn cdata_index(
+    vm: &mut Vm,
+    cts: &CTState,
+    cd: Gc<CData>,
+    key: Value,
+) -> LuaResult<(CTypeID, *mut u8, CTInfo)> {
     let mut p = cd.ptr();
     let mut ct = cd.ctypeid();
     let mut qual: CTInfo = 0;
@@ -70,7 +75,15 @@ pub fn cdata_index(vm: &mut Vm, cts: &CTState, cd: Gc<CData>, key: Value) -> Lua
                 }
                 if ctype_isinteger(cts.get(ctk).info) {
                     let mut idx: isize = 0;
-                    cconv::ct_ct(vm, cts, CTID_INT_PSZ, ctk, std::ptr::from_mut(&mut idx).cast(), cdk.ptr(), 0)?;
+                    cconv::ct_ct(
+                        vm,
+                        cts,
+                        CTID_INT_PSZ,
+                        ctk,
+                        std::ptr::from_mut(&mut idx).cast(),
+                        cdk.ptr(),
+                        0,
+                    )?;
                     Some(idx)
                 } else {
                     None
@@ -145,14 +158,26 @@ pub fn cdata_index(vm: &mut Vm, cts: &CTState, cd: Gc<CData>, key: Value) -> Lua
 /// Get a constant value as a Lua number (`cdata_getconst`).
 fn getconst(cts: &CTState, ct: CTypeID) -> Value {
     let ctt = cts.get(cts.child(ct));
-    debug_assert!(ctype_isinteger(ctt.info) && ctt.size <= 4, "only 32 bit const supported");
+    debug_assert!(
+        ctype_isinteger(ctt.info) && ctt.size <= 4,
+        "only 32 bit const supported"
+    );
     // Constants are already zero-extended/sign-extended to 32 bits.
     let v = cts.get(ct).size;
-    if ctt.info & CTF_UNSIGNED != 0 && (v as i32) < 0 { Value::Num(v as f64) } else { Value::Num(v as i32 as f64) }
+    if ctt.info & CTF_UNSIGNED != 0 && (v as i32) < 0 {
+        Value::Num(v as f64)
+    } else {
+        Value::Num(v as i32 as f64)
+    }
 }
 
 /// Get C data value and convert it to a Lua value (`lj_cdata_get`).
-pub(crate) fn cdata_get(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sp: *mut u8) -> LuaResult<Value> {
+pub(crate) fn cdata_get(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    s: CTypeID,
+    sp: *mut u8,
+) -> LuaResult<Value> {
     let sinfo = cts.get(s).info;
     if ctype_isconstval(sinfo) {
         return Ok(getconst(cts, s));
@@ -160,7 +185,10 @@ pub(crate) fn cdata_get(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sp: *mut u8)
         return cconv::tv_bf(vm, cts, s, sp);
     }
     // Get child type of pointer/array/field.
-    debug_assert!(ctype_ispointer(sinfo) || ctype_isfield(sinfo), "pointer or field expected");
+    debug_assert!(
+        ctype_ispointer(sinfo) || ctype_isfield(sinfo),
+        "pointer or field expected"
+    );
     let mut sid = ctype_cid(sinfo);
     let mut sp = sp;
     // Resolve reference for field.
@@ -178,7 +206,14 @@ pub(crate) fn cdata_get(vm: &mut Vm, cts: &mut CTState, s: CTypeID, sp: *mut u8)
 }
 
 /// Convert a Lua value and store it into C data (`lj_cdata_set`).
-pub(crate) fn cdata_set(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8, o: Value, qual: CTInfo) -> LuaResult<()> {
+pub(crate) fn cdata_set(
+    vm: &mut Vm,
+    cts: &mut CTState,
+    d: CTypeID,
+    dp: *mut u8,
+    o: Value,
+    qual: CTInfo,
+) -> LuaResult<()> {
     let dinfo = cts.get(d).info;
     let mut qual = qual;
     if ctype_isconstval(dinfo) {
@@ -190,7 +225,10 @@ pub(crate) fn cdata_set(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8,
         return cconv::bf_tv(vm, cts, d, dp, o);
     }
     // Get child type of pointer/array/field.
-    debug_assert!(ctype_ispointer(dinfo) || ctype_isfield(dinfo), "pointer or field expected");
+    debug_assert!(
+        ctype_ispointer(dinfo) || ctype_isfield(dinfo),
+        "pointer or field expected"
+    );
     let mut d = cts.child(d);
     let mut dp = dp;
     // Resolve reference for field.
@@ -211,7 +249,10 @@ pub(crate) fn cdata_set(vm: &mut Vm, cts: &mut CTState, d: CTypeID, dp: *mut u8,
         }
         d = cts.child(d);
     }
-    debug_assert!(ctype_hassize(cts.get(d).info), "store to ctype without size");
+    debug_assert!(
+        ctype_hassize(cts.get(d).info),
+        "store to ctype without size"
+    );
     debug_assert!(!ctype_isvoid(cts.get(d).info), "store to void type");
     if (cts.get(d).info | qual) & CTF_CONST != 0 {
         return Err(vm.err_callermsg(errmsg::FFI_WRCONST.as_bytes()));

@@ -83,7 +83,10 @@ pub(crate) fn framepc(th: Gc<Thread>, idx: usize) -> Option<u32> {
     // The top Lua frame of a thread that is not running has no saved PC (`cframe == NULL`),
     // e.g. a coroutine that died with an error raised by its own bytecode.
     if idx + 1 == th.frame_count()
-        && matches!(th.status(), crate::thread::ThreadStatus::Dead | crate::thread::ThreadStatus::Suspended)
+        && matches!(
+            th.status(),
+            crate::thread::ThreadStatus::Dead | crate::thread::ThreadStatus::Suspended
+        )
     {
         return None;
     }
@@ -100,7 +103,12 @@ pub(crate) fn frameline(th: Gc<Thread>, idx: usize) -> i32 {
 
 fn varname_bytes(n: VarName) -> Vec<u8> {
     match n {
-        VarName::Internal(i) => VARNAME_STR.get(i as usize).copied().unwrap_or("").as_bytes().to_vec(),
+        VarName::Internal(i) => VARNAME_STR
+            .get(i as usize)
+            .copied()
+            .unwrap_or("")
+            .as_bytes()
+            .to_vec(),
         VarName::Str(s) => s.as_bytes().to_vec(),
     }
 }
@@ -123,7 +131,10 @@ pub(crate) fn varname(pt: &Proto, pc: u32, mut slot: u32) -> Option<Vec<u8>> {
 
 /// `lj_debug_uvname`: name of upvalue `idx` (empty if stripped).
 pub fn uvname(pt: &Proto, idx: usize) -> Vec<u8> {
-    pt.uvnames.get(idx).map(|s| s.as_bytes().to_vec()).unwrap_or_default()
+    pt.uvnames
+        .get(idx)
+        .map(|s| s.as_bytes().to_vec())
+        .unwrap_or_default()
 }
 
 fn kstr(pt: &Proto, idx: u32) -> Vec<u8> {
@@ -209,8 +220,14 @@ pub fn shortname(name: &[u8], line: u32) -> Vec<u8> {
 /// Address printed for a native function (`fn->c.f`).
 pub(crate) fn native_addr(f: &Function) -> usize {
     match f {
-        Function::Native { f: crate::func::NativeImpl::Rust(p), .. } => *p as *const () as usize,
-        Function::Native { f: crate::func::NativeImpl::C(p), .. } => *p as *const () as usize,
+        Function::Native {
+            f: crate::func::NativeImpl::Rust(p),
+            ..
+        } => *p as *const () as usize,
+        Function::Native {
+            f: crate::func::NativeImpl::C(p),
+            ..
+        } => *p as *const () as usize,
         Function::Lua { .. } => 0,
     }
 }
@@ -245,12 +262,16 @@ impl Vm {
 
     /// Number of frames of `th` (what `lua_getstack(L, -10, ar)` leaves in `ar.i_ci`).
     pub fn stack_depth(&self, th: Gc<Thread>) -> i32 {
-        (0..th.frame_count()).filter(|&i| th.frame(i).is_some_and(|f| !f.dummy)).count() as i32
+        (0..th.frame_count())
+            .filter(|&i| th.frame(i).is_some_and(|f| !f.dummy))
+            .count() as i32
     }
 
     /// Level of a frame (inverse of [`Vm::get_stack`]).
     pub fn frame_level(&self, fr: FrameRef) -> i32 {
-        (fr.idx + 1..fr.thread.frame_count()).filter(|&i| fr.thread.frame(i).is_some_and(|f| !f.dummy)).count() as i32
+        (fr.idx + 1..fr.thread.frame_count())
+            .filter(|&i| fr.thread.frame(i).is_some_and(|f| !f.dummy))
+            .count() as i32
     }
 
     /// `lj_debug_getinfo`. `what` holds option letters `S l u n f L`; returns `None` for an
@@ -260,7 +281,12 @@ impl Vm {
             InfoTarget::Frame(fr) => (Some(fr), fr.thread.frame(fr.idx)?.func),
             InfoTarget::Func(f) => (None, f),
         };
-        let mut ar = DebugInfo { currentline: -1, linedefined: -1, lastlinedefined: -1, ..Default::default() };
+        let mut ar = DebugInfo {
+            currentline: -1,
+            linedefined: -1,
+            lastlinedefined: -1,
+            ..Default::default()
+        };
         let (mut opt_f, mut opt_l) = (false, false);
         for &c in what {
             match c {
@@ -271,7 +297,11 @@ impl Vm {
                         ar.short_src = shortname(name.as_bytes(), pt.firstline);
                         ar.linedefined = pt.firstline as i32;
                         ar.lastlinedefined = (pt.firstline + pt.numline) as i32;
-                        ar.what = if pt.firstline != 0 || pt.numline == 0 { "Lua" } else { "main" };
+                        ar.what = if pt.firstline != 0 || pt.numline == 0 {
+                            "Lua"
+                        } else {
+                            "main"
+                        };
                     } else {
                         ar.source = b"=[C]".to_vec();
                         ar.short_src = b"[C]".to_vec();
@@ -366,7 +396,8 @@ impl Vm {
 
     /// `lua_getlocal`: name and value of local `n` of a frame.
     pub fn get_local(&self, fr: FrameRef, n: i32) -> Option<(Vec<u8>, Value)> {
-        self.localname(fr, n).map(|(name, slot)| (name, fr.thread.get(slot)))
+        self.localname(fr, n)
+            .map(|(name, slot)| (name, fr.thread.get(slot)))
     }
 
     /// `lua_setlocal`: assign local `n` of a frame; returns its name.
@@ -432,7 +463,9 @@ impl Vm {
                 lim = i32::MAX;
                 continue;
             }
-            let ar = self.get_info(InfoTarget::Frame(fr), b"Snlf").expect("valid options");
+            let ar = self
+                .get_info(InfoTarget::Frame(fr), b"Snlf")
+                .expect("valid options");
             let f = ar.func.expect("f option");
             if f.is_builtin() && ar.namewhat.is_empty() {
                 out.extend_from_slice(format!("\n\t[builtin#{}]:", f.ffid()).as_bytes());

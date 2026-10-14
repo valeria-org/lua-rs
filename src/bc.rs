@@ -113,41 +113,105 @@ impl BCMode {
 // -- Opcodes ------------------------------------------------------------------------------------
 
 macro_rules! bcm {
-    (___) => { BCMode::None };
-    (dst) => { BCMode::Dst };
-    (base) => { BCMode::Base };
-    (var) => { BCMode::Var };
-    (rbase) => { BCMode::Rbase };
-    (uv) => { BCMode::Uv };
-    (lit) => { BCMode::Lit };
-    (lits) => { BCMode::Lits };
-    (pri) => { BCMode::Pri };
-    (num) => { BCMode::Num };
-    (str) => { BCMode::Str };
-    (tab) => { BCMode::Tab };
-    (func) => { BCMode::Func };
-    (jump) => { BCMode::Jump };
-    (cdata) => { BCMode::Cdata };
+    (___) => {
+        BCMode::None
+    };
+    (dst) => {
+        BCMode::Dst
+    };
+    (base) => {
+        BCMode::Base
+    };
+    (var) => {
+        BCMode::Var
+    };
+    (rbase) => {
+        BCMode::Rbase
+    };
+    (uv) => {
+        BCMode::Uv
+    };
+    (lit) => {
+        BCMode::Lit
+    };
+    (lits) => {
+        BCMode::Lits
+    };
+    (pri) => {
+        BCMode::Pri
+    };
+    (num) => {
+        BCMode::Num
+    };
+    (str) => {
+        BCMode::Str
+    };
+    (tab) => {
+        BCMode::Tab
+    };
+    (func) => {
+        BCMode::Func
+    };
+    (jump) => {
+        BCMode::Jump
+    };
+    (cdata) => {
+        BCMode::Cdata
+    };
 }
 
 macro_rules! bcmm {
-    (___) => { MM_MAX as u16 };
-    (lt) => { MM::Lt as u16 };
-    (le) => { MM::Le as u16 };
-    (eq) => { MM::Eq as u16 };
-    (unm) => { MM::Unm as u16 };
-    (len) => { MM::Len as u16 };
-    (add) => { MM::Add as u16 };
-    (sub) => { MM::Sub as u16 };
-    (mul) => { MM::Mul as u16 };
-    (div) => { MM::Div as u16 };
-    (mod) => { MM::Mod as u16 };
-    (pow) => { MM::Pow as u16 };
-    (concat) => { MM::Concat as u16 };
-    (gc) => { MM::Gc as u16 };
-    (index) => { MM::Index as u16 };
-    (newindex) => { MM::Newindex as u16 };
-    (call) => { MM::Call as u16 };
+    (___) => {
+        MM_MAX as u16
+    };
+    (lt) => {
+        MM::Lt as u16
+    };
+    (le) => {
+        MM::Le as u16
+    };
+    (eq) => {
+        MM::Eq as u16
+    };
+    (unm) => {
+        MM::Unm as u16
+    };
+    (len) => {
+        MM::Len as u16
+    };
+    (add) => {
+        MM::Add as u16
+    };
+    (sub) => {
+        MM::Sub as u16
+    };
+    (mul) => {
+        MM::Mul as u16
+    };
+    (div) => {
+        MM::Div as u16
+    };
+    (mod) => {
+        MM::Mod as u16
+    };
+    (pow) => {
+        MM::Pow as u16
+    };
+    (concat) => {
+        MM::Concat as u16
+    };
+    (gc) => {
+        MM::Gc as u16
+    };
+    (index) => {
+        MM::Index as u16
+    };
+    (newindex) => {
+        MM::Newindex as u16
+    };
+    (call) => {
+        MM::Call as u16
+    };
 }
 
 macro_rules! bcdef {

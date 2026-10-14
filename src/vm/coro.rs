@@ -85,7 +85,14 @@ impl Vm {
         let oldst = super::hook::set_vmstate(super::hook::VMSTATE_INTERP);
         let first = if fresh {
             co.set(CO_FUNC_SLOT + 1, Value::Nil);
-            self.precall(co, CO_FUNC_SLOT, nargs, FrameKind::Cp(ErrFunc::None), -1, false)
+            self.precall(
+                co,
+                CO_FUNC_SLOT,
+                nargs,
+                FrameKind::Cp(ErrFunc::None),
+                -1,
+                false,
+            )
         } else {
             self.ret(co, dst, nargs)
         };

@@ -75,7 +75,10 @@ impl LuaError {
     }
     /// Runtime error with the given error object.
     pub fn run(value: Value) -> LuaError {
-        LuaError { kind: ErrorKind::Run, value }
+        LuaError {
+            kind: ErrorKind::Run,
+            value,
+        }
     }
     #[inline]
     pub fn status(&self) -> i32 {
@@ -104,7 +107,14 @@ mod tests {
 
     #[test]
     fn status_codes() {
-        for k in [ErrorKind::Run, ErrorKind::Syntax, ErrorKind::Mem, ErrorKind::Err, ErrorKind::File, ErrorKind::Yield] {
+        for k in [
+            ErrorKind::Run,
+            ErrorKind::Syntax,
+            ErrorKind::Mem,
+            ErrorKind::Err,
+            ErrorKind::File,
+            ErrorKind::Yield,
+        ] {
             assert_eq!(ErrorKind::from_status(k.status()), Some(k));
         }
         assert_eq!(ErrorKind::Run.status(), 2);

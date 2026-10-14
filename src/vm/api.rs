@@ -47,7 +47,9 @@ impl Vm {
     /// First argument slot of the running native (0 outside any frame).
     #[inline]
     pub fn frame_base(&self) -> usize {
-        self.cur_thread.current_frame().map_or(0, |f| f.base as usize)
+        self.cur_thread
+            .current_frame()
+            .map_or(0, |f| f.base as usize)
     }
 
     /// Number of values in the current frame (`lua_gettop`): arguments plus pushed values.
@@ -94,13 +96,21 @@ impl Vm {
 
     /// Absolute stack slot for a C-API-style index (positive: from base, negative: from top).
     pub fn abs_index(&self, idx: i32) -> usize {
-        if idx > 0 { self.frame_base() + idx as usize - 1 } else { (self.cur_thread.top() as i64 + idx as i64) as usize }
+        if idx > 0 {
+            self.frame_base() + idx as usize - 1
+        } else {
+            (self.cur_thread.top() as i64 + idx as i64) as usize
+        }
     }
 
     /// Value at a C-API-style index (nil if out of range).
     pub fn get(&self, idx: i32) -> Value {
         let s = self.abs_index(idx);
-        if s < self.cur_thread.top() { self.cur_thread.get(s) } else { Value::Nil }
+        if s < self.cur_thread.top() {
+            self.cur_thread.get(s)
+        } else {
+            Value::Nil
+        }
     }
 
     /// Store into a C-API-style index (`lua_replace`).
@@ -183,7 +193,9 @@ impl Vm {
 
     /// Upvalue `i` (1-based, `lua_upvalueindex(i)`) of the running function.
     pub fn upvalue(&self, i: usize) -> Value {
-        self.current_function().and_then(|f| f.upvalue(i - 1)).unwrap_or(Value::Nil)
+        self.current_function()
+            .and_then(|f| f.upvalue(i - 1))
+            .unwrap_or(Value::Nil)
     }
 
     /// Set upvalue `i` (1-based) of the running function.
@@ -196,11 +208,17 @@ impl Vm {
     /// `getcurrenv`: environment of the running function, else of the current thread. New
     /// natives created by libraries should use it as their environment.
     pub fn current_env(&self) -> Gc<Table> {
-        self.current_function().map_or_else(|| self.cur_thread.env(), |f| f.env())
+        self.current_function()
+            .map_or_else(|| self.cur_thread.env(), |f| f.env())
     }
 
     /// Create a native closure with the current environment (`lua_pushcclosure` / `lj_lib_pushcc`).
-    pub fn native(&mut self, f: crate::func::NativeFn, ffid: u8, upvals: Vec<Value>) -> Gc<Function> {
+    pub fn native(
+        &mut self,
+        f: crate::func::NativeFn,
+        ffid: u8,
+        upvals: Vec<Value>,
+    ) -> Gc<Function> {
         let env = self.current_env();
         self.new_native(NativeImpl::Rust(f), ffid, upvals, env)
     }
@@ -238,7 +256,11 @@ impl Vm {
 
     /// `lj_lib_optstr`: nil/absent gives `None`.
     pub fn opt_str(&mut self, n: usize) -> LuaResult<Option<Gc<LuaStr>>> {
-        if n <= self.nargs() && !self.arg(n).is_nil() { self.check_str(n).map(Some) } else { Ok(None) }
+        if n <= self.nargs() && !self.arg(n).is_nil() {
+            self.check_str(n).map(Some)
+        } else {
+            Ok(None)
+        }
     }
 
     /// `lj_lib_checknum`: a number; numeric strings are converted in place.
@@ -260,7 +282,11 @@ impl Vm {
 
     /// `lj_lib_optnum`.
     pub fn opt_num(&mut self, n: usize, def: f64) -> LuaResult<f64> {
-        if n <= self.nargs() && !self.arg(n).is_nil() { self.check_num(n) } else { Ok(def) }
+        if n <= self.nargs() && !self.arg(n).is_nil() {
+            self.check_num(n)
+        } else {
+            Ok(def)
+        }
     }
 
     /// `lj_lib_checkint`: number truncated like `(int32_t)` on x86-64 (`lj_num2int`).
@@ -270,7 +296,11 @@ impl Vm {
 
     /// `lj_lib_optint`.
     pub fn opt_int(&mut self, n: usize, def: i32) -> LuaResult<i32> {
-        if n <= self.nargs() && !self.arg(n).is_nil() { self.check_int(n) } else { Ok(def) }
+        if n <= self.nargs() && !self.arg(n).is_nil() {
+            self.check_int(n)
+        } else {
+            Ok(def)
+        }
     }
 
     /// Number converted to a 64-bit integer (`lj_num2i64`, used by e.g. `os` and `string`).
@@ -323,7 +353,11 @@ impl Vm {
     /// is absent/nil, a missing argument is an error if `def < 0`. Unknown strings raise
     /// `bad argument #n to 'f' (invalid option 'x')`.
     pub fn check_opt(&mut self, n: usize, def: i32, list: &[&str]) -> LuaResult<i32> {
-        let s = if def >= 0 { self.opt_str(n)? } else { Some(self.check_str(n)?) };
+        let s = if def >= 0 {
+            self.opt_str(n)?
+        } else {
+            Some(self.check_str(n)?)
+        };
         if let Some(s) = s {
             for (i, o) in list.iter().enumerate() {
                 if o.as_bytes() == s.as_bytes() {
@@ -476,7 +510,11 @@ impl Vm {
             Meta::Done(c) => Ok(c),
             Meta::Call { cont, mo, a, b } => {
                 let r = self.mm_call1(mo, &[a, b])?.is_truthy();
-                Ok(if cont == crate::thread::Cont::CondF { !r } else { r })
+                Ok(if cont == crate::thread::Cont::CondF {
+                    !r
+                } else {
+                    r
+                })
             }
         }
     }
@@ -507,7 +545,12 @@ impl Vm {
         loop {
             match self.meta_cat(top, left)? {
                 Meta::Done(()) => break,
-                Meta::Call { cont: crate::thread::Cont::Cat { top: t }, mo, a, b } => {
+                Meta::Call {
+                    cont: crate::thread::Cont::Cat { top: t },
+                    mo,
+                    a,
+                    b,
+                } => {
                     let t = t as usize;
                     let r = self.mm_call1(mo, &[a, b])?;
                     th.set(t - 1, r);

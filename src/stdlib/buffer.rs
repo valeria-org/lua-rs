@@ -69,7 +69,12 @@ impl Trace for SBufExt {
         }
     }
     fn size(&self) -> usize {
-        std::mem::size_of::<SBufExt>() + if self.cow.get() { 0 } else { self.sz() as usize }
+        std::mem::size_of::<SBufExt>()
+            + if self.cow.get() {
+                0
+            } else {
+                self.sz() as usize
+            }
     }
 }
 
@@ -190,7 +195,12 @@ impl SBufExt {
         let b = self.b.get();
         if !self.cow.get() && !b.is_null() {
             // SAFETY: `b` was allocated by `buf_grow` with this layout.
-            unsafe { alloc::dealloc(b, Layout::from_size_align_unchecked(self.sz() as usize, SBUF_ALIGN)) };
+            unsafe {
+                alloc::dealloc(
+                    b,
+                    Layout::from_size_align_unchecked(self.sz() as usize, SBUF_ALIGN),
+                )
+            };
         }
     }
 
@@ -222,7 +232,13 @@ impl SBufExt {
             unsafe { alloc::alloc_zeroed(layout) }
         } else {
             // SAFETY: `ob` was allocated with size `osz` and this alignment.
-            unsafe { alloc::realloc(ob, Layout::from_size_align_unchecked(osz as usize, SBUF_ALIGN), nsz as usize) }
+            unsafe {
+                alloc::realloc(
+                    ob,
+                    Layout::from_size_align_unchecked(osz as usize, SBUF_ALIGN),
+                    nsz as usize,
+                )
+            }
         };
         if b.is_null() {
             return Err(MemError);
@@ -274,7 +290,11 @@ impl SBufExt {
 
     /// `lj_buf_more`: at least `sz` free bytes after the write pointer.
     pub fn more(&self, sz: u32) -> Result<(), MemError> {
-        if sz > self.left() { self.more2(sz) } else { Ok(()) }
+        if sz > self.left() {
+            self.more2(sz)
+        } else {
+            Ok(())
+        }
     }
 
     /// Append bytes after a successful [`SBufExt::more`] (no capacity check).
@@ -540,7 +560,11 @@ fn buffer_method_put(vm: &mut Vm) -> LuaResult<usize> {
                 }
                 Value::Num(n) => {
                     let mut b = Vec::new();
-                    let res = crate::text::numfmt::put_fnum_reserve(&mut b, crate::text::strfmt::SFormat::G14, n);
+                    let res = crate::text::numfmt::put_fnum_reserve(
+                        &mut b,
+                        crate::text::strfmt::SFormat::G14,
+                        n,
+                    );
                     let r = s.put_reserved(&b, res);
                     mem(vm, r)?;
                 }
@@ -553,7 +577,11 @@ fn buffer_method_put(vm: &mut Vm) -> LuaResult<usize> {
                     mem(vm, r)?;
                 }
                 _ => {
-                    let mo = if mo_tried { Value::Nil } else { vm.meta_lookup(o, crate::bc::MM::Tostring) };
+                    let mo = if mo_tried {
+                        Value::Nil
+                    } else {
+                        vm.meta_lookup(o, crate::bc::MM::Tostring)
+                    };
                     if mo.is_nil() {
                         return Err(vm.type_error(arg as i32, "string/number/__tostring"));
                     }
@@ -592,7 +620,11 @@ fn buffer_method_get(vm: &mut Vm) -> LuaResult<usize> {
         vm.push_nil(); // get() is the same as get(nil).
     }
     for arg in 2..=narg {
-        let n = if vm.arg(arg).is_nil() { LJ_MAX_BUF } else { check_intrange(vm, arg, 0, LJ_MAX_BUF as i32)? as u32 };
+        let n = if vm.arg(arg).is_nil() {
+            LJ_MAX_BUF
+        } else {
+            check_intrange(vm, arg, 0, LJ_MAX_BUF as i32)? as u32
+        };
         let s = sbx(&ud);
         let n = n.min(s.len());
         let st = vm.new_str(&s.contents()[..n as usize]);

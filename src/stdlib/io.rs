@@ -72,7 +72,9 @@ pub(crate) fn set_errno(e: c_int) {
 /// `strerror(en)` as bytes.
 pub(crate) fn strerror(en: c_int) -> Vec<u8> {
     // SAFETY: strerror returns a valid NUL-terminated string.
-    unsafe { CStr::from_ptr(libc::strerror(en)) }.to_bytes().to_vec()
+    unsafe { CStr::from_ptr(libc::strerror(en)) }
+        .to_bytes()
+        .to_vec()
 }
 
 /// Bytes as C sees them through `strdata()`: up to the first NUL.
@@ -142,7 +144,11 @@ fn is_file_ud(v: Value) -> Option<Gc<Userdata>> {
 
 /// `io_tofilep`: argument 1 must be a file handle (open or closed).
 fn tofilep(vm: &mut Vm) -> LuaResult<*mut IOFileUD> {
-    match if vm.nargs() >= 1 { is_file_ud(vm.arg(1)) } else { None } {
+    match if vm.nargs() >= 1 {
+        is_file_ud(vm.arg(1))
+    } else {
+        None
+    } {
         Some(u) => Ok(iof_of(u)),
         None => Err(vm.type_error(1, "FILE*")),
     }
@@ -195,7 +201,12 @@ fn file_open(vm: &mut Vm, mode: &[u8]) -> LuaResult<*mut IOFileUD> {
     let cname = cstring(fname.as_bytes());
     let cmode = cstring(mode);
     // SAFETY: both strings are NUL-terminated.
-    let fp = unsafe { libc::fopen(cname.as_ptr() as *const c_char, cmode.as_ptr() as *const c_char) };
+    let fp = unsafe {
+        libc::fopen(
+            cname.as_ptr() as *const c_char,
+            cmode.as_ptr() as *const c_char,
+        )
+    };
     iof_set_fp(p, fp);
     if fp.is_null() {
         let en = errno();
@@ -221,7 +232,11 @@ fn file_close(vm: &mut Vm, p: *mut IOFileUD) -> usize {
             stat != -1
         }
         _ => {
-            debug_assert_eq!(ty & IOFILE_TYPE_MASK, IOFILE_TYPE_STDF, "close of unknown FILE* type");
+            debug_assert_eq!(
+                ty & IOFILE_TYPE_MASK,
+                IOFILE_TYPE_STDF,
+                "close of unknown FILE* type"
+            );
             vm.push_nil();
             vm.push_str(b"cannot close standard file");
             return 2;
@@ -267,7 +282,9 @@ fn file_readline(vm: &mut Vm, fp: *mut FILE, chop: bool) -> bool {
     let s = loop {
         let done = with_tmp(m, |buf| {
             // SAFETY: `buf` has at least `m` bytes and `n < m`.
-            let r = unsafe { libc::fgets(buf.as_mut_ptr().add(n) as *mut c_char, (m - n) as c_int, fp) };
+            let r = unsafe {
+                libc::fgets(buf.as_mut_ptr().add(n) as *mut c_char, (m - n) as c_int, fp)
+            };
             if r.is_null() {
                 return Some(vm.new_str(&buf[..n]));
             }
@@ -302,7 +319,11 @@ fn file_readall(vm: &mut Vm, fp: *mut FILE) {
         let s = with_tmp(m, |buf| {
             // SAFETY: `buf` has at least `m` bytes and `n <= m`.
             n += unsafe { libc::fread(buf.as_mut_ptr().add(n) as *mut libc::c_void, 1, m - n, fp) };
-            if n != m { Some(vm.new_str(&buf[..n])) } else { None }
+            if n != m {
+                Some(vm.new_str(&buf[..n]))
+            } else {
+                None
+            }
         });
         if let Some(s) = s {
             vm.push(Value::Str(s));
@@ -418,7 +439,9 @@ fn file_write(vm: &mut Vm, p: *mut IOFileUD, start: usize) -> LuaResult<usize> {
             _ => return Err(vm.type_error(i as i32, "string")),
         };
         // SAFETY: valid buffer and stream.
-        status = status && unsafe { libc::fwrite(b.as_ptr() as *const libc::c_void, 1, b.len(), fp) } == b.len();
+        status = status
+            && unsafe { libc::fwrite(b.as_ptr() as *const libc::c_void, 1, b.len(), fp) }
+                == b.len();
     }
     let en = errno();
     Ok(fileresult(vm, status, None, en))
@@ -427,7 +450,9 @@ fn file_write(vm: &mut Vm, p: *mut IOFileUD, start: usize) -> LuaResult<usize> {
 /// The iterator of `lines`: upvalue 1 is the file, the rest are read formats.
 fn io_file_iter(vm: &mut Vm) -> LuaResult<usize> {
     let f = vm.current_function().expect("running native");
-    let Some(ud) = f.upvalue(0).and_then(is_file_ud) else { unreachable!("lines iterator without file") };
+    let Some(ud) = f.upvalue(0).and_then(is_file_ud) else {
+        unreachable!("lines iterator without file")
+    };
     let p = iof_of(ud);
     let n = f.nupvalues() - 1;
     if iof_get(p).0.is_null() {
@@ -582,10 +607,19 @@ fn io_open(vm: &mut Vm) -> LuaResult<usize> {
     let p = file_new(vm);
     let cname = cstring(fname.as_bytes());
     // SAFETY: NUL-terminated strings.
-    let fp = unsafe { libc::fopen(cname.as_ptr() as *const c_char, cmode.as_ptr() as *const c_char) };
+    let fp = unsafe {
+        libc::fopen(
+            cname.as_ptr() as *const c_char,
+            cmode.as_ptr() as *const c_char,
+        )
+    };
     let en = errno();
     iof_set_fp(p, fp);
-    if fp.is_null() { Ok(fileresult(vm, false, Some(fname.as_bytes()), en)) } else { Ok(1) }
+    if fp.is_null() {
+        Ok(fileresult(vm, false, Some(fname.as_bytes()), en))
+    } else {
+        Ok(1)
+    }
 }
 
 fn io_popen(vm: &mut Vm) -> LuaResult<usize> {
@@ -598,11 +632,18 @@ fn io_popen(vm: &mut Vm) -> LuaResult<usize> {
     // SAFETY: flushing all streams; NUL-terminated strings for popen.
     let fp = unsafe {
         libc::fflush(std::ptr::null_mut());
-        libc::popen(cname.as_ptr() as *const c_char, cmode.as_ptr() as *const c_char)
+        libc::popen(
+            cname.as_ptr() as *const c_char,
+            cmode.as_ptr() as *const c_char,
+        )
     };
     let en = errno();
     iof_set_fp(p, fp);
-    if fp.is_null() { Ok(fileresult(vm, false, Some(fname.as_bytes()), en)) } else { Ok(1) }
+    if fp.is_null() {
+        Ok(fileresult(vm, false, Some(fname.as_bytes()), en))
+    } else {
+        Ok(1)
+    }
 }
 
 fn io_tmpfile(vm: &mut Vm) -> LuaResult<usize> {
@@ -611,7 +652,11 @@ fn io_tmpfile(vm: &mut Vm) -> LuaResult<usize> {
     let fp = unsafe { libc::tmpfile() };
     let en = errno();
     iof_set_fp(p, fp);
-    if fp.is_null() { Ok(fileresult(vm, false, None, en)) } else { Ok(1) }
+    if fp.is_null() {
+        Ok(fileresult(vm, false, None, en))
+    } else {
+        Ok(1)
+    }
 }
 
 fn io_close(vm: &mut Vm) -> LuaResult<usize> {
@@ -695,7 +740,13 @@ fn io_type(vm: &mut Vm) -> LuaResult<usize> {
 // -- Registration ---------------------------------------------------------------------------
 
 /// `io_std_new`: a standard file handle stored as `io.<name>`.
-fn std_new(vm: &mut Vm, io: Gc<Table>, mt: Gc<Table>, fp: *mut FILE, name: &[u8]) -> LuaResult<Value> {
+fn std_new(
+    vm: &mut Vm,
+    io: Gc<Table>,
+    mt: Gc<Table>,
+    fp: *mut FILE,
+    name: &[u8],
+) -> LuaResult<Value> {
     let env = vm.current_env();
     let ud = vm.new_udata(std::mem::size_of::<IOFileUD>(), env);
     ud.set_udtype(UDTYPE_IO_FILE);
@@ -704,7 +755,8 @@ fn std_new(vm: &mut Vm, io: Gc<Table>, mt: Gc<Table>, fp: *mut FILE, name: &[u8]
     iof_set_fp(p, fp);
     iof_set_type(p, IOFILE_TYPE_STDF);
     let k = vm.new_str(name);
-    io.set_str(k, Value::Udata(ud)).map_err(|e| vm.tab_error(e))?;
+    io.set_str(k, Value::Udata(ud))
+        .map_err(|e| vm.tab_error(e))?;
     Ok(Value::Udata(ud))
 }
 
@@ -725,12 +777,16 @@ pub fn open_io(vm: &mut Vm) -> LuaResult<()> {
     for &(name, f, ffid) in methods {
         let func = super::new_lib_fn(vm, f, ffid, Vec::new());
         let k = vm.new_str(name.as_bytes());
-        mt.set_str(k, Value::Func(func)).map_err(|e| vm.tab_error(e))?;
+        mt.set_str(k, Value::Func(func))
+            .map_err(|e| vm.tab_error(e))?;
     }
     let k = vm.new_str(b"__index");
-    mt.set_str(k, Value::Table(mt)).map_err(|e| vm.tab_error(e))?;
+    mt.set_str(k, Value::Table(mt))
+        .map_err(|e| vm.tab_error(e))?;
     let k = vm.new_str(LUA_FILEHANDLE);
-    vm.registry.set_str(k, Value::Table(mt)).map_err(|e| vm.tab_error(e))?;
+    vm.registry
+        .set_str(k, Value::Table(mt))
+        .map_err(|e| vm.tab_error(e))?;
 
     let funcs: &[LibFn] = &[
         ("open", io_open, FF_IO_OPEN),

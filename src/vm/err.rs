@@ -189,9 +189,13 @@ impl Vm {
             && let Some(slot) = slot
             && slot >= f.base as usize
             && f.pc > 0
-            && let Some((kind, name)) = debug::slotname(&pt, f.pc - 1, (slot - f.base as usize) as u32)
+            && let Some((kind, name)) =
+                debug::slotname(&pt, f.pc - 1, (slot - f.base as usize) as u32)
         {
-            let m = fmt_msg(ErrMsg::BADOPRT, &[opm.0.as_bytes(), kind.as_bytes(), &name, tname.as_bytes()]);
+            let m = fmt_msg(
+                ErrMsg::BADOPRT,
+                &[opm.0.as_bytes(), kind.as_bytes(), &name, tname.as_bytes()],
+            );
             return self.err_msgv(&m);
         }
         let m = fmt_msg(ErrMsg::BADOPRV, &[opm.0.as_bytes(), tname.as_bytes()]);
@@ -220,7 +224,8 @@ impl Vm {
             && let Some(f) = th.frame(i)
             && matches!(f.kind, crate::thread::FrameKind::Cont(_))
             && f.func.is_builtin()
-            && (super::ffid::FF_FFI_META___INDEX..=super::ffid::FF_FFI_META___TOSTRING).contains(&f.func.ffid())
+            && (super::ffid::FF_FFI_META___INDEX..=super::ffid::FF_FFI_META___TOSTRING)
+                .contains(&f.func.ffid())
         {
             // Remove frame for FFI metamethods.
             th.set_top(f.call_slot() as usize);
@@ -238,7 +243,9 @@ impl Vm {
     /// `err_argmsg`: `bad argument #narg to 'fname' (msg)` (or `calling 'f' on bad self`).
     pub fn arg_error(&mut self, narg: i32, msg: &[u8]) -> LuaError {
         let th = self.cur_thread;
-        let fname = self.top_frame_idx().and_then(|i| debug::funcname(self, th, i));
+        let fname = self
+            .top_frame_idx()
+            .and_then(|i| debug::funcname(self, th, i));
         let mut narg = narg;
         if narg < 0 {
             narg += self.nargs() as i32 + 1;
@@ -248,7 +255,11 @@ impl Vm {
                 fmt_msg(ErrMsg::BADSELF, &[name, msg])
             }
             Some((kind, name)) => {
-                let n = if kind.as_bytes().get(3) == Some(&b'h') { narg - 1 } else { narg };
+                let n = if kind.as_bytes().get(3) == Some(&b'h') {
+                    narg - 1
+                } else {
+                    narg
+                };
                 fmt_msg(ErrMsg::BADARG, &[n.to_string().as_bytes(), name, msg])
             }
             None => fmt_msg(ErrMsg::BADARG, &[narg.to_string().as_bytes(), b"?", msg]),
@@ -265,7 +276,11 @@ impl Vm {
     pub fn type_error(&mut self, narg: i32, xname: &str) -> LuaError {
         let n = self.nargs() as i32;
         let idx = if narg < 0 { n + narg + 1 } else { narg };
-        let tname = if idx >= 1 && idx <= n { typename(self.arg(idx as usize)) } else { "no value" };
+        let tname = if idx >= 1 && idx <= n {
+            typename(self.arg(idx as usize))
+        } else {
+            "no value"
+        };
         let m = fmt_msg(ErrMsg::BADTYPE, &[xname.as_bytes(), tname.as_bytes()]);
         self.arg_error(narg, &m)
     }

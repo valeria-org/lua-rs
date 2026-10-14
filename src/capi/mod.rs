@@ -68,11 +68,14 @@ pub type lua_Integer = isize;
 /// `lua_CFunction`.
 pub type lua_CFunction = CFunction;
 /// `lua_Reader`.
-pub type lua_Reader = unsafe extern "C-unwind" fn(*mut lua_State, *mut c_void, *mut usize) -> *const c_char;
+pub type lua_Reader =
+    unsafe extern "C-unwind" fn(*mut lua_State, *mut c_void, *mut usize) -> *const c_char;
 /// `lua_Writer`.
-pub type lua_Writer = unsafe extern "C-unwind" fn(*mut lua_State, *const c_void, usize, *mut c_void) -> c_int;
+pub type lua_Writer =
+    unsafe extern "C-unwind" fn(*mut lua_State, *const c_void, usize, *mut c_void) -> c_int;
 /// `lua_Alloc`.
-pub type lua_Alloc = unsafe extern "C-unwind" fn(*mut c_void, *mut c_void, usize, usize) -> *mut c_void;
+pub type lua_Alloc =
+    unsafe extern "C-unwind" fn(*mut c_void, *mut c_void, usize, usize) -> *mut c_void;
 /// `lua_Hook`.
 pub type lua_Hook = unsafe extern "C-unwind" fn(*mut lua_State, *mut lua_Debug);
 /// Wrapper for C function calls (`LUAJIT_MODE_WRAPCFUNC`): `wrapf(L, f)`.
@@ -249,7 +252,10 @@ pub(crate) unsafe fn ctx<'a>(L: *mut lua_State) -> (&'a mut Vm, Gc<Thread>) {
 /// # Safety
 /// `L` must be a live handle.
 #[inline]
-pub(crate) unsafe fn api<R>(L: *mut lua_State, f: impl FnOnce(&mut Vm, Gc<Thread>) -> LuaResult<R>) -> R {
+pub(crate) unsafe fn api<R>(
+    L: *mut lua_State,
+    f: impl FnOnce(&mut Vm, Gc<Thread>) -> LuaResult<R>,
+) -> R {
     // SAFETY: forwarded contract.
     let (vm, th) = unsafe { ctx(L) };
     let old = vm.cur_thread;
@@ -314,7 +320,11 @@ pub fn call_c(vm: &mut Vm, f: CFunction) -> LuaResult<usize> {
     let th = vm.cur_thread;
     let L = state_of(vm, th);
     vm.rt.capi.yield_pending = false;
-    let wrap = if vm.rt.capi.wrap_on { vm.rt.capi.wrapf } else { None };
+    let wrap = if vm.rt.capi.wrap_on {
+        vm.rt.capi.wrapf
+    } else {
+        None
+    };
     // SAFETY: calling a C function with a valid state, as the VM's FUNCC/FUNCCW would.
     let n = protect(vm, || unsafe {
         match wrap {
@@ -323,7 +333,10 @@ pub fn call_c(vm: &mut Vm, f: CFunction) -> LuaResult<usize> {
         }
     })?;
     if std::mem::take(&mut vm.rt.capi.yield_pending) {
-        return Err(LuaError::new(ErrorKind::Yield, Value::Num(vm.rt.multres as f64)));
+        return Err(LuaError::new(
+            ErrorKind::Yield,
+            Value::Num(vm.rt.multres as f64),
+        ));
     }
     Ok(n.max(0) as usize)
 }
@@ -331,7 +344,9 @@ pub fn call_c(vm: &mut Vm, f: CFunction) -> LuaResult<usize> {
 /// The VM hook installed by `lua_sethook`: call the C hook with a `lua_Debug` whose `i_ci`
 /// designates the hooked frame (`callhook` of lj_dispatch.c).
 pub(crate) fn hook_trampoline(vm: &mut Vm, ev: HookEvent, line: i32) -> LuaResult<()> {
-    let Some(h) = vm.rt.capi.hook else { return Ok(()) };
+    let Some(h) = vm.rt.capi.hook else {
+        return Ok(());
+    };
     let th = vm.cur_thread;
     let mut ar = lua_Debug::zeroed();
     ar.event = ev as c_int;
@@ -341,7 +356,10 @@ pub(crate) fn hook_trampoline(vm: &mut Vm, ev: HookEvent, line: i32) -> LuaResul
     // SAFETY: calling the user's hook with a valid state and debug record.
     protect(vm, || unsafe { h(L, &mut ar) })?;
     if std::mem::take(&mut vm.rt.capi.yield_pending) {
-        return Err(LuaError::new(ErrorKind::Yield, Value::Num(vm.rt.multres as f64)));
+        return Err(LuaError::new(
+            ErrorKind::Yield,
+            Value::Num(vm.rt.multres as f64),
+        ));
     }
     Ok(())
 }
@@ -389,7 +407,11 @@ pub(crate) fn index2adr(vm: &Vm, th: Gc<Thread>, idx: c_int) -> Adr {
         if s < top { Adr::Stack(s) } else { Adr::None }
     } else if idx > LUA_REGISTRYINDEX {
         let s = top as i64 + idx as i64;
-        if idx != 0 && s >= base as i64 { Adr::Stack(s as usize) } else { Adr::None }
+        if idx != 0 && s >= base as i64 {
+            Adr::Stack(s as usize)
+        } else {
+            Adr::None
+        }
     } else if idx == LUA_GLOBALSINDEX {
         Adr::Globals
     } else if idx == LUA_REGISTRYINDEX {

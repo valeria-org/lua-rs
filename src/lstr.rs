@@ -155,7 +155,13 @@ pub struct StrTab {
 impl StrTab {
     /// Create an empty table with a fixed seed (deterministic hashing and string IDs).
     pub fn new(seed: u64) -> StrTab {
-        StrTab { tab: vec![None; MIN_STRTAB].into_boxed_slice(), mask: MIN_STRTAB - 1, num: 0, next_sid: 0, seed }
+        StrTab {
+            tab: vec![None; MIN_STRTAB].into_boxed_slice(),
+            mask: MIN_STRTAB - 1,
+            num: 0,
+            next_sid: 0,
+            seed,
+        }
     }
 
     /// Number of interned strings.
@@ -290,7 +296,9 @@ mod tests {
         assert_eq!(st.find(b"hellO"), Some(c));
         assert_eq!(st.find(b"nope"), None);
         // Grow beyond the initial size and check every string is still found.
-        let v: Vec<_> = (0..2000).map(|i| st.intern(&mut heap, format!("k{i}").as_bytes())).collect();
+        let v: Vec<_> = (0..2000)
+            .map(|i| st.intern(&mut heap, format!("k{i}").as_bytes()))
+            .collect();
         for (i, s) in v.iter().enumerate() {
             assert_eq!(st.intern(&mut heap, format!("k{i}").as_bytes()), *s);
         }

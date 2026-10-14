@@ -2,7 +2,9 @@
 # Regenerate the expectations of tests/gc.rs with the reference LuaJIT (JIT disabled build).
 # Usage: tests/fixtures/gc/gen.sh [path/to/luajit]
 set -e
-LJ=${1:-$HOME/projects/luajit-ref/luajit/src/luajit}
+LJ=${1:-${LUAJIT_REF:?Pass a reference LuaJIT binary or set LUAJIT_REF}}
+LJDIR=$(cd "$(dirname "$LJ")" && pwd)
+LJ="$LJDIR/$(basename "$LJ")"
 cd "$(dirname "$0")"
 tmp=$(mktemp -d)
 for f in *.lua; do

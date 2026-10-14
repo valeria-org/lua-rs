@@ -37,10 +37,19 @@ impl Vm {
 
     /// Error for a failed `lj_state_growstack`. `located`: add the position of the current
     /// frame (`lj_err_stkov`); a dummy frame gives none.
-    pub(crate) fn stkov_error(&mut self, th: Gc<Thread>, so: StackOverflow, located: bool) -> LuaError {
+    pub(crate) fn stkov_error(
+        &mut self,
+        th: Gc<Thread>,
+        so: StackOverflow,
+        located: bool,
+    ) -> LuaError {
         let msg = ErrMsg::STKOV.0.as_bytes();
         if so == StackOverflow::InErrorHandler || th.errerr() {
-            let em = if so == StackOverflow::InErrorHandler { ErrMsg::STKOV } else { ErrMsg::ERRERR };
+            let em = if so == StackOverflow::InErrorHandler {
+                ErrMsg::STKOV
+            } else {
+                ErrMsg::ERRERR
+            };
             let v = self.err_str(em);
             return LuaError::new(ErrorKind::Err, v);
         }
@@ -175,7 +184,9 @@ impl Vm {
                 self.hook_call(th, false)?;
             }
             match f.ffid() {
-                ffid::FF_PCALL | ffid::FF_XPCALL if f.is_builtin() => self.ff_pcall(th, f.ffid() == ffid::FF_XPCALL),
+                ffid::FF_PCALL | ffid::FF_XPCALL if f.is_builtin() => {
+                    self.ff_pcall(th, f.ffid() == ffid::FF_XPCALL)
+                }
                 _ => self.call_native(th),
             }
         }
@@ -223,7 +234,9 @@ impl Vm {
     /// Run the native function of the top frame and process its return.
     pub(crate) fn call_native(&mut self, th: Gc<Thread>) -> LuaResult<Flow> {
         let fr = th.current_frame().expect("native frame");
-        let Function::Native { f, .. } = &*fr.func else { unreachable!("native frame") };
+        let Function::Native { f, .. } = &*fr.func else {
+            unreachable!("native frame")
+        };
         super::hook::set_vmstate(super::hook::native_vmstate(fr.func.ffid()));
         let r = match *f {
             NativeImpl::Rust(nf) => nf(self),
@@ -244,7 +257,8 @@ impl Vm {
             Ok(n) => {
                 self.gc_safe();
                 let top = th.top();
-                let n = n.min(top.saturating_sub(th.current_frame().map_or(0, |f| f.base as usize)));
+                let n =
+                    n.min(top.saturating_sub(th.current_frame().map_or(0, |f| f.base as usize)));
                 self.ret(th, top - n, n)
             }
             Err(e) if e.kind == ErrorKind::Yield => Ok(Flow::Yield),
@@ -278,14 +292,16 @@ impl Vm {
                     }
                     self.rt.multres = n;
                     let caller = th.current_frame().expect("lua caller");
-                    let ctop = caller.base as usize + caller.func.proto().map_or(0, |p| p.framesize as usize);
+                    let ctop = caller.base as usize
+                        + caller.func.proto().map_or(0, |p| p.framesize as usize);
                     th.set_top(ctop.max(dest + cnt));
                     return Ok(Flow::Continue);
                 }
                 FrameKind::Cont(c) => {
                     let res = if n > 0 { th.get(first) } else { Value::Nil };
                     let caller = th.current_frame().expect("lua caller");
-                    let ctop = caller.base as usize + caller.func.proto().map_or(0, |p| p.framesize as usize);
+                    let ctop = caller.base as usize
+                        + caller.func.proto().map_or(0, |p| p.framesize as usize);
                     th.set_top(ctop);
                     return self.apply_cont(th, c, res);
                 }
@@ -356,7 +372,13 @@ impl Vm {
     /// the result of an initial call/return step. Errors are caught by `pcall` frames of this
     /// run; otherwise the run's frames are unwound (except for coroutine runs, `resume`, whose
     /// frames stay for inspection) and the error is returned.
-    pub(crate) fn run(&mut self, th: Gc<Thread>, entry: usize, first: LuaResult<Flow>, resume: bool) -> LuaResult<RunEnd> {
+    pub(crate) fn run(
+        &mut self,
+        th: Gc<Thread>,
+        entry: usize,
+        first: LuaResult<Flow>,
+        resume: bool,
+    ) -> LuaResult<RunEnd> {
         let mut flow = first;
         loop {
             match flow {
@@ -371,7 +393,14 @@ impl Vm {
     /// Call the value at `func_slot` of `th` from Rust: a nested interpreter run and C-call
     /// boundary (`lj_vm_call` / `lj_vm_pcall`). Returns the number of results, which are
     /// stored from `func_slot` up (top = `func_slot + count`).
-    pub(crate) fn call_at(&mut self, th: Gc<Thread>, func_slot: usize, nargs: usize, kind: FrameKind, nres: i32) -> LuaResult<usize> {
+    pub(crate) fn call_at(
+        &mut self,
+        th: Gc<Thread>,
+        func_slot: usize,
+        nargs: usize,
+        kind: FrameKind,
+        nres: i32,
+    ) -> LuaResult<usize> {
         if self.rt.nccalls >= LJ_MAX_CCALLS {
             return Err(self.err_msg(ErrMsg::CCALLS));
         }
@@ -401,12 +430,19 @@ impl Vm {
         for i in (0..n).rev() {
             let f = th.frame(i).expect("frame");
             match f.kind {
-                FrameKind::Lua | FrameKind::C | FrameKind::Cont(_) | FrameKind::Cp(ErrFunc::Inherit) => {}
+                FrameKind::Lua
+                | FrameKind::C
+                | FrameKind::Cont(_)
+                | FrameKind::Cp(ErrFunc::Inherit) => {}
                 FrameKind::Cp(ErrFunc::None) => return None,
                 FrameKind::Cp(ErrFunc::Slot(s)) => return Some(s as usize),
                 FrameKind::Pcall { .. } => {
                     let pf = th.frame(i.checked_sub(1)?)?;
-                    return if pf.func.ffid() == ffid::FF_XPCALL { Some(pf.base as usize) } else { None };
+                    return if pf.func.ffid() == ffid::FF_XPCALL {
+                        Some(pf.base as usize)
+                    } else {
+                        None
+                    };
                 }
             }
         }
@@ -416,7 +452,9 @@ impl Vm {
     /// `lj_err_run`: call the active error handler (if any) at the error site. Returns the
     /// error to throw.
     pub(crate) fn apply_errfunc(&mut self, th: Gc<Thread>, e: LuaError) -> LuaError {
-        let Some(ef) = self.find_errfunc(th) else { return e };
+        let Some(ef) = self.find_errfunc(th) else {
+            return e;
+        };
         let errfunc = th.get(ef);
         if !matches!(errfunc, Value::Func(_)) || th.errerr() {
             let v = self.err_str(ErrMsg::ERRERR);
@@ -457,7 +495,13 @@ impl Vm {
     /// Handle an error raised inside a run (`lj_err_throw` + `err_unwind`): apply the error
     /// handler, then unwind to the innermost `pcall` frame of this run (returning its
     /// `false, msg` results) or out of the run.
-    pub(crate) fn on_error(&mut self, th: Gc<Thread>, e: LuaError, entry: usize, resume: bool) -> LuaResult<Flow> {
+    pub(crate) fn on_error(
+        &mut self,
+        th: Gc<Thread>,
+        e: LuaError,
+        entry: usize,
+        resume: bool,
+    ) -> LuaResult<Flow> {
         let mut e = e;
         if e.kind == ErrorKind::Yield {
             e = self.err_msg(ErrMsg::CYIELD);

@@ -66,7 +66,11 @@ pub fn state(vm: &mut Vm) -> Rc<FfiState> {
         vm.ffi_fin = Some(t);
     }
     let miscmap = vm.new_table_ah(0, 1).expect("small table");
-    let st = Rc::new(FfiState { cts: RefCell::new(CTState::new()), miscmap, clib_mt: Cell::new(None) });
+    let st = Rc::new(FfiState {
+        cts: RefCell::new(CTState::new()),
+        miscmap,
+        clib_mt: Cell::new(None),
+    });
     let handler: super::callback::CallbackHandler = Rc::new(super::libffi::callback_handler);
     st.cts.borrow().cb.set_fallback(Some(handler));
     vm.ffi = Some(Box::new(FfiRoot(st.clone())));

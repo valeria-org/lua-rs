@@ -24,8 +24,8 @@ static LIB_INIT_BIT: &[u8] = &[
 /// `luaopen_bit`.
 pub fn open_bit(vm: &mut Vm) -> LuaResult<()> {
     let funcs: &[NativeFn] = &[
-        bit_tobit, bit_bnot, bit_bswap, bit_shift, bit_shift, bit_shift, bit_shift, bit_shift, bit_nary, bit_nary,
-        bit_nary, bit_tohex,
+        bit_tobit, bit_bnot, bit_bswap, bit_shift, bit_shift, bit_shift, bit_shift, bit_shift,
+        bit_nary, bit_nary, bit_nary, bit_tohex,
     ];
     let mut stack = Vec::new();
     libinit::lib_register(vm, Some("bit"), LIB_INIT_BIT, funcs, &mut stack)?;
@@ -115,7 +115,9 @@ fn bit_shift(vm: &mut Vm) -> LuaResult<usize> {
     let (mut id, mut id2) = (0, 0);
     let x = check64(vm, 1, &mut id)?;
     let sh = check64(vm, 2, &mut id2)? as i32;
-    let op = vm.current_function().map_or(0, |f| f.ffid() - FF_BIT_LSHIFT);
+    let op = vm
+        .current_function()
+        .map_or(0, |f| f.ffid() - FF_BIT_LSHIFT);
     if id != 0 {
         return result64(vm, id, shift64(x, sh, op));
     }
@@ -138,7 +140,9 @@ fn bit_nary(vm: &mut Vm) -> LuaResult<usize> {
     for i in 1..=n {
         check64(vm, i, &mut id)?;
     }
-    let op = vm.current_function().map_or(0, |f| f.ffid() as i32 - FF_BIT_BOR as i32);
+    let op = vm
+        .current_function()
+        .map_or(0, |f| f.ffid() as i32 - FF_BIT_BOR as i32);
     if id != 0 {
         let mut y: u64 = if op >= 0 { 0 } else { !0 };
         for i in 1..=n {
@@ -187,7 +191,11 @@ fn bit_nary(vm: &mut Vm) -> LuaResult<usize> {
 fn bit_tohex(vm: &mut Vm) -> LuaResult<usize> {
     let (mut id, mut id2) = (0, 0);
     let mut b = check64(vm, 1, &mut id)?;
-    let mut n = if vm.nargs() < 2 { if id != 0 { 16 } else { 8 } } else { check64(vm, 2, &mut id2)? as i32 };
+    let mut n = if vm.nargs() < 2 {
+        if id != 0 { 16 } else { 8 }
+    } else {
+        check64(vm, 2, &mut id2)? as i32
+    };
     let mut sf = FormatType::Uint as u32 | T_HEX;
     if n < 0 {
         n = (!(n as u32)).wrapping_add(1) as i32;

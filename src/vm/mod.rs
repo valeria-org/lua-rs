@@ -26,12 +26,12 @@ mod meta;
 mod vmevent;
 
 pub use api::TAILCALL;
+pub use debug::InfoTarget;
 pub use debug::{DebugInfo, FrameRef};
 pub use err::{ErrMsg, fmt_msg};
-pub use meta::{modf, num2bit, num2int, obj_ptr};
-pub(crate) use meta::Meta;
-pub use debug::InfoTarget;
 pub use hook::{HookEvent, HookFn, LUA_MASKCALL, LUA_MASKCOUNT, LUA_MASKLINE, LUA_MASKRET};
+pub(crate) use meta::Meta;
+pub use meta::{modf, num2bit, num2int, obj_ptr};
 pub use vmevent::{VMEVENT_ERRFIN, VMEVENTS_REGKEY, vmevent_hash};
 
 use crate::cdata::CData;

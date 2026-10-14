@@ -39,7 +39,11 @@ const CANONICAL_NAN: u64 = 0xfff8_0000_0000_0000;
 /// `!tvisnum(o)` for a raw 64-bit pattern (non-canonical NaNs that collide with NaN-tagged
 /// values upstream).
 fn fix_nan(u: u64) -> u64 {
-    if u >= 0xfff9_0000_0000_0000 { CANONICAL_NAN } else { u }
+    if u >= 0xfff9_0000_0000_0000 {
+        CANONICAL_NAN
+    } else {
+        u
+    }
 }
 
 /// `serialize_more`.
@@ -96,15 +100,25 @@ pub fn dict_prep(vm: &mut Vm, dict: Gc<Table>, mt: bool) -> LuaResult<()> {
     if len == 0 {
         return Ok(());
     }
-    dict.resize(dict.asize(), hsize2hbits(len)).map_err(|e| vm.tab_error(e))?;
+    dict.resize(dict.asize(), hsize2hbits(len))
+        .map_err(|e| vm.tab_error(e))?;
     let mut i = 1;
     while i <= len && i < dict.asize() {
         let o = dict.array_get(i);
-        let ok = if mt { matches!(o, Value::Table(_)) } else { matches!(o, Value::Str(_)) };
+        let ok = if mt {
+            matches!(o, Value::Table(_))
+        } else {
+            matches!(o, Value::Str(_))
+        };
         if ok {
-            let dup = if mt { !dict.get(o).is_nil() } else { dict.has_slot(o) };
+            let dup = if mt {
+                !dict.get(o).is_nil()
+            } else {
+                dict.has_slot(o)
+            };
             if !dup {
-                dict.set(o, Value::Num(f64::from_bits((i - 1) as u64))).map_err(|e| vm.tab_error(e))?;
+                dict.set(o, Value::Num(f64::from_bits((i - 1) as u64)))
+                    .map_err(|e| vm.tab_error(e))?;
             }
         } else if o != Value::Bool(false) {
             return Err(vm.err_caller(ErrMsg::BUFFER_BADOPT));
@@ -225,7 +239,11 @@ fn serialize_put(vm: &mut Vm, sbx: &SBufExt, o: Value) -> LuaResult<()> {
             };
             if ctype_isinteger(info) && size == 8 {
                 more(vm, sbx, 1 + 8)?;
-                let tag = if info & CTF_UNSIGNED != 0 { SER_TAG_UINT64 } else { SER_TAG_INT64 };
+                let tag = if info & CTF_UNSIGNED != 0 {
+                    SER_TAG_UINT64
+                } else {
+                    SER_TAG_INT64
+                };
                 sbx.wmem(&[tag as u8]);
                 // SAFETY: an 8-byte integer cdata.
                 sbx.wmem(unsafe { std::slice::from_raw_parts(cd.ptr(), 8) });
@@ -266,7 +284,10 @@ fn bad_dec(vm: &mut Vm, tp: u32) -> crate::error::LuaError {
 }
 
 fn bad_dictx(vm: &mut Vm, idx: u32) -> crate::error::LuaError {
-    let m = fmt_msg(ErrMsg::BUFFER_BADDICTX, &[(idx as i32).to_string().as_bytes()]);
+    let m = fmt_msg(
+        ErrMsg::BUFFER_BADDICTX,
+        &[(idx as i32).to_string().as_bytes()],
+    );
     vm.err_callermsg(&m)
 }
 
@@ -276,7 +297,9 @@ fn eob(vm: &mut Vm) -> crate::error::LuaError {
 
 /// `serialize_get`: decode one value from `d` at `r`; returns it and the new position.
 fn serialize_get(vm: &mut Vm, sbx: &SBufExt, d: &[u8], r: usize) -> LuaResult<(Value, usize)> {
-    let Some((mut tp, mut r)) = ru124(d, r) else { return Err(eob(vm)) };
+    let Some((mut tp, mut r)) = ru124(d, r) else {
+        return Err(eob(vm));
+    };
     let rem = |r: usize| d.len() - r;
     if tp >= SER_TAG_STR {
         let len = (tp - SER_TAG_STR) as usize;
@@ -305,7 +328,9 @@ fn serialize_get(vm: &mut Vm, sbx: &SBufExt, d: &[u8], r: usize) -> LuaResult<(V
         };
         Ok((v, r))
     } else if tp == SER_TAG_DICT_STR {
-        let Some((idx, r2)) = ru124(d, r) else { return Err(eob(vm)) };
+        let Some((idx, r2)) = ru124(d, r) else {
+            return Err(eob(vm));
+        };
         let idx = idx.wrapping_add(1);
         match sbx.dict_str.get() {
             Some(dict) if idx < dict.asize() && matches!(dict.array_get(idx), Value::Str(_)) => {
@@ -321,16 +346,22 @@ fn serialize_get(vm: &mut Vm, sbx: &SBufExt, d: &[u8], r: usize) -> LuaResult<(V
         }
         sbx.depth.set(sbx.depth.get() - 1);
         if tp == SER_TAG_DICT_MT {
-            let Some((idx, r2)) = ru124(d, r) else { return Err(eob(vm)) };
+            let Some((idx, r2)) = ru124(d, r) else {
+                return Err(eob(vm));
+            };
             r = r2;
             let idx = idx.wrapping_add(1);
             match sbx.dict_mt.get() {
-                Some(dict) if idx < dict.asize() && matches!(dict.array_get(idx), Value::Table(_)) => {
+                Some(dict)
+                    if idx < dict.asize() && matches!(dict.array_get(idx), Value::Table(_)) =>
+                {
                     mt = dict.array_get(idx).as_table();
                 }
                 _ => return Err(bad_dictx(vm, idx)),
             }
-            let Some((t2, r2)) = ru124(d, r) else { return Err(eob(vm)) };
+            let Some((t2, r2)) = ru124(d, r) else {
+                return Err(eob(vm));
+            };
             tp = t2;
             r = r2;
             if !(SER_TAG_TAB..SER_TAG_DICT_MT).contains(&tp) {
@@ -338,12 +369,16 @@ fn serialize_get(vm: &mut Vm, sbx: &SBufExt, d: &[u8], r: usize) -> LuaResult<(V
             }
         }
         if tp >= SER_TAG_TAB + 2 {
-            let Some((n, r2)) = ru124(d, r) else { return Err(eob(vm)) };
+            let Some((n, r2)) = ru124(d, r) else {
+                return Err(eob(vm));
+            };
             narray = n;
             r = r2;
         }
         if tp & 1 != 0 {
-            let Some((n, r2)) = ru124(d, r) else { return Err(eob(vm)) };
+            let Some((n, r2)) = ru124(d, r) else {
+                return Err(eob(vm));
+            };
             nhash = n;
             r = r2;
         }

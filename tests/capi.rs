@@ -11,9 +11,9 @@
 //! * The C API tests of the upstream test suite (`tests/capi/upstream`: `ctest.c`,
 //!   `cpptest.cpp` with C++ exceptions crossing Lua frames) run with their Lua drivers.
 //!
-//! Expected outputs come from the reference build (`~/projects/luajit-ref/luajit/src`; its
-//! `libluajit.so` is built with `make XCFLAGS=-DLUAJIT_DISABLE_JIT` if missing). Without the
-//! reference tree, the committed `tests/capi/*.expected` files (generated from it) are used.
+//! With `LUAJIT_REF` set to an upstream source build's binary, outputs are compared live
+//! with that build (`libluajit.so` is built with `make XCFLAGS=-DLUAJIT_DISABLE_JIT` if
+//! missing). Otherwise, the committed `tests/capi/*.expected` files are used.
 //! The tests are skipped with a message if `gcc` is not available.
 
 use std::path::{Path, PathBuf};
@@ -28,7 +28,10 @@ fn include_dir() -> PathBuf {
 }
 
 fn have_gcc() -> bool {
-    Command::new("gcc").arg("--version").output().is_ok_and(|o| o.status.success())
+    Command::new("gcc")
+        .arg("--version")
+        .output()
+        .is_ok_and(|o| o.status.success())
 }
 
 /// Our `luajit` binary and `libluajit.so` (next to it in the target directory).
@@ -43,19 +46,29 @@ fn our_lib() -> PathBuf {
     let target_dir = bin.parent().and_then(Path::parent).expect("target dir");
     let release = bin.parent().is_some_and(|d| d.ends_with("release"));
     let mut c = Command::new(env!("CARGO"));
-    c.args(["build", "--lib", "--manifest-path", concat!(env!("CARGO_MANIFEST_DIR"), "/Cargo.toml")]).env("CARGO_TARGET_DIR", target_dir);
+    c.args([
+        "build",
+        "--lib",
+        "--manifest-path",
+        concat!(env!("CARGO_MANIFEST_DIR"), "/Cargo.toml"),
+    ])
+    .env("CARGO_TARGET_DIR", target_dir);
     if release {
         c.arg("--release");
     }
     let st = c.status().expect("run cargo build --lib");
-    assert!(st.success() && p.exists(), "building {} failed", p.display());
+    assert!(
+        st.success() && p.exists(),
+        "building {} failed",
+        p.display()
+    );
     p
 }
 
 /// The reference source directory, if present.
 fn ref_dir() -> Option<PathBuf> {
-    let home = std::env::var_os("HOME")?;
-    let d = Path::new(&home).join("projects/luajit-ref/luajit/src");
+    let bin = ref_bin()?;
+    let d = bin.parent()?.to_path_buf();
     d.join("luajit.c").exists().then_some(d)
 }
 
@@ -76,13 +89,19 @@ fn ref_lib() -> Option<PathBuf> {
 }
 
 fn ref_bin() -> Option<PathBuf> {
-    let b = ref_dir()?.join("luajit");
-    b.exists().then_some(b)
+    let bin = std::env::var_os("LUAJIT_REF")?;
+    Some(
+        PathBuf::from(bin)
+            .canonicalize()
+            .expect("LUAJIT_REF must point to an existing reference binary"),
+    )
 }
 
 /// Fresh scratch directory for one test.
 fn scratch(name: &str) -> PathBuf {
-    let d = Path::new(env!("CARGO_TARGET_TMPDIR")).join("capi").join(name);
+    let d = Path::new(env!("CARGO_TARGET_TMPDIR"))
+        .join("capi")
+        .join(name);
     let _ = std::fs::remove_dir_all(&d);
     std::fs::create_dir_all(&d).expect("create scratch dir");
     d
@@ -90,7 +109,11 @@ fn scratch(name: &str) -> PathBuf {
 
 fn gcc(args: &[&std::ffi::OsStr]) {
     let o = Command::new("gcc").args(args).output().expect("run gcc");
-    assert!(o.status.success(), "gcc {args:?} failed:\n{}", String::from_utf8_lossy(&o.stderr));
+    assert!(
+        o.status.success(),
+        "gcc {args:?} failed:\n{}",
+        String::from_utf8_lossy(&o.stderr)
+    );
 }
 
 /// Link `embed.c` against the library `lib` (by path, found at run time through an rpath to a
@@ -123,7 +146,12 @@ fn build_embed(dir: &Path, lib: &Path, soname: Option<&str>, out: &str) -> PathB
 fn result(o: Output) -> String {
     let mut s = String::from_utf8_lossy(&o.stdout).into_owned();
     s.push_str(&String::from_utf8_lossy(&o.stderr));
-    s.push_str(&format!("[exit {}]\n", o.status.code().map_or("signal".to_string(), |c| c.to_string())));
+    s.push_str(&format!(
+        "[exit {}]\n",
+        o.status
+            .code()
+            .map_or("signal".to_string(), |c| c.to_string())
+    ));
     s
 }
 
@@ -141,7 +169,11 @@ fn check(name: &str, ours: &str, reference: Option<String>) {
     if ours != expected {
         let a: Vec<&str> = expected.lines().collect();
         let b: Vec<&str> = ours.lines().collect();
-        let first = a.iter().zip(&b).position(|(x, y)| x != y).unwrap_or(a.len().min(b.len()));
+        let first = a
+            .iter()
+            .zip(&b)
+            .position(|(x, y)| x != y)
+            .unwrap_or(a.len().min(b.len()));
         panic!(
             "{name}: output differs from the reference at line {}:\n  expected: {:?}\n  got:      {:?}\n--- full output ---\n{ours}",
             first + 1,
@@ -159,8 +191,13 @@ fn embed_matches_reference() {
     }
     let dir = scratch("embed");
     let ours = build_embed(&dir, &our_lib(), None, "embed_rs");
-    let reference = ref_lib().map(|l| build_embed(&dir, &l, Some("libluajit-5.1.so.2"), "embed_ref"));
-    for (mode, name) in [(None, "embed"), (Some("panic"), "embed_panic"), (Some("atpanic"), "embed_atpanic")] {
+    let reference =
+        ref_lib().map(|l| build_embed(&dir, &l, Some("libluajit-5.1.so.2"), "embed_ref"));
+    for (mode, name) in [
+        (None, "embed"),
+        (Some("panic"), "embed_panic"),
+        (Some("atpanic"), "embed_atpanic"),
+    ] {
         let run = |exe: &Path| {
             let mut c = Command::new(exe);
             c.current_dir(&dir);
@@ -179,7 +216,14 @@ fn embed_matches_reference() {
         .env("LUAJIT_RS_GCSTRESS", "1")
         .output()
         .expect("run embed");
-    let reference = reference.as_deref().map(|r| result(Command::new(r).current_dir(&dir).output().expect("run embed")));
+    let reference = reference.as_deref().map(|r| {
+        result(
+            Command::new(r)
+                .current_dir(&dir)
+                .output()
+                .expect("run embed"),
+        )
+    });
     check("embed", &result(o), reference);
 }
 
@@ -204,7 +248,16 @@ fn c_module_via_require_and_loadlib() {
     let dir = scratch("cmod");
     let inc = format!("-I{}", include_dir().display());
     let so = dir.join("cmod.so");
-    gcc(&["-shared".as_ref(), "-fPIC".as_ref(), "-O1".as_ref(), "-Wall".as_ref(), inc.as_ref(), src_dir().join("cmod.c").as_os_str(), "-o".as_ref(), so.as_os_str()]);
+    gcc(&[
+        "-shared".as_ref(),
+        "-fPIC".as_ref(),
+        "-O1".as_ref(),
+        "-Wall".as_ref(),
+        inc.as_ref(),
+        src_dir().join("cmod.c").as_os_str(),
+        "-o".as_ref(),
+        so.as_os_str(),
+    ]);
     std::fs::copy(src_dir().join("test_cmod.lua"), dir.join("test_cmod.lua")).expect("copy script");
     let pre = "CMOD_PATH='./cmod.so'";
     let ours = run_script(&our_bin(), &dir, "test_cmod.lua", pre);
@@ -223,8 +276,14 @@ fn lua_cjson_from_source() {
     // LuaJIT 2.1's lauxlib.h declares luaL_setfuncs; rename lua-cjson's static 5.1 fallback
     // (the exported one is used).
     let src = std::fs::read_to_string(cj.join("lua_cjson.c")).expect("lua_cjson.c");
-    let patched = src.replace("static void luaL_setfuncs (", "static void cjson_compat_setfuncs (");
-    assert_ne!(src, patched, "lua_cjson.c changed: compat function not found");
+    let patched = src.replace(
+        "static void luaL_setfuncs (",
+        "static void cjson_compat_setfuncs (",
+    );
+    assert_ne!(
+        src, patched,
+        "lua_cjson.c changed: compat function not found"
+    );
     let build_src = dir.join("lua_cjson.c");
     std::fs::write(&build_src, patched).expect("write build copy");
     let inc = format!("-I{}", include_dir().display());
@@ -243,14 +302,18 @@ fn lua_cjson_from_source() {
         "-o".as_ref(),
         so.as_os_str(),
     ]);
-    std::fs::copy(src_dir().join("test_cjson.lua"), dir.join("test_cjson.lua")).expect("copy script");
+    std::fs::copy(src_dir().join("test_cjson.lua"), dir.join("test_cjson.lua"))
+        .expect("copy script");
     let ours = run_script(&our_bin(), &dir, "test_cjson.lua", "");
     let reference = ref_bin().map(|b| run_script(&b, &dir, "test_cjson.lua", ""));
     check("cjson", &ours, reference);
 }
 
 fn have_gxx() -> bool {
-    Command::new("g++").arg("--version").output().is_ok_and(|o| o.status.success())
+    Command::new("g++")
+        .arg("--version")
+        .output()
+        .is_ok_and(|o| o.status.success())
 }
 
 /// Upstream misc/api_call.lua, misc/hook_active.lua (ctest.c), misc/catch_wrap.lua and
@@ -267,16 +330,36 @@ fn upstream_ctest_cpptest() {
     let up = src_dir().join("upstream");
     let inc = format!("-I{}", include_dir().display());
     let so = dir.join("ctest.so");
-    gcc(&["-shared".as_ref(), "-fPIC".as_ref(), "-O1".as_ref(), inc.as_ref(), up.join("ctest.c").as_os_str(), "-o".as_ref(), so.as_os_str()]);
+    gcc(&[
+        "-shared".as_ref(),
+        "-fPIC".as_ref(),
+        "-O1".as_ref(),
+        inc.as_ref(),
+        up.join("ctest.c").as_os_str(),
+        "-o".as_ref(),
+        so.as_os_str(),
+    ]);
     let mut scripts = vec!["api_call.lua", "hook_active.lua"];
     let cpp = have_gxx();
     if cpp {
         let so = dir.join("cpptest.so");
         let o = Command::new("g++")
-            .args(["-shared".as_ref(), "-fPIC".as_ref(), "-O1".as_ref(), std::ffi::OsStr::new(&inc), up.join("cpptest.cpp").as_os_str(), "-o".as_ref(), so.as_os_str()])
+            .args([
+                "-shared".as_ref(),
+                "-fPIC".as_ref(),
+                "-O1".as_ref(),
+                std::ffi::OsStr::new(&inc),
+                up.join("cpptest.cpp").as_os_str(),
+                "-o".as_ref(),
+                so.as_os_str(),
+            ])
             .output()
             .expect("run g++");
-        assert!(o.status.success(), "g++ failed:\n{}", String::from_utf8_lossy(&o.stderr));
+        assert!(
+            o.status.success(),
+            "g++ failed:\n{}",
+            String::from_utf8_lossy(&o.stderr)
+        );
         scripts.push("catch_wrap.lua");
         scripts.push("catch_cpp.lua");
     } else {
@@ -288,7 +371,11 @@ fn upstream_ctest_cpptest() {
         assert_eq!(out, "[exit 0]\n", "{s} failed");
     }
     if cpp {
-        std::fs::copy(src_dir().join("test_cppexc.lua"), dir.join("test_cppexc.lua")).expect("copy script");
+        std::fs::copy(
+            src_dir().join("test_cppexc.lua"),
+            dir.join("test_cppexc.lua"),
+        )
+        .expect("copy script");
         let ours = run_script(&our_bin(), &dir, "test_cppexc.lua", "");
         let reference = ref_bin().map(|b| run_script(&b, &dir, "test_cppexc.lua", ""));
         check("cppexc", &ours, reference);

@@ -50,13 +50,20 @@ pub fn open_base(vm: &mut Vm) -> LuaResult<()> {
     let weak = vm.new_table(0, 1)?;
     let mode = vm.new_str(b"kv");
     let mk = vm.mm_name(MM::Mode);
-    weak.set_str(mk, Value::Str(mode)).map_err(|e| vm.tab_error(e))?;
+    weak.set_str(mk, Value::Str(mode))
+        .map_err(|e| vm.tab_error(e))?;
     weak.set_metatable(Some(weak));
     weak.set_nomm(!(1u8 << MM::Mode as u8));
     let newproxy = new_lib_fn(vm, lj_cf_newproxy, FF_NEWPROXY, vec![Value::Table(weak)]);
     let ts = vm.new_str(b"tostring");
     let print = new_lib_fn(vm, lj_cf_print, FF_PRINT, vec![Value::Str(ts)]);
-    for (name, f) in [("next", next), ("pairs", pairs), ("ipairs", ipairs), ("newproxy", newproxy), ("print", print)] {
+    for (name, f) in [
+        ("next", next),
+        ("pairs", pairs),
+        ("ipairs", ipairs),
+        ("newproxy", newproxy),
+        ("print", print),
+    ] {
         let k = vm.new_str(name.as_bytes());
         g.set_str(k, Value::Func(f)).map_err(|e| vm.tab_error(e))?;
     }
@@ -127,7 +134,11 @@ fn ffh_pairs(vm: &mut Vm, mm: MM) -> LuaResult<usize> {
     let f = vm.upvalue(1);
     vm.push(f);
     vm.push(o);
-    vm.push(if mm == MM::Pairs { Value::Nil } else { Value::Num(0.0) });
+    vm.push(if mm == MM::Pairs {
+        Value::Nil
+    } else {
+        Value::Num(0.0)
+    });
     Ok(3)
 }
 
@@ -195,7 +206,11 @@ fn lj_cf_getfenv(vm: &mut Vm) -> LuaResult<usize> {
             level_func(vm, level)?
         }
     };
-    let env = if f.is_lua() { f.env() } else { vm.cur_thread.env() };
+    let env = if f.is_lua() {
+        f.env()
+    } else {
+        vm.cur_thread.env()
+    };
     vm.ret1(Value::Table(env))
 }
 
@@ -242,7 +257,11 @@ fn lj_cf_rawequal(vm: &mut Vm) -> LuaResult<usize> {
 fn lj_cf_unpack(vm: &mut Vm) -> LuaResult<usize> {
     let t = vm.check_tab(1)?;
     let mut i = vm.opt_int(2, 1)?;
-    let e = if vm.nargs() >= 3 && !vm.arg(3).is_nil() { vm.check_int(3)? } else { t.len() as i32 };
+    let e = if vm.nargs() >= 3 && !vm.arg(3).is_nil() {
+        vm.check_int(3)?
+    } else {
+        t.len() as i32
+    };
     if i > e {
         return Ok(0);
     }
@@ -482,8 +501,18 @@ fn lj_cf_gcinfo(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn lj_cf_collectgarbage(vm: &mut Vm) -> LuaResult<usize> {
-    const OPTS: &[&str] =
-        &["stop", "restart", "collect", "count", "\u{ff}", "step", "setpause", "setstepmul", "\u{ff}", "isrunning"];
+    const OPTS: &[&str] = &[
+        "stop",
+        "restart",
+        "collect",
+        "count",
+        "\u{ff}",
+        "step",
+        "setpause",
+        "setstepmul",
+        "\u{ff}",
+        "isrunning",
+    ];
     let opt = vm.check_opt(1, 2, OPTS)?;
     let data = vm.opt_int(2, 0)?;
     let r = match opt {
@@ -517,12 +546,15 @@ fn lj_cf_newproxy(vm: &mut Vm) -> LuaResult<usize> {
     let env = vm.current_env();
     let u = vm.new_udata(0, env);
     vm.push(Value::Udata(u));
-    let Value::Table(weak) = vm.upvalue(1) else { unreachable!("newproxy upvalue") };
+    let Value::Table(weak) = vm.upvalue(1) else {
+        unreachable!("newproxy upvalue")
+    };
     if arg.is_falsy() {
         return Ok(1);
     } else if let Value::Bool(_) = arg {
         let mt = vm.empty_table();
-        weak.set(Value::Table(mt), Value::Bool(true)).map_err(|e| vm.tab_error(e))?;
+        weak.set(Value::Table(mt), Value::Bool(true))
+            .map_err(|e| vm.tab_error(e))?;
         u.set_metatable(Some(mt));
     } else {
         let mt = vm.metatable_of(arg);
@@ -537,7 +569,9 @@ fn lj_cf_newproxy(vm: &mut Vm) -> LuaResult<usize> {
 
 fn lj_cf_print(vm: &mut Vm) -> LuaResult<usize> {
     let nargs = vm.nargs();
-    let Value::Str(key) = vm.upvalue(1) else { unreachable!("print upvalue") };
+    let Value::Str(key) = vm.upvalue(1) else {
+        unreachable!("print upvalue")
+    };
     // `L->env` is the running thread's environment, and LUA_GLOBALSINDEX resolves to it too.
     let env = vm.cur_thread.env();
     let mut tv = env.get_str(key);
@@ -545,7 +579,8 @@ fn lj_cf_print(vm: &mut Vm) -> LuaResult<usize> {
         tv = vm.index(Value::Table(env), Value::Str(key))?;
     }
     vm.push(tv);
-    let shortcut = matches!(tv, Value::Func(f) if f.ffid() == FF_TOSTRING) && vm.basemt(crate::value::VType::Num).is_none();
+    let shortcut = matches!(tv, Value::Func(f) if f.ffid() == FF_TOSTRING)
+        && vm.basemt(crate::value::VType::Num).is_none();
     let base = vm.frame_base();
     for i in 0..nargs {
         let o = vm.cur_thread.get(base + i);

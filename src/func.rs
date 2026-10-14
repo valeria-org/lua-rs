@@ -53,8 +53,15 @@ pub const VARNAME_FOR_STATE: u8 = 5;
 pub const VARNAME_FOR_CTL: u8 = 6;
 pub const VARNAME_MAX: u8 = 7;
 /// Display strings of the internal variable names, indexed by `VARNAME_*`.
-pub const VARNAME_STR: [&str; 7] =
-    ["", "(for index)", "(for limit)", "(for step)", "(for generator)", "(for state)", "(for control)"];
+pub const VARNAME_STR: [&str; 7] = [
+    "",
+    "(for index)",
+    "(for limit)",
+    "(for step)",
+    "(for generator)",
+    "(for state)",
+    "(for control)",
+];
 
 /// Builtin id of Lua functions.
 pub const FF_LUA: u8 = 0;
@@ -142,7 +149,13 @@ impl Proto {
 
 impl fmt::Debug for Proto {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Proto({:?}:{}, {} ins)", self.chunkname, self.firstline, self.bc.len())
+        write!(
+            f,
+            "Proto({:?}:{}, {} ins)",
+            self.chunkname,
+            self.firstline,
+            self.bc.len()
+        )
     }
 }
 
@@ -209,10 +222,16 @@ impl fmt::Debug for UpVal {
 
 impl UpVal {
     pub fn new_open(thread: Gc<Thread>, slot: u32) -> UpVal {
-        UpVal { state: Cell::new(UpState::Open { thread, slot }), immutable: Cell::new(false) }
+        UpVal {
+            state: Cell::new(UpState::Open { thread, slot }),
+            immutable: Cell::new(false),
+        }
     }
     pub fn new_closed(v: Value) -> UpVal {
-        UpVal { state: Cell::new(UpState::Closed(v)), immutable: Cell::new(false) }
+        UpVal {
+            state: Cell::new(UpState::Closed(v)),
+            immutable: Cell::new(false),
+        }
     }
     #[inline]
     pub fn state(&self) -> UpState {
@@ -323,10 +342,19 @@ pub enum Function {
 
 impl Function {
     pub fn new_lua(proto: Gc<Proto>, upvals: Vec<Gc<UpVal>>, env: Gc<Table>) -> Function {
-        Function::Lua { proto, upvals: upvals.into_iter().map(Cell::new).collect(), env: Cell::new(env) }
+        Function::Lua {
+            proto,
+            upvals: upvals.into_iter().map(Cell::new).collect(),
+            env: Cell::new(env),
+        }
     }
     pub fn new_native(f: NativeImpl, ffid: u8, upvals: Vec<Value>, env: Gc<Table>) -> Function {
-        Function::Native { f, ffid, upvals: upvals.into_iter().map(Cell::new).collect(), env: Cell::new(env) }
+        Function::Native {
+            f,
+            ffid,
+            upvals: upvals.into_iter().map(Cell::new).collect(),
+            env: Cell::new(env),
+        }
     }
 
     #[inline]

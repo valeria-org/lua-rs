@@ -54,8 +54,9 @@ pub(crate) fn set_vmstate(st: u8) -> u8 {
 /// Builtin ids of upstream's assembler fast functions (`LJLIB_ASM`/`LJLIB_ASM_` in lib_*.c):
 /// the VM state stays "interpreter" while they run; all other natives run in state "C".
 const ASM_FFIDS: [u8; 57] = [
-    2, 3, 4, 5, 6, 7, 8, 9, 12, 17, 18, 20, 21, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,
-    54, 55, 56, 57, 58, 59, 60, 61, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 76, 77, 78, 80, 81, 82,
+    2, 3, 4, 5, 6, 7, 8, 9, 12, 17, 18, 20, 21, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+    48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
+    74, 76, 77, 78, 80, 81, 82,
 ];
 
 const ASM_FFID_MAP: [bool; 256] = {
@@ -71,7 +72,11 @@ const ASM_FFID_MAP: [bool; 256] = {
 /// VM state while running the native with builtin id `ffid`.
 #[inline]
 pub(crate) fn native_vmstate(ffid: u8) -> u8 {
-    if ASM_FFID_MAP[ffid as usize] { VMSTATE_INTERP } else { VMSTATE_C }
+    if ASM_FFID_MAP[ffid as usize] {
+        VMSTATE_INTERP
+    } else {
+        VMSTATE_C
+    }
 }
 
 /// Profile handler (`lj_profile_interpreter`), called before an instruction once a sample
@@ -138,7 +143,11 @@ impl Vm {
 
     /// `lua_gethook`, `lua_gethookmask`, `lua_gethookcount`.
     pub fn get_hook(&self) -> (Option<HookFn>, u8, i32) {
-        (self.rt.hook.func, self.rt.hook.mask & HOOK_EVENTMASK, self.rt.hook.cstart)
+        (
+            self.rt.hook.func,
+            self.rt.hook.mask & HOOK_EVENTMASK,
+            self.rt.hook.cstart,
+        )
     }
 
     /// Install (`Some`) or remove the profiler handler (`HOOK_PROFILE` on/off). Clears any
@@ -155,11 +164,19 @@ impl Vm {
 
     /// `lj_dispatch_profile`: a sample is pending before the instruction at `pc - 1` of frame
     /// `fidx`. Runs the handler unless a VM event handler (or the handler itself) is active.
-    pub(crate) fn hook_profile(&mut self, th: Gc<Thread>, fidx: usize, pt: &Gc<Proto>, pc: u32) -> LuaResult<()> {
+    pub(crate) fn hook_profile(
+        &mut self,
+        th: Gc<Thread>,
+        fidx: usize,
+        pt: &Gc<Proto>,
+        pc: u32,
+    ) -> LuaResult<()> {
         if !PROFILE_PENDING.swap(false, Ordering::Relaxed) || self.rt.hook.vmevent {
             return Ok(());
         }
-        let Some(h) = self.rt.hook.profile else { return Ok(()) };
+        let Some(h) = self.rt.hook.profile else {
+            return Ok(());
+        };
         let base = th.frame(fidx).expect("frame").base as usize;
         let slots = cur_topslot(pt, pc, self.rt.multres);
         th.set_top(base + slots);
@@ -177,7 +194,9 @@ impl Vm {
 
     /// `callhook`.
     fn callhook(&mut self, th: Gc<Thread>, event: HookEvent, line: i32) -> LuaResult<()> {
-        let Some(f) = self.rt.hook.func else { return Ok(()) };
+        let Some(f) = self.rt.hook.func else {
+            return Ok(());
+        };
         if self.rt.hook.active {
             return Ok(());
         }
@@ -201,7 +220,14 @@ impl Vm {
 
     /// `vm_inshook`/`vm_rethook` + `lj_dispatch_ins`, before executing the instruction at
     /// `pc - 1` of frame `fidx`. `ins_hook`: line/count dispatch (else return dispatch only).
-    pub(crate) fn hook_ins(&mut self, th: Gc<Thread>, fidx: usize, pt: &Gc<Proto>, pc: u32, ins_hook: bool) -> LuaResult<()> {
+    pub(crate) fn hook_ins(
+        &mut self,
+        th: Gc<Thread>,
+        fidx: usize,
+        pt: &Gc<Proto>,
+        pc: u32,
+        ins_hook: bool,
+    ) -> LuaResult<()> {
         let mask = self.rt.hook.mask;
         if ins_hook {
             self.rt.hook.count = self.rt.hook.count.wrapping_sub(1);
@@ -237,7 +263,9 @@ impl Vm {
                 th.set_top(base + slots);
             }
         }
-        if mask & LUA_MASKRET != 0 && Op::from_u8(pt.bc[pc as usize - 1].op_byte()).is_some_and(|o| o.is_ret()) {
+        if mask & LUA_MASKRET != 0
+            && Op::from_u8(pt.bc[pc as usize - 1].op_byte()).is_some_and(|o| o.is_ret())
+        {
             self.callhook(th, HookEvent::Ret, -1)?;
         }
         Ok(())

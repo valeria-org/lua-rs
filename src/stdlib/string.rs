@@ -54,9 +54,15 @@ pub fn open_string(vm: &mut Vm) -> LuaResult<()> {
     let mt = vm.new_table(0, crate::table::hsize2hbits(1))?;
     vm.set_basemt(VType::Str, Some(mt));
     let idx = vm.mm_name(MM::Index);
-    mt.set_str(idx, Value::Table(lib)).map_err(|e| vm.tab_error(e))?;
+    mt.set_str(idx, Value::Table(lib))
+        .map_err(|e| vm.tab_error(e))?;
     mt.set_nomm(!(1u8 << MM::Index as u8));
-    libinit::lib_prereg(vm, "string.buffer", super::buffer::luaopen_string_buffer, lib)?;
+    libinit::lib_prereg(
+        vm,
+        "string.buffer",
+        super::buffer::luaopen_string_buffer,
+        lib,
+    )?;
     Ok(())
 }
 
@@ -126,15 +132,27 @@ fn string_sub(vm: &mut Vm) -> LuaResult<usize> {
     let len = s.len() as i32;
     // Fast path semantics (vm_x64.dasc `string_sub`).
     if (len as u32) < end as u32 {
-        end = if end < 0 { end.wrapping_add(len + 1) } else { len };
+        end = if end < 0 {
+            end.wrapping_add(len + 1)
+        } else {
+            len
+        };
     }
     if start <= 0 {
-        start = if start == 0 { 1 } else { start.wrapping_add(len + 1) };
+        start = if start == 0 {
+            1
+        } else {
+            start.wrapping_add(len + 1)
+        };
         if start <= 0 {
             start = 1;
         }
     }
-    let r = if end < start { &[][..] } else { &s.as_bytes()[(start - 1) as usize..end as usize] };
+    let r = if end < start {
+        &[][..]
+    } else {
+        &s.as_bytes()[(start - 1) as usize..end as usize]
+    };
     vm.push_str(r);
     Ok(1)
 }
@@ -191,14 +209,22 @@ fn string_reverse(vm: &mut Vm) -> LuaResult<usize> {
 
 fn string_lower(vm: &mut Vm) -> LuaResult<usize> {
     let s = vm.check_str(1)?;
-    let r: Vec<u8> = s.as_bytes().iter().map(|&c| if c.is_ascii_uppercase() { c + 0x20 } else { c }).collect();
+    let r: Vec<u8> = s
+        .as_bytes()
+        .iter()
+        .map(|&c| if c.is_ascii_uppercase() { c + 0x20 } else { c })
+        .collect();
     vm.push_str(&r);
     Ok(1)
 }
 
 fn string_upper(vm: &mut Vm) -> LuaResult<usize> {
     let s = vm.check_str(1)?;
-    let r: Vec<u8> = s.as_bytes().iter().map(|&c| if c.is_ascii_lowercase() { c - 0x20 } else { c }).collect();
+    let r: Vec<u8> = s
+        .as_bytes()
+        .iter()
+        .map(|&c| if c.is_ascii_lowercase() { c - 0x20 } else { c })
+        .collect();
     vm.push_str(&r);
     Ok(1)
 }
@@ -241,7 +267,13 @@ fn string_dump(vm: &mut Vm) -> LuaResult<usize> {
 // -- Pattern matching -------------------------------------------------------------------------
 
 /// `push_onecapture`.
-fn push_onecapture(vm: &mut Vm, ms: &MatchState<'_>, i: usize, s: usize, e: usize) -> LuaResult<()> {
+fn push_onecapture(
+    vm: &mut Vm,
+    ms: &MatchState<'_>,
+    i: usize,
+    s: usize,
+    e: usize,
+) -> LuaResult<()> {
     match ms.capture(i, s, e) {
         Ok(Capture::Span { start, end }) => {
             vm.push_str(&ms.src()[start..end]);
@@ -256,7 +288,11 @@ fn push_onecapture(vm: &mut Vm, ms: &MatchState<'_>, i: usize, s: usize, e: usiz
 }
 
 /// `push_captures`: `whole` is the match span (`None` = upstream's `s == NULL`).
-fn push_captures(vm: &mut Vm, ms: &MatchState<'_>, whole: Option<(usize, usize)>) -> LuaResult<usize> {
+fn push_captures(
+    vm: &mut Vm,
+    ms: &MatchState<'_>,
+    whole: Option<(usize, usize)>,
+) -> LuaResult<usize> {
     let n = ms.num_captures(whole.is_some());
     vm.check_stack(n, Some("too many captures"))?;
     let (s, e) = whole.unwrap_or((0, 0));
@@ -318,7 +354,9 @@ fn string_match(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn string_gmatch_aux(vm: &mut Vm) -> LuaResult<usize> {
-    let (Value::Str(str), Value::Str(p), Value::Num(pos)) = (vm.upvalue(1), vm.upvalue(2), vm.upvalue(3)) else {
+    let (Value::Str(str), Value::Str(p), Value::Num(pos)) =
+        (vm.upvalue(1), vm.upvalue(2), vm.upvalue(3))
+    else {
         unreachable!("gmatch_aux upvalues")
     };
     let mut ms = MatchState::new(str.as_bytes());
@@ -335,7 +373,11 @@ fn string_gmatch_aux(vm: &mut Vm) -> LuaResult<usize> {
 fn string_gmatch(vm: &mut Vm) -> LuaResult<usize> {
     let s = vm.check_str(1)?;
     let p = vm.check_str(2)?;
-    let f = vm.native(string_gmatch_aux, FF_STRING_GMATCH_AUX, vec![Value::Str(s), Value::Str(p), Value::Num(0.0)]);
+    let f = vm.native(
+        string_gmatch_aux,
+        FF_STRING_GMATCH_AUX,
+        vec![Value::Str(s), Value::Str(p), Value::Num(0.0)],
+    );
     vm.push(Value::Func(f));
     Ok(1)
 }
@@ -371,7 +413,8 @@ fn gsub_add_value(
                     r
                 }
             };
-            return pattern::expand_replacement(ms, r.as_bytes(), s, e, out).map_err(|pe| pat_error(vm, pe));
+            return pattern::expand_replacement(ms, r.as_bytes(), s, e, out)
+                .map_err(|pe| pat_error(vm, pe));
         }
         Value::Func(_) => {
             vm.push(repl);
@@ -412,7 +455,11 @@ fn string_gsub(vm: &mut Vm) -> LuaResult<usize> {
     if anchor {
         pat = &pat[1..];
     }
-    if !matches!(tr, Value::Num(_) | Value::Str(_) | Value::Func(_) | Value::Table(_)) || vm.nargs() < 3 {
+    if !matches!(
+        tr,
+        Value::Num(_) | Value::Str(_) | Value::Func(_) | Value::Table(_)
+    ) || vm.nargs() < 3
+    {
         return Err(vm.arg_error_em(3, ErrMsg::NOSFT));
     }
     let src_all = s.as_bytes();
@@ -469,7 +516,12 @@ pub type FmtSink<'a> = dyn FnMut(&mut Vm, &[u8], u32) -> LuaResult<()> + 'a;
 /// `selfbuf` is the buffer userdata being written to by `buffer:putf` (putting it into
 /// itself is an error). `__tostring` metamethods for `%s` are called once and their result
 /// replaces the argument in place (keeping it rooted).
-pub fn strfmt_putarg(vm: &mut Vm, arg: usize, selfbuf: Option<Gc<Userdata>>, put: &mut FmtSink<'_>) -> LuaResult<()> {
+pub fn strfmt_putarg(
+    vm: &mut Vm,
+    arg: usize,
+    selfbuf: Option<Gc<Userdata>>,
+    put: &mut FmtSink<'_>,
+) -> LuaResult<()> {
     let narg = vm.nargs();
     let fmt = vm.check_str(arg)?;
     let mut arg = arg;
@@ -563,7 +615,9 @@ pub fn strfmt_putarg(vm: &mut Vm, arg: usize, selfbuf: Option<Gc<Userdata>>, put
                 strfmt::put_ptr(out, crate::vm::obj_ptr(o));
                 reserve = Some(strfmt::MAXBUF_PTR as u32);
             }
-            FormatType::Eof | FormatType::Err | FormatType::Lit => unreachable!("bad string format type"),
+            FormatType::Eof | FormatType::Err | FormatType::Lit => {
+                unreachable!("bad string format type")
+            }
         }
         let r = reserve.unwrap_or(tmp.len() as u32);
         put(vm, &tmp, r)?;

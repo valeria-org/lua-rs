@@ -2,22 +2,22 @@
 //!
 //! Behaviour reference: upstream LuaJIT v2.1 built with `-DLUAJIT_DISABLE_JIT` (x86-64, GC64).
 
-pub mod gc;
-pub mod value;
-pub mod lstr;
-pub mod table;
-pub mod func;
-pub mod udata;
-pub mod cdata;
-pub mod thread;
 pub mod bc;
-pub mod error;
-pub mod state;
-pub mod text;
-pub mod ffi;
-pub mod parse;
 pub mod bcdump;
-pub mod vm;
-pub mod stdlib;
 pub mod capi;
+pub mod cdata;
 pub mod cli;
+pub mod error;
+pub mod ffi;
+pub mod func;
+pub mod gc;
+pub mod lstr;
+pub mod parse;
+pub mod state;
+pub mod stdlib;
+pub mod table;
+pub mod text;
+pub mod thread;
+pub mod udata;
+pub mod value;
+pub mod vm;

@@ -2,7 +2,7 @@
 
 use std::borrow::Cow;
 
-use crate::cdata::{CTID_COMPLEX_DOUBLE, CTID_INT64, CTID_UINT64, CData};
+use crate::cdata::{CData, CTID_COMPLEX_DOUBLE, CTID_INT64, CTID_UINT64};
 use crate::error::{ErrorKind, LuaError, LuaResult};
 use crate::gc::Gc;
 use crate::lstr::LuaStr;
@@ -31,12 +31,20 @@ pub struct Input<'a> {
 impl<'a> Input<'a> {
     /// A chunk held in memory: a single piece (the reader of `luaL_loadbuffer`).
     pub fn from_slice(src: &'a [u8]) -> Input<'a> {
-        Input { buf: Cow::Borrowed(src), p: 0, reader: None }
+        Input {
+            buf: Cow::Borrowed(src),
+            p: 0,
+            reader: None,
+        }
     }
 
     /// A chunk delivered piece by piece by `reader` (`lua_load`).
     pub fn from_reader(reader: Box<ChunkReader<'a>>) -> Input<'a> {
-        Input { buf: Cow::Borrowed(&[]), p: 0, reader: Some(reader) }
+        Input {
+            buf: Cow::Borrowed(&[]),
+            p: 0,
+            reader: Some(reader),
+        }
     }
 
     /// True if more input comes from a reader, which may run Lua code (and so the collector):
@@ -48,7 +56,9 @@ impl<'a> Input<'a> {
     /// Call the reader for the next piece (`None` at the end of the chunk). A piece of
     /// `LJ_MAX_BUF` bytes or more is an out-of-memory error, as in `lex_more`.
     pub(crate) fn read_piece(&mut self, vm: &mut Vm) -> LuaResult<Option<Vec<u8>>> {
-        let Some(r) = self.reader.as_mut() else { return Ok(None) };
+        let Some(r) = self.reader.as_mut() else {
+            return Ok(None);
+        };
         match r(vm)? {
             Some(piece) if !piece.is_empty() => {
                 if piece.len() >= LJ_MAX_BUF {
@@ -197,7 +207,11 @@ pub fn debug_shortname(name: &[u8], line: u32) -> Vec<u8> {
             }
             len += 1;
         }
-        out.extend_from_slice(if line == !0 { b"[builtin:" } else { b"[string \"" });
+        out.extend_from_slice(if line == !0 {
+            b"[builtin:"
+        } else {
+            b"[string \""
+        });
         if len < src.len() {
             if len > LUA_IDSIZE - 15 {
                 len = LUA_IDSIZE - 15;
@@ -388,7 +402,10 @@ impl<'a> LexState<'a> {
         }
         self.save(0);
         let len = self.sb.len() - 1;
-        match strscan::scan(&self.sb[..len], strscan::OPT_TONUM | strscan::OPT_LL | strscan::OPT_IMAG) {
+        match strscan::scan(
+            &self.sb[..len],
+            strscan::OPT_TONUM | strscan::OPT_LL | strscan::OPT_IMAG,
+        ) {
             StrScan::Num(n) => Ok(TokVal::Num(n)),
             StrScan::Imag(n) => {
                 super::ffi_literal_hook(self.vm)?;

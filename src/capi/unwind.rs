@@ -58,7 +58,10 @@ unsafe extern "C" {
     fn _Unwind_SetGR(ctx: *mut c_void, reg: c_int, v: usize);
     fn _Unwind_SetIP(ctx: *mut c_void, ip: usize);
     /// `pcall_c(f, arg)`: call `f(arg)`; returns NULL, or the caught exception object.
-    fn ljrs_capi_pcall(f: unsafe extern "C-unwind" fn(*mut c_void), arg: *mut c_void) -> *mut UnwindException;
+    fn ljrs_capi_pcall(
+        f: unsafe extern "C-unwind" fn(*mut c_void),
+        arg: *mut c_void,
+    ) -> *mut UnwindException;
 }
 
 // The trampoline. Its LSDA (read only by `personality`) holds the call range and the landing
@@ -101,7 +104,13 @@ core::arch::global_asm!(
 );
 
 /// Personality routine of `ljrs_capi_pcall`.
-unsafe extern "C" fn personality(version: c_int, actions: c_int, class: u64, exc: *mut UnwindException, ctx: *mut c_void) -> c_int {
+unsafe extern "C" fn personality(
+    version: c_int,
+    actions: c_int,
+    class: u64,
+    exc: *mut UnwindException,
+    ctx: *mut c_void,
+) -> c_int {
     if version != 1 {
         return URC_FATAL_PHASE1_ERROR;
     }
@@ -113,7 +122,11 @@ unsafe extern "C" fn personality(version: c_int, actions: c_int, class: u64, exc
         let lsda = _Unwind_GetLanguageSpecificData(ctx);
         let start = _Unwind_GetRegionStart(ctx);
         let ip = _Unwind_GetIP(ctx);
-        let (b, e, land) = (start + *lsda as usize, start + *lsda.add(1) as usize, start + *lsda.add(2) as usize);
+        let (b, e, land) = (
+            start + *lsda as usize,
+            start + *lsda.add(1) as usize,
+            start + *lsda.add(2) as usize,
+        );
         if !(ip > b && ip <= e) {
             return URC_CONTINUE_UNWIND;
         }
@@ -135,7 +148,12 @@ unsafe extern "C" fn cleanup(_reason: c_int, exc: *mut UnwindException) {
 /// Raise `e` through the C frames. Returns only if no handler was found.
 pub(crate) fn raise(e: LuaError) -> LuaError {
     let x = Box::into_raw(Box::new(LuaException {
-        hdr: UnwindException { class: LUA_CLASS, cleanup: Some(cleanup), private_1: 0, private_2: 0 },
+        hdr: UnwindException {
+            class: LUA_CLASS,
+            cleanup: Some(cleanup),
+            private_1: 0,
+            private_2: 0,
+        },
         err: e,
     }));
     // SAFETY: a valid exception object; ownership passes to the catcher.
@@ -186,7 +204,10 @@ pub(crate) fn pcall_c<F: FnOnce() -> R, R>(f: F) -> Result<R, Caught> {
         let f = d.f.take().expect("called once");
         d.r = Some(f());
     }
-    let mut d: Data<F, R> = Data { f: Some(f), r: None };
+    let mut d: Data<F, R> = Data {
+        f: Some(f),
+        r: None,
+    };
     // SAFETY: `call` matches `Data<F, R>`; the trampoline returns normally or with an exception.
     let exc = unsafe { ljrs_capi_pcall(call::<F, R>, &mut d as *mut Data<F, R> as *mut c_void) };
     let Some(exc) = std::ptr::NonNull::new(exc) else {
@@ -195,7 +216,9 @@ pub(crate) fn pcall_c<F: FnOnce() -> R, R>(f: F) -> Result<R, Caught> {
     // SAFETY: `exc` is the landed exception object, now owned by us.
     unsafe {
         if exc.as_ref().class == LUA_CLASS {
-            Err(Caught::Lua(Box::from_raw(exc.as_ptr() as *mut LuaException).err))
+            Err(Caught::Lua(
+                Box::from_raw(exc.as_ptr() as *mut LuaException).err,
+            ))
         } else {
             Err(Caught::Foreign(Foreign(exc)))
         }

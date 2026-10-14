@@ -76,7 +76,9 @@ fn set_global(vm: &mut Vm, name: &[u8], v: Value) {
 }
 
 fn pmain(vm: &mut Vm) -> LuaResult<usize> {
-    let (Value::Str(src), Value::Str(name)) = (vm.upvalue(1), vm.upvalue(2)) else { unreachable!() };
+    let (Value::Str(src), Value::Str(name)) = (vm.upvalue(1), vm.upvalue(2)) else {
+        unreachable!()
+    };
     let f = vm.load(src.as_bytes(), name.as_bytes(), None)?;
     vm.push(f);
     vm.call(0, 0)?;
@@ -89,7 +91,10 @@ fn normalize(s: &str) -> String {
     let mut o = String::with_capacity(s.len());
     let mut i = 0;
     while i < b.len() {
-        if b[i] == b'0' && b.get(i + 1) == Some(&b'x') && b.get(i + 2).is_some_and(|c| c.is_ascii_hexdigit()) {
+        if b[i] == b'0'
+            && b.get(i + 1) == Some(&b'x')
+            && b.get(i + 2).is_some_and(|c| c.is_ascii_hexdigit())
+        {
             let mut j = i + 2;
             while j < b.len() && (b[j].is_ascii_digit() || (b'a'..=b'f').contains(&b[j])) {
                 j += 1;
@@ -134,7 +139,11 @@ fn run_lua(src: Vec<u8>, chunkname: Vec<u8>) -> String {
             }
             let sk = vm.new_str(&src);
             let ck = vm.new_str(&chunkname);
-            let pm = vm.native(pmain, luajit::func::FF_C, vec![Value::Str(sk), Value::Str(ck)]);
+            let pm = vm.native(
+                pmain,
+                luajit::func::FF_C,
+                vec![Value::Str(sk), Value::Str(ck)],
+            );
             vm.push(Value::Func(pm));
             if let Err(e) = vm.pcall(0, 0, None) {
                 let m = vm.tostring_opt(e.value).unwrap_or_default();
@@ -162,9 +171,15 @@ fn run_fixture(name: &str) {
     if got != expected {
         let (g, e): (Vec<_>, Vec<_>) = (got.lines().collect(), expected.lines().collect());
         for i in 0..g.len().max(e.len()) {
-            let (a, b) = (g.get(i).copied().unwrap_or("<eof>"), e.get(i).copied().unwrap_or("<eof>"));
+            let (a, b) = (
+                g.get(i).copied().unwrap_or("<eof>"),
+                e.get(i).copied().unwrap_or("<eof>"),
+            );
             if a != b {
-                panic!("{name}: first difference at line {}:\n  got:      {a}\n  expected: {b}", i + 1);
+                panic!(
+                    "{name}: first difference at line {}:\n  got:      {a}\n  expected: {b}",
+                    i + 1
+                );
             }
         }
     }
@@ -221,13 +236,27 @@ fn callback_edge_cases() {
 /// The upstream FFI tests (`lib/ffi/*.lua` of the LuaJIT test suite) that only need the
 /// libraries present in this crate state.
 #[test]
+#[ignore = "requires the upstream test suite; set LUAJIT_TEST_DIR to its test directory"]
 fn upstream_ffi_tests() {
-    let dir = Path::new(env!("HOME")).join("projects/luajit-ref/tests/test/lib/ffi");
-    if !dir.is_dir() {
-        return;
-    }
+    let root = std::env::var_os("LUAJIT_TEST_DIR")
+        .expect("set LUAJIT_TEST_DIR to the upstream test directory");
+    let dir = Path::new(&root).join("lib/ffi");
+    assert!(
+        dir.is_dir(),
+        "upstream FFI tests not found at {}",
+        dir.display()
+    );
     let mut failed = Vec::new();
-    for name in ["cdata_var", "copy_fill", "istype", "jit_complex", "jit_misc", "jit_struct", "redir", "type_punning"] {
+    for name in [
+        "cdata_var",
+        "copy_fill",
+        "istype",
+        "jit_complex",
+        "jit_misc",
+        "jit_struct",
+        "redir",
+        "type_punning",
+    ] {
         let path = dir.join(format!("{name}.lua"));
         let src = std::fs::read(&path).unwrap();
         let got = run_lua(src, format!("@{name}.lua").into_bytes());

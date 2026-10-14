@@ -36,7 +36,8 @@ fn normalize(s: &str) -> String {
     while let Some(p) = rest.find("0x") {
         r.push_str(&rest[..p + 2]);
         let after = &rest[p + 2..];
-        let t = after.trim_start_matches(|c: char| c.is_ascii_hexdigit() && !c.is_ascii_uppercase());
+        let t =
+            after.trim_start_matches(|c: char| c.is_ascii_hexdigit() && !c.is_ascii_uppercase());
         if t.len() != after.len() {
             r.push('?');
         }
@@ -83,11 +84,16 @@ fn run(name: &str, env: &str, args: &str) -> String {
 fn corpus_matches_reference() {
     let cases = std::fs::read_to_string(fixture_dir().join("cases.txt")).unwrap();
     let mut failures = Vec::new();
-    for line in cases.lines().filter(|l| !l.starts_with('#') && !l.trim().is_empty()) {
+    for line in cases
+        .lines()
+        .filter(|l| !l.starts_with('#') && !l.trim().is_empty())
+    {
         let mut f = line.splitn(3, '|').map(str::trim);
         let (name, env, args) = (f.next().unwrap(), f.next().unwrap(), f.next().unwrap());
-        let expected =
-            String::from_utf8_lossy(&std::fs::read(fixture_dir().join(format!("{name}.expected"))).unwrap()).into_owned();
+        let expected = String::from_utf8_lossy(
+            &std::fs::read(fixture_dir().join(format!("{name}.expected"))).unwrap(),
+        )
+        .into_owned();
         let got = run(name, env, args);
         if got != expected {
             let first = got.lines().zip(expected.lines()).position(|(g, e)| g != e);
@@ -98,10 +104,18 @@ fn corpus_matches_reference() {
                     got.lines().nth(i).unwrap(),
                     expected.lines().nth(i).unwrap()
                 ),
-                None => format!("output length differs ({} vs {} lines)", got.lines().count(), expected.lines().count()),
+                None => format!(
+                    "output length differs ({} vs {} lines)",
+                    got.lines().count(),
+                    expected.lines().count()
+                ),
             };
             failures.push(format!("{name}: {detail}"));
         }
     }
-    assert!(failures.is_empty(), "cases differing from the reference:\n{}", failures.join("\n"));
+    assert!(
+        failures.is_empty(),
+        "cases differing from the reference:\n{}",
+        failures.join("\n")
+    );
 }

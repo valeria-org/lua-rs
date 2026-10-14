@@ -2,8 +2,9 @@
 # Regenerate the bytecode dump goldens with the reference LuaJIT (JIT disabled build).
 # Usage: tests/fixtures/bcdump/gen.sh [path/to/luajit]
 set -e
-LJ=${1:-$HOME/projects/luajit-ref/luajit/src/luajit}
+LJ=${1:-${LUAJIT_REF:?Pass a reference LuaJIT binary or set LUAJIT_REF}}
 LJDIR=$(cd "$(dirname "$LJ")" && pwd)
+LJ="$LJDIR/$(basename "$LJ")"
 export LUA_PATH="$LJDIR/?.lua;;"
 cd "$(dirname "$0")"
 rm -f golden/*

@@ -106,7 +106,14 @@ fn checkptr(vm: &mut Vm, cts: &mut CTState, narg: usize, id: CTypeID) -> LuaResu
     }
     let o = vm.arg(narg);
     let mut p: *mut u8 = ptr::null_mut();
-    cconv::ct_tv(vm, cts, id, ptr::from_mut(&mut p).cast(), o, ccf_arg(narg as u32))?;
+    cconv::ct_tv(
+        vm,
+        cts,
+        id,
+        ptr::from_mut(&mut p).cast(),
+        o,
+        ccf_arg(narg as u32),
+    )?;
     Ok(p)
 }
 
@@ -117,7 +124,14 @@ fn checkint(vm: &mut Vm, cts: &mut CTState, narg: usize) -> LuaResult<i32> {
     }
     let o = vm.arg(narg);
     let mut i: i32 = 0;
-    cconv::ct_tv(vm, cts, CTID_INT32, ptr::from_mut(&mut i).cast(), o, ccf_arg(narg as u32))?;
+    cconv::ct_tv(
+        vm,
+        cts,
+        CTID_INT32,
+        ptr::from_mut(&mut i).cast(),
+        o,
+        ccf_arg(narg as u32),
+    )?;
     Ok(i)
 }
 
@@ -155,7 +169,9 @@ fn index_meta(vm: &mut Vm, st: &FfiState, id: CTypeID, mm: MM) -> LuaResult<usiz
         drop(cts);
         vm.err_callermsg(&m)
     };
-    let Some(tv) = tv else { return Err(err_index(vm)) };
+    let Some(tv) = tv else {
+        return Err(err_index(vm));
+    };
     if let Value::Func(_) = tv {
         return vm.tailcall(tv);
     }
@@ -180,7 +196,9 @@ fn index_meta(vm: &mut Vm, st: &FfiState, id: CTypeID, mm: MM) -> LuaResult<usiz
 
 fn ffi_meta_index(vm: &mut Vm) -> LuaResult<usize> {
     let o = vm.arg(1);
-    let Value::CData(cd) = o else { return Err(vm.type_error(1, "cdata")) };
+    let Value::CData(cd) = o else {
+        return Err(vm.type_error(1, "cdata"));
+    };
     if vm.nargs() < 2 {
         return Err(vm.type_error(1, "cdata"));
     }
@@ -196,7 +214,9 @@ fn ffi_meta_index(vm: &mut Vm) -> LuaResult<usize> {
 
 fn ffi_meta_newindex(vm: &mut Vm) -> LuaResult<usize> {
     let o = vm.arg(1);
-    let Value::CData(cd) = o else { return Err(vm.type_error(1, "cdata")) };
+    let Value::CData(cd) = o else {
+        return Err(vm.type_error(1, "cdata"));
+    };
     if vm.nargs() < 3 {
         return Err(vm.type_error(1, "cdata"));
     }
@@ -291,7 +311,10 @@ fn ffi_meta_tostring(vm: &mut Vm) -> LuaResult<usize> {
             let s = if ctype_iscomplex(info) {
                 repr_complex(&buf, size)
             } else {
-                repr_int64(u64::from_ne_bytes(buf[..8].try_into().expect("8 bytes")), info & CTF_UNSIGNED != 0)
+                repr_int64(
+                    u64::from_ne_bytes(buf[..8].try_into().expect("8 bytes")),
+                    info & CTF_UNSIGNED != 0,
+                )
             };
             drop(cts);
             vm.push_str(&s);
@@ -345,7 +368,10 @@ fn ffi_pairs(vm: &mut Vm, mm: MM) -> LuaResult<usize> {
             vm.tailcall(tv)
         }
         None => {
-            let m = msgf(errmsg::FFI_BADMM, &[&cts.repr(id, None), mm.name().as_bytes()]);
+            let m = msgf(
+                errmsg::FFI_BADMM,
+                &[&cts.repr(id, None), mm.name().as_bytes()],
+            );
             drop(cts);
             Err(vm.err_callermsg(&m))
         }
@@ -396,9 +422,16 @@ impl CCallArgs for LuaArgs<'_> {
         })
     }
 
-    fn convert(&mut self, cts: &mut CTState, narg: usize, did: CTypeID, dst: &mut [u8]) -> Result<(), CallErr> {
+    fn convert(
+        &mut self,
+        cts: &mut CTState,
+        narg: usize,
+        did: CTypeID,
+        dst: &mut [u8],
+    ) -> Result<(), CallErr> {
         let o = self.vm.arg(narg + 1);
-        cconv::ct_tv(self.vm, cts, did, dst.as_mut_ptr(), o, ccf_arg(narg as u32)).map_err(CallErr::Lua)
+        cconv::ct_tv(self.vm, cts, did, dst.as_mut_ptr(), o, ccf_arg(narg as u32))
+            .map_err(CallErr::Lua)
     }
 }
 
@@ -520,7 +553,8 @@ fn callback_run(vm: &mut Vm, frame: &mut CallbackFrame) -> LuaResult<()> {
             return Err(match (f, e.value) {
                 (Value::Func(func), Value::Str(m)) if func.proto().is_some() => {
                     let pt = func.proto().expect("Lua function");
-                    let mut out = crate::vm::debug::shortname(pt.chunkname.as_bytes(), pt.firstline);
+                    let mut out =
+                        crate::vm::debug::shortname(pt.chunkname.as_bytes(), pt.firstline);
                     out.extend_from_slice(format!(":{}: ", pt.firstline + pt.numline).as_bytes());
                     out.extend_from_slice(m.as_bytes());
                     vm.error_msg_bytes(&out)
@@ -546,9 +580,14 @@ fn callback_set(vm: &mut Vm, f: Option<Value>) -> LuaResult<usize> {
         let slot = cts.cb.ptr2slot(p);
         if slot < cts.cb.sizeid() && cts.cb.cbid(slot) != 0 {
             match f {
-                Some(f) => st.miscmap.set_int(slot as i32, f).map_err(|e| vm.tab_error(e))?,
+                Some(f) => st
+                    .miscmap
+                    .set_int(slot as i32, f)
+                    .map_err(|e| vm.tab_error(e))?,
                 None => {
-                    st.miscmap.set_int(slot as i32, Value::Nil).map_err(|e| vm.tab_error(e))?;
+                    st.miscmap
+                        .set_int(slot as i32, Value::Nil)
+                        .map_err(|e| vm.tab_error(e))?;
                     cts.cb.free(slot);
                 }
             }
@@ -586,7 +625,13 @@ impl crate::gc::Trace for ClibUd {
 /// Create a C library namespace object (`clib_new`).
 fn clib_new(vm: &mut Vm, lib: CLibrary, mt: Gc<Table>) -> Gc<Userdata> {
     let cache = vm.empty_table();
-    let ud = vm.new_udata_ext(Box::new(ClibUd { lib: std::cell::RefCell::new(lib) }), UDTYPE_FFI_CLIB, cache);
+    let ud = vm.new_udata_ext(
+        Box::new(ClibUd {
+            lib: std::cell::RefCell::new(lib),
+        }),
+        UDTYPE_FFI_CLIB,
+        cache,
+    );
     ud.set_metatable(Some(mt));
     ud
 }
@@ -904,16 +949,34 @@ fn ffi_string(vm: &mut Vm) -> LuaResult<usize> {
     let mut p: *const u8 = ptr::null();
     let len = if vm.nargs() >= 2 && !vm.arg(2).is_nil() {
         let len = checkint(vm, &mut cts, 2)? as u32 as usize;
-        cconv::ct_tv(vm, &mut cts, CTID_P_CVOID, ptr::from_mut(&mut p).cast(), o, ccf_arg(1))?;
+        cconv::ct_tv(
+            vm,
+            &mut cts,
+            CTID_P_CVOID,
+            ptr::from_mut(&mut p).cast(),
+            o,
+            ccf_arg(1),
+        )?;
         len
     } else {
-        cconv::ct_tv(vm, &mut cts, CTID_P_CCHAR, ptr::from_mut(&mut p).cast(), o, ccf_arg(1))?;
+        cconv::ct_tv(
+            vm,
+            &mut cts,
+            CTID_P_CCHAR,
+            ptr::from_mut(&mut p).cast(),
+            o,
+            ccf_arg(1),
+        )?;
         // SAFETY: as upstream, the pointer must point to a NUL-terminated string.
         unsafe { libc::strlen(p.cast()) }
     };
     drop(cts);
     // SAFETY: as upstream, the caller guarantees `len` readable bytes at `p`.
-    let s = if len == 0 { &[][..] } else { unsafe { std::slice::from_raw_parts(p, len) } };
+    let s = if len == 0 {
+        &[][..]
+    } else {
+        unsafe { std::slice::from_raw_parts(p, len) }
+    };
     let s = vm.new_str(s);
     vm.ret1(Value::Str(s))
 }
@@ -969,7 +1032,9 @@ fn ffi_metatype(vm: &mut Vm) -> LuaResult<usize> {
     if !st.miscmap.get(key).is_nil() {
         return Err(vm.err_caller(ErrMsg::PROTMT));
     }
-    st.miscmap.set(key, Value::Table(mt)).map_err(|e| vm.tab_error(e))?;
+    st.miscmap
+        .set(key, Value::Table(mt))
+        .map_err(|e| vm.tab_error(e))?;
     let v = new_ctypeid(vm, id);
     vm.ret1(v)
 }
@@ -1012,7 +1077,15 @@ fn tonumber_hook(vm: &mut Vm, cd: Gc<CData>) -> LuaResult<Option<f64>> {
     let info = cts.get(ct).info;
     if ctype_isnum(info) || ctype_iscomplex(info) {
         let mut n = 0f64;
-        cconv::ct_ct(vm, &cts, CTID_DOUBLE, ct, ptr::from_mut(&mut n).cast(), cd.ptr(), 0)?;
+        cconv::ct_ct(
+            vm,
+            &cts,
+            CTID_DOUBLE,
+            ct,
+            ptr::from_mut(&mut n).cast(),
+            cd.ptr(),
+            0,
+        )?;
         return Ok(Some(n));
     }
     Ok(None)
@@ -1022,7 +1095,14 @@ fn tonumber_hook(vm: &mut Vm, cd: Gc<CData>) -> LuaResult<Option<f64>> {
 fn toptr_hook(vm: &mut Vm, o: Value, narg: u32) -> LuaResult<*const u8> {
     let st = state(vm);
     let mut p: *const u8 = ptr::null();
-    cconv::ct_tv(vm, &mut st.cts.borrow_mut(), CTID_P_CVOID, ptr::from_mut(&mut p).cast(), o, ccf_arg(narg))?;
+    cconv::ct_tv(
+        vm,
+        &mut st.cts.borrow_mut(),
+        CTID_P_CVOID,
+        ptr::from_mut(&mut p).cast(),
+        o,
+        ccf_arg(narg),
+    )?;
     Ok(p)
 }
 
@@ -1048,7 +1128,14 @@ fn new_lib_table(vm: &mut Vm, nhash: u32) -> LuaResult<Gc<Table>> {
     Ok(t)
 }
 
-fn set_fn(vm: &mut Vm, t: Gc<Table>, name: &str, f: NativeFn, ffid: u8, env: Gc<Table>) -> LuaResult<()> {
+fn set_fn(
+    vm: &mut Vm,
+    t: Gc<Table>,
+    name: &str,
+    f: NativeFn,
+    ffid: u8,
+    env: Gc<Table>,
+) -> LuaResult<()> {
     let func = vm.new_native(NativeImpl::Rust(f), ffid, Vec::new(), env);
     let k = vm.new_str(name.as_bytes());
     t.set_str(k, Value::Func(func)).map_err(|e| vm.tab_error(e))
@@ -1104,8 +1191,22 @@ pub fn open_ffi(vm: &mut Vm) -> LuaResult<Gc<Table>> {
 
     // C library namespace metatable.
     let clib = new_lib_table(vm, 3)?;
-    set_fn(vm, clib, "__index", ffi_clib_index, FF_FFI_CLIB___INDEX, env)?;
-    set_fn(vm, clib, "__newindex", ffi_clib_newindex, FF_FFI_CLIB___NEWINDEX, env)?;
+    set_fn(
+        vm,
+        clib,
+        "__index",
+        ffi_clib_index,
+        FF_FFI_CLIB___INDEX,
+        env,
+    )?;
+    set_fn(
+        vm,
+        clib,
+        "__newindex",
+        ffi_clib_newindex,
+        FF_FFI_CLIB___NEWINDEX,
+        env,
+    )?;
     set_fn(vm, clib, "__gc", ffi_clib_gc, FF_FFI_CLIB___GC, env)?;
     st.clib_mt.set(Some(clib));
 
@@ -1115,7 +1216,9 @@ pub fn open_ffi(vm: &mut Vm) -> LuaResult<Gc<Table>> {
     set_fn(vm, cb, "set", ffi_callback_set, FF_FFI_CALLBACK_SET, env)?;
     set_val(vm, cb, "__index", Value::Table(cb))?;
     let e = vm.empty_str;
-    st.miscmap.set_str(e, Value::Table(cb)).map_err(|e| vm.tab_error(e))?;
+    st.miscmap
+        .set_str(e, Value::Table(cb))
+        .map_err(|e| vm.tab_error(e))?;
 
     // ffi.C default namespace.
     let cdef = clib_new(vm, CLibrary::default_namespace(), clib);
@@ -1151,7 +1254,9 @@ pub fn open_ffi(vm: &mut Vm) -> LuaResult<Gc<Table>> {
     set_val(vm, t, "arch", Value::Str(arch))?;
 
     // Register FFI module as loaded.
-    loaded.set_str(lk, Value::Table(t)).map_err(|e| vm.tab_error(e))?;
+    loaded
+        .set_str(lk, Value::Table(t))
+        .map_err(|e| vm.tab_error(e))?;
 
     let h = &mut vm.rt.ffi;
     h.checkbit64 = Some(carith::checkbit64);

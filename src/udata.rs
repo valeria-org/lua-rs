@@ -41,7 +41,12 @@ pub struct Userdata {
 
 impl fmt::Debug for Userdata {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Userdata(type={}, len={})", self.udtype.get(), self.len())
+        write!(
+            f,
+            "Userdata(type={}, len={})",
+            self.udtype.get(),
+            self.len()
+        )
     }
 }
 
@@ -57,7 +62,12 @@ impl Userdata {
     }
     /// Userdata wrapping a Rust object.
     pub fn new_ext(ext: Box<dyn UdExt>, udtype: u8, env: Gc<Table>) -> Userdata {
-        Userdata { meta: Cell::new(None), env: Cell::new(env), udtype: Cell::new(udtype), payload: UdPayload::Ext(ext) }
+        Userdata {
+            meta: Cell::new(None),
+            env: Cell::new(env),
+            udtype: Cell::new(udtype),
+            payload: UdPayload::Ext(ext),
+        }
     }
 
     #[inline]

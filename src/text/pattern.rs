@@ -229,7 +229,12 @@ fn classend(pat: &[u8], mut p: usize) -> PResult<usize> {
 
 impl<'a> MatchState<'a> {
     pub fn new(src: &'a [u8]) -> Self {
-        MatchState { src, level: 0, depth: 0, capture: [Cap { init: 0, len: 0 }; MAXCAPTURES] }
+        MatchState {
+            src,
+            level: 0,
+            depth: 0,
+            capture: [Cap { init: 0, len: 0 }; MAXCAPTURES],
+        }
     }
 
     /// The subject string.
@@ -311,7 +316,13 @@ impl<'a> MatchState<'a> {
         }
     }
 
-    fn min_expand(&mut self, mut s: usize, pat: &[u8], p: usize, ep: usize) -> PResult<Option<usize>> {
+    fn min_expand(
+        &mut self,
+        mut s: usize,
+        pat: &[u8],
+        p: usize,
+        ep: usize,
+    ) -> PResult<Option<usize>> {
         loop {
             if let Some(res) = self.do_match(s, pat, ep + 1)? {
                 return Ok(Some(res));
@@ -323,7 +334,13 @@ impl<'a> MatchState<'a> {
         }
     }
 
-    fn start_capture(&mut self, s: usize, pat: &[u8], p: usize, what: isize) -> PResult<Option<usize>> {
+    fn start_capture(
+        &mut self,
+        s: usize,
+        pat: &[u8],
+        p: usize,
+        what: isize,
+    ) -> PResult<Option<usize>> {
         let level = self.level;
         if level >= MAXCAPTURES {
             return Err(PatError::TooManyCaptures);
@@ -435,7 +452,11 @@ impl<'a> MatchState<'a> {
                         b'*' => break self.max_expand(s, pat, p, ep)?, // 0 or more repetitions
                         b'+' => {
                             // 1 or more repetitions
-                            break if m { self.max_expand(s + 1, pat, p, ep)? } else { None };
+                            break if m {
+                                self.max_expand(s + 1, pat, p, ep)?
+                            } else {
+                                None
+                            };
                         }
                         b'-' => break self.min_expand(s, pat, p, ep)?, // 0 or more repetitions (minimum)
                         _ => {
@@ -468,7 +489,10 @@ impl<'a> MatchState<'a> {
             match c.len {
                 CAP_UNFINISHED => Err(PatError::UnfinishedCapture),
                 CAP_POSITION => Ok(Capture::Position(c.init + 1)),
-                l => Ok(Capture::Span { start: c.init, end: c.init + l as usize }),
+                l => Ok(Capture::Span {
+                    start: c.init,
+                    end: c.init + l as usize,
+                }),
             }
         }
     }
@@ -477,13 +501,19 @@ impl<'a> MatchState<'a> {
     /// match) when there are no captures and `whole_match` is set. `string.find`
     /// passes `whole_match = false` (upstream passes `s = NULL`).
     pub fn num_captures(&self, whole_match: bool) -> usize {
-        if self.level == 0 && whole_match { 1 } else { self.level }
+        if self.level == 0 && whole_match {
+            1
+        } else {
+            self.level
+        }
     }
 
     /// `push_captures`: all captures of the last match `src[s..e]`.
     pub fn captures(&self, whole_match: Option<(usize, usize)>) -> PResult<Vec<Capture>> {
         let (s, e) = whole_match.unwrap_or((0, 0));
-        (0..self.num_captures(whole_match.is_some())).map(|i| self.capture(i, s, e)).collect()
+        (0..self.num_captures(whole_match.is_some()))
+            .map(|i| self.capture(i, s, e))
+            .collect()
     }
 }
 
@@ -506,7 +536,11 @@ pub fn find<'a>(src: &'a [u8], pat: &[u8], init: usize) -> PResult<Option<Found<
     let mut s = init;
     loop {
         if let Some(e) = ms.match_at(s, pat)? {
-            return Ok(Some(Found { start: s, end: e, state: ms }));
+            return Ok(Some(Found {
+                start: s,
+                end: e,
+                state: ms,
+            }));
         }
         let cont = s < src.len() && !anchor;
         s += 1;
@@ -519,7 +553,11 @@ pub fn find<'a>(src: &'a [u8], pat: &[u8], init: usize) -> PResult<Option<Found<
 /// One step of `string.gmatch`: search from byte offset `pos` (the iterator's saved
 /// position). Returns the match span and the next saved position. Note that gmatch
 /// does not treat `^` as an anchor (Lua 5.1 semantics).
-pub fn gmatch_next(ms: &mut MatchState<'_>, pat: &[u8], pos: usize) -> PResult<Option<(usize, usize, usize)>> {
+pub fn gmatch_next(
+    ms: &mut MatchState<'_>,
+    pat: &[u8],
+    pos: usize,
+) -> PResult<Option<(usize, usize, usize)>> {
     let mut src = pos;
     while src <= ms.src.len() {
         if let Some(e) = ms.match_at(src, pat)? {
@@ -534,7 +572,13 @@ pub fn gmatch_next(ms: &mut MatchState<'_>, pat: &[u8], pos: usize) -> PResult<O
 /// `add_s`: expand a `string.gsub` replacement string for the match `src[s..e]`.
 /// `%0` is the whole match, `%1`-`%9` captures (a position capture expands to its
 /// decimal value), `%x` for any other byte is `x`.
-pub fn expand_replacement(ms: &MatchState<'_>, repl: &[u8], s: usize, e: usize, out: &mut Vec<u8>) -> PResult<()> {
+pub fn expand_replacement(
+    ms: &MatchState<'_>,
+    repl: &[u8],
+    s: usize,
+    e: usize,
+    out: &mut Vec<u8>,
+) -> PResult<()> {
     let mut i = 0;
     while i < repl.len() {
         if repl[i] != L_ESC {
@@ -561,7 +605,8 @@ pub fn expand_replacement(ms: &MatchState<'_>, repl: &[u8], s: usize, e: usize, 
 
 /// `lj_str_haspattern`: whether `p` contains any pattern special character.
 pub fn has_pattern(p: &[u8]) -> bool {
-    p.iter().any(|&c| chars::ispunct(c) && b"^$*+?.([%-".contains(&c))
+    p.iter()
+        .any(|&c| chars::ispunct(c) && b"^$*+?.([%-".contains(&c))
 }
 
 /// `lj_str_find`: plain substring search; returns the offset of the first occurrence.
@@ -591,7 +636,13 @@ mod tests {
 
     /// `string.find` / `string.match` as lib_string's str_find_aux, results rendered like
     /// `print(...)` joined with `|`.
-    fn find_aux(s: &str, p: &str, init: i64, find_mode: bool, plain: bool) -> Result<String, PatError> {
+    fn find_aux(
+        s: &str,
+        p: &str,
+        init: i64,
+        find_mode: bool,
+        plain: bool,
+    ) -> Result<String, PatError> {
         let (s, p) = (s.as_bytes(), p.as_bytes());
         let len = s.len() as i64;
         let mut start = if init < 0 { init + len } else { init - 1 };
@@ -605,7 +656,9 @@ mod tests {
                 None => "nil".into(),
             });
         }
-        let Some(f) = find(s, p, st)? else { return Ok("nil".into()) };
+        let Some(f) = find(s, p, st)? else {
+            return Ok("nil".into());
+        };
         let mut out = Vec::new();
         let caps = if find_mode {
             out.push(format!("{}|{}", f.start + 1, f.end));
@@ -615,7 +668,9 @@ mod tests {
         };
         for c in caps {
             out.push(match c {
-                Capture::Span { start, end } => String::from_utf8_lossy(&s[start..end]).into_owned(),
+                Capture::Span { start, end } => {
+                    String::from_utf8_lossy(&s[start..end]).into_owned()
+                }
                 Capture::Position(p) => p.to_string(),
             });
         }
@@ -629,10 +684,19 @@ mod tests {
         find_aux(s, p, 1, false, false).unwrap()
     }
 
-    fn gsub(src: &str, p: &str, repl: &str, max: Option<usize>) -> Result<(String, usize), PatError> {
+    fn gsub(
+        src: &str,
+        p: &str,
+        repl: &str,
+        max: Option<usize>,
+    ) -> Result<(String, usize), PatError> {
         let src = src.as_bytes();
         let p = p.as_bytes();
-        let (p, anchor) = if p.first() == Some(&b'^') { (&p[1..], true) } else { (p, false) };
+        let (p, anchor) = if p.first() == Some(&b'^') {
+            (&p[1..], true)
+        } else {
+            (p, false)
+        };
         let max_s = max.unwrap_or(src.len() + 1);
         let mut ms = MatchState::new(src);
         let mut out = Vec::new();
@@ -666,8 +730,10 @@ mod tests {
         while let Some((s, e, next)) = gmatch_next(&mut ms, p.as_bytes(), pos).unwrap() {
             pos = next;
             let caps = ms.captures(Some((s, e))).unwrap();
-            let parts: Vec<String> =
-                caps.iter().map(|c| String::from_utf8_lossy(c.bytes(src.as_bytes()).unwrap()).into_owned()).collect();
+            let parts: Vec<String> = caps
+                .iter()
+                .map(|c| String::from_utf8_lossy(c.bytes(src.as_bytes()).unwrap()).into_owned())
+                .collect();
             v.push(parts.concat());
         }
         v
@@ -691,7 +757,10 @@ mod tests {
         assert_eq!(smatch("hello", "^(h)(e)"), "h|e");
         assert_eq!(sfind("abc", "x)"), "nil");
         assert_eq!(smatch("f(a(b)c)d", "%b()"), "(a(b)c)");
-        assert_eq!(find_aux("THE (quick) fox", "%f[%a]%a+", 5, false, false).unwrap(), "quick");
+        assert_eq!(
+            find_aux("THE (quick) fox", "%f[%a]%a+", 5, false, false).unwrap(),
+            "quick"
+        );
         assert_eq!(smatch(" x", "%f[%w]%w+"), "x");
         assert_eq!(smatch("[[x]]", "%b[]"), "[[x]]");
         assert_eq!(smatch("a\0b", "%z"), "\0");
@@ -723,27 +792,60 @@ mod tests {
         ] {
             assert_eq!(find_aux("abc", p, 1, true, false), Err(e), "{p:?}");
         }
-        assert_eq!(PatError::EndsWithEscape.message(), "malformed pattern (ends with '%')");
-        assert_eq!(PatError::MissingBracket.message(), "malformed pattern (missing ']')");
-        assert_eq!(PatError::MissingFrontierBracket.message(), "missing '[' after '%f' in pattern");
+        assert_eq!(
+            PatError::EndsWithEscape.message(),
+            "malformed pattern (ends with '%')"
+        );
+        assert_eq!(
+            PatError::MissingBracket.message(),
+            "malformed pattern (missing ']')"
+        );
+        assert_eq!(
+            PatError::MissingFrontierBracket.message(),
+            "missing '[' after '%f' in pattern"
+        );
         // pcall(string.gsub, "abc", "b", "%2") / ("abc", "b)", "")
-        assert_eq!(gsub("abc", "b", "%2", None), Err(PatError::InvalidCaptureIndex));
-        assert_eq!(gsub("abc", "b)", "", None), Err(PatError::InvalidPatternCapture));
+        assert_eq!(
+            gsub("abc", "b", "%2", None),
+            Err(PatError::InvalidCaptureIndex)
+        );
+        assert_eq!(
+            gsub("abc", "b)", "", None),
+            Err(PatError::InvalidPatternCapture)
+        );
         // Recursion and capture limits.
         let a300 = "a".repeat(300);
-        assert_eq!(find_aux(&a300, &"a?".repeat(250), 1, true, false), Err(PatError::TooComplex));
-        assert_eq!(find_aux(&a300, &"a?".repeat(199), 1, true, false).unwrap(), "1|199");
-        assert_eq!(find_aux("a", &"()".repeat(33), 1, true, false), Err(PatError::TooManyCaptures));
+        assert_eq!(
+            find_aux(&a300, &"a?".repeat(250), 1, true, false),
+            Err(PatError::TooComplex)
+        );
+        assert_eq!(
+            find_aux(&a300, &"a?".repeat(199), 1, true, false).unwrap(),
+            "1|199"
+        );
+        assert_eq!(
+            find_aux("a", &"()".repeat(33), 1, true, false),
+            Err(PatError::TooManyCaptures)
+        );
     }
 
     #[test]
     fn gsub_and_gmatch() {
         // luajit -e 'print(string.gsub(...))'
-        assert_eq!(gsub("hello world", "(%w+)", "<%1>", None).unwrap(), ("<hello> <world>".into(), 2));
+        assert_eq!(
+            gsub("hello world", "(%w+)", "<%1>", None).unwrap(),
+            ("<hello> <world>".into(), 2)
+        );
         assert_eq!(gsub("abc", "", "-", None).unwrap(), ("-a-b-c-".into(), 4));
         assert_eq!(gsub("abc", "^a", "x", None).unwrap(), ("xbc".into(), 1));
-        assert_eq!(gsub("hello", "l", "%0%0", Some(1)).unwrap(), ("helllo".into(), 1));
-        assert_eq!(gsub("abc", "(b)()", "[%2%1%%]", None).unwrap(), ("a[3b%]c".into(), 1));
+        assert_eq!(
+            gsub("hello", "l", "%0%0", Some(1)).unwrap(),
+            ("helllo".into(), 1)
+        );
+        assert_eq!(
+            gsub("abc", "(b)()", "[%2%1%%]", None).unwrap(),
+            ("a[3b%]c".into(), 1)
+        );
         // luajit -e 'for k, v in string.gmatch("a=1, b=2", "(%w+)=(%w+)") do ... end'
         assert_eq!(gmatch("a=1, b=2", "(%w+)=(%w+)"), ["a1", "b2"]);
         assert_eq!(gmatch("one two", "%a*"), ["one", "", "two", ""]);

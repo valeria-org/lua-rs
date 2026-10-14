@@ -65,7 +65,10 @@ fn check_listing(path: &Path, ext: &str, fr2: bool) -> Result<(), String> {
     })?;
     let got = parse::bclist(pt);
     if got != want {
-        return Err(format!("{name}: listing differs at {}", first_diff(&want, &got)));
+        return Err(format!(
+            "{name}: listing differs at {}",
+            first_diff(&want, &got)
+        ));
     }
     Ok(())
 }
@@ -73,13 +76,18 @@ fn check_listing(path: &Path, ext: &str, fr2: bool) -> Result<(), String> {
 fn run_error(path: &Path) -> Result<(), String> {
     let name = path.file_name().unwrap().to_str().unwrap();
     let src = fs::read(path).unwrap();
-    let want = fs::read(path.with_extension("err")).map_err(|e| format!("{name}: no golden: {e}"))?;
+    let want =
+        fs::read(path.with_extension("err")).map_err(|e| format!("{name}: no golden: {e}"))?;
     let mut vm = Vm::new();
     // loadstring's default chunk name is the source itself.
     match parse::parse(&mut vm, &src, &src) {
         Ok(_) => Err(format!("{name}: compiled, expected error")),
         Err(e) => {
-            assert_eq!(e.kind, luajit::error::ErrorKind::Syntax, "{name}: error kind");
+            assert_eq!(
+                e.kind,
+                luajit::error::ErrorKind::Syntax,
+                "{name}: error kind"
+            );
             let got = match e.value {
                 Value::Str(s) => s.as_bytes().to_vec(),
                 _ => return Err(format!("{name}: non-string error value")),
@@ -107,7 +115,12 @@ fn run_all(files: Vec<PathBuf>, f: fn(&Path) -> Result<(), String>) {
         })
         .collect();
     if !failures.is_empty() {
-        panic!("{} of {} fixtures failed:\n{}", failures.len(), total, failures.join("\n"));
+        panic!(
+            "{} of {} fixtures failed:\n{}",
+            failures.len(),
+            total,
+            failures.join("\n")
+        );
     }
 }
 

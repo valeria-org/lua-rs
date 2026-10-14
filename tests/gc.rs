@@ -24,7 +24,8 @@ fn normalize(s: &str) -> String {
     while let Some(p) = rest.find("0x") {
         r.push_str(&rest[..p + 2]);
         let after = &rest[p + 2..];
-        let t = after.trim_start_matches(|c: char| c.is_ascii_hexdigit() && !c.is_ascii_uppercase());
+        let t =
+            after.trim_start_matches(|c: char| c.is_ascii_hexdigit() && !c.is_ascii_uppercase());
         if t.len() != after.len() {
             r.push('?');
         }
@@ -61,10 +62,17 @@ fn run(name: &str, stress: bool) -> String {
 }
 
 fn check(name: &str, stress: bool) {
-    let expected = String::from_utf8_lossy(&std::fs::read(fixture_dir().join(format!("{name}.expected"))).unwrap()).into_owned();
+    let expected = String::from_utf8_lossy(
+        &std::fs::read(fixture_dir().join(format!("{name}.expected"))).unwrap(),
+    )
+    .into_owned();
     let got = run(name, stress);
     if got != expected {
-        let first = got.lines().zip(expected.lines()).position(|(g, e)| g != e).unwrap_or(got.lines().count().min(expected.lines().count()));
+        let first = got
+            .lines()
+            .zip(expected.lines())
+            .position(|(g, e)| g != e)
+            .unwrap_or(got.lines().count().min(expected.lines().count()));
         panic!(
             "{name} (stress {stress}) differs from the reference at line {}:\n  got:      {:?}\n  expected: {:?}\n--- full output ---\n{got}",
             first + 1,

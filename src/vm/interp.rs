@@ -62,8 +62,8 @@ fn itype_index(v: Value) -> u32 {
 }
 
 const ITYPENAME: [&str; 14] = [
-    "nil", "boolean", "boolean", "userdata", "string", "upval", "thread", "proto", "function", "trace", "cdata",
-    "table", "userdata", "number",
+    "nil", "boolean", "boolean", "userdata", "string", "upval", "thread", "proto", "function",
+    "trace", "cdata", "table", "userdata", "number",
 ];
 
 impl Vm {
@@ -103,8 +103,15 @@ impl Vm {
                             th.set_top(base + pt.framesize as usize);
                             self.gc_safe();
                         }
-                        Meta::Call { cont: Cont::Cat { top: nt }, mo, a, b } => {
-                            let rel = Cont::Cat { top: nt - base as u32 };
+                        Meta::Call {
+                            cont: Cont::Cat { top: nt },
+                            mo,
+                            a,
+                            b,
+                        } => {
+                            let rel = Cont::Cat {
+                                top: nt - base as u32,
+                            };
                             return self.mm_call(th, rel, mo, a, b, None);
                         }
                         Meta::Call { .. } => unreachable!("cat continuation"),
@@ -118,10 +125,24 @@ impl Vm {
     /// A C hook yielded (`lua_yield` inside a line/count hook): add a pseudo-frame that
     /// re-executes the hooked instruction (at `pc - 1`) on resume (`lua_yield` hook path and
     /// `lj_cont_hook`). The yielded values are the top `n` values of the stack.
-    fn hook_yield(&mut self, th: Gc<Thread>, fidx: usize, pc: usize, multres: usize, n: Value) -> Flow {
+    fn hook_yield(
+        &mut self,
+        th: Gc<Thread>,
+        fidx: usize,
+        pc: usize,
+        multres: usize,
+        n: Value,
+    ) -> Flow {
         th.set_frame_pc(fidx, pc as u32 - 1);
         let func = th.frame(fidx).expect("lua frame").func;
-        let mut d = Frame::new(FrameKind::Cont(Cont::Hook { multres: multres as u32 }), func, th.top() as u32, 0);
+        let mut d = Frame::new(
+            FrameKind::Cont(Cont::Hook {
+                multres: multres as u32,
+            }),
+            func,
+            th.top() as u32,
+            0,
+        );
         d.dummy = true;
         th.push_frame(d);
         self.rt.multres = n.as_num().map_or(0, |x| x as usize);
@@ -155,7 +176,13 @@ impl Vm {
     }
 
     /// Create a closure for prototype `pt` inside Lua function `parent` (`lj_func_newL_gc`).
-    fn new_closure(&mut self, th: Gc<Thread>, pt: Gc<Proto>, parent: Gc<Function>, base: usize) -> Gc<Function> {
+    fn new_closure(
+        &mut self,
+        th: Gc<Thread>,
+        pt: Gc<Proto>,
+        parent: Gc<Function>,
+        base: usize,
+    ) -> Gc<Function> {
         let mut uvs = Vec::with_capacity(pt.uv.len());
         for &v in pt.uv.iter() {
             if v & PROTO_UV_LOCAL != 0 {
@@ -175,14 +202,24 @@ impl Vm {
     /// with if a C hook yielded.
     #[cold]
     #[inline(never)]
-    fn dispatch_hook(&mut self, th: Gc<Thread>, fidx: usize, pt: &Gc<Proto>, pc: usize, op: Op) -> LuaResult<Option<Flow>> {
+    fn dispatch_hook(
+        &mut self,
+        th: Gc<Thread>,
+        fidx: usize,
+        pt: &Gc<Proto>,
+        pc: usize,
+        op: Op,
+    ) -> LuaResult<Option<Flow>> {
         let m = self.rt.hook.mask;
-        if m & hook::HOOK_PROFILE != 0 && hook::PROFILE_PENDING.load(std::sync::atomic::Ordering::Relaxed) {
+        if m & hook::HOOK_PROFILE != 0
+            && hook::PROFILE_PENDING.load(std::sync::atomic::Ordering::Relaxed)
+        {
             th.set_frame_pc(fidx, pc as u32);
             self.hook_profile(th, fidx, pt, pc as u32)?;
         }
         if !self.rt.hook.active && !std::mem::take(&mut self.rt.hook_skip) {
-            let ins_hook = m & (hook::LUA_MASKLINE | hook::LUA_MASKCOUNT) != 0 && (op as u8) < Op::FUNCF as u8;
+            let ins_hook =
+                m & (hook::LUA_MASKLINE | hook::LUA_MASKCOUNT) != 0 && (op as u8) < Op::FUNCF as u8;
             if ins_hook || (m & hook::LUA_MASKRET != 0 && op.is_ret()) {
                 th.set_frame_pc(fidx, pc as u32);
                 let multres = self.rt.multres;
@@ -244,7 +281,11 @@ impl Vm {
                     let i = ($i) as usize;
                     // SAFETY: `base + i` is below the stack length and the buffer was not
                     // reallocated since `refresh!`.
-                    if i < flen { unsafe { &*fp.add(i) } } else { &Value::Nil }
+                    if i < flen {
+                        unsafe { &*fp.add(i) }
+                    } else {
+                        &Value::Nil
+                    }
                 }};
             }
             macro_rules! get {
@@ -257,7 +298,11 @@ impl Vm {
                     let v = $v;
                     let i = ($i) as usize;
                     // SAFETY: as for `slot!`.
-                    if i < flen { unsafe { *fp.add(i) = v } } else { th.set(base + i, v) }
+                    if i < flen {
+                        unsafe { *fp.add(i) = v }
+                    } else {
+                        th.set(base + i, v)
+                    }
                 }};
             }
             macro_rules! save {
@@ -318,7 +363,9 @@ impl Vm {
                 ($m:expr, $c:expr) => {
                     match $m {
                         Meta::Done(v) => v,
-                        Meta::Call { cont, mo, a, b } => flow!(self.mm_call(th, cont, mo, a, b, $c)),
+                        Meta::Call { cont, mo, a, b } => {
+                            flow!(self.mm_call(th, cont, mo, a, b, $c))
+                        }
                     }
                 };
             }
@@ -363,7 +410,8 @@ impl Vm {
                                 }
                             }
                             _ if va.raw_equal(vd) => cond_jump!(!ne),
-                            (Value::Table(_), Value::Table(_)) | (Value::Udata(_), Value::Udata(_)) => {
+                            (Value::Table(_), Value::Table(_))
+                            | (Value::Udata(_), Value::Udata(_)) => {
                                 save!();
                                 match self.meta_equal(va, vd, ne) {
                                     None => cond_jump!(ne),
@@ -448,7 +496,13 @@ impl Vm {
                     {
                         set!(a, Value::Num(($f)(x, y)));
                     } else {
-                        arith_slow!($mm, *pb, *pc_, Some(base + bb as usize), Some(base + cc as usize))
+                        arith_slow!(
+                            $mm,
+                            *pb,
+                            *pc_,
+                            Some(base + bb as usize),
+                            Some(base + cc as usize)
+                        )
                     }
                 }};
             }
@@ -464,7 +518,13 @@ impl Vm {
                     } else {
                         let (rb, rc) = (*pb, *pc_);
                         save!();
-                        let r = self.meta_bitop(op, rb, rc, Some(base + bb as usize), Some(base + cc as usize))?;
+                        let r = self.meta_bitop(
+                            op,
+                            rb,
+                            rc,
+                            Some(base + bb as usize),
+                            Some(base + cc as usize),
+                        )?;
                         set!(a, r);
                     }
                 }};
@@ -512,7 +572,11 @@ impl Vm {
                 ($idx:expr, $stop:expr, $step:expr) => {{
                     let (idx, stop, step): (f64, f64, f64) = ($idx, $stop, $step);
                     set!(a + 3, Value::Num(idx));
-                    let enter = if step.is_sign_negative() { idx >= stop } else { stop >= idx };
+                    let enter = if step.is_sign_negative() {
+                        idx >= stop
+                    } else {
+                        stop >= idx
+                    };
                     if !enter {
                         branch!(ins.j());
                     }
@@ -524,7 +588,11 @@ impl Vm {
                     let idx = idx + step;
                     set!(a, Value::Num(idx));
                     set!(a + 3, Value::Num(idx));
-                    let cont = if step.is_sign_negative() { idx >= stop } else { stop >= idx };
+                    let cont = if step.is_sign_negative() {
+                        idx >= stop
+                    } else {
+                        stop >= idx
+                    };
                     if cont {
                         branch!(ins.j());
                     }
@@ -565,18 +633,29 @@ impl Vm {
                     Op::ISTYPE | Op::ISNUM => {
                         let v = get!(a);
                         let tp = ins.d();
-                        let ok = if op == Op::ISNUM { matches!(v, Value::Num(_)) } else { itype_index(v) + 1 == tp };
+                        let ok = if op == Op::ISNUM {
+                            matches!(v, Value::Num(_))
+                        } else {
+                            itype_index(v) + 1 == tp
+                        };
                         if !ok {
                             save!();
                             th.set_top(base + fs);
                             let narg = a as usize + 1;
-                            let idx = if op == Op::ISNUM { 13 } else { tp.wrapping_sub(1) as usize };
+                            let idx = if op == Op::ISNUM {
+                                13
+                            } else {
+                                tp.wrapping_sub(1) as usize
+                            };
                             if idx >= 13 {
                                 self.check_num(narg)?;
                             } else if idx == 4 {
                                 self.check_str(narg)?;
                             } else {
-                                return Err(self.type_error(narg as i32, ITYPENAME.get(idx).copied().unwrap_or("?")));
+                                return Err(self.type_error(
+                                    narg as i32,
+                                    ITYPENAME.get(idx).copied().unwrap_or("?"),
+                                ));
                             }
                         }
                     }
@@ -632,8 +711,15 @@ impl Vm {
                                 th.set(base + a as usize, th.get(base + bb));
                                 gc_point!();
                             }
-                            Meta::Call { cont: Cont::Cat { top }, mo, a, b } => {
-                                let c = Cont::Cat { top: top - base as u32 };
+                            Meta::Call {
+                                cont: Cont::Cat { top },
+                                mo,
+                                a,
+                                b,
+                            } => {
+                                let c = Cont::Cat {
+                                    top: top - base as u32,
+                                };
                                 flow!(self.mm_call(th, c, mo, a, b, None))
                             }
                             Meta::Call { .. } => unreachable!(),
@@ -681,8 +767,12 @@ impl Vm {
                     // -- Upvalues and closures -------------------------------------------------
                     Op::UGET => set!(a, func.lua_upvals()[ins.d() as usize].get().get()),
                     Op::USETV => func.lua_upvals()[a as usize].get().set(get!(ins.d())),
-                    Op::USETS => func.lua_upvals()[a as usize].get().set(Value::Str(kstr!(ins.d()))),
-                    Op::USETN => func.lua_upvals()[a as usize].get().set(Value::Num(knum[ins.d() as usize])),
+                    Op::USETS => func.lua_upvals()[a as usize]
+                        .get()
+                        .set(Value::Str(kstr!(ins.d()))),
+                    Op::USETN => func.lua_upvals()[a as usize]
+                        .get()
+                        .set(Value::Num(knum[ins.d() as usize])),
                     Op::USETP => func.lua_upvals()[a as usize].get().set(kpri(ins.d())),
                     Op::UCLO => {
                         th.close_upvals((base + a as usize) as u32);
@@ -690,7 +780,9 @@ impl Vm {
                     }
                     Op::FNEW => {
                         gc_point!();
-                        let KGc::Proto(cpt) = pt.kgc[ins.d() as usize] else { unreachable!("FNEW proto") };
+                        let KGc::Proto(cpt) = pt.kgc[ins.d() as usize] else {
+                            unreachable!("FNEW proto")
+                        };
                         let f = self.new_closure(th, cpt, func, base);
                         th.set(base + a as usize, Value::Func(f));
                     }
@@ -708,7 +800,9 @@ impl Vm {
                     }
                     Op::TDUP => {
                         gc_point!();
-                        let KGc::Table(kt) = pt.kgc[ins.d() as usize] else { unreachable!("TDUP table") };
+                        let KGc::Table(kt) = pt.kgc[ins.d() as usize] else {
+                            unreachable!("TDUP table")
+                        };
                         let t = self.dup_table(kt);
                         th.set(base + a as usize, Value::Table(t));
                     }
@@ -831,7 +925,9 @@ impl Vm {
                     }
                     Op::TSETM => {
                         // The parser guarantees a table below the values.
-                        let Value::Table(t) = get!(a - 1) else { continue };
+                        let Value::Table(t) = get!(a - 1) else {
+                            continue;
+                        };
                         let start = knum[ins.d() as usize].to_bits() as u32 as i32;
                         let n = self.rt.multres;
                         if n > 0 {
@@ -843,7 +939,8 @@ impl Vm {
                                 }
                             }
                             for i in 0..n {
-                                let _ = t.set_int(start.wrapping_add(i as i32), get!(a as usize + i));
+                                let _ =
+                                    t.set_int(start.wrapping_add(i as i32), get!(a as usize + i));
                             }
                         }
                     }
@@ -875,7 +972,12 @@ impl Vm {
                                                 for i in cbase + nargs..cbase + np {
                                                     th.set(i, Value::Nil);
                                                 }
-                                                let mut nf = Frame::new(FrameKind::Lua, f, cbase as u32, nres);
+                                                let mut nf = Frame::new(
+                                                    FrameKind::Lua,
+                                                    f,
+                                                    cbase as u32,
+                                                    nres,
+                                                );
                                                 nf.pc = 1;
                                                 th.push_frame(nf);
                                                 th.set_top(ntop);
@@ -898,7 +1000,12 @@ impl Vm {
                                                         th.set(nbase + i, Value::Nil);
                                                     }
                                                 }
-                                                let mut nf = Frame::new(FrameKind::Lua, f, nbase as u32, nres);
+                                                let mut nf = Frame::new(
+                                                    FrameKind::Lua,
+                                                    f,
+                                                    nbase as u32,
+                                                    nres,
+                                                );
                                                 nf.vdelta = (nargs + 2) as u32;
                                                 nf.pc = 1;
                                                 th.push_frame(nf);
@@ -911,7 +1018,14 @@ impl Vm {
                                 Function::Native { .. } => {
                                     // Natives return here directly; keep the frame state.
                                     save!();
-                                    match self.precall(th, slot, nargs, FrameKind::Lua, ins.b() as i32 - 1, true)? {
+                                    match self.precall(
+                                        th,
+                                        slot,
+                                        nargs,
+                                        FrameKind::Lua,
+                                        ins.b() as i32 - 1,
+                                        true,
+                                    )? {
                                         Flow::Continue => {
                                             if th.frame_count() - 1 == fidx {
                                                 refresh!();
@@ -924,7 +1038,14 @@ impl Vm {
                                 }
                             }
                         }
-                        flow!(self.precall(th, slot, nargs, FrameKind::Lua, ins.b() as i32 - 1, true))
+                        flow!(self.precall(
+                            th,
+                            slot,
+                            nargs,
+                            FrameKind::Lua,
+                            ins.b() as i32 - 1,
+                            true
+                        ))
                     }
                     Op::CALLT | Op::CALLMT => {
                         let mut nargs = ins.d() as usize;
@@ -974,7 +1095,14 @@ impl Vm {
                             th.set(slot + 2, th.get(slot - 2));
                             th.set(slot + 3, th.get(slot - 1));
                             th.set_top(slot + 4);
-                            flow!(self.precall(th, slot, 2, FrameKind::Lua, ins.b() as i32 - 1, true))
+                            flow!(self.precall(
+                                th,
+                                slot,
+                                2,
+                                FrameKind::Lua,
+                                ins.b() as i32 - 1,
+                                true
+                            ))
                         }
                     }
                     Op::ISNEXT => {
@@ -1009,7 +1137,14 @@ impl Vm {
                             self.rt.multres = nvar;
                         } else {
                             for i in 0..b - 1 {
-                                th.set(dst + i, if i < nvar { th.get(vstart + i) } else { Value::Nil });
+                                th.set(
+                                    dst + i,
+                                    if i < nvar {
+                                        th.get(vstart + i)
+                                    } else {
+                                        Value::Nil
+                                    },
+                                );
                             }
                         }
                     }
@@ -1046,7 +1181,8 @@ impl Vm {
                                 self.rt.multres = n;
                                 th.pop_frame();
                                 let caller = th.frame(fidx - 1).expect("lua caller");
-                                let ctop = caller.base as usize + caller.func.proto().map_or(0, |p| p.framesize as usize);
+                                let ctop = caller.base as usize
+                                    + caller.func.proto().map_or(0, |p| p.framesize as usize);
                                 th.set_top(ctop.max(dest + cnt));
                                 continue 'reload;
                             }
@@ -1089,7 +1225,14 @@ impl Vm {
                     }
                     Op::LOOP | Op::ILOOP | Op::JLOOP => {}
                     Op::JMP => branch!(ins.j()),
-                    Op::FUNCF | Op::IFUNCF | Op::JFUNCF | Op::FUNCV | Op::IFUNCV | Op::JFUNCV | Op::FUNCC | Op::FUNCCW => {
+                    Op::FUNCF
+                    | Op::IFUNCF
+                    | Op::JFUNCF
+                    | Op::FUNCV
+                    | Op::IFUNCV
+                    | Op::JFUNCV
+                    | Op::FUNCC
+                    | Op::FUNCCW => {
                         unreachable!("function header executed")
                     }
                 }

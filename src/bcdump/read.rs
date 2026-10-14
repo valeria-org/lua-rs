@@ -63,9 +63,22 @@ pub fn read_ex(vm: &mut Vm, src: &[u8], chunkname: &[u8], fr2: bool) -> LuaResul
 
 /// `lj_bcread`: read a dump from `input`, positioned after the leading `\x1b` (consumed by
 /// `lj_lex_setup`). `chunkarg` and `fr2` as for [`read_ex`].
-pub fn read_input<'a>(vm: &'a mut Vm, input: Input<'a>, chunkarg: &'a [u8], fr2: bool) -> LuaResult<Gc<Proto>> {
+pub fn read_input<'a>(
+    vm: &'a mut Vm,
+    input: Input<'a>,
+    chunkarg: &'a [u8],
+    fr2: bool,
+) -> LuaResult<Gc<Proto>> {
     let empty = vm.empty_str;
-    let mut ls = Reader { vm, inp: input, eof: false, flags: 0, fr2, chunkarg: lex::cstr(chunkarg), chunkname: empty };
+    let mut ls = Reader {
+        vm,
+        inp: input,
+        eof: false,
+        flags: 0,
+        fr2,
+        chunkarg: lex::cstr(chunkarg),
+        chunkname: empty,
+    };
     ls.read_dump()
 }
 
@@ -185,13 +198,21 @@ impl<'a> Reader<'a> {
     /// `bcread_want`: try to buffer `len` bytes; fewer are left only at the end of the input.
     #[inline]
     fn want(&mut self, len: usize) -> LuaResult<()> {
-        if self.remaining() < len { self.fill(len, false) } else { Ok(()) }
+        if self.remaining() < len {
+            self.fill(len, false)
+        } else {
+            Ok(())
+        }
     }
 
     /// `bcread_need`: buffer `len` bytes.
     #[inline]
     fn need(&mut self, len: usize) -> LuaResult<()> {
-        if self.remaining() < len { self.fill(len, true) } else { Ok(()) }
+        if self.remaining() < len {
+            self.fill(len, true)
+        } else {
+            Ok(())
+        }
     }
 
     /// `bcread_mem`: the buffer range of the next `len` bytes.
@@ -286,7 +307,10 @@ impl<'a> Reader<'a> {
     /// `bcread_header`: false if the dump is incompatible.
     fn header(&mut self) -> LuaResult<bool> {
         self.want(3 + 5 + 5)?;
-        if self.hbyte() != BCDUMP_HEAD2 || self.hbyte() != BCDUMP_HEAD3 || self.hbyte() != BCDUMP_VERSION {
+        if self.hbyte() != BCDUMP_HEAD2
+            || self.hbyte() != BCDUMP_HEAD3
+            || self.hbyte() != BCDUMP_VERSION
+        {
             return Ok(false);
         }
         let flags = self.huleb128();
@@ -301,7 +325,11 @@ impl<'a> Reader<'a> {
             crate::parse::ffi_literal_hook(self.vm)?;
         }
         if flags & BCDUMP_F_STRIP != 0 {
-            let name: &[u8] = if self.chunkarg.first() == Some(&BCDUMP_HEAD1) { b"=?" } else { self.chunkarg };
+            let name: &[u8] = if self.chunkarg.first() == Some(&BCDUMP_HEAD1) {
+                b"=?"
+            } else {
+                self.chunkarg
+            };
             self.chunkname = self.vm.new_str(name);
         } else {
             let len = self.huleb128() as usize;
@@ -407,8 +435,11 @@ impl<'a> Reader<'a> {
         let knum = self.knum(sizekn)?;
 
         // Debug info.
-        let dbg =
-            if sizedbg != 0 { self.debug(sizedbg, sizebc, sizeuv, firstline, numline)? } else { DebugInfo::default() };
+        let dbg = if sizedbg != 0 {
+            self.debug(sizedbg, sizebc, sizeuv, firstline, numline)?
+        } else {
+            DebugInfo::default()
+        };
 
         Ok(Proto {
             bc: bc.into_boxed_slice(),
@@ -525,7 +556,8 @@ impl<'a> Reader<'a> {
             array.push(self.ktabk()?.1);
         }
         // Hash values of `None` are the nil value marker (the table itself).
-        let mut hash: Vec<(Value, Option<Value>)> = Vec::with_capacity((nhash as usize).min(self.remaining() / 2));
+        let mut hash: Vec<(Value, Option<Value>)> =
+            Vec::with_capacity((nhash as usize).min(self.remaining() / 2));
         for _ in 0..nhash {
             let key = self.ktabk()?.1;
             // lj_tab_set rejects the key before the value is read.
@@ -535,7 +567,14 @@ impl<'a> Reader<'a> {
                 _ => {}
             }
             let (tp, val) = self.ktabk()?;
-            hash.push((key, if tp == BCDUMP_KTAB_NIL { None } else { Some(val) }));
+            hash.push((
+                key,
+                if tp == BCDUMP_KTAB_NIL {
+                    None
+                } else {
+                    Some(val)
+                },
+            ));
         }
         let t = self.vm.new_table(narray, hbits)?;
         for (i, v) in array.into_iter().enumerate() {
@@ -613,12 +652,17 @@ impl<'a> Reader<'a> {
                 };
                 VarName::Str(self.vm.new_str(name))
             };
-            let (Some(d1), Some(d2)) = (block_uleb128(block, &mut p), block_uleb128(block, &mut p)) else {
+            let (Some(d1), Some(d2)) = (block_uleb128(block, &mut p), block_uleb128(block, &mut p))
+            else {
                 return Err(error(self.vm, self.chunkarg, ERR_BCBAD));
             };
             let startpc = lastpc.wrapping_add(d1);
             lastpc = startpc;
-            varinfo.push(VarInfo { name, startpc, endpc: startpc.wrapping_add(d2) });
+            varinfo.push(VarInfo {
+                name,
+                startpc,
+                endpc: startpc.wrapping_add(d2),
+            });
         }
         if p != block.len() {
             return Err(error(self.vm, self.chunkarg, ERR_BCBAD));

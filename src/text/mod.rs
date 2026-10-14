@@ -21,14 +21,22 @@ pub fn num2int_check(x: f64) -> Option<i32> {
 /// `lj_vm_num2i64` (x64 `cvttsd2si`): truncates; NaN and out-of-range values yield `i64::MIN`.
 #[inline]
 pub fn num2i64(x: f64) -> i64 {
-    if (-9223372036854775808.0..9223372036854775808.0).contains(&x) { x as i64 } else { i64::MIN }
+    if (-9223372036854775808.0..9223372036854775808.0).contains(&x) {
+        x as i64
+    } else {
+        i64::MIN
+    }
 }
 
 /// `lj_vm_num2u64`: accepts the union of the signed and unsigned 64-bit ranges.
 #[inline]
 pub fn num2u64(x: f64) -> u64 {
     let r = num2i64(x);
-    if r != i64::MIN { r as u64 } else { num2i64(x - 18446744073709551616.0) as u64 }
+    if r != i64::MIN {
+        r as u64
+    } else {
+        num2i64(x - 18446744073709551616.0) as u64
+    }
 }
 
 /// Correctly rounded `ldexp` (`x * 2^e` with a single rounding), as C's `ldexp`.

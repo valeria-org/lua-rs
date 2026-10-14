@@ -40,7 +40,12 @@ fn error_finalizer(vm: &mut Vm) -> crate::error::LuaResult<usize> {
 pub(crate) fn install_default_handlers(vm: &mut Vm) {
     let key = vm.new_str(VMEVENTS_REGKEY.as_bytes());
     let t = vm.new_table(0, 2).expect("small table");
-    let f = vm.new_native(crate::func::NativeImpl::Rust(error_finalizer), crate::func::FF_C, vec![], vm.globals);
+    let f = vm.new_native(
+        crate::func::NativeImpl::Rust(error_finalizer),
+        crate::func::FF_C,
+        vec![],
+        vm.globals,
+    );
     let _ = t.set_int(VMEVENT_ERRFIN, Value::Func(f));
     let _ = vm.registry.set_str(key, Value::Table(t));
 }
@@ -58,9 +63,15 @@ impl Vm {
             return None;
         }
         let key = self.new_str(VMEVENTS_REGKEY.as_bytes());
-        let Value::Table(t) = self.registry.get_str(key) else { return None };
+        let Value::Table(t) = self.registry.get_str(key) else {
+            return None;
+        };
         let f = t.get_int(idx);
-        if matches!(f, Value::Func(_)) { Some(f) } else { None }
+        if matches!(f, Value::Func(_)) {
+            Some(f)
+        } else {
+            None
+        }
     }
 
     /// `lj_vmevent_call`: run handler `f` with `args` on the VM thread, protected, with hooks
@@ -127,7 +138,10 @@ impl Vm {
             _ => return,
         };
         let mut order = Vec::new();
-        fn walk(pt: crate::gc::Gc<crate::func::Proto>, out: &mut Vec<crate::gc::Gc<crate::func::Proto>>) {
+        fn walk(
+            pt: crate::gc::Gc<crate::func::Proto>,
+            out: &mut Vec<crate::gc::Gc<crate::func::Proto>>,
+        ) {
             for k in pt.kgc.iter() {
                 if let crate::func::KGc::Proto(c) = k {
                     walk(*c, out);
@@ -140,7 +154,9 @@ impl Vm {
         self.push(chunk);
         for p in order {
             // Re-lookup: a handler may detach itself.
-            let Some(h) = self.vmevent_handler(vmevent_bc_idx()) else { break };
+            let Some(h) = self.vmevent_handler(vmevent_bc_idx()) else {
+                break;
+            };
             self.vmevent_call(h, &[Value::Proto(p)]);
         }
         th.set_top(th.top() - 1);

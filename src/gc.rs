@@ -63,7 +63,10 @@ impl GcKind {
     /// upvalues are marked directly, at no cost.
     #[inline]
     pub fn charged_traversal(self) -> bool {
-        matches!(self, GcKind::Table | GcKind::Func | GcKind::Proto | GcKind::Thread)
+        matches!(
+            self,
+            GcKind::Table | GcKind::Func | GcKind::Proto | GcKind::Thread
+        )
     }
 }
 
@@ -223,7 +226,9 @@ impl<T> Gc<T> {
     #[inline]
     pub unsafe fn from_ptr(p: *mut GcBox<T>) -> Gc<T> {
         // SAFETY: caller guarantees `p` is a live, non-null GcBox<T>.
-        Gc { ptr: unsafe { NonNull::new_unchecked(p) } }
+        Gc {
+            ptr: unsafe { NonNull::new_unchecked(p) },
+        }
     }
 
     /// Address of the object, as printed by `tostring` and used for hashing.
@@ -295,7 +300,13 @@ impl Marker {
     /// `mode_name` is the interned `"__mode"` string; `ffi_fin` is the FFI finalizer table,
     /// whose keys are weak but which is never cleared (upstream `GCROOT_FFI_FIN` special case).
     pub fn new(mode_name: Option<Gc<crate::lstr::LuaStr>>, ffi_fin: Option<Gc<Table>>) -> Marker {
-        Marker { gray: Vec::new(), current: None, weak: Vec::new(), mode_name, ffi_fin }
+        Marker {
+            gray: Vec::new(),
+            current: None,
+            weak: Vec::new(),
+            mode_name,
+            ffi_fin,
+        }
     }
 
     /// Mark an object, queueing it for traversal unless it is a leaf.
@@ -350,9 +361,13 @@ impl Marker {
     /// Called by `Table::trace` for a table with a valid `__mode`. Returns the effective weak
     /// mode to apply while traversing (upstream gc_traverse_tab).
     pub fn register_weak_current(&mut self, mode: u8) -> u8 {
-        let cur = self.current.expect("register_weak_current outside traversal");
+        let cur = self
+            .current
+            .expect("register_weak_current outside traversal");
         // SAFETY: Table::trace is the only caller, so the current object is a GcBox<Table>.
-        let t: Gc<Table> = Gc { ptr: cur.cast::<GcBox<Table>>() };
+        let t: Gc<Table> = Gc {
+            ptr: cur.cast::<GcBox<Table>>(),
+        };
         if self.ffi_fin == Some(t) {
             // Keys are weak, values strong, and the table is not cleared.
             return !WEAK_VAL;
@@ -387,7 +402,9 @@ impl ObjRef {
     /// Typed handle if the object is a `T` (by kind tag; never succeeds for `GcKind::Other`).
     pub fn downcast<T: GcObject>(self) -> Option<Gc<T>> {
         if T::KIND != GcKind::Other && self.kind() == T::KIND {
-            Some(Gc { ptr: self.0.cast::<GcBox<T>>() })
+            Some(Gc {
+                ptr: self.0.cast::<GcBox<T>>(),
+            })
         } else {
             None
         }
@@ -403,7 +420,8 @@ const POOL_CLASSES: usize = POOL_MAX / POOL_GRAIN;
 /// Size class of a cell layout, if it is pooled.
 #[inline]
 fn pool_class(l: Layout) -> Option<usize> {
-    (l.size() <= POOL_MAX && l.align() <= POOL_GRAIN).then(|| l.size().max(1).div_ceil(POOL_GRAIN) - 1)
+    (l.size() <= POOL_MAX && l.align() <= POOL_GRAIN)
+        .then(|| l.size().max(1).div_ceil(POOL_GRAIN) - 1)
 }
 
 #[inline]
@@ -479,7 +497,10 @@ impl Heap {
         Heap {
             objects: Vec::new(),
             total: 0,
-            pool: Pool { head: [std::ptr::null_mut(); POOL_CLASSES], count: [0; POOL_CLASSES] },
+            pool: Pool {
+                head: [std::ptr::null_mut(); POOL_CLASSES],
+                count: [0; POOL_CLASSES],
+            },
             quarantine: None,
         }
     }
@@ -511,7 +532,15 @@ impl Heap {
         } as *mut GcBox<T>;
         // SAFETY: `raw` is a fresh, suitably sized and aligned allocation. Ownership moves to
         // the object list and is released exactly once by `sweep` or `Drop for Heap`.
-        unsafe { raw.write(GcBox { header: GcHeader { flags: Cell::new(0), kind: T::KIND }, value }) };
+        unsafe {
+            raw.write(GcBox {
+                header: GcHeader {
+                    flags: Cell::new(0),
+                    kind: T::KIND,
+                },
+                value,
+            })
+        };
         // SAFETY: allocation failure was handled above.
         let ptr = unsafe { NonNull::new_unchecked(raw) };
         let dynp: NonNull<GcBox<dyn Trace>> = ptr;
@@ -525,7 +554,11 @@ impl Heap {
     ///
     /// # Safety
     /// `p` must come from `alloc` and not be used afterwards.
-    unsafe fn free(pool: &mut Pool, quarantine: &mut Option<Quarantine>, p: NonNull<GcBox<dyn Trace>>) {
+    unsafe fn free(
+        pool: &mut Pool,
+        quarantine: &mut Option<Quarantine>,
+        p: NonNull<GcBox<dyn Trace>>,
+    ) {
         // SAFETY: `p` is a live, initialized cell (caller contract).
         let layout = unsafe { Layout::for_value(p.as_ref()) };
         match quarantine {
@@ -567,7 +600,10 @@ impl Heap {
 
     /// Free every unmarked, unfixed object; clear marks of survivors and recompute the live size.
     pub fn sweep(&mut self) -> Swept {
-        let mut swept = Swept { live: 0, traversal: 0 };
+        let mut swept = Swept {
+            live: 0,
+            traversal: 0,
+        };
         let before = self.objects.len();
         let (pool, quarantine) = (&mut self.pool, &mut self.quarantine);
         self.objects.retain(|&p| {
@@ -630,7 +666,11 @@ impl Quarantine {
     /// Keep a dead cell; returns the oldest one once the quarantine is full.
     fn hold(&mut self, p: NonNull<u8>, layout: Layout) -> Option<(NonNull<u8>, Layout)> {
         self.cells.push_back((p, layout));
-        if self.cells.len() > Self::MAX_CELLS { self.cells.pop_front() } else { None }
+        if self.cells.len() > Self::MAX_CELLS {
+            self.cells.pop_front()
+        } else {
+            None
+        }
     }
 }
 

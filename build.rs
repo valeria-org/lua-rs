@@ -13,7 +13,10 @@ fn main() {
     println!("cargo:rerun-if-changed=src/capi");
     let dir = Path::new("src/capi");
     let mut syms = Vec::new();
-    let mut files: Vec<_> = std::fs::read_dir(dir).expect("src/capi").map(|e| e.expect("dir entry").path()).collect();
+    let mut files: Vec<_> = std::fs::read_dir(dir)
+        .expect("src/capi")
+        .map(|e| e.expect("dir entry").path())
+        .collect();
     files.sort();
     for path in files {
         println!("cargo:rerun-if-changed={}", path.display());
@@ -29,7 +32,10 @@ fn main() {
                 continue;
             }
             if exported && let Some(i) = l.find("fn ") {
-                let name: String = l[i + 3..].chars().take_while(|c| c.is_ascii_alphanumeric() || *c == '_').collect();
+                let name: String = l[i + 3..]
+                    .chars()
+                    .take_while(|c| c.is_ascii_alphanumeric() || *c == '_')
+                    .collect();
                 if PREFIXES.iter().any(|p| name.starts_with(p)) {
                     syms.push(name);
                 }
@@ -54,7 +60,10 @@ fn main() {
     }
     s.push_str("};\n");
     std::fs::write(&list, s).expect("write export list");
-    println!("cargo:rustc-link-arg-bins=-Wl,--dynamic-list={}", list.display());
+    println!(
+        "cargo:rustc-link-arg-bins=-Wl,--dynamic-list={}",
+        list.display()
+    );
     for n in &syms {
         println!("cargo:rustc-link-arg-bins=-Wl,-u,{n}");
     }

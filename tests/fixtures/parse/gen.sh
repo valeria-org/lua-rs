@@ -7,8 +7,9 @@
 # Override the binary with $LUAJIT_REF.
 set -euo pipefail
 
-LUAJIT_REF="${LUAJIT_REF:-$HOME/projects/luajit-ref/luajit/src/luajit}"
+LUAJIT_REF="${LUAJIT_REF:?Set LUAJIT_REF to a reference LuaJIT binary}"
 REF_SRC="$(cd "$(dirname "$LUAJIT_REF")" && pwd)"
+LUAJIT_REF="$REF_SRC/$(basename "$LUAJIT_REF")"
 export LUA_PATH="$REF_SRC/?.lua;;"
 
 cd "$(dirname "${BASH_SOURCE[0]}")"

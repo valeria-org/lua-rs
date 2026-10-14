@@ -73,7 +73,11 @@ fn bcline(pt: &Proto, pc: usize, target: bool, out: &mut Vec<u8>) {
     let m = op.mode() as u32;
     let (ma, mb, mc) = (m & 7, (m >> 3) & 15, (m >> 7) & 15);
     let a = ins.a();
-    let astr = if ma == 0 { String::new() } else { a.to_string() };
+    let astr = if ma == 0 {
+        String::new()
+    } else {
+        a.to_string()
+    };
     let prefix = if target { "=>" } else { "  " };
     let s = format!("{pc:04} {prefix} {:<6} {astr:>3} ", op.name());
     out.extend_from_slice(s.as_bytes());
@@ -92,7 +96,9 @@ fn bcline(pt: &Proto, pc: usize, target: bool, out: &mut Vec<u8>) {
     let mut kc: Option<Vec<u8>> = match mc {
         10 => {
             // BCMstr
-            let KGc::Str(s) = kgc(pt, d) else { unreachable!("string operand is not a string") };
+            let KGc::Str(s) = kgc(pt, d) else {
+                unreachable!("string operand is not a string")
+            };
             let e = escape_ctl(s.as_bytes());
             let mut v = vec![b'"'];
             if s.len() > 40 {
@@ -114,15 +120,26 @@ fn bcline(pt: &Proto, pc: usize, target: bool, out: &mut Vec<u8>) {
         }
         12 => {
             // BCMfunc
-            let KGc::Proto(p) = kgc(pt, d) else { unreachable!("function operand is not a prototype") };
+            let KGc::Proto(p) = kgc(pt, d) else {
+                unreachable!("function operand is not a prototype")
+            };
             Some(proto_loc(&p))
         }
-        5 => Some(pt.uvnames.get(d as usize).map(|s| s.as_bytes().to_vec()).unwrap_or_default()),
+        5 => Some(
+            pt.uvnames
+                .get(d as usize)
+                .map(|s| s.as_bytes().to_vec())
+                .unwrap_or_default(),
+        ),
         _ => None,
     };
     if ma == 5 {
         // BCMuv
-        let mut ka = pt.uvnames.get(a as usize).map(|s| s.as_bytes().to_vec()).unwrap_or_default();
+        let mut ka = pt
+            .uvnames
+            .get(a as usize)
+            .map(|s| s.as_bytes().to_vec())
+            .unwrap_or_default();
         if let Some(k) = kc {
             ka.extend_from_slice(b" ; ");
             ka.extend_from_slice(&k);

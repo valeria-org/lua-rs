@@ -103,7 +103,11 @@ unsafe fn format_va(fmt: &[u8], ap: &mut VaListTag) -> Vec<u8> {
 /// # Safety
 /// `L` must be a live state, `fmt` a C string and `argp` a live `va_list` matching `fmt`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_pushvfstring(L: *mut lua_State, fmt: *const c_char, argp: *mut VaListTag) -> *const c_char {
+pub unsafe extern "C-unwind" fn lua_pushvfstring(
+    L: *mut lua_State,
+    fmt: *const c_char,
+    argp: *mut VaListTag,
+) -> *const c_char {
     // SAFETY: per the contract.
     let s = unsafe { format_va(cstr(fmt), &mut *argp) };
     // SAFETY: per the contract.
@@ -122,7 +126,11 @@ pub unsafe extern "C-unwind" fn lua_pushvfstring(L: *mut lua_State, fmt: *const 
 ///
 /// # Safety
 /// As [`lua_pushvfstring`].
-unsafe extern "C-unwind" fn lual_error_push(L: *mut lua_State, fmt: *const c_char, argp: *mut VaListTag) {
+unsafe extern "C-unwind" fn lual_error_push(
+    L: *mut lua_State,
+    fmt: *const c_char,
+    argp: *mut VaListTag,
+) {
     // SAFETY: per the contract.
     let s = unsafe { format_va(cstr(fmt), &mut *argp) };
     // SAFETY: per the contract.

@@ -3,13 +3,17 @@
 use std::collections::HashMap;
 
 use super::lex::*;
-use crate::bc::{BCBIAS_J, BCMAX_B, BCMAX_C, BCMAX_D, FORL_EXT, FORL_IDX, FORL_STEP, FORL_STOP, Ins, NO_JMP, NO_REG, Op};
+use crate::bc::{
+    BCBIAS_J, BCMAX_B, BCMAX_C, BCMAX_D, FORL_EXT, FORL_IDX, FORL_STEP, FORL_STOP, Ins, NO_JMP,
+    NO_REG, Op,
+};
 use crate::cdata::{CData, CTID_COMPLEX_DOUBLE};
 use crate::error::{LuaError, LuaResult};
 use crate::func::{
-    KGc, PROTO_BITOP, PROTO_CHILD, PROTO_FFI, PROTO_FIXUP_RETURN, PROTO_HAS_RETURN, PROTO_UV_IMMUTABLE,
-    PROTO_UV_LOCAL, PROTO_VARARG, Proto, VARNAME_FOR_CTL, VARNAME_FOR_GEN, VARNAME_FOR_IDX, VARNAME_FOR_STATE,
-    VARNAME_FOR_STEP, VARNAME_FOR_STOP, VarInfo as ProtoVarInfo, VarName,
+    KGc, PROTO_BITOP, PROTO_CHILD, PROTO_FFI, PROTO_FIXUP_RETURN, PROTO_HAS_RETURN,
+    PROTO_UV_IMMUTABLE, PROTO_UV_LOCAL, PROTO_VARARG, Proto, VARNAME_FOR_CTL, VARNAME_FOR_GEN,
+    VARNAME_FOR_IDX, VARNAME_FOR_STATE, VARNAME_FOR_STEP, VARNAME_FOR_STOP,
+    VarInfo as ProtoVarInfo, VarName,
 };
 use crate::gc::Gc;
 use crate::lstr::LuaStr;
@@ -94,7 +98,12 @@ fn ins_aj(o: u32, a: u32, j: u32) -> u32 {
 }
 #[inline]
 fn is_ret_or_tail(op: u32) -> bool {
-    op == bc!(CALLMT) || op == bc!(CALLT) || op == bc!(RETM) || op == bc!(RET) || op == bc!(RET0) || op == bc!(RET1)
+    op == bc!(CALLMT)
+        || op == bc!(CALLT)
+        || op == bc!(RETM)
+        || op == bc!(RET)
+        || op == bc!(RET0)
+        || op == bc!(RET1)
 }
 #[inline]
 fn checki16(k: i32) -> bool {
@@ -180,7 +189,16 @@ struct ExpDesc {
 
 impl ExpDesc {
     fn new(k: ExpKind, info: u32) -> ExpDesc {
-        ExpDesc { k, info, aux: 0, sval: None, nval: 0.0, cdata: None, t: NO_JMP, f: NO_JMP }
+        ExpDesc {
+            k,
+            info,
+            aux: 0,
+            sval: None,
+            nval: 0.0,
+            cdata: None,
+            t: NO_JMP,
+            f: NO_JMP,
+        }
     }
     /// `expr_init`.
     #[inline]
@@ -386,14 +404,28 @@ const _: () = assert!(Op::BSAR as u32 - Op::BAND as u32 == OPR_BSAR - OPR_BAND);
 
 /// Priorities for each binary operator. ORDER OPR. (left, right)
 const PRIORITY: [(u32, u32); 22] = [
-    (10, 10), (10, 10), (11, 11), (11, 11), (11, 11), // ADD SUB MUL DIV MOD
-    (14, 13),                                         // POW (right associative)
-    (6, 6), (4, 4), (5, 5),                           // BAND BOR BXOR
-    (7, 7), (7, 7), (7, 7),                           // BSHL BSHR BSAR
-    (9, 8),                                           // CONCAT (right associative)
-    (3, 3), (3, 3),                                   // EQ NE
-    (3, 3), (3, 3), (3, 3), (3, 3),                   // LT GE GT LE
-    (2, 2), (1, 1), (1, 1),                           // AND OR COAL
+    (10, 10),
+    (10, 10),
+    (11, 11),
+    (11, 11),
+    (11, 11), // ADD SUB MUL DIV MOD
+    (14, 13), // POW (right associative)
+    (6, 6),
+    (4, 4),
+    (5, 5), // BAND BOR BXOR
+    (7, 7),
+    (7, 7),
+    (7, 7), // BSHL BSHR BSAR
+    (9, 8), // CONCAT (right associative)
+    (3, 3),
+    (3, 3), // EQ NE
+    (3, 3),
+    (3, 3),
+    (3, 3),
+    (3, 3), // LT GE GT LE
+    (2, 2),
+    (1, 1),
+    (1, 1), // AND OR COAL
 ];
 
 const UNARY_PRIORITY: u32 = 12;
@@ -401,15 +433,15 @@ const UNARY_PRIORITY: u32 = 12;
 /// Convert token to binary operator.
 fn token2binop(tok: LexToken) -> u32 {
     match tok {
-        0x2b => 0,          // '+'
-        0x2d => 1,          // '-'
-        0x2a => 2,          // '*'
-        0x2f => 3,          // '/'
-        0x25 => 4,          // '%'
-        0x5e => OPR_POW,    // '^'
-        0x26 => OPR_BAND,   // '&'
-        0x7c => OPR_BOR,    // '|'
-        0x7e => OPR_BXOR,   // '~'
+        0x2b => 0,        // '+'
+        0x2d => 1,        // '-'
+        0x2a => 2,        // '*'
+        0x2f => 3,        // '/'
+        0x25 => 4,        // '%'
+        0x5e => OPR_POW,  // '^'
+        0x26 => OPR_BAND, // '&'
+        0x7c => OPR_BOR,  // '|'
+        0x7e => OPR_BXOR, // '~'
         TK_SHL => OPR_BSHL,
         TK_SHR => OPR_BSHR,
         TK_SAR => OPR_BSAR,
@@ -539,7 +571,11 @@ impl<'a> Parser<'a> {
     }
 
     fn checklimit(&mut self, v: u32, l: u32, m: &str) -> R {
-        if v >= l { Err(self.err_limit(l, m)) } else { Ok(()) }
+        if v >= l {
+            Err(self.err_limit(l, m))
+        } else {
+            Ok(())
+        }
     }
 
     // -- Management of constants --
@@ -588,7 +624,11 @@ impl<'a> Parser<'a> {
     /// Get next element in jump list.
     fn jmp_next(&self, pc: u32) -> u32 {
         let delta = bc_j(self.ins(pc));
-        if delta == -1 { NO_JMP } else { (pc as i32 + 1 + delta) as u32 }
+        if delta == -1 {
+            NO_JMP
+        } else {
+            (pc as i32 + 1 + delta) as u32
+        }
     }
 
     /// Check if any of the instructions on the jump list produce no value.
@@ -761,7 +801,10 @@ impl<'a> Parser<'a> {
             let nsize = (size << 1).clamp(LJ_MIN_VECSZ, LJ_MAX_BCINS);
             self.bcstack.resize(nsize, BCInsLine::default());
         }
-        self.bcstack[idx] = BCInsLine { ins, line: self.ls.lastline };
+        self.bcstack[idx] = BCInsLine {
+            ins,
+            line: self.ls.lastline,
+        };
         self.fsm().pc = pc + 1;
         Ok(pc)
     }
@@ -851,7 +894,11 @@ impl<'a> Parser<'a> {
             }
         }
         // Emit new instruction or replace old instruction.
-        let ins = if n == 1 { ins_ad(bc!(KPRI), from, K::KNil as u32) } else { ins_ad(bc!(KNIL), from, from + n - 1) };
+        let ins = if n == 1 {
+            ins_ad(bc!(KPRI), from, K::KNil as u32)
+        } else {
+            ins_ad(bc!(KNIL), from, from + n - 1)
+        };
         self.bcemit_ins(ins)?;
         Ok(())
     }
@@ -915,7 +962,11 @@ impl<'a> Parser<'a> {
             let mut jfalse = NO_JMP;
             let mut jtrue = NO_JMP;
             if self.jmp_novalue(e.t) || self.jmp_novalue(e.f) {
-                let jval = if e.k == K::Jmp { NO_JMP } else { self.bcemit_jmp()? };
+                let jval = if e.k == K::Jmp {
+                    NO_JMP
+                } else {
+                    self.bcemit_jmp()?
+                };
                 jfalse = self.bcemit_ad(bc!(KPRI), reg, K::KFalse as u32)?;
                 let freereg = self.fs().freereg;
                 self.bcemit_aj(bc!(JMP), freereg, 1)?;
@@ -973,13 +1024,19 @@ impl<'a> Parser<'a> {
     fn bcemit_store(&mut self, var: &ExpDesc, e: &mut ExpDesc) -> R {
         let ins = match var.k {
             K::Local => {
-                debug_assert!(self.vstack[var.aux as usize].info & VSTACK_CONST == 0, "unchecked const assignment");
+                debug_assert!(
+                    self.vstack[var.aux as usize].info & VSTACK_CONST == 0,
+                    "unchecked const assignment"
+                );
                 self.vstack[var.aux as usize].info |= VSTACK_VAR_RW;
                 self.expr_free(e);
                 return self.expr_toreg(e, var.info);
             }
             K::Upval => {
-                debug_assert!(self.vstack[var.aux as usize].info & VSTACK_CONST == 0, "unchecked const assignment");
+                debug_assert!(
+                    self.vstack[var.aux as usize].info & VSTACK_CONST == 0,
+                    "unchecked const assignment"
+                );
                 self.vstack[var.aux as usize].info |= VSTACK_VAR_RW;
                 self.expr_toval(e)?;
                 if e.k <= K::KTrue {
@@ -1194,7 +1251,11 @@ impl<'a> Parser<'a> {
                 c = self.expr_toanyreg(e2)?;
             }
             // 1st operand discharged by bcemit_binop_left, but need KNUM/KSHORT.
-            debug_assert!(e1.isnumk() || e1.k == K::NonReloc, "bad expr type {:?}", e1.k);
+            debug_assert!(
+                e1.isnumk() || e1.k == K::NonReloc,
+                "bad expr type {:?}",
+                e1.k
+            );
             self.expr_toval(e1)?;
             // Avoid two consts to satisfy bytecode constraints.
             let mut b;
@@ -1228,13 +1289,23 @@ impl<'a> Parser<'a> {
         self.expr_toval(eret)?;
         // e1/e2 may be swapped; `swapped` tracks whether e1 is `eother`.
         let (ins, swapped) = if opr == OPR_EQ || opr == OPR_NE {
-            let op = if opr == OPR_EQ { bc!(ISEQV) } else { bc!(ISNEV) };
+            let op = if opr == OPR_EQ {
+                bc!(ISEQV)
+            } else {
+                bc!(ISNEV)
+            };
             let swapped = eret.isk(); // Need constant in 2nd arg.
-            let (e1, e2) = if swapped { (&mut *eother, &mut *eret) } else { (&mut *eret, &mut *eother) };
+            let (e1, e2) = if swapped {
+                (&mut *eother, &mut *eret)
+            } else {
+                (&mut *eret, &mut *eother)
+            };
             let ra = self.expr_toanyreg(e1)?; // First arg must be in a reg.
             self.expr_toval(e2)?;
             let ins = match e2.k {
-                K::KNil | K::KFalse | K::KTrue => ins_ad(op + (bc!(ISEQP) - bc!(ISEQV)), ra, e2.k as u32),
+                K::KNil | K::KFalse | K::KTrue => {
+                    ins_ad(op + (bc!(ISEQP) - bc!(ISEQV)), ra, e2.k as u32)
+                }
                 K::KStr => ins_ad(op + (bc!(ISEQS) - bc!(ISEQV)), ra, self.const_str(e2)),
                 K::KNum => ins_ad(op + (bc!(ISEQN) - bc!(ISEQV)), ra, self.const_num(e2)),
                 _ => {
@@ -1260,7 +1331,11 @@ impl<'a> Parser<'a> {
             (ins_ad(op, ra, rd), swapped)
         };
         // Using expr_free might cause asserts if the order is wrong.
-        let (e1, e2) = if swapped { (&*eother, &*eret) } else { (&*eret, &*eother) };
+        let (e1, e2) = if swapped {
+            (&*eother, &*eret)
+        } else {
+            (&*eret, &*eother)
+        };
         let nactvar = self.fs().nactvar;
         let f1 = e1.k == K::NonReloc && e1.info >= nactvar;
         let f2 = e2.k == K::NonReloc && e2.info >= nactvar;
@@ -1335,7 +1410,10 @@ impl<'a> Parser<'a> {
         } else if op == OPR_CONCAT {
             self.expr_toval(e2)?;
             if e2.k == K::Relocable && bc_op(self.ins(e2.info)) == bc!(CAT) {
-                debug_assert!(e1.info == bc_b(self.ins(e2.info)) - 1, "bad CAT stack layout");
+                debug_assert!(
+                    e1.info == bc_b(self.ins(e2.info)) - 1,
+                    "bad CAT stack layout"
+                );
                 self.expr_free(e1);
                 setbc_b(self.insm(e2.info), e1.info);
                 e1.info = e2.info;
@@ -1380,7 +1458,10 @@ impl<'a> Parser<'a> {
                 debug_assert!(e.k == K::NonReloc, "bad expr type {:?}", e.k);
             }
         } else {
-            debug_assert!(op == bc!(UNM) || op == bc!(LEN) || op == bc!(BNOT), "bad unop {op}");
+            debug_assert!(
+                op == bc!(UNM) || op == bc!(LEN) || op == bc!(BNOT),
+                "bad unop {op}"
+            );
             if !e.hasjump() {
                 if op == bc!(UNM) {
                     // Constant-fold negations.
@@ -1452,7 +1533,12 @@ impl<'a> Parser<'a> {
             }
             let swhat = self.ls.token2str(what);
             let swho = self.ls.token2str(who);
-            let msg = cat(&[&qs(&swhat), b" expected (to close ", &qs(&swho), format!(" at line {line})").as_bytes()]);
+            let msg = cat(&[
+                &qs(&swhat),
+                b" expected (to close ",
+                &qs(&swho),
+                format!(" at line {line})").as_bytes(),
+            ]);
             let tok = self.ls.tok;
             return Err(self.ls.error(tok, &msg));
         }
@@ -1480,7 +1566,17 @@ impl<'a> Parser<'a> {
                 return Err(self.ls.error(0, msg.as_bytes()));
             }
             let nsize = (size << 1).clamp(LJ_MIN_VECSZ, LJ_MAX_VSTACK);
-            self.vstack.resize(nsize, VarInfo { name: VName::Null, startpc: 0, endpc: 0, slot: 0, info: 0, prev: 0 });
+            self.vstack.resize(
+                nsize,
+                VarInfo {
+                    name: VName::Null,
+                    startpc: 0,
+                    endpc: 0,
+                    slot: 0,
+                    info: 0,
+                    prev: 0,
+                },
+            );
         }
         Ok(())
     }
@@ -1593,7 +1689,8 @@ impl<'a> Parser<'a> {
                         for uvidx in 0..nuv {
                             if self.fss[fsi].uvmap[uvidx as usize] == vidx {
                                 // Upvalue already exists.
-                                self.fss[puvtmp.0].uvtmp[puvtmp.1] = (LJ_MAX_VSTACK as u32 + uvidx) as u16;
+                                self.fss[puvtmp.0].uvtmp[puvtmp.1] =
+                                    (LJ_MAX_VSTACK as u32 + uvidx) as u16;
                                 return Ok(());
                             }
                         }
@@ -1615,7 +1712,9 @@ impl<'a> Parser<'a> {
         if e.k == K::Local || e.k == K::Upval {
             let v = self.vstack[e.aux as usize];
             if v.info & VSTACK_CONST != 0 {
-                let VName::Str(s) = v.name else { unreachable!("const variable without name") };
+                let VName::Str(s) = v.name else {
+                    unreachable!("const variable without name")
+                };
                 let msg = cat(&[b"attempt to assign to const variable ", &qs(s.as_bytes())]);
                 return Err(self.ls.error(0, &msg));
             }
@@ -1675,14 +1774,26 @@ impl<'a> Parser<'a> {
             if g.name == l.name && g.isgoto() {
                 if g.slot < l.slot {
                     let vi = self.var_idx(g.slot as u32);
-                    let VName::Str(name) = self.vstack[vi].name else { unreachable!("expected goto name") };
+                    let VName::Str(name) = self.vstack[vi].name else {
+                        unreachable!("expected goto name")
+                    };
                     self.ls.linenumber = self.line_at(g.startpc);
                     debug_assert!(g.name != NAME_BREAK, "unexpected break");
                     let msg = if g.name == NAME_CONT {
-                        cat(&[b"<continue> jumps into the scope of local ", &qs(name.as_bytes())])
+                        cat(&[
+                            b"<continue> jumps into the scope of local ",
+                            &qs(name.as_bytes()),
+                        ])
                     } else {
-                        let VName::Str(gname) = g.name else { unreachable!("goto without name") };
-                        cat(&[b"<goto ", cstr(gname.as_bytes()), b"> jumps into the scope of local ", &qs(name.as_bytes())])
+                        let VName::Str(gname) = g.name else {
+                            unreachable!("goto without name")
+                        };
+                        cat(&[
+                            b"<goto ",
+                            cstr(gname.as_bytes()),
+                            b"> jumps into the scope of local ",
+                            &qs(name.as_bytes()),
+                        ])
                     };
                     return Err(self.ls.error(0, &msg));
                 }
@@ -1706,7 +1817,9 @@ impl<'a> Parser<'a> {
                 for vg in v + 1..ve {
                     // Resolve pending backward gotos.
                     if self.vstack[vg].name == name && self.vstack[vg].isgoto() {
-                        if bl.flags & FSCOPE_UPVAL != 0 && self.vstack[vg].slot > self.vstack[v].slot {
+                        if bl.flags & FSCOPE_UPVAL != 0
+                            && self.vstack[vg].slot > self.vstack[v].slot
+                        {
                             self.gola_close(vg)?;
                         }
                         self.gola_patch(vg, v)?;
@@ -1735,7 +1848,9 @@ impl<'a> Parser<'a> {
                     } else if name == NAME_CONT {
                         b"no loop to continue".to_vec()
                     } else {
-                        let VName::Str(s) = name else { unreachable!("goto without name") };
+                        let VName::Str(s) = name else {
+                            unreachable!("goto without name")
+                        };
                         cat(&[b"undefined label ", &qs(s.as_bytes())])
                     };
                     return Err(self.ls.error(0, &msg));
@@ -1759,7 +1874,11 @@ impl<'a> Parser<'a> {
         let fs = self.fsm();
         debug_assert!(fs.freereg == fs.nactvar, "bad regalloc");
         let nactvar = fs.nactvar;
-        fs.bl.push(FuncScope { vstart: vtop, nactvar, flags });
+        fs.bl.push(FuncScope {
+            vstart: vtop,
+            nactvar,
+            flags,
+        });
     }
 
     /// End a scope.
@@ -1772,7 +1891,10 @@ impl<'a> Parser<'a> {
         if bl.flags & (FSCOPE_UPVAL | FSCOPE_NOCLOSE) == FSCOPE_UPVAL {
             self.bcemit_aj(bc!(UCLO), bl.nactvar, 0)?;
         }
-        debug_assert!(bl.flags & (FSCOPE_LOOP | FSCOPE_CONT) != (FSCOPE_LOOP | FSCOPE_CONT), "dangling continue");
+        debug_assert!(
+            bl.flags & (FSCOPE_LOOP | FSCOPE_CONT) != (FSCOPE_LOOP | FSCOPE_CONT),
+            "dangling continue"
+        );
         if bl.flags & (FSCOPE_LOOP | FSCOPE_BREAK) == (FSCOPE_LOOP | FSCOPE_BREAK) {
             bl.flags &= !FSCOPE_BREAK;
             let pc = self.fs().pc;
@@ -1800,7 +1922,12 @@ impl<'a> Parser<'a> {
 
     /// Mark scope as having an upvalue.
     fn fscope_uvmark(&mut self, fsi: usize, level: u32) {
-        if let Some(bl) = self.fss[fsi].bl.iter_mut().rev().find(|bl| bl.nactvar <= level) {
+        if let Some(bl) = self.fss[fsi]
+            .bl
+            .iter_mut()
+            .rev()
+            .find(|bl| bl.nactvar <= level)
+        {
             bl.flags |= FSCOPE_UPVAL;
         }
     }
@@ -1824,7 +1951,13 @@ impl<'a> Parser<'a> {
             for pc in 1..lastpc {
                 let ins = self.ins(pc);
                 let op = bc_op(ins);
-                if op == bc!(CALLMT) || op == bc!(CALLT) || op == bc!(RETM) || op == bc!(RET) || op == bc!(RET0) || op == bc!(RET1) {
+                if op == bc!(CALLMT)
+                    || op == bc!(CALLT)
+                    || op == bc!(RETM)
+                    || op == bc!(RET)
+                    || op == bc!(RET0)
+                    || op == bc!(RET1)
+                {
                     let offset = self.bcemit_ins(ins)?; // Copy original instruction.
                     let line = self.line_at(pc);
                     self.set_line(offset, line);
@@ -1888,7 +2021,11 @@ impl<'a> Parser<'a> {
         };
         let mut bc = Vec::with_capacity(n);
         bc.push(Ins(ins_ad(hop, fs.framesize as u32, 0)));
-        bc.extend(self.bcstack[base + 1..base + n].iter().map(|il| Ins(il.ins)));
+        bc.extend(
+            self.bcstack[base + 1..base + n]
+                .iter()
+                .map(|il| Ins(il.ins)),
+        );
 
         // Constants.
         let mut kgc = Vec::with_capacity(fs.kt.kgc.len());
@@ -1931,7 +2068,11 @@ impl<'a> Parser<'a> {
                     VName::Fixed(id) => VarName::Internal(id),
                     VName::Null => unreachable!("variable without name"),
                 };
-                varinfo.push(ProtoVarInfo { name, startpc: v.startpc, endpc: v.endpc });
+                varinfo.push(ProtoVarInfo {
+                    name,
+                    startpc: v.startpc,
+                    endpc: v.endpc,
+                });
             }
         }
 
@@ -1952,7 +2093,10 @@ impl<'a> Parser<'a> {
         };
 
         self.vtop = fs.vbase; // Reset variable stack.
-        debug_assert!(!self.fss.is_empty() || self.ls.tok == TK_EOF, "bad parser state");
+        debug_assert!(
+            !self.fss.is_empty() || self.ls.tok == TK_EOF,
+            "bad parser state"
+        );
         Ok(pt)
     }
 
@@ -2087,7 +2231,10 @@ impl<'a> Parser<'a> {
                     Some(tt) => tt,
                     None => {
                         // Create template table on demand.
-                        let tt = self.ls.vm.new_table(if needarr { narr } else { 0 }, hsize2hbits(nhash))?;
+                        let tt = self
+                            .ls
+                            .vm
+                            .new_table(if needarr { narr } else { 0 }, hsize2hbits(nhash))?;
                         self.ls.anchor(Value::Table(tt));
                         let kidx = self.const_gc_new(KSlot::Table(tt));
                         *self.insm(pc) = ins_ad(bc!(TDUP), freg - 1, kidx);
@@ -2108,7 +2255,8 @@ impl<'a> Parser<'a> {
                     nonconst = false;
                 } else {
                     // Preserve the key for the following non-const store.
-                    tt.set(k, Value::Table(tt)).map_err(|err| self.ls.vm.tab_error(err))?;
+                    tt.set(k, Value::Table(tt))
+                        .map_err(|err| self.ls.vm.tab_error(err))?;
                 }
             }
             if nonconst {
@@ -2131,7 +2279,8 @@ impl<'a> Parser<'a> {
         if vcall {
             let mut ilp = self.fs().pc - 1;
             debug_assert!(
-                bc_a(self.ins(ilp)) == freg && bc_op(self.ins(ilp)) == if narr > 256 { bc!(TSETV) } else { bc!(TSETB) },
+                bc_a(self.ins(ilp)) == freg
+                    && bc_op(self.ins(ilp)) == if narr > 256 { bc!(TSETV) } else { bc!(TSETB) },
                 "bad CALL code generation"
             );
             let mut en = ExpDesc::new(K::KNum, 0);
@@ -2160,7 +2309,8 @@ impl<'a> Parser<'a> {
             }
             Some(tt) => {
                 if needarr && tt.asize() < narr {
-                    tt.reasize(narr - 1).map_err(|err| self.ls.vm.tab_error(err))?;
+                    tt.reasize(narr - 1)
+                        .map_err(|err| self.ls.vm.tab_error(err))?;
                 }
             }
         }
@@ -2247,7 +2397,13 @@ impl<'a> Parser<'a> {
     }
 
     /// Parse short function.
-    fn parse_shortfunc(&mut self, e: &mut ExpDesc, name: Option<Gc<LuaStr>>, eflags: u32, line: u32) -> R {
+    fn parse_shortfunc(
+        &mut self,
+        e: &mut ExpDesc,
+        name: Option<Gc<LuaStr>>,
+        eflags: u32,
+        line: u32,
+    ) -> R {
         let mut nparams = 0;
         self.fs_init();
         self.fscope_begin(0);
@@ -2878,7 +3034,9 @@ impl<'a> Parser<'a> {
     fn parse_return(&mut self, eflags: u32) -> R {
         self.fsm().flags |= PROTO_HAS_RETURN;
         let ins;
-        if eflags & EXPR_F_RET1 == 0 && (parse_isend(self.ls.tok) || self.ls.tok == b';' as LexToken) {
+        if eflags & EXPR_F_RET1 == 0
+            && (parse_isend(self.ls.tok) || self.ls.tok == b';' as LexToken)
+        {
             ins = ins_ad(bc!(RET0), 0, 1); // Bare return.
         } else {
             // Return with one or more values.
@@ -3155,7 +3313,12 @@ impl<'a> Parser<'a> {
         let pc = self.fs().pc;
         self.jmp_patchins(loop_, pc)?;
         self.fscope_continue(pc)?;
-        self.bcemit_abc(if isnext { bc!(ITERN) } else { bc!(ITERC) }, base, nvars - 3 + 1, 2 + 1)?;
+        self.bcemit_abc(
+            if isnext { bc!(ITERN) } else { bc!(ITERC) },
+            base,
+            nvars - 3 + 1,
+            2 + 1,
+        )?;
         let loopend = self.bcemit_aj(bc!(ITERL), base, NO_JMP)?;
         self.set_line(loopend - 1, line); // Fix line for control ins.
         self.set_line(loopend, line);
@@ -3279,7 +3442,10 @@ impl<'a> Parser<'a> {
             islast = self.parse_stmt()?;
             self.lex_opt(b';' as LexToken)?;
             let fs = self.fsm();
-            debug_assert!(fs.framesize as u32 >= fs.freereg && fs.freereg >= fs.nactvar, "bad regalloc");
+            debug_assert!(
+                fs.framesize as u32 >= fs.freereg && fs.freereg >= fs.nactvar,
+                "bad regalloc"
+            );
             fs.freereg = fs.nactvar; // Free registers after each stmt.
         }
         self.synlevel_end();

@@ -15,7 +15,11 @@ pub fn open_coroutine(vm: &mut Vm) -> LuaResult<()> {
     let funcs: &[LibFn] = &[
         ("status", lj_cf_coroutine_status, FF_COROUTINE_STATUS),
         ("running", lj_cf_coroutine_running, FF_COROUTINE_RUNNING),
-        ("isyieldable", lj_cf_coroutine_isyieldable, FF_COROUTINE_ISYIELDABLE),
+        (
+            "isyieldable",
+            lj_cf_coroutine_isyieldable,
+            FF_COROUTINE_ISYIELDABLE,
+        ),
         ("create", lj_cf_coroutine_create, FF_COROUTINE_CREATE),
         ("yield", lj_cf_coroutine_yield, FF_COROUTINE_YIELD),
         ("resume", lj_cf_coroutine_resume, FF_COROUTINE_RESUME),
@@ -26,7 +30,9 @@ pub fn open_coroutine(vm: &mut Vm) -> LuaResult<()> {
 }
 
 fn lj_cf_coroutine_status(vm: &mut Vm) -> LuaResult<usize> {
-    let Value::Thread(co) = vm.arg(1) else { return Err(vm.arg_error_em(1, ErrMsg::NOCORO)) };
+    let Value::Thread(co) = vm.arg(1) else {
+        return Err(vm.arg_error_em(1, ErrMsg::NOCORO));
+    };
     if vm.nargs() < 1 {
         return Err(vm.arg_error_em(1, ErrMsg::NOCORO));
     }
@@ -60,7 +66,9 @@ fn lj_cf_coroutine_isyieldable(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn lj_cf_coroutine_create(vm: &mut Vm) -> LuaResult<usize> {
-    let Value::Func(f) = vm.arg(1) else { return Err(vm.argt_error(1, "function")) };
+    let Value::Func(f) = vm.arg(1) else {
+        return Err(vm.argt_error(1, "function"));
+    };
     if vm.nargs() < 1 {
         return Err(vm.argt_error(1, "function"));
     }
@@ -74,7 +82,9 @@ fn lj_cf_coroutine_yield(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn lj_cf_coroutine_resume(vm: &mut Vm) -> LuaResult<usize> {
-    let Value::Thread(co) = vm.arg(1) else { return Err(vm.arg_error_em(1, ErrMsg::NOCORO)) };
+    let Value::Thread(co) = vm.arg(1) else {
+        return Err(vm.arg_error_em(1, ErrMsg::NOCORO));
+    };
     if vm.nargs() < 1 {
         return Err(vm.arg_error_em(1, ErrMsg::NOCORO));
     }
@@ -106,7 +116,9 @@ fn lj_cf_coroutine_resume(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn lj_cf_coroutine_wrap_aux(vm: &mut Vm) -> LuaResult<usize> {
-    let Value::Thread(co) = vm.upvalue(1) else { unreachable!("wrap upvalue") };
+    let Value::Thread(co) = vm.upvalue(1) else {
+        unreachable!("wrap upvalue")
+    };
     if let Some(em) = vm.resume_check(co) {
         return Err(vm.err_caller(em));
     }

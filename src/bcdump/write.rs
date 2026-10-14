@@ -26,7 +26,12 @@ pub fn write_flags(_vm: &mut Vm, pt: Gc<Proto>, flags: u32) -> Vec<u8> {
     if pt.bc[0].op_byte() != Op::NOT as u8 {
         flags |= BCDUMP_F_FR2;
     }
-    let mut ctx = Ctx { out: Vec::with_capacity(1024), body: Vec::new(), dbg: Vec::new(), flags };
+    let mut ctx = Ctx {
+        out: Vec::with_capacity(1024),
+        body: Vec::new(),
+        dbg: Vec::new(),
+        flags,
+    };
     ctx.header(&pt);
     ctx.proto(&pt);
     ctx.out.push(0); // Footer.
@@ -50,8 +55,16 @@ impl Ctx {
         out.extend_from_slice(&[BCDUMP_HEAD1, BCDUMP_HEAD2, BCDUMP_HEAD3, BCDUMP_VERSION]);
         // Little-endian host: BCDUMP_F_BE is never set.
         let hflags = (self.flags & (BCDUMP_F_STRIP | BCDUMP_F_FR2))
-            + if pflags & PROTO_FFI != 0 { BCDUMP_F_FFI } else { 0 }
-            + if pflags & PROTO_BITOP != 0 { BCDUMP_F_BITOP } else { 0 };
+            + if pflags & PROTO_FFI != 0 {
+                BCDUMP_F_FFI
+            } else {
+                0
+            }
+            + if pflags & PROTO_BITOP != 0 {
+                BCDUMP_F_BITOP
+            } else {
+                0
+            };
         put_uleb128(out, hflags);
         if self.flags & BCDUMP_F_STRIP == 0 {
             put_uleb128(out, name.len() as u32);
@@ -125,7 +138,11 @@ impl Ctx {
 /// zero-terminated upvalue names, then the zero-terminated varinfo stream.
 fn debug_info(d: &mut Vec<u8>, pt: &Proto) {
     let first = pt.firstline;
-    debug_assert_eq!(pt.lineinfo.len(), pt.bc.len(), "line info must cover every instruction");
+    debug_assert_eq!(
+        pt.lineinfo.len(),
+        pt.bc.len(),
+        "line info must cover every instruction"
+    );
     let lines = &pt.lineinfo[1..pt.bc.len()];
     match lineinfo_shift(pt.numline) {
         0 => d.extend(lines.iter().map(|&l| l.wrapping_sub(first) as u8)),
@@ -275,9 +292,16 @@ fn ktabk_cmp(a: Value, b: Value) -> Ordering {
 /// highest node down, or sorted by key for deterministic dumps.
 fn ktab(b: &mut Vec<u8>, t: &Table, deterministic: bool) {
     let asize = t.asize();
-    let narray = (0..asize).rev().find(|&i| !t.array_get(i).is_nil()).map_or(0, |i| i + 1);
+    let narray = (0..asize)
+        .rev()
+        .find(|&i| !t.array_get(i).is_nil())
+        .map_or(0, |i| i + 1);
     let hmask = t.hmask();
-    let nhash = if hmask > 0 { (0..=hmask).filter(|&i| !t.node_get(i).1.is_nil()).count() as u32 } else { 0 };
+    let nhash = if hmask > 0 {
+        (0..=hmask).filter(|&i| !t.node_get(i).1.is_nil()).count() as u32
+    } else {
+        0
+    };
     put_uleb128(b, narray);
     put_uleb128(b, nhash);
     for i in 0..narray {
@@ -288,8 +312,11 @@ fn ktab(b: &mut Vec<u8>, t: &Table, deterministic: bool) {
     }
     if deterministic && nhash > 1 {
         // Upstream drains a binary heap; keys are distinct, so this is plain sorted order.
-        let mut nodes: Vec<(Value, Value)> =
-            (0..=hmask).rev().map(|i| t.node_get(i)).filter(|n| !n.1.is_nil()).collect();
+        let mut nodes: Vec<(Value, Value)> = (0..=hmask)
+            .rev()
+            .map(|i| t.node_get(i))
+            .filter(|n| !n.1.is_nil())
+            .collect();
         nodes.sort_unstable_by(|x, y| ktabk_cmp(x.0, y.0));
         for (k, v) in nodes {
             ktabk(b, k, false);

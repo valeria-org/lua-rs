@@ -39,10 +39,19 @@ struct P {
 
 impl P {
     fn bytes(&self, strip: bool) -> Vec<u8> {
-        let mut b = vec![self.flags, self.numparams, self.framesize.max(1), self.uv.len() as u8];
+        let mut b = vec![
+            self.flags,
+            self.numparams,
+            self.framesize.max(1),
+            self.uv.len() as u8,
+        ];
         put_uleb128(&mut b, self.nkgc);
         put_uleb128(&mut b, self.nkn);
-        let bc = if self.bc.is_empty() { vec![ret0()] } else { self.bc.clone() };
+        let bc = if self.bc.is_empty() {
+            vec![ret0()]
+        } else {
+            self.bc.clone()
+        };
         put_uleb128(&mut b, bc.len() as u32);
         if !strip {
             match &self.dbg {
@@ -55,10 +64,18 @@ impl P {
             }
         }
         for w in bc {
-            b.extend_from_slice(&if self.big_endian { w.to_be_bytes() } else { w.to_le_bytes() });
+            b.extend_from_slice(&if self.big_endian {
+                w.to_be_bytes()
+            } else {
+                w.to_le_bytes()
+            });
         }
         for &u in &self.uv {
-            b.extend_from_slice(&if self.big_endian { u.to_be_bytes() } else { u.to_le_bytes() });
+            b.extend_from_slice(&if self.big_endian {
+                u.to_be_bytes()
+            } else {
+                u.to_le_bytes()
+            });
         }
         b.extend_from_slice(&self.k);
         if !strip && let Some((_, _, block)) = &self.dbg {
@@ -93,12 +110,19 @@ fn load(vm: &mut Vm, d: &[u8]) -> LuaResult<Gc<Proto>> {
 fn err(r: LuaResult<Gc<Proto>>) -> (ErrorKind, String) {
     match r {
         Ok(_) => panic!("load succeeded"),
-        Err(e) => (e.kind, e.value.as_str().expect("string message").to_string_lossy()),
+        Err(e) => (
+            e.kind,
+            e.value.as_str().expect("string message").to_string_lossy(),
+        ),
     }
 }
 
 fn assert_bad(vm: &mut Vm, d: &[u8]) {
-    assert_eq!(err(load(vm, d)), (ErrorKind::Syntax, BCBAD.to_string()), "input {d:02x?}");
+    assert_eq!(
+        err(load(vm, d)),
+        (ErrorKind::Syntax, BCBAD.to_string()),
+        "input {d:02x?}"
+    );
 }
 
 #[test]
@@ -110,8 +134,14 @@ fn header_cut_after_flags() {
     assert_bad(&mut vm, b"\x1bLJ\x02\x0a");
     assert_bad(&mut vm, b"\x1bLJ\x02\x88");
     assert_eq!(err(load(&mut vm, b"\x1bLJ\x02")).1, BCFMT);
-    assert_eq!(err(load(&mut vm, b"")).1, ": cannot load incompatible bytecode");
-    assert_eq!(err(read(&mut vm, b"LJ", b"=x")).1, "x: cannot load incompatible bytecode");
+    assert_eq!(
+        err(load(&mut vm, b"")).1,
+        ": cannot load incompatible bytecode"
+    );
+    assert_eq!(
+        err(read(&mut vm, b"LJ", b"=x")).1,
+        "x: cannot load incompatible bytecode"
+    );
 }
 
 #[test]
@@ -137,9 +167,15 @@ fn minimal_dump_round_trips() {
 fn invalid_opcode_is_rejected() {
     // Deviation: upstream loads any instruction word; `Ins::op` requires a valid opcode.
     let mut vm = Vm::new();
-    let p = P { bc: vec![BC_MAX as u32, ret0()], ..P::default() };
+    let p = P {
+        bc: vec![BC_MAX as u32, ret0()],
+        ..P::default()
+    };
     assert_bad(&mut vm, &dump(STRIP_FR2, b"", &[&p]));
-    let p = P { bc: vec![Op::FUNCCW as u32, ret0()], ..P::default() };
+    let p = P {
+        bc: vec![Op::FUNCCW as u32, ret0()],
+        ..P::default()
+    };
     assert!(load(&mut vm, &dump(STRIP_FR2, b"", &[&p])).is_ok());
 }
 
@@ -161,7 +197,11 @@ fn varinfo_and_lines_decode() {
     let p = P {
         framesize: 2,
         uv: vec![0x8000, 0xc001],
-        bc: vec![Ins::ad(Op::KSHORT, 0, 1).0, Ins::ad(Op::KSHORT, 1, 2).0, ret0()],
+        bc: vec![
+            Ins::ad(Op::KSHORT, 0, 1).0,
+            Ins::ad(Op::KSHORT, 1, 2).0,
+            ret0(),
+        ],
         dbg: Some((10, 5, block)),
         ..P::default()
     };
@@ -175,9 +215,21 @@ fn varinfo_and_lines_decode() {
     // Strings are interned, so freshly created names compare equal by identity.
     let (x, y) = (vm.new_str(b"x"), vm.new_str(b"y"));
     let want = [
-        VarInfo { name: VarName::Internal(VARNAME_FOR_IDX), startpc: 1, endpc: 3 },
-        VarInfo { name: VarName::Str(x), startpc: 1, endpc: 301 },
-        VarInfo { name: VarName::Str(y), startpc: 0, endpc: 1 },
+        VarInfo {
+            name: VarName::Internal(VARNAME_FOR_IDX),
+            startpc: 1,
+            endpc: 3,
+        },
+        VarInfo {
+            name: VarName::Str(x),
+            startpc: 1,
+            endpc: 301,
+        },
+        VarInfo {
+            name: VarName::Str(y),
+            startpc: 0,
+            endpc: 1,
+        },
     ];
     assert_eq!(&*pt.varinfo, &want);
     assert_eq!(write(&mut vm, pt, false), d);
@@ -197,7 +249,12 @@ fn malformed_debug_info_is_rejected() {
         b"\0\0up\0x",    // unterminated variable name
     ];
     for block in bad_blocks {
-        let p = P { uv: vec![0x8000], bc: vec![ret0(), ret0()], dbg: Some((1, 1, block.to_vec())), ..P::default() };
+        let p = P {
+            uv: vec![0x8000],
+            bc: vec![ret0(), ret0()],
+            dbg: Some((1, 1, block.to_vec())),
+            ..P::default()
+        };
         assert_bad(&mut vm, &dump(BCDUMP_F_FR2, b"=x", &[&p]));
     }
 }
@@ -205,29 +262,49 @@ fn malformed_debug_info_is_rejected() {
 #[test]
 fn wide_line_info_and_big_endian_input() {
     let mut vm = Vm::new();
-    for (numline, width) in [(255u32, 1usize), (256, 2), (65535, 2), (65536, 4), (1 << 20, 4)] {
+    for (numline, width) in [
+        (255u32, 1usize),
+        (256, 2),
+        (65535, 2),
+        (65536, 4),
+        (1 << 20, 4),
+    ] {
         for big_endian in [false, true] {
             let deltas = [0u32, numline / 2, numline];
             let mut block = Vec::new();
             for &dl in &deltas {
-                let bytes = if big_endian { dl.to_be_bytes() } else { dl.to_le_bytes() };
+                let bytes = if big_endian {
+                    dl.to_be_bytes()
+                } else {
+                    dl.to_le_bytes()
+                };
                 match width {
                     1 => block.push(dl as u8),
-                    2 => block.extend_from_slice(if big_endian { &bytes[2..] } else { &bytes[..2] }),
+                    2 => {
+                        block.extend_from_slice(if big_endian { &bytes[2..] } else { &bytes[..2] })
+                    }
                     _ => block.extend_from_slice(&bytes),
                 }
             }
             block.push(0);
             let p = P {
                 framesize: 2,
-                bc: vec![Ins::ad(Op::KSHORT, 0, 1).0, Ins::ad(Op::KSHORT, 1, 2).0, ret0()],
+                bc: vec![
+                    Ins::ad(Op::KSHORT, 0, 1).0,
+                    Ins::ad(Op::KSHORT, 1, 2).0,
+                    ret0(),
+                ],
                 dbg: Some((7, numline, block.clone())),
                 big_endian,
                 ..P::default()
             };
             let flags = BCDUMP_F_FR2 | if big_endian { BCDUMP_F_BE } else { 0 };
             let pt = load(&mut vm, &dump(flags, b"=w", &[&p])).expect("load");
-            assert_eq!(&*pt.lineinfo, &[7, 7, 7 + numline / 2, 7 + numline], "numline {numline}");
+            assert_eq!(
+                &*pt.lineinfo,
+                &[7, 7, 7 + numline / 2, 7 + numline],
+                "numline {numline}"
+            );
             assert_eq!(pt.bc[1], Ins::ad(Op::KSHORT, 0, 1));
             // Written back in host (little-endian) order without the BE flag.
             let le = P {
@@ -250,7 +327,11 @@ fn wide_line_info_and_big_endian_input() {
 #[test]
 fn non_native_flavour() {
     let mut vm = Vm::new();
-    let p = P { flags: PROTO_VARARG, framesize: 3, ..P::default() };
+    let p = P {
+        flags: PROTO_VARARG,
+        framesize: 3,
+        ..P::default()
+    };
     let d = dump(BCDUMP_F_STRIP, b"", &[&p]);
     assert_eq!(err(load(&mut vm, &d)).1, BCFMT);
     let pt = read_ex(&mut vm, &d, &d, false).expect("load non-native");
@@ -267,22 +348,86 @@ fn oversized_counts_fail_without_huge_allocations() {
     let mut vm = Vm::new();
     let mut k = Vec::new();
     put_uleb128(&mut k, BCDUMP_KGC_STR + 0x7fff_feff); // longest string, missing data
-    assert_bad(&mut vm, &dump(STRIP_FR2, b"", &[&P { nkgc: 1, k, ..P::default() }]));
+    assert_bad(
+        &mut vm,
+        &dump(
+            STRIP_FR2,
+            b"",
+            &[&P {
+                nkgc: 1,
+                k,
+                ..P::default()
+            }],
+        ),
+    );
     let mut k = vec![BCDUMP_KGC_TAB as u8];
     put_uleb128(&mut k, MAX_ASIZE); // largest array part, missing entries
     k.push(0);
-    assert_bad(&mut vm, &dump(STRIP_FR2, b"", &[&P { nkgc: 1, k, ..P::default() }]));
+    assert_bad(
+        &mut vm,
+        &dump(
+            STRIP_FR2,
+            b"",
+            &[&P {
+                nkgc: 1,
+                k,
+                ..P::default()
+            }],
+        ),
+    );
     let mut k = vec![BCDUMP_KGC_TAB as u8, 0];
     put_uleb128(&mut k, 1 << 26); // largest hash part, missing entries
-    let d = dump(STRIP_FR2, b"", &[&P { nkgc: 1, k, ..P::default() }]);
+    let d = dump(
+        STRIP_FR2,
+        b"",
+        &[&P {
+            nkgc: 1,
+            k,
+            ..P::default()
+        }],
+    );
     // The first key is read from the dump's 0 terminator, as upstream does.
-    assert_eq!(err(load(&mut vm, &d)), (ErrorKind::Run, "table index is nil".to_string()));
+    assert_eq!(
+        err(load(&mut vm, &d)),
+        (ErrorKind::Run, "table index is nil".to_string())
+    );
     let mut k = vec![BCDUMP_KGC_TAB as u8, 0];
     put_uleb128(&mut k, 1 << 26);
     k.push(BCDUMP_KTAB_TRUE as u8); // first key, then the value from the terminator
-    assert_bad(&mut vm, &dump(STRIP_FR2, b"", &[&P { nkgc: 1, k, ..P::default() }]));
-    assert_bad(&mut vm, &dump(STRIP_FR2, b"", &[&P { nkgc: u32::MAX, ..P::default() }]));
-    assert_bad(&mut vm, &dump(STRIP_FR2, b"", &[&P { nkn: u32::MAX, ..P::default() }]));
+    assert_bad(
+        &mut vm,
+        &dump(
+            STRIP_FR2,
+            b"",
+            &[&P {
+                nkgc: 1,
+                k,
+                ..P::default()
+            }],
+        ),
+    );
+    assert_bad(
+        &mut vm,
+        &dump(
+            STRIP_FR2,
+            b"",
+            &[&P {
+                nkgc: u32::MAX,
+                ..P::default()
+            }],
+        ),
+    );
+    assert_bad(
+        &mut vm,
+        &dump(
+            STRIP_FR2,
+            b"",
+            &[&P {
+                nkn: u32::MAX,
+                ..P::default()
+            }],
+        ),
+    );
     // Layout: ESC L J version flags | length | flags numparams framesize numuv nkgc nkn nbc | ...
     let mut d = dump(STRIP_FR2, b"", &[&P::default()]);
     assert_eq!(d[12], 1);
@@ -296,10 +441,38 @@ fn constant_errors_are_runtime_errors() {
     let mut vm = Vm::new();
     let mut k = Vec::new();
     put_uleb128(&mut k, BCDUMP_KGC_STR + crate::lstr::MAX_STR as u32);
-    let e = err(load(&mut vm, &dump(STRIP_FR2, b"", &[&P { nkgc: 1, k, ..P::default() }])));
+    let e = err(load(
+        &mut vm,
+        &dump(
+            STRIP_FR2,
+            b"",
+            &[&P {
+                nkgc: 1,
+                k,
+                ..P::default()
+            }],
+        ),
+    ));
     assert_eq!(e, (ErrorKind::Run, "string length overflow".to_string()));
-    let k = vec![BCDUMP_KGC_TAB as u8, 0, 1, BCDUMP_KTAB_NIL as u8, BCDUMP_KTAB_TRUE as u8];
-    let e = err(load(&mut vm, &dump(STRIP_FR2, b"", &[&P { nkgc: 1, k, ..P::default() }])));
+    let k = vec![
+        BCDUMP_KGC_TAB as u8,
+        0,
+        1,
+        BCDUMP_KTAB_NIL as u8,
+        BCDUMP_KTAB_TRUE as u8,
+    ];
+    let e = err(load(
+        &mut vm,
+        &dump(
+            STRIP_FR2,
+            b"",
+            &[&P {
+                nkgc: 1,
+                k,
+                ..P::default()
+            }],
+        ),
+    ));
     assert_eq!(e, (ErrorKind::Run, "table index is nil".to_string()));
 }
 
@@ -335,9 +508,18 @@ fn knum_encoding() {
     assert_eq!(knum_round_trip(&mut vm, 1.0), (vec![0x02], 1.0));
     assert_eq!(knum_round_trip(&mut vm, 63.0), (vec![0x7e], 63.0));
     assert_eq!(knum_round_trip(&mut vm, 64.0), (vec![0x80, 0x01], 64.0));
-    assert_eq!(knum_round_trip(&mut vm, -1.0), (vec![0xfe, 0xff, 0xff, 0xff, 0x1f], -1.0));
-    assert_eq!(knum_round_trip(&mut vm, -2147483648.0), (vec![0x80, 0x80, 0x80, 0x80, 0x10], -2147483648.0));
-    assert_eq!(knum_round_trip(&mut vm, 2147483647.0), (vec![0xfe, 0xff, 0xff, 0xff, 0x0f], 2147483647.0));
+    assert_eq!(
+        knum_round_trip(&mut vm, -1.0),
+        (vec![0xfe, 0xff, 0xff, 0xff, 0x1f], -1.0)
+    );
+    assert_eq!(
+        knum_round_trip(&mut vm, -2147483648.0),
+        (vec![0x80, 0x80, 0x80, 0x80, 0x10], -2147483648.0)
+    );
+    assert_eq!(
+        knum_round_trip(&mut vm, 2147483647.0),
+        (vec![0xfe, 0xff, 0xff, 0xff, 0x0f], 2147483647.0)
+    );
     // -0 narrows to the integer 0 (the parser never emits it).
     let (b, v) = knum_round_trip(&mut vm, -0.0);
     assert_eq!((b, v.to_bits()), (vec![0x00], 0));
@@ -345,9 +527,17 @@ fn knum_encoding() {
     let (b, v) = knum_round_trip(&mut vm, 0.5);
     assert_eq!(b, vec![0x01, 0x80, 0x80, 0x80, 0xff, 0x03]);
     assert_eq!(v, 0.5);
-    for n in
-        [0.1, -0.1, 2147483648.0, -2147483649.0, 1e300, f64::INFINITY, f64::NEG_INFINITY, 5e-324, 4503599627370497.0]
-    {
+    for n in [
+        0.1,
+        -0.1,
+        2147483648.0,
+        -2147483649.0,
+        1e300,
+        f64::INFINITY,
+        f64::NEG_INFINITY,
+        5e-324,
+        4503599627370497.0,
+    ] {
         let (_, v) = knum_round_trip(&mut vm, n);
         assert_eq!(v.to_bits(), n.to_bits(), "{n}");
     }
@@ -376,13 +566,16 @@ fn uleb128_reader_masks_overlong_shifts() {
 fn read_proto_reads_libdef_lua_functions() {
     // lj_libdef.h (reference build), lj_lib_init_math: LIBINIT_LUA "deg" <proto> LIBINIT_LUA "rad".
     let lib: &[u8] = &[
-        249, 3, 100, 101, 103, 0, 1, 2, 0, 0, 1, 2, 24, 1, 0, 0, 76, 1, 2, 0, 241, 135, 158, 166, 3, 220, 203, 178,
-        130, 4, 249, 3, 114, 97, 100, 0, 1, 2, 0, 0, 1, 2, 24, 1, 0, 0, 76, 1, 2, 0, 243, 244, 148, 165, 20, 198, 190,
-        199, 252, 3, 69,
+        249, 3, 100, 101, 103, 0, 1, 2, 0, 0, 1, 2, 24, 1, 0, 0, 76, 1, 2, 0, 241, 135, 158, 166,
+        3, 220, 203, 178, 130, 4, 249, 3, 114, 97, 100, 0, 1, 2, 0, 0, 1, 2, 24, 1, 0, 0, 76, 1, 2,
+        0, 243, 244, 148, 165, 20, 198, 190, 199, 252, 3, 69,
     ];
     let mut vm = Vm::new();
     let mut p = 0;
-    for (name, k) in [(&b"deg"[..], 57.29577951308232), (b"rad", 0.017453292519943295)] {
+    for (name, k) in [
+        (&b"deg"[..], 57.29577951308232),
+        (b"rad", 0.017453292519943295),
+    ] {
         assert_eq!(lib[p], 249);
         let len = lib[p + 1] as usize;
         assert_eq!(&lib[p + 2..p + 2 + len], name);
@@ -391,7 +584,14 @@ fn read_proto_reads_libdef_lua_functions() {
         assert_eq!(n, 25);
         assert_eq!(pt.chunkname.as_bytes(), name);
         assert_eq!((pt.numparams, pt.framesize), (1, 2));
-        assert_eq!(&*pt.bc, &[Ins::ad(Op::FUNCF, 2, 0), Ins::abc(Op::MULVN, 1, 0, 0), Ins::ad(Op::RET1, 1, 2)]);
+        assert_eq!(
+            &*pt.bc,
+            &[
+                Ins::ad(Op::FUNCF, 2, 0),
+                Ins::abc(Op::MULVN, 1, 0, 0),
+                Ins::ad(Op::RET1, 1, 2)
+            ]
+        );
         assert_eq!(&*pt.knum, &[k]);
         assert!(pt.lineinfo.is_empty());
         p += 2 + len + n;
@@ -402,5 +602,8 @@ fn read_proto_reads_libdef_lua_functions() {
         Ok(_) => panic!("truncated prototype loaded"),
         Err(e) => (e.kind, e.value.as_str().unwrap().to_string_lossy()),
     };
-    assert_eq!((kind, msg.as_str()), (ErrorKind::Syntax, "bad: cannot load malformed bytecode"));
+    assert_eq!(
+        (kind, msg.as_str()),
+        (ErrorKind::Syntax, "bad: cannot load malformed bytecode")
+    );
 }

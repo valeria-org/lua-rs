@@ -32,7 +32,9 @@ fn corpus() -> Vec<String> {
 }
 
 fn golden(name: &str, variant: &str, ext: &str) -> Vec<u8> {
-    let p = fixture_dir().join("golden").join(format!("{name}.{variant}.{ext}"));
+    let p = fixture_dir()
+        .join("golden")
+        .join(format!("{name}.{variant}.{ext}"));
     fs::read(&p).unwrap_or_else(|e| panic!("{}: {e}", p.display()))
 }
 
@@ -42,19 +44,26 @@ fn load(vm: &mut Vm, dump: &[u8]) -> Gc<Proto> {
 }
 
 fn hex(b: &[u8]) -> String {
-    b.iter().fold(String::with_capacity(b.len() * 2), |mut s, c| {
-        let _ = write!(s, "{c:02x}");
-        s
-    })
+    b.iter()
+        .fold(String::with_capacity(b.len() * 2), |mut s, c| {
+            let _ = write!(s, "{c:02x}");
+            s
+        })
 }
 
 fn unhex(h: &str) -> Vec<u8> {
-    (0..h.len()).step_by(2).map(|i| u8::from_str_radix(&h[i..i + 2], 16).expect("hex")).collect()
+    (0..h.len())
+        .step_by(2)
+        .map(|i| u8::from_str_radix(&h[i..i + 2], 16).expect("hex"))
+        .collect()
 }
 
 fn first_diff(want: &[u8], got: &[u8]) -> String {
     match want.iter().zip(got).position(|(a, b)| a != b) {
-        Some(i) => format!("first difference at byte {i} (want {:02x}, got {:02x})", want[i], got[i]),
+        Some(i) => format!(
+            "first difference at byte {i} (want {:02x}, got {:02x})",
+            want[i], got[i]
+        ),
         None => format!("length differs: want {}, got {}", want.len(), got.len()),
     }
 }
@@ -88,7 +97,11 @@ fn roundtrip_plain_dumps() {
             let pt = load(&mut vm, &n);
             // Sorting the template table hash parts reproduces the reference `-d` dump exactly.
             let out = bcdump::write_flags(&mut vm, pt, flags | BCDUMP_F_DETERMINISTIC);
-            assert_bytes(&d, &out, &format!("{name}.{plain} written deterministically"));
+            assert_bytes(
+                &d,
+                &out,
+                &format!("{name}.{plain} written deterministically"),
+            );
             let out = bcdump::write_flags(&mut vm, pt, flags);
             if n == d {
                 assert_bytes(&n, &out, &format!("{name}.{plain}"));
@@ -101,7 +114,11 @@ fn roundtrip_plain_dumps() {
                 assert_bytes(&d, &out2, &format!("{name}.{plain} re-read"));
             }
             let strip = flags & BCDUMP_F_STRIP != 0;
-            assert_bytes(&out, &bcdump::write(&mut vm, pt, strip), &format!("{name}.{plain} write()"));
+            assert_bytes(
+                &out,
+                &bcdump::write(&mut vm, pt, strip),
+                &format!("{name}.{plain} write()"),
+            );
         }
     }
 }
@@ -110,9 +127,11 @@ fn roundtrip_plain_dumps() {
 fn parsed_prototypes_dump_like_reference() {
     let mut vm = Vm::new();
     for name in corpus() {
-        let src = fs::read(fixture_dir().join("corpus").join(format!("{name}.lua"))).expect("source");
+        let src =
+            fs::read(fixture_dir().join("corpus").join(format!("{name}.lua"))).expect("source");
         let chunkname = format!("@{name}.lua");
-        let pt = parse::parse(&mut vm, &src, chunkname.as_bytes()).unwrap_or_else(|e| panic!("{name}: {e}"));
+        let pt = parse::parse(&mut vm, &src, chunkname.as_bytes())
+            .unwrap_or_else(|e| panic!("{name}: {e}"));
         for (_, det, flags) in VARIANTS {
             let d = golden(&name, det, "raw");
             let out = bcdump::write_flags(&mut vm, pt, flags | BCDUMP_F_DETERMINISTIC);
@@ -149,7 +168,11 @@ fn same_table(a: Gc<Table>, b: Gc<Table>, what: &str) {
 fn same_proto(a: &Proto, b: &Proto, debug: bool, what: &str) {
     assert_eq!(a.bc, b.bc, "{what}: bc");
     assert_eq!(a.uv, b.uv, "{what}: uv");
-    assert_eq!((a.numparams, a.framesize), (b.numparams, b.framesize), "{what}: sizes");
+    assert_eq!(
+        (a.numparams, a.framesize),
+        (b.numparams, b.framesize),
+        "{what}: sizes"
+    );
     assert_eq!(a.flags() & 0x87, b.flags(), "{what}: flags");
     let abits: Vec<u64> = a.knum.iter().map(|n| n.to_bits()).collect();
     let bbits: Vec<u64> = b.knum.iter().map(|n| n.to_bits()).collect();
@@ -170,14 +193,21 @@ fn same_proto(a: &Proto, b: &Proto, debug: bool, what: &str) {
     }
     if debug {
         assert_eq!(a.chunkname, b.chunkname, "{what}: chunkname");
-        assert_eq!((a.firstline, a.numline), (b.firstline, b.numline), "{what}: lines");
+        assert_eq!(
+            (a.firstline, a.numline),
+            (b.firstline, b.numline),
+            "{what}: lines"
+        );
         assert_eq!(a.lineinfo, b.lineinfo, "{what}: lineinfo");
         assert_eq!(a.uvnames, b.uvnames, "{what}: uvnames");
         assert_eq!(a.varinfo, b.varinfo, "{what}: varinfo");
     } else {
         assert_eq!(b.chunkname.as_bytes(), b"=?", "{what}: chunkname");
         assert_eq!((b.firstline, b.numline), (0, 0), "{what}: lines");
-        assert!(b.lineinfo.is_empty() && b.uvnames.is_empty() && b.varinfo.is_empty(), "{what}: debug info");
+        assert!(
+            b.lineinfo.is_empty() && b.uvnames.is_empty() && b.varinfo.is_empty(),
+            "{what}: debug info"
+        );
     }
 }
 
@@ -185,7 +215,8 @@ fn same_proto(a: &Proto, b: &Proto, debug: bool, what: &str) {
 fn parsed_prototypes_survive_round_trip() {
     let mut vm = Vm::new();
     for name in corpus() {
-        let src = fs::read(fixture_dir().join("corpus").join(format!("{name}.lua"))).expect("source");
+        let src =
+            fs::read(fixture_dir().join("corpus").join(format!("{name}.lua"))).expect("source");
         let pt = parse::parse(&mut vm, &src, format!("@{name}.lua").as_bytes()).expect("parse");
         for strip in [false, true] {
             let d = bcdump::write(&mut vm, pt, strip);
@@ -237,7 +268,11 @@ fn kgc_desc(k: KGc) -> String {
                 CTID_INT64 => format!("i64 {}ULL", w(0)),
                 CTID_UINT64 => format!("u64 {}ULL", w(0)),
                 CTID_COMPLEX_DOUBLE => {
-                    format!("complex {} {}", nbits(f64::from_bits(w(0))), nbits(f64::from_bits(w(8))))
+                    format!(
+                        "complex {} {}",
+                        nbits(f64::from_bits(w(0))),
+                        nbits(f64::from_bits(w(8)))
+                    )
                 }
                 id => panic!("unexpected cdata ctype {id}"),
             }
@@ -262,9 +297,15 @@ fn describe(out: &mut String, pt: Gc<Proto>, path: &str) {
     let bc: Vec<String> = pt.bc.iter().map(|i| format!("{:08x}", i.0)).collect();
     let _ = writeln!(out, "bc {}", bc.join(" "));
     if !pt.lineinfo.is_empty() {
-        assert_eq!(pt.lineinfo.len(), pt.bc.len(), "line info covers every instruction");
+        assert_eq!(
+            pt.lineinfo.len(),
+            pt.bc.len(),
+            "line info covers every instruction"
+        );
     }
-    let lines: Vec<String> = (0..pt.bc.len()).map(|pc| pt.line(pc).unwrap_or(0).to_string()).collect();
+    let lines: Vec<String> = (0..pt.bc.len())
+        .map(|pc| pt.line(pc).unwrap_or(0).to_string())
+        .collect();
     let _ = writeln!(out, "lines {}", lines.join(" "));
     for i in 0..pt.uv.len() {
         let name = pt.uvnames.get(i).map_or(&b""[..], |s| s.as_bytes());
@@ -320,7 +361,11 @@ fn load_results_match_reference() {
         let mut f = line.splitn(3, '\t');
         let (input, name, want) = (f.next().unwrap(), f.next().unwrap(), f.next().unwrap());
         let input = unhex(input);
-        let name = if name == "-" { input.clone() } else { unhex(name) };
+        let name = if name == "-" {
+            input.clone()
+        } else {
+            unhex(name)
+        };
         let got = match bcdump::read(&mut vm, &input, &name) {
             Ok(pt) => {
                 // lua_load wraps the prototype in a closure; func_newL bumps the saturating closure

@@ -202,7 +202,11 @@ fn fscale(x: f64, y: f64) -> f64 {
     }
     if y.is_infinite() {
         return if y > 0.0 {
-            if x == 0.0 { f64::NAN } else { x * f64::INFINITY }
+            if x == 0.0 {
+                f64::NAN
+            } else {
+                x * f64::INFINITY
+            }
         } else if x.is_infinite() {
             f64::NAN
         } else {
@@ -227,7 +231,13 @@ fn minmax(vm: &mut Vm, max: bool) -> LuaResult<usize> {
     let n = vm.nargs();
     for i in 2..=n {
         let y = vm.check_num(i)?;
-        x = if max { if x > y { x } else { y } } else if x < y { x } else { y };
+        x = if max {
+            if x > y { x } else { y }
+        } else if x < y {
+            x
+        } else {
+            y
+        };
     }
     vm.ret1(Value::Num(x))
 }
@@ -242,7 +252,9 @@ fn math_max(vm: &mut Vm) -> LuaResult<usize> {
 
 fn math_random(vm: &mut Vm) -> LuaResult<usize> {
     let n = vm.nargs();
-    let Value::Udata(ud) = vm.upvalue(1) else { unreachable!("math.random upvalue") };
+    let Value::Udata(ud) = vm.upvalue(1) else {
+        unreachable!("math.random upvalue")
+    };
     let mut rs = load_prng(ud.data_ptr());
     let mut d = rs.next_unit();
     store_prng(ud.data_ptr(), rs);
@@ -259,7 +271,9 @@ fn math_random(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn math_randomseed(vm: &mut Vm) -> LuaResult<usize> {
-    let Value::Udata(ud) = vm.upvalue(1) else { unreachable!("math.randomseed upvalue") };
+    let Value::Udata(ud) = vm.upvalue(1) else {
+        unreachable!("math.randomseed upvalue")
+    };
     let mut rs = load_prng(ud.data_ptr());
     if vm.nargs() > 0 {
         let d = vm.check_num(1)?;

@@ -31,7 +31,12 @@ impl PrngState {
     /// state of `math.random` at startup.
     pub const fn seed_fixed() -> Self {
         PrngState {
-            u: [0xa0d27757_0a345b8c, 0x764a296c_5d4aa64f, 0x51220704_070adeaa, 0x2a2717b5_a7b7b927],
+            u: [
+                0xa0d27757_0a345b8c,
+                0x764a296c_5d4aa64f,
+                0x51220704_070adeaa,
+                0x2a2717b5_a7b7b927,
+            ],
         }
     }
 
@@ -76,7 +81,8 @@ impl PrngState {
         let ok = got == size as libc::c_long || {
             // Fallback to /dev/urandom.
             // SAFETY: the path is a NUL-terminated C string literal.
-            let fd = unsafe { libc::open(c"/dev/urandom".as_ptr(), libc::O_RDONLY | libc::O_CLOEXEC) };
+            let fd =
+                unsafe { libc::open(c"/dev/urandom".as_ptr(), libc::O_RDONLY | libc::O_CLOEXEC) };
             if fd != -1 {
                 // SAFETY: `fd` is an open descriptor; `bytes` is valid for `size` bytes.
                 let n = unsafe { libc::read(fd, bytes.as_mut_ptr().cast(), size) };
@@ -152,11 +158,20 @@ mod tests {
         //            print(math.random(), math.random())'
         let mut rs = PrngState::default();
         rs.seed(42.0);
-        assert_eq!(crate::text::strfmt::fmt_num(rs.next_unit()), b"0.95607928791821");
+        assert_eq!(
+            crate::text::strfmt::fmt_num(rs.next_unit()),
+            b"0.95607928791821"
+        );
         assert_eq!(random_range(rs.next_unit(), 1.0, 100.0), 1.0);
         assert_eq!(random_upto(rs.next_unit(), 10.0), 6.0);
-        assert_eq!(crate::text::strfmt::fmt_num(rs.next_unit()), b"0.4341133171063");
-        assert_eq!(crate::text::strfmt::fmt_num(rs.next_unit()), b"0.71972511077591");
+        assert_eq!(
+            crate::text::strfmt::fmt_num(rs.next_unit()),
+            b"0.4341133171063"
+        );
+        assert_eq!(
+            crate::text::strfmt::fmt_num(rs.next_unit()),
+            b"0.71972511077591"
+        );
     }
 
     #[test]

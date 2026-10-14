@@ -2,8 +2,9 @@
 # Regenerate the expectations of tests/conform.rs with the reference LuaJIT (JIT disabled
 # build). Usage: tests/fixtures/conform/gen.sh [path/to/luajit]
 set -e
-LJ=${1:-$HOME/projects/luajit-ref/luajit/src/luajit}
+LJ=${1:-${LUAJIT_REF:?Pass a reference LuaJIT binary or set LUAJIT_REF}}
 LJDIR=$(cd "$(dirname "$LJ")" && pwd)
+LJ="$LJDIR/$(basename "$LJ")"
 cd "$(dirname "$0")"
 FIX=$(pwd)
 grep -v '^#' cases.txt | while IFS='|' read -r name env args; do

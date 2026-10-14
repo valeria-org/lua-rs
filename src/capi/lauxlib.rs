@@ -51,14 +51,22 @@ fn argt(vm: &mut Vm, th: Gc<Thread>, narg: c_int, tt: c_int) -> LuaError {
 
 /// `luaL_argerror`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_argerror(L: *mut lua_State, narg: c_int, msg: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn luaL_argerror(
+    L: *mut lua_State,
+    narg: c_int,
+    msg: *const c_char,
+) -> c_int {
     // SAFETY: `L` is a live state; `msg` is a C string.
     unsafe { api(L, |vm, _| Err(vm.arg_error(narg, cstr(msg)))) }
 }
 
 /// `luaL_typerror`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_typerror(L: *mut lua_State, narg: c_int, xname: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn luaL_typerror(
+    L: *mut lua_State,
+    narg: c_int,
+    xname: *const c_char,
+) -> c_int {
     // SAFETY: `L` is a live state; `xname` is a C string.
     unsafe { api(L, |vm, th| Err(argtype(vm, th, narg, cstr(xname)))) }
 }
@@ -120,7 +128,11 @@ pub unsafe extern "C-unwind" fn luaL_checknumber(L: *mut lua_State, idx: c_int) 
 
 /// `luaL_optnumber`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_optnumber(L: *mut lua_State, idx: c_int, def: lua_Number) -> lua_Number {
+pub unsafe extern "C-unwind" fn luaL_optnumber(
+    L: *mut lua_State,
+    idx: c_int,
+    def: lua_Number,
+) -> lua_Number {
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, th| match idx_val(vm, th, idx) {
@@ -149,7 +161,11 @@ pub unsafe extern "C-unwind" fn luaL_checkinteger(L: *mut lua_State, idx: c_int)
 
 /// `luaL_optinteger`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_optinteger(L: *mut lua_State, idx: c_int, def: lua_Integer) -> lua_Integer {
+pub unsafe extern "C-unwind" fn luaL_optinteger(
+    L: *mut lua_State,
+    idx: c_int,
+    def: lua_Integer,
+) -> lua_Integer {
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, th| match idx_val(vm, th, idx) {
@@ -165,7 +181,11 @@ pub unsafe extern "C-unwind" fn luaL_optinteger(L: *mut lua_State, idx: c_int, d
 
 /// `luaL_checklstring`: numbers are converted in place.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_checklstring(L: *mut lua_State, idx: c_int, len: *mut usize) -> *const c_char {
+pub unsafe extern "C-unwind" fn luaL_checklstring(
+    L: *mut lua_State,
+    idx: c_int,
+    len: *mut usize,
+) -> *const c_char {
     // SAFETY: `L` is a live state; `len` is NULL or valid.
     unsafe {
         api(L, |vm, th| {
@@ -184,7 +204,12 @@ pub unsafe extern "C-unwind" fn luaL_checklstring(L: *mut lua_State, idx: c_int,
 
 /// `luaL_optlstring`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_optlstring(L: *mut lua_State, idx: c_int, def: *const c_char, len: *mut usize) -> *const c_char {
+pub unsafe extern "C-unwind" fn luaL_optlstring(
+    L: *mut lua_State,
+    idx: c_int,
+    def: *const c_char,
+    len: *mut usize,
+) -> *const c_char {
     // SAFETY: `L` is a live state; `def` is NULL or a C string; `len` is NULL or valid.
     unsafe {
         api(L, |vm, th| {
@@ -241,7 +266,11 @@ pub unsafe extern "C-unwind" fn luaL_checkoption(
 
 /// `luaL_checkstack`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_checkstack(L: *mut lua_State, size: c_int, msg: *const c_char) {
+pub unsafe extern "C-unwind" fn luaL_checkstack(
+    L: *mut lua_State,
+    size: c_int,
+    msg: *const c_char,
+) {
     // SAFETY: `L` is a live state; `msg` is a C string.
     unsafe {
         if lua_checkstack(L, size) == 0 {
@@ -254,7 +283,10 @@ pub unsafe extern "C-unwind" fn luaL_checkstack(L: *mut lua_State, size: c_int, 
 
 /// `luaL_newmetatable`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_newmetatable(L: *mut lua_State, tname: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn luaL_newmetatable(
+    L: *mut lua_State,
+    tname: *const c_char,
+) -> c_int {
     // SAFETY: `L` is a live state; `tname` is a C string.
     unsafe {
         api(L, |vm, _| {
@@ -263,7 +295,8 @@ pub unsafe extern "C-unwind" fn luaL_newmetatable(L: *mut lua_State, tname: *con
             match reg.get_str(k) {
                 Value::Nil => {
                     let mt = vm.new_table(0, 1)?;
-                    reg.set_str(k, Value::Table(mt)).map_err(|e| vm.tab_error(e))?;
+                    reg.set_str(k, Value::Table(mt))
+                        .map_err(|e| vm.tab_error(e))?;
                     vm.push(Value::Table(mt));
                     Ok(1)
                 }
@@ -288,7 +321,11 @@ pub unsafe extern "C-unwind" fn luaL_setmetatable(L: *mut lua_State, tname: *con
 
 /// `luaL_testudata`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_testudata(L: *mut lua_State, idx: c_int, tname: *const c_char) -> *mut c_void {
+pub unsafe extern "C-unwind" fn luaL_testudata(
+    L: *mut lua_State,
+    idx: c_int,
+    tname: *const c_char,
+) -> *mut c_void {
     // SAFETY: `L` is a live state; `tname` is a C string.
     unsafe {
         api(L, |vm, th| {
@@ -307,7 +344,11 @@ pub unsafe extern "C-unwind" fn luaL_testudata(L: *mut lua_State, idx: c_int, tn
 
 /// `luaL_checkudata`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_checkudata(L: *mut lua_State, idx: c_int, tname: *const c_char) -> *mut c_void {
+pub unsafe extern "C-unwind" fn luaL_checkudata(
+    L: *mut lua_State,
+    idx: c_int,
+    tname: *const c_char,
+) -> *mut c_void {
     // SAFETY: forwarded contract.
     unsafe {
         let p = luaL_testudata(L, idx, tname);
@@ -320,7 +361,11 @@ pub unsafe extern "C-unwind" fn luaL_checkudata(L: *mut lua_State, idx: c_int, t
 
 /// `luaL_getmetafield`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_getmetafield(L: *mut lua_State, idx: c_int, field: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn luaL_getmetafield(
+    L: *mut lua_State,
+    idx: c_int,
+    field: *const c_char,
+) -> c_int {
     // SAFETY: `L` is a live state; `field` is a C string.
     unsafe {
         api(L, |vm, th| {
@@ -340,7 +385,11 @@ pub unsafe extern "C-unwind" fn luaL_getmetafield(L: *mut lua_State, idx: c_int,
 
 /// `luaL_callmeta`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_callmeta(L: *mut lua_State, idx: c_int, field: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn luaL_callmeta(
+    L: *mut lua_State,
+    idx: c_int,
+    field: *const c_char,
+) -> c_int {
     // SAFETY: `L` is a live state; `field` is a C string.
     unsafe {
         api(L, |vm, th| {
@@ -364,7 +413,12 @@ pub unsafe extern "C-unwind" fn luaL_callmeta(L: *mut lua_State, idx: c_int, fie
 
 /// `luaL_findtable`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_findtable(L: *mut lua_State, idx: c_int, fname: *const c_char, szhint: c_int) -> *const c_char {
+pub unsafe extern "C-unwind" fn luaL_findtable(
+    L: *mut lua_State,
+    idx: c_int,
+    fname: *const c_char,
+    szhint: c_int,
+) -> *const c_char {
     // SAFETY: `L` is a live state; `fname` is a C string.
     unsafe {
         let mut fname = fname;
@@ -410,7 +464,11 @@ unsafe fn libsize(l: *const luaL_Reg) -> c_int {
 
 /// `luaL_pushmodule`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_pushmodule(L: *mut lua_State, modname: *const c_char, sizehint: c_int) {
+pub unsafe extern "C-unwind" fn luaL_pushmodule(
+    L: *mut lua_State,
+    modname: *const c_char,
+    sizehint: c_int,
+) {
     // SAFETY: `L` is a live state; `modname` is a C string.
     unsafe {
         luaL_findtable(L, LUA_REGISTRYINDEX, c"_LOADED".as_ptr(), 16);
@@ -432,7 +490,12 @@ pub unsafe extern "C-unwind" fn luaL_pushmodule(L: *mut lua_State, modname: *con
 
 /// `luaL_openlib`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_openlib(L: *mut lua_State, libname: *const c_char, l: *const luaL_Reg, nup: c_int) {
+pub unsafe extern "C-unwind" fn luaL_openlib(
+    L: *mut lua_State,
+    libname: *const c_char,
+    l: *const luaL_Reg,
+    nup: c_int,
+) {
     // SAFETY: `L` is a live state; `libname` is NULL or a C string; `l` is NULL or a
     // NULL-terminated array.
     unsafe {
@@ -450,7 +513,11 @@ pub unsafe extern "C-unwind" fn luaL_openlib(L: *mut lua_State, libname: *const 
 
 /// `luaL_register`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_register(L: *mut lua_State, libname: *const c_char, l: *const luaL_Reg) {
+pub unsafe extern "C-unwind" fn luaL_register(
+    L: *mut lua_State,
+    libname: *const c_char,
+    l: *const luaL_Reg,
+) {
     // SAFETY: forwarded contract.
     unsafe { luaL_openlib(L, libname, l, 0) }
 }
@@ -482,7 +549,12 @@ pub unsafe extern "C-unwind" fn luaL_setfuncs(L: *mut lua_State, l: *const luaL_
 
 /// `luaL_gsub`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_gsub(L: *mut lua_State, s: *const c_char, p: *const c_char, r: *const c_char) -> *const c_char {
+pub unsafe extern "C-unwind" fn luaL_gsub(
+    L: *mut lua_State,
+    s: *const c_char,
+    p: *const c_char,
+    r: *const c_char,
+) -> *const c_char {
     // SAFETY: `L` is a live state; the strings are C strings.
     unsafe {
         let (s, p, r) = (cstr(s), cstr(p), cstr(r));
@@ -642,7 +714,11 @@ pub unsafe extern "C-unwind" fn luaL_addvalue(b: *mut luaL_Buffer) {
 /// Absolute form of an index (`abs_index` of lib_aux.c).
 unsafe fn abs_index(L: *mut lua_State, i: c_int) -> c_int {
     // SAFETY: `L` is a live state.
-    if i > 0 || i <= LUA_REGISTRYINDEX { i } else { (unsafe { lua_gettop(L) }) + i + 1 }
+    if i > 0 || i <= LUA_REGISTRYINDEX {
+        i
+    } else {
+        (unsafe { lua_gettop(L) }) + i + 1
+    }
 }
 
 /// `luaL_ref`.
@@ -689,7 +765,11 @@ pub unsafe extern "C-unwind" fn luaL_unref(L: *mut lua_State, t: c_int, r: c_int
 
 /// `luaL_loadfilex`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_loadfilex(L: *mut lua_State, filename: *const c_char, mode: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn luaL_loadfilex(
+    L: *mut lua_State,
+    filename: *const c_char,
+    mode: *const c_char,
+) -> c_int {
     // SAFETY: `L` is a live state; the strings are NULL or C strings.
     unsafe {
         let name = (!filename.is_null()).then(|| cstr(filename));
@@ -720,7 +800,11 @@ pub unsafe extern "C-unwind" fn luaL_loadbufferx(
     // SAFETY: `L` is a live state; `buf` points to `size` bytes; the strings are NULL or C
     // strings.
     unsafe {
-        let src: &[u8] = if size == 0 { &[] } else { std::slice::from_raw_parts(buf.cast(), size) };
+        let src: &[u8] = if size == 0 {
+            &[]
+        } else {
+            std::slice::from_raw_parts(buf.cast(), size)
+        };
         let name: &[u8] = if name.is_null() { b"?" } else { cstr(name) };
         let mode = (!mode.is_null()).then(|| cstr(mode));
         api(L, |vm, _| {
@@ -732,7 +816,12 @@ pub unsafe extern "C-unwind" fn luaL_loadbufferx(
 
 /// `luaL_loadbuffer`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_loadbuffer(L: *mut lua_State, buf: *const c_char, size: usize, name: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn luaL_loadbuffer(
+    L: *mut lua_State,
+    buf: *const c_char,
+    size: usize,
+    name: *const c_char,
+) -> c_int {
     // SAFETY: forwarded contract.
     unsafe { luaL_loadbufferx(L, buf, size, name, std::ptr::null()) }
 }
@@ -794,7 +883,11 @@ fn strerror(en: c_int) -> Vec<u8> {
 
 /// `luaL_fileresult`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_fileresult(L: *mut lua_State, stat: c_int, fname: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn luaL_fileresult(
+    L: *mut lua_State,
+    stat: c_int,
+    fname: *const c_char,
+) -> c_int {
     let en = std::io::Error::last_os_error().raw_os_error().unwrap_or(0);
     // SAFETY: `L` is a live state; `fname` is NULL or a C string.
     unsafe {
@@ -836,7 +929,11 @@ pub unsafe extern "C-unwind" fn luaL_execresult(L: *mut lua_State, stat: c_int) 
                 if libc::WIFEXITED(stat) {
                     stat = libc::WEXITSTATUS(stat);
                 }
-                vm.push(if stat == 0 { Value::Bool(true) } else { Value::Nil });
+                vm.push(if stat == 0 {
+                    Value::Bool(true)
+                } else {
+                    Value::Nil
+                });
                 vm.push_str(b"exit");
             }
             vm.push(Value::Num(stat as f64));
@@ -849,7 +946,12 @@ pub unsafe extern "C-unwind" fn luaL_execresult(L: *mut lua_State, stat: c_int) 
 
 /// `luaL_traceback`: push a traceback of `L1` (starting at `level`) onto `L`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn luaL_traceback(L: *mut lua_State, L1: *mut lua_State, msg: *const c_char, level: c_int) {
+pub unsafe extern "C-unwind" fn luaL_traceback(
+    L: *mut lua_State,
+    L1: *mut lua_State,
+    msg: *const c_char,
+    level: c_int,
+) {
     // SAFETY: both are live states of the same VM; `msg` is NULL or a C string.
     unsafe {
         let (_, th1) = ctx(L1);

@@ -134,7 +134,11 @@ fn strscan_double(mut x: u64, ex2: i32, neg: bool) -> f64 {
 
 #[inline]
 fn neg_i32(x: u64, neg: bool) -> i32 {
-    if neg { (!x).wrapping_add(1) as i32 } else { x as i32 }
+    if neg {
+        (!x).wrapping_add(1) as i32
+    } else {
+        x as i32
+    }
 }
 
 #[inline]
@@ -240,7 +244,11 @@ fn strscan_oct(s: &[u8], mut p: usize, o: &mut Val, mut fmt: Fmt, neg: bool, mut
                 return Fmt::Error;
             }
             let u = x as u32;
-            *o = Val::I(if neg { (!u).wrapping_add(1) as i32 } else { u as i32 });
+            *o = Val::I(if neg {
+                (!u).wrapping_add(1) as i32
+            } else {
+                u as i32
+            });
         }
         _ => *o = Val::U64(neg_u64(x, neg)),
     }
@@ -388,7 +396,11 @@ fn strscan_dec(
 
     // Handle simple overflow/underflow.
     if idig > 310 / 2 {
-        *o = Val::N(if neg { f64::NEG_INFINITY } else { f64::INFINITY });
+        *o = Val::N(if neg {
+            f64::NEG_INFINITY
+        } else {
+            f64::INFINITY
+        });
         return fmt;
     } else if idig < -326 / 2 {
         *o = Val::N(if neg { -0.0 } else { 0.0 });
@@ -591,8 +603,13 @@ fn scan_raw(s: &[u8], o: &mut Val, opt: u32) -> Fmt {
             // Parse "inf", "infinity" or "nan".
             // setnanV: the canonical (x86 default) NaN, sign bit set.
             let mut tmp = f64::from_bits(0xfff8_0000_0000_0000);
-            if casecmp(at(s, p), b'i') && casecmp(at(s, p + 1), b'n') && casecmp(at(s, p + 2), b'f') {
-                tmp = if neg { f64::NEG_INFINITY } else { f64::INFINITY };
+            if casecmp(at(s, p), b'i') && casecmp(at(s, p + 1), b'n') && casecmp(at(s, p + 2), b'f')
+            {
+                tmp = if neg {
+                    f64::NEG_INFINITY
+                } else {
+                    f64::INFINITY
+                };
                 p += 3;
                 if casecmp(at(s, p), b'i')
                     && casecmp(at(s, p + 1), b'n')
@@ -602,7 +619,10 @@ fn scan_raw(s: &[u8], o: &mut Val, opt: u32) -> Fmt {
                 {
                     p += 5;
                 }
-            } else if casecmp(at(s, p), b'n') && casecmp(at(s, p + 1), b'a') && casecmp(at(s, p + 2), b'n') {
+            } else if casecmp(at(s, p), b'n')
+                && casecmp(at(s, p + 1), b'a')
+                && casecmp(at(s, p + 2), b'n')
+            {
                 p += 3;
             }
             while isspace(at(s, p)) {
@@ -619,7 +639,11 @@ fn scan_raw(s: &[u8], o: &mut Val, opt: u32) -> Fmt {
     // Parse regular number.
     let mut fmt = Fmt::Int;
     let mut cmask = chars::DIGIT;
-    let mut base: u32 = if opt & OPT_C != 0 && at(s, p) == b'0' { 0 } else { 10 };
+    let mut base: u32 = if opt & OPT_C != 0 && at(s, p) == b'0' {
+        0
+    } else {
+        10
+    };
     let mut dp: Option<usize> = None;
     let mut dig: u32 = 0;
     let mut hasdig = false;
@@ -725,7 +749,11 @@ fn scan_raw(s: &[u8], o: &mut Val, opt: u32) -> Fmt {
             }
             p += 1;
         }
-        ex += if negx { (!xx).wrapping_add(1) as i32 } else { xx as i32 };
+        ex += if negx {
+            (!xx).wrapping_add(1) as i32
+        } else {
+            xx as i32
+        };
     }
 
     // Parse suffix.
@@ -777,7 +805,8 @@ fn scan_raw(s: &[u8], o: &mut Val, opt: u32) -> Fmt {
     // Fast path for decimal 32 bit integers.
     if fmt == Fmt::Int
         && base == 10
-        && (dig < 10 || (dig == 10 && at(s, sp) <= b'2' && (x as u64) < 0x8000_0000u64 + neg as u64))
+        && (dig < 10
+            || (dig == 10 && at(s, sp) <= b'2' && (x as u64) < 0x8000_0000u64 + neg as u64))
     {
         if opt & OPT_TONUM != 0 {
             *o = Val::N(if neg { -(x as f64) } else { x as f64 });
@@ -856,7 +885,8 @@ pub fn parse_int_base(s: &[u8], base: u32) -> Option<f64> {
     };
     // strtoul: the prefix is only consumed if a valid digit follows it.
     if at(s, p) == b'0'
-        && ((base == 16 && casecmp(at(s, p + 1), b'x')) || (base == 2 && casecmp(at(s, p + 1), b'b')))
+        && ((base == 16 && casecmp(at(s, p + 1), b'x'))
+            || (base == 2 && casecmp(at(s, p + 1), b'b')))
         && digit(at(s, p + 2)).is_some()
     {
         p += 2;
@@ -865,7 +895,10 @@ pub fn parse_int_base(s: &[u8], base: u32) -> Option<f64> {
     let mut ul: u64 = 0;
     let mut overflow = false;
     while let Some(d) = digit(at(s, p)) {
-        match ul.checked_mul(base as u64).and_then(|v| v.checked_add(d as u64)) {
+        match ul
+            .checked_mul(base as u64)
+            .and_then(|v| v.checked_add(d as u64))
+        {
             Some(v) => ul = v,
             None => overflow = true,
         }
@@ -935,7 +968,10 @@ mod tests {
             (b"2.4703282292062327e-324", Some("0x0p+0")),
             (b"1.7976931348623157e308", Some("0x1.fffffffffffffp+1023")),
             (b"1.7976931348623159e308", Some("inf")),
-            (b"123456789012345678901234567890", Some("0x1.8ee90ff6c373ep+96")),
+            (
+                b"123456789012345678901234567890",
+                Some("0x1.8ee90ff6c373ep+96"),
+            ),
             (b"-0", Some("-0x0p+0")),
             (b"0x7fffffffffffffff", Some("0x1p+63")),
             (b"0xffffffffffffffffff", Some("0x1p+72")),
@@ -958,7 +994,12 @@ mod tests {
                 None => assert_eq!(got, None, "{:?}", String::from_utf8_lossy(s)),
                 Some("inf") => assert_eq!(got, Some(f64::INFINITY)),
                 Some("-inf") => assert_eq!(got, Some(f64::NEG_INFINITY)),
-                Some(h) => assert_eq!(got.map(f64::to_bits), Some(hexf(h).to_bits()), "{:?}", String::from_utf8_lossy(s)),
+                Some(h) => assert_eq!(
+                    got.map(f64::to_bits),
+                    Some(hexf(h).to_bits()),
+                    "{:?}",
+                    String::from_utf8_lossy(s)
+                ),
             }
         }
         assert!(scan_num(b" nan ").unwrap().is_nan());
@@ -971,7 +1012,10 @@ mod tests {
         // luajit -e 'print(12LL, 0x10ULL, 1e2i, 18446744073709551615ULL, 12lu)'
         assert_eq!(scan(b"12LL", lex), StrScan::I64(12));
         assert_eq!(scan(b"0x10ULL", lex), StrScan::U64(16));
-        assert_eq!(scan(b"18446744073709551615ULL", lex), StrScan::U64(u64::MAX));
+        assert_eq!(
+            scan(b"18446744073709551615ULL", lex),
+            StrScan::U64(u64::MAX)
+        );
         assert_eq!(scan(b"1e2i", lex), StrScan::Imag(100.0));
         assert_eq!(scan(b"0x8000000000000000LL", lex), StrScan::I64(i64::MIN));
         assert_eq!(scan(b"12lu", lex), StrScan::Error); // `malformed number near '12lu'`
@@ -1010,9 +1054,15 @@ mod tests {
         assert_eq!(parse_int_base(b"777", 8), Some(511.0));
         assert_eq!(parse_int_base(b"1 1", 2), None);
         assert_eq!(parse_int_base(b"", 16), None);
-        assert_eq!(parse_int_base(b"ffffffffffffffffffffff", 16), Some(18446744073709551615.0));
+        assert_eq!(
+            parse_int_base(b"ffffffffffffffffffffff", 16),
+            Some(18446744073709551615.0)
+        );
         assert_eq!(parse_int_base(b"0x10", 16), Some(16.0));
         assert_eq!(parse_int_base(b"10\0ab", 16), Some(16.0));
-        assert_eq!(parse_int_base(b"-0", 16).map(f64::to_bits), Some((-0.0f64).to_bits()));
+        assert_eq!(
+            parse_int_base(b"-0", 16).map(f64::to_bits),
+            Some((-0.0f64).to_bits())
+        );
     }
 }

@@ -216,7 +216,12 @@ impl Vm {
     }
 
     /// Userdata with a Rust payload.
-    pub fn new_udata_ext(&mut self, ext: Box<dyn UdExt>, udtype: u8, env: Gc<Table>) -> Gc<Userdata> {
+    pub fn new_udata_ext(
+        &mut self,
+        ext: Box<dyn UdExt>,
+        udtype: u8,
+        env: Gc<Table>,
+    ) -> Gc<Userdata> {
         self.heap.alloc(Userdata::new_ext(ext, udtype, env))
     }
 
@@ -224,11 +229,22 @@ impl Vm {
         self.heap.alloc(p)
     }
 
-    pub fn new_lua_function(&mut self, proto: Gc<Proto>, upvals: Vec<Gc<UpVal>>, env: Gc<Table>) -> Gc<Function> {
+    pub fn new_lua_function(
+        &mut self,
+        proto: Gc<Proto>,
+        upvals: Vec<Gc<UpVal>>,
+        env: Gc<Table>,
+    ) -> Gc<Function> {
         self.heap.alloc(Function::new_lua(proto, upvals, env))
     }
 
-    pub fn new_native(&mut self, f: NativeImpl, ffid: u8, upvals: Vec<Value>, env: Gc<Table>) -> Gc<Function> {
+    pub fn new_native(
+        &mut self,
+        f: NativeImpl,
+        ffid: u8,
+        upvals: Vec<Value>,
+        env: Gc<Table>,
+    ) -> Gc<Function> {
         self.heap.alloc(Function::new_native(f, ffid, upvals, env))
     }
 
@@ -334,7 +350,11 @@ impl Vm {
     /// `lua_gc(L, LUA_GCSTEP, kb)`: returns true if a cycle finished.
     pub fn gc_step(&mut self, kb: i32) -> bool {
         // Negative sizes wrap to a huge byte count upstream, i.e. threshold 0.
-        let a = if kb < 0 { usize::MAX } else { (kb as usize) << 10 };
+        let a = if kb < 0 {
+            usize::MAX
+        } else {
+            (kb as usize) << 10
+        };
         let total = self.heap.total();
         self.gc.threshold = total.saturating_sub(a);
         while self.heap.total() >= self.gc.threshold {
@@ -352,7 +372,11 @@ impl Vm {
     /// `LUA_GCRESTART` (`data == -1`: restart with the pause-derived threshold).
     pub fn gc_restart(&mut self, data: i32) {
         let total = self.heap.total();
-        self.gc.threshold = if data == -1 { (total / 100) * self.gc.pause as usize } else { total };
+        self.gc.threshold = if data == -1 {
+            (total / 100) * self.gc.pause as usize
+        } else {
+            total
+        };
     }
     /// `LUA_GCISRUNNING`.
     pub fn gc_is_running(&self) -> bool {
@@ -627,7 +651,9 @@ mod tests {
 
     #[test]
     fn weak_tables() {
-        for (mode, key_cleared, val_cleared) in [("k", true, false), ("v", false, true), ("kv", true, true)] {
+        for (mode, key_cleared, val_cleared) in
+            [("k", true, false), ("v", false, true), ("kv", true, true)]
+        {
             let mut vm = Vm::new();
             let wt = vm.empty_table();
             let mt = vm.empty_table();
@@ -658,11 +684,19 @@ mod tests {
             wt.set(Value::Table(rooted), Value::Table(rooted)).unwrap();
 
             vm.gc_full();
-            assert_eq!(wt.get(Value::Table(gk)).is_nil(), key_cleared, "mode {mode}");
+            assert_eq!(
+                wt.get(Value::Table(gk)).is_nil(),
+                key_cleared,
+                "mode {mode}"
+            );
             assert_eq!(wt.get(vk).is_nil(), val_cleared, "mode {mode}");
             assert_eq!(wt.get_int(1).is_nil(), val_cleared, "mode {mode}");
             assert_eq!(wt.get(sk), sv, "mode {mode}");
-            assert_eq!(wt.get(Value::Table(rooted)), Value::Table(rooted), "mode {mode}");
+            assert_eq!(
+                wt.get(Value::Table(rooted)),
+                Value::Table(rooted),
+                "mode {mode}"
+            );
             // The string value survived the sweep.
             assert_eq!(vm.strtab.find(b"string value"), sv.as_str());
             // Non-weak parts kept their objects alive.
@@ -681,7 +715,12 @@ mod tests {
         let mut vm = Vm::new();
         let mt = vm.empty_table();
         let gcname = Value::Str(vm.mm_name(MM::Gc));
-        let fin = vm.new_native(NativeImpl::Rust(|_| Ok(0)), crate::func::FF_C, vec![], vm.globals);
+        let fin = vm.new_native(
+            NativeImpl::Rust(|_| Ok(0)),
+            crate::func::FF_C,
+            vec![],
+            vm.globals,
+        );
         mt.set(gcname, Value::Func(fin)).unwrap();
         let k = s(&mut vm, "mt");
         vm.registry.set(k, Value::Table(mt)).unwrap();
@@ -709,7 +748,10 @@ mod tests {
         assert_eq!(vm.pending_finalizers.len(), 1);
         assert_eq!(vm.pending_finalizers[0], Value::Udata(u));
         assert!(wt.get_int(1).is_nil());
-        assert!(vm.heap.objects().all(|o| o.downcast::<Userdata>().is_none_or(|x| x.addr() != plain_addr)));
+        assert!(vm.heap.objects().all(|o| {
+            o.downcast::<Userdata>()
+                .is_none_or(|x| x.addr() != plain_addr)
+        }));
         // Still queued: survives further cycles without being queued twice.
         vm.gc_full();
         assert_eq!(vm.pending_finalizers.len(), 1);
@@ -733,7 +775,12 @@ mod tests {
         fmt.set(mode_key, kmode).unwrap();
         fint.set_metatable(Some(fmt));
         vm.ffi_fin = Some(fint);
-        let fin = vm.new_native(NativeImpl::Rust(|_| Ok(0)), crate::func::FF_C, vec![], vm.globals);
+        let fin = vm.new_native(
+            NativeImpl::Rust(|_| Ok(0)),
+            crate::func::FF_C,
+            vec![],
+            vm.globals,
+        );
         let cd = vm.new_cdata(crate::cdata::CTID_INT64, 8, 8);
         cd.set_has_finalizer(true);
         fint.set(Value::CData(cd), Value::Func(fin)).unwrap();
@@ -741,7 +788,11 @@ mod tests {
         let other_addr = other.addr();
         vm.gc_full();
         assert_eq!(vm.pending_finalizers.len(), 1);
-        assert!(vm.heap.objects().all(|o| o.downcast::<CData>().is_none_or(|x| x.addr() != other_addr)));
+        assert!(
+            vm.heap
+                .objects()
+                .all(|o| o.downcast::<CData>().is_none_or(|x| x.addr() != other_addr))
+        );
         let (f, o) = vm.take_finalizer().unwrap();
         assert_eq!((f, o), (Value::Func(fin), Value::CData(cd)));
         assert!(fint.get(Value::CData(cd)).is_nil());
@@ -824,8 +875,14 @@ mod tests {
         assert_eq!(u1.get(), Value::Num(7.0));
         assert!(th.grow_stack(100).is_ok());
         assert!(th.max_stack() >= 100);
-        assert_eq!(th.grow_stack(70000), Err(crate::thread::StackOverflow::Overflow));
-        assert_eq!(th.grow_stack(70000), Err(crate::thread::StackOverflow::InErrorHandler));
+        assert_eq!(
+            th.grow_stack(70000),
+            Err(crate::thread::StackOverflow::Overflow)
+        );
+        assert_eq!(
+            th.grow_stack(70000),
+            Err(crate::thread::StackOverflow::InErrorHandler)
+        );
         th.set_top(0);
         th.relimit_stack();
         assert_eq!(th.max_stack(), crate::thread::LJ_STACK_MAX);

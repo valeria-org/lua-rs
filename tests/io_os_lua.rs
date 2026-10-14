@@ -5,7 +5,7 @@
 //! file names are stable), with `TZ=UTC`, `LJRS_TEST_VAR=hello` and stdin from
 //! `<name>.stdin` (or empty). The expectation `<name>.expected` holds stdout, then
 //! `--- stderr` plus stderr if non-empty, then `--- exit <status>`; it was generated the same
-//! way with `~/projects/luajit-ref/luajit/src/luajit`.
+//! way with the upstream reference binary.
 
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
@@ -49,7 +49,10 @@ fn fixture(name: &str) {
     if got != expected {
         for (i, (g, e)) in got.lines().zip(expected.lines()).enumerate() {
             if g != e {
-                panic!("{name}: first difference at line {}:\n  got:      {g:?}\n  expected: {e:?}\n\nfull output:\n{got}", i + 1);
+                panic!(
+                    "{name}: first difference at line {}:\n  got:      {g:?}\n  expected: {e:?}\n\nfull output:\n{got}",
+                    i + 1
+                );
             }
         }
         panic!("{name}: output length differs:\n{got}");

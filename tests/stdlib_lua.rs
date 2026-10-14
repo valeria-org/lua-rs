@@ -70,7 +70,9 @@ fn preload_require(vm: &mut Vm) -> LuaResult<usize> {
 
 fn handler(vm: &mut Vm) -> LuaResult<usize> {
     let v = vm.arg(1);
-    let m = vm.tostring_opt(v).unwrap_or_else(|| b"(error object is not a string)".to_vec());
+    let m = vm
+        .tostring_opt(v)
+        .unwrap_or_else(|| b"(error object is not a string)".to_vec());
     let th = vm.cur_thread;
     let tb = vm.traceback(th, Some(&m), 1);
     vm.push_str(&tb);
@@ -78,7 +80,9 @@ fn handler(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn pmain(vm: &mut Vm) -> LuaResult<usize> {
-    let (Value::Str(src), Value::Str(name)) = (vm.upvalue(1), vm.upvalue(2)) else { unreachable!() };
+    let (Value::Str(src), Value::Str(name)) = (vm.upvalue(1), vm.upvalue(2)) else {
+        unreachable!()
+    };
     let h = vm.native(handler, luajit::func::FF_C, vec![]);
     vm.push(Value::Func(h));
     let hslot = vm.cur_thread.top() - 1;
@@ -107,7 +111,11 @@ fn run_lua(src: Vec<u8>, chunkname: Vec<u8>) -> String {
             }
             let sk = vm.new_str(&src);
             let ck = vm.new_str(&chunkname);
-            let pm = vm.native(pmain, luajit::func::FF_C, vec![Value::Str(sk), Value::Str(ck)]);
+            let pm = vm.native(
+                pmain,
+                luajit::func::FF_C,
+                vec![Value::Str(sk), Value::Str(ck)],
+            );
             vm.push(Value::Func(pm));
             if let Err(e) = vm.pcall(0, 0, None) {
                 let m = vm.tostring_opt(e.value).unwrap_or_default();
@@ -126,13 +134,20 @@ fn run_lua(src: Vec<u8>, chunkname: Vec<u8>) -> String {
 fn fixture(name: &str) {
     let dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/stdlib");
     let src = std::fs::read(dir.join(format!("{name}.lua"))).unwrap();
-    let expected = String::from_utf8_lossy(&std::fs::read(dir.join(format!("{name}.expected"))).unwrap()).into_owned();
+    let expected =
+        String::from_utf8_lossy(&std::fs::read(dir.join(format!("{name}.expected"))).unwrap())
+            .into_owned();
     let got = run_lua(src, format!("@{name}.lua").into_bytes());
     if got != expected {
         let (g, e): (Vec<_>, Vec<_>) = (got.lines().collect(), expected.lines().collect());
         for i in 0..g.len().max(e.len()) {
             if g.get(i) != e.get(i) {
-                panic!("{name}: first difference at line {}:\n  got:      {:?}\n  expected: {:?}", i + 1, g.get(i), e.get(i));
+                panic!(
+                    "{name}: first difference at line {}:\n  got:      {:?}\n  expected: {:?}",
+                    i + 1,
+                    g.get(i),
+                    e.get(i)
+                );
             }
         }
         panic!("{name}: outputs differ");

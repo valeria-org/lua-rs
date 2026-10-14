@@ -112,7 +112,15 @@ pub struct Frame {
 
 impl Frame {
     pub fn new(kind: FrameKind, func: Gc<Function>, base: u32, nres: i32) -> Frame {
-        Frame { func, base, pc: 0, nres, vdelta: 0, kind, dummy: false }
+        Frame {
+            func,
+            base,
+            pc: 0,
+            nres,
+            vdelta: 0,
+            kind,
+            dummy: false,
+        }
     }
 
     /// Slot where the caller placed the callee (before any vararg relocation).
@@ -149,7 +157,13 @@ pub struct Thread {
 
 impl fmt::Debug for Thread {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Thread(status={:?}, top={}, stacksize={})", self.status.get(), self.top.get(), self.stack_size())
+        write!(
+            f,
+            "Thread(status={:?}, top={}, stacksize={})",
+            self.status.get(),
+            self.top.get(),
+            self.stack_size()
+        )
     }
 }
 
@@ -242,7 +256,9 @@ impl Thread {
         let old = st.capacity();
         st.resize(realsize, Value::Nil);
         st.shrink_to_fit();
-        gc::account((st.capacity() as isize - old as isize) * std::mem::size_of::<Value>() as isize);
+        gc::account(
+            (st.capacity() as isize - old as isize) * std::mem::size_of::<Value>() as isize,
+        );
     }
 
     /// Ensure `need` free slots above `top` (`lj_state_checkstack`).
@@ -274,7 +290,8 @@ impl Thread {
 
     /// `lj_state_relimitstack`: undo the overflow reserve after unwinding.
     pub fn relimit_stack(&self) {
-        if self.stack_size() > LJ_STACK_MAXEX && self.top.get() < LJ_STACK_MAX - 1 - LJ_STACK_ERREX {
+        if self.stack_size() > LJ_STACK_MAXEX && self.top.get() < LJ_STACK_MAX - 1 - LJ_STACK_ERREX
+        {
             self.resize_stack(LJ_STACK_MAX);
         }
     }
@@ -436,8 +453,13 @@ impl Trace for Thread {
 
     fn size(&self) -> usize {
         // SAFETY: short-lived shared access.
-        let (s, f, u) =
-            unsafe { ((*self.stack.get()).capacity(), (*self.frames.get()).capacity(), (*self.openupval.get()).capacity()) };
+        let (s, f, u) = unsafe {
+            (
+                (*self.stack.get()).capacity(),
+                (*self.frames.get()).capacity(),
+                (*self.openupval.get()).capacity(),
+            )
+        };
         std::mem::size_of::<GcBox<Thread>>()
             + s * std::mem::size_of::<Value>()
             + f * std::mem::size_of::<Frame>()

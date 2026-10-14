@@ -63,11 +63,17 @@ impl fmt::Debug for CData {
 impl CData {
     /// Cdata owning `size` zeroed bytes aligned to `max(align, 16)`.
     pub fn new(ctypeid: u32, size: usize, align: usize) -> CData {
-        CData { ctypeid, storage: CDataStorage::Owned(AlignedBytes::new(size, align)) }
+        CData {
+            ctypeid,
+            storage: CDataStorage::Owned(AlignedBytes::new(size, align)),
+        }
     }
     /// Cdata referring to external memory.
     pub fn new_external(ctypeid: u32, ptr: *mut u8, size: usize) -> CData {
-        CData { ctypeid, storage: CDataStorage::External { ptr, size } }
+        CData {
+            ctypeid,
+            storage: CDataStorage::External { ptr, size },
+        }
     }
     #[inline]
     pub fn ctypeid(&self) -> u32 {

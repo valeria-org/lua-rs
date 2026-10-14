@@ -60,7 +60,11 @@ fn hookf(vm: &mut Vm, ev: HookEvent, line: i32) -> LuaResult<()> {
     let f = vm.registry.get_str(k);
     if let Value::Func(_) = f {
         let name = vm.new_str(ev.name().as_bytes());
-        let l = if line >= 0 { Value::Num(line as f64) } else { Value::Nil };
+        let l = if line >= 0 {
+            Value::Num(line as f64)
+        } else {
+            Value::Nil
+        };
         vm.call_value(f, &[Value::Str(name), l], 0)?;
     }
     Ok(())
@@ -93,7 +97,10 @@ fn sethook(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn getinfo(vm: &mut Vm) -> LuaResult<usize> {
-    let what = vm.opt_str(2)?.map(|s| s.as_bytes().to_vec()).unwrap_or(b"flnSu".to_vec());
+    let what = vm
+        .opt_str(2)?
+        .map(|s| s.as_bytes().to_vec())
+        .unwrap_or(b"flnSu".to_vec());
     let th = vm.cur_thread;
     let target = match vm.arg(1) {
         Value::Func(f) => InfoTarget::Func(f),
@@ -105,7 +112,9 @@ fn getinfo(vm: &mut Vm) -> LuaResult<usize> {
             }
         }
     };
-    let Some(ar) = vm.get_info(target, &what) else { return Err(vm.arg_error(2, b"invalid option")) };
+    let Some(ar) = vm.get_info(target, &what) else {
+        return Err(vm.arg_error(2, b"invalid option"));
+    };
     let t = vm.empty_table();
     let set = |vm: &mut Vm, k: &[u8], v: Value| {
         let k = vm.new_str(k);
@@ -117,7 +126,11 @@ fn getinfo(vm: &mut Vm) -> LuaResult<usize> {
         let v = vm.new_str(&ar.short_src);
         set(vm, b"short_src", Value::Str(v));
         set(vm, b"linedefined", Value::Num(ar.linedefined as f64));
-        set(vm, b"lastlinedefined", Value::Num(ar.lastlinedefined as f64));
+        set(
+            vm,
+            b"lastlinedefined",
+            Value::Num(ar.lastlinedefined as f64),
+        );
         let v = vm.new_str(ar.what.as_bytes());
         set(vm, b"what", Value::Str(v));
     }
@@ -150,7 +163,9 @@ fn getlocal(vm: &mut Vm) -> LuaResult<usize> {
     let l = vm.check_int(1)?;
     let n = vm.check_int(2)?;
     let th = vm.cur_thread;
-    let Some(fr) = vm.get_stack(th, l) else { return Err(vm.arg_error(1, b"level out of range")) };
+    let Some(fr) = vm.get_stack(th, l) else {
+        return Err(vm.arg_error(1, b"level out of range"));
+    };
     match vm.get_local(fr, n) {
         Some((name, v)) => {
             vm.push_str(&name);
@@ -163,7 +178,9 @@ fn getlocal(vm: &mut Vm) -> LuaResult<usize> {
 
 fn handler(vm: &mut Vm) -> LuaResult<usize> {
     let v = vm.arg(1);
-    let m = vm.tostring_opt(v).unwrap_or_else(|| b"(error object is not a string)".to_vec());
+    let m = vm
+        .tostring_opt(v)
+        .unwrap_or_else(|| b"(error object is not a string)".to_vec());
     let th = vm.cur_thread;
     let tb = vm.traceback(th, Some(&m), 1);
     vm.push_str(&tb);
@@ -171,7 +188,9 @@ fn handler(vm: &mut Vm) -> LuaResult<usize> {
 }
 
 fn pmain(vm: &mut Vm) -> LuaResult<usize> {
-    let (Value::Str(src), Value::Str(name)) = (vm.upvalue(1), vm.upvalue(2)) else { unreachable!() };
+    let (Value::Str(src), Value::Str(name)) = (vm.upvalue(1), vm.upvalue(2)) else {
+        unreachable!()
+    };
     let h = vm.native(handler, luajit::func::FF_C, vec![]);
     vm.push(Value::Func(h));
     let hslot = vm.cur_thread.top() - 1;
@@ -194,8 +213,12 @@ fn run_lua(src: Vec<u8>, chunkname: Vec<u8>) -> String {
             let k = vm.new_str(b"print");
             vm.globals.set_str(k, Value::Func(p)).unwrap();
             let dbg = vm.empty_table();
-            let fns: [(&[u8], luajit::func::NativeFn); 4] =
-                [(b"traceback", traceback), (b"getinfo", getinfo), (b"getlocal", getlocal), (b"sethook", sethook)];
+            let fns: [(&[u8], luajit::func::NativeFn); 4] = [
+                (b"traceback", traceback),
+                (b"getinfo", getinfo),
+                (b"getlocal", getlocal),
+                (b"sethook", sethook),
+            ];
             for (n, f) in fns {
                 let f = vm.native(f, luajit::func::FF_C, vec![]);
                 let k = vm.new_str(n);
@@ -207,7 +230,11 @@ fn run_lua(src: Vec<u8>, chunkname: Vec<u8>) -> String {
             // `lua_cpcall`, and `docall` uses a traceback handler.
             let sk = vm.new_str(&src);
             let ck = vm.new_str(&chunkname);
-            let pm = vm.native(pmain, luajit::func::FF_C, vec![Value::Str(sk), Value::Str(ck)]);
+            let pm = vm.native(
+                pmain,
+                luajit::func::FF_C,
+                vec![Value::Str(sk), Value::Str(ck)],
+            );
             vm.push(Value::Func(pm));
             if let Err(e) = vm.pcall(0, 0, None) {
                 let m = vm.tostring_opt(e.value).unwrap_or_default();
@@ -219,7 +246,10 @@ fn run_lua(src: Vec<u8>, chunkname: Vec<u8>) -> String {
             OUT.with(|o| {
                 let s = String::from_utf8_lossy(&o.borrow()).into_owned();
                 // The bottom C frame's address differs between runs; the expectations omit it.
-                s.lines().filter(|l| !l.starts_with("\t[C]: at 0x")).map(|l| format!("{l}\n")).collect()
+                s.lines()
+                    .filter(|l| !l.starts_with("\t[C]: at 0x"))
+                    .map(|l| format!("{l}\n"))
+                    .collect()
             })
         })
         .unwrap()
@@ -241,7 +271,12 @@ fn fixture(name: &str) {
         let (g, e): (Vec<_>, Vec<_>) = (got.lines().collect(), expected.lines().collect());
         for i in 0..g.len().max(e.len()) {
             if g.get(i) != e.get(i) {
-                panic!("{name}: first difference at line {}:\n  got:      {:?}\n  expected: {:?}", i + 1, g.get(i), e.get(i));
+                panic!(
+                    "{name}: first difference at line {}:\n  got:      {:?}\n  expected: {:?}",
+                    i + 1,
+                    g.get(i),
+                    e.get(i)
+                );
             }
         }
         panic!("{name}: outputs differ");
@@ -317,7 +352,9 @@ fn deep_tail_recursion_keeps_stack_small() {
 
 #[test]
 fn close_runs_pending_finalizers() {
-    let out = run_str("local u = newproxy(true) getmetatable(u).__gc = function() print('fin') end KEEP = u print('end')");
+    let out = run_str(
+        "local u = newproxy(true) getmetatable(u).__gc = function() print('fin') end KEEP = u print('end')",
+    );
     assert_eq!(out, "end\nfin\n");
 }
 
@@ -347,12 +384,16 @@ fn c_stack_overflow_is_an_error() {
 /// The language tests of the upstream test suite that only need the base and coroutine
 /// libraries.
 #[test]
+#[ignore = "requires the upstream test suite; set LUAJIT_TEST_DIR to its test directory"]
 fn upstream_lang_tests() {
-    let dir = Path::new(concat!(env!("HOME"), "/projects/luajit-ref/tests/test/lang"));
-    if !dir.exists() {
-        eprintln!("upstream test suite not found, skipped");
-        return;
-    }
+    let root = std::env::var_os("LUAJIT_TEST_DIR")
+        .expect("set LUAJIT_TEST_DIR to the upstream test directory");
+    let dir = Path::new(&root).join("lang");
+    assert!(
+        dir.is_dir(),
+        "upstream language tests not found at {}",
+        dir.display()
+    );
     let files = [
         "andor.lua",
         "assignment.lua",

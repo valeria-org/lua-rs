@@ -85,7 +85,12 @@ fn idx_store(vm: &Vm, th: Gc<Thread>, idx: c_int, v: Value) {
 }
 
 /// `lj_strfmt_number` in place: the string for a number at `idx` (stored back).
-pub(crate) fn tostr_inplace(vm: &mut Vm, th: Gc<Thread>, idx: c_int, n: f64) -> Gc<crate::lstr::LuaStr> {
+pub(crate) fn tostr_inplace(
+    vm: &mut Vm,
+    th: Gc<Thread>,
+    idx: c_int,
+    n: f64,
+) -> Gc<crate::lstr::LuaStr> {
     vm.gc_safe();
     let s = vm.new_str(&crate::text::numfmt::fmt_num(n));
     idx_store(vm, th, idx, Value::Str(s));
@@ -95,7 +100,11 @@ pub(crate) fn tostr_inplace(vm: &mut Vm, th: Gc<Thread>, idx: c_int, n: f64) -> 
 /// Canonical NaN (`setnanV`).
 #[inline]
 fn canon(n: f64) -> f64 {
-    if n.is_nan() { f64::from_bits(0xfff8_0000_0000_0000) } else { n }
+    if n.is_nan() {
+        f64::from_bits(0xfff8_0000_0000_0000)
+    } else {
+        n
+    }
 }
 
 /// `lua_type` of a value.
@@ -117,8 +126,20 @@ pub(crate) fn type_of(v: Value) -> c_int {
 }
 
 /// `lj_obj_typename`, indexed by `LUA_T* + 1`.
-pub(crate) const TYPENAMES: [&std::ffi::CStr; 12] =
-    [c"no value", c"nil", c"boolean", c"userdata", c"number", c"string", c"table", c"function", c"userdata", c"thread", c"proto", c"cdata"];
+pub(crate) const TYPENAMES: [&std::ffi::CStr; 12] = [
+    c"no value",
+    c"nil",
+    c"boolean",
+    c"userdata",
+    c"number",
+    c"string",
+    c"table",
+    c"function",
+    c"userdata",
+    c"thread",
+    c"proto",
+    c"cdata",
+];
 
 /// Number conversion of a value (`lj_strscan_num` for strings).
 #[inline]
@@ -183,7 +204,12 @@ pub(crate) fn name_ptr(vm: &mut Vm, s: &[u8]) -> *const c_char {
 // -- State management ---------------------------------------------------------------------------
 
 /// Default allocator (`luaL_newstate`'s, as `LUAJIT_USE_SYSMALLOC`'s `mem_alloc`).
-pub(crate) unsafe extern "C-unwind" fn l_alloc(_ud: *mut c_void, ptr: *mut c_void, _osize: usize, nsize: usize) -> *mut c_void {
+pub(crate) unsafe extern "C-unwind" fn l_alloc(
+    _ud: *mut c_void,
+    ptr: *mut c_void,
+    _osize: usize,
+    nsize: usize,
+) -> *mut c_void {
     // SAFETY: standard realloc/free contract of lua_Alloc.
     unsafe {
         if nsize == 0 {
@@ -245,7 +271,10 @@ pub unsafe extern "C-unwind" fn lua_newthread(L: *mut lua_State) -> *mut lua_Sta
 
 /// `lua_atpanic`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_atpanic(L: *mut lua_State, panicf: Option<lua_CFunction>) -> Option<lua_CFunction> {
+pub unsafe extern "C-unwind" fn lua_atpanic(
+    L: *mut lua_State,
+    panicf: Option<lua_CFunction>,
+) -> Option<lua_CFunction> {
     // SAFETY: `L` is a live state.
     let (vm, _) = unsafe { ctx(L) };
     std::mem::replace(&mut vm.rt.capi.panic, panicf)
@@ -439,7 +468,9 @@ pub unsafe extern "C-unwind" fn lua_type(L: *mut lua_State, idx: c_int) -> c_int
 /// `lua_typename`.
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn lua_typename(_L: *mut lua_State, t: c_int) -> *const c_char {
-    TYPENAMES.get((t + 1) as usize).map_or(std::ptr::null(), |s| s.as_ptr())
+    TYPENAMES
+        .get((t + 1) as usize)
+        .map_or(std::ptr::null(), |s| s.as_ptr())
 }
 
 /// `lua_iscfunction`.
@@ -490,9 +521,11 @@ pub unsafe extern "C-unwind" fn lua_rawequal(L: *mut lua_State, idx1: c_int, idx
 pub unsafe extern "C-unwind" fn lua_equal(L: *mut lua_State, idx1: c_int, idx2: c_int) -> c_int {
     // SAFETY: `L` is a live state.
     unsafe {
-        api(L, |vm, th| match (idx_get(vm, th, idx1), idx_get(vm, th, idx2)) {
-            (Some(a), Some(b)) => Ok(vm.equal(a, b)? as c_int),
-            _ => Ok(0),
+        api(L, |vm, th| {
+            match (idx_get(vm, th, idx1), idx_get(vm, th, idx2)) {
+                (Some(a), Some(b)) => Ok(vm.equal(a, b)? as c_int),
+                _ => Ok(0),
+            }
         })
     }
 }
@@ -502,9 +535,11 @@ pub unsafe extern "C-unwind" fn lua_equal(L: *mut lua_State, idx1: c_int, idx2: 
 pub unsafe extern "C-unwind" fn lua_lessthan(L: *mut lua_State, idx1: c_int, idx2: c_int) -> c_int {
     // SAFETY: `L` is a live state.
     unsafe {
-        api(L, |vm, th| match (idx_get(vm, th, idx1), idx_get(vm, th, idx2)) {
-            (Some(a), Some(b)) => Ok(vm.less_than(a, b)? as c_int),
-            _ => Ok(0),
+        api(L, |vm, th| {
+            match (idx_get(vm, th, idx1), idx_get(vm, th, idx2)) {
+                (Some(a), Some(b)) => Ok(vm.less_than(a, b)? as c_int),
+                _ => Ok(0),
+            }
         })
     }
 }
@@ -519,7 +554,11 @@ pub unsafe extern "C-unwind" fn lua_tonumber(L: *mut lua_State, idx: c_int) -> l
 
 /// `lua_tonumberx`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_tonumberx(L: *mut lua_State, idx: c_int, ok: *mut c_int) -> lua_Number {
+pub unsafe extern "C-unwind" fn lua_tonumberx(
+    L: *mut lua_State,
+    idx: c_int,
+    ok: *mut c_int,
+) -> lua_Number {
     // SAFETY: `L` is a live state.
     let (vm, th) = unsafe { ctx(L) };
     let r = tonum(idx_val(vm, th, idx));
@@ -540,7 +579,11 @@ pub unsafe extern "C-unwind" fn lua_tointeger(L: *mut lua_State, idx: c_int) -> 
 
 /// `lua_tointegerx`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_tointegerx(L: *mut lua_State, idx: c_int, ok: *mut c_int) -> lua_Integer {
+pub unsafe extern "C-unwind" fn lua_tointegerx(
+    L: *mut lua_State,
+    idx: c_int,
+    ok: *mut c_int,
+) -> lua_Integer {
     // SAFETY: `L` is a live state.
     let (vm, th) = unsafe { ctx(L) };
     let r = tonum(idx_val(vm, th, idx));
@@ -561,7 +604,11 @@ pub unsafe extern "C-unwind" fn lua_toboolean(L: *mut lua_State, idx: c_int) -> 
 
 /// `lua_tolstring`: numbers are converted in place.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_tolstring(L: *mut lua_State, idx: c_int, len: *mut usize) -> *const c_char {
+pub unsafe extern "C-unwind" fn lua_tolstring(
+    L: *mut lua_State,
+    idx: c_int,
+    len: *mut usize,
+) -> *const c_char {
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, th| {
@@ -605,13 +652,23 @@ pub unsafe extern "C-unwind" fn lua_objlen(L: *mut lua_State, idx: c_int) -> usi
 /// direct call of upstream's C implementation. NULL for Lua functions and for Rust natives
 /// with upvalues (their Rust code reads its own upvalues, which a direct call cannot supply).
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_tocfunction(L: *mut lua_State, idx: c_int) -> Option<lua_CFunction> {
+pub unsafe extern "C-unwind" fn lua_tocfunction(
+    L: *mut lua_State,
+    idx: c_int,
+) -> Option<lua_CFunction> {
     // SAFETY: `L` is a live state.
     let (vm, th) = unsafe { ctx(L) };
     match idx_val(vm, th, idx) {
         Value::Func(f) => match &*f {
-            Function::Native { f: NativeImpl::C(cf), .. } => Some(*cf),
-            Function::Native { f: NativeImpl::Rust(nf), upvals, .. } if upvals.is_empty() => Some(super::thunk::thunk_of(*nf)),
+            Function::Native {
+                f: NativeImpl::C(cf),
+                ..
+            } => Some(*cf),
+            Function::Native {
+                f: NativeImpl::Rust(nf),
+                upvals,
+                ..
+            } if upvals.is_empty() => Some(super::thunk::thunk_of(*nf)),
             Function::Native { .. } => None,
             Function::Lua { .. } => None,
         },
@@ -695,7 +752,11 @@ pub unsafe extern "C-unwind" fn lua_pushinteger(L: *mut lua_State, n: lua_Intege
 #[unsafe(no_mangle)]
 pub unsafe extern "C-unwind" fn lua_pushlstring(L: *mut lua_State, s: *const c_char, len: usize) {
     // SAFETY: `s` points to `len` bytes (or `len` is 0).
-    let b: &[u8] = if len == 0 { &[] } else { unsafe { std::slice::from_raw_parts(s.cast(), len) } };
+    let b: &[u8] = if len == 0 {
+        &[]
+    } else {
+        unsafe { std::slice::from_raw_parts(s.cast(), len) }
+    };
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, _| {
@@ -937,7 +998,11 @@ pub unsafe extern "C-unwind" fn lua_next(L: *mut lua_State, idx: c_int) -> c_int
 
 /// `lua_getupvalue`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_getupvalue(L: *mut lua_State, idx: c_int, n: c_int) -> *const c_char {
+pub unsafe extern "C-unwind" fn lua_getupvalue(
+    L: *mut lua_State,
+    idx: c_int,
+    n: c_int,
+) -> *const c_char {
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, th| {
@@ -958,7 +1023,11 @@ pub unsafe extern "C-unwind" fn lua_getupvalue(L: *mut lua_State, idx: c_int, n:
 
 /// `lua_setupvalue`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_setupvalue(L: *mut lua_State, idx: c_int, n: c_int) -> *const c_char {
+pub unsafe extern "C-unwind" fn lua_setupvalue(
+    L: *mut lua_State,
+    idx: c_int,
+    n: c_int,
+) -> *const c_char {
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, th| {
@@ -980,20 +1049,36 @@ pub unsafe extern "C-unwind" fn lua_setupvalue(L: *mut lua_State, idx: c_int, n:
 
 /// `lua_upvalueid`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_upvalueid(L: *mut lua_State, idx: c_int, n: c_int) -> *mut c_void {
+pub unsafe extern "C-unwind" fn lua_upvalueid(
+    L: *mut lua_State,
+    idx: c_int,
+    n: c_int,
+) -> *mut c_void {
     // SAFETY: `L` is a live state.
     let (vm, th) = unsafe { ctx(L) };
-    let Value::Func(f) = idx_val(vm, th, idx) else { return std::ptr::null_mut() };
+    let Value::Func(f) = idx_val(vm, th, idx) else {
+        return std::ptr::null_mut();
+    };
     let n = (n - 1) as usize;
     match &*f {
-        Function::Lua { upvals, .. } => upvals.get(n).map_or(std::ptr::null_mut(), |u| Gc::as_ptr(u.get()).cast()),
-        Function::Native { upvals, .. } => upvals.get(n).map_or(std::ptr::null_mut(), |c| c.as_ptr().cast()),
+        Function::Lua { upvals, .. } => upvals
+            .get(n)
+            .map_or(std::ptr::null_mut(), |u| Gc::as_ptr(u.get()).cast()),
+        Function::Native { upvals, .. } => upvals
+            .get(n)
+            .map_or(std::ptr::null_mut(), |c| c.as_ptr().cast()),
     }
 }
 
 /// `lua_upvaluejoin`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_upvaluejoin(L: *mut lua_State, idx1: c_int, n1: c_int, idx2: c_int, n2: c_int) {
+pub unsafe extern "C-unwind" fn lua_upvaluejoin(
+    L: *mut lua_State,
+    idx1: c_int,
+    n1: c_int,
+    idx2: c_int,
+    n2: c_int,
+) {
     // SAFETY: `L` is a live state.
     let (vm, th) = unsafe { ctx(L) };
     if let (Value::Func(f1), Value::Func(f2)) = (idx_val(vm, th, idx1), idx_val(vm, th, idx2))
@@ -1101,7 +1186,9 @@ pub unsafe extern "C-unwind" fn lua_setfenv(L: *mut lua_State, idx: c_int) -> c_
         api(L, |vm, th| {
             let o = idx_check(vm, th, idx);
             let top = th.top();
-            let Value::Table(t) = th.get(top - 1) else { panic!("C API: top stack slot is not a table") };
+            let Value::Table(t) = th.get(top - 1) else {
+                panic!("C API: top stack slot is not a table")
+            };
             let r = match o {
                 Value::Func(f) => {
                     f.set_env(t);
@@ -1132,7 +1219,13 @@ pub unsafe extern "C-unwind" fn lua_call(L: *mut lua_State, nargs: c_int, nresul
     let (vm, _) = unsafe { ctx(L) };
     let old = vm.cur_thread;
     // SAFETY: `L` is a live state.
-    unsafe { api(L, |vm, th| on_thread(vm, th, old, |vm| vm.call(nargs as usize, nresults).map(|_| ()))) }
+    unsafe {
+        api(L, |vm, th| {
+            on_thread(vm, th, old, |vm| {
+                vm.call(nargs as usize, nresults).map(|_| ())
+            })
+        })
+    }
 }
 
 /// Finish a protected call: on error, restore the hook state and leave the error object on
@@ -1150,14 +1243,23 @@ fn pcall_status(vm: &mut Vm, oldh: bool, r: LuaResult<usize>) -> c_int {
 
 /// `lua_pcall`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_pcall(L: *mut lua_State, nargs: c_int, nresults: c_int, errfunc: c_int) -> c_int {
+pub unsafe extern "C-unwind" fn lua_pcall(
+    L: *mut lua_State,
+    nargs: c_int,
+    nresults: c_int,
+    errfunc: c_int,
+) -> c_int {
     // SAFETY: `L` is a live state.
     let (vm, _) = unsafe { ctx(L) };
     let old = vm.cur_thread;
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, th| {
-            let ef = if errfunc == 0 { None } else { Some(idx_stack(vm, th, errfunc)) };
+            let ef = if errfunc == 0 {
+                None
+            } else {
+                Some(idx_stack(vm, th, errfunc))
+            };
             let oldh = vm.rt.hook.active;
             let r = on_thread(vm, th, old, |vm| vm.pcall(nargs as usize, nresults, ef));
             Ok(pcall_status(vm, oldh, r))
@@ -1167,7 +1269,11 @@ pub unsafe extern "C-unwind" fn lua_pcall(L: *mut lua_State, nargs: c_int, nresu
 
 /// `lua_cpcall`: call `func` with a light userdata `ud`, protected, no results.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_cpcall(L: *mut lua_State, func: lua_CFunction, ud: *mut c_void) -> c_int {
+pub unsafe extern "C-unwind" fn lua_cpcall(
+    L: *mut lua_State,
+    func: lua_CFunction,
+    ud: *mut c_void,
+) -> c_int {
     // SAFETY: `L` is a live state.
     let (vm, _) = unsafe { ctx(L) };
     let old = vm.cur_thread;
@@ -1215,7 +1321,11 @@ pub unsafe extern "C-unwind" fn lua_loadx(
 ) -> c_int {
     // SAFETY: `L` is a live state; the strings are NULL or C strings.
     unsafe {
-        let name: &[u8] = if chunkname.is_null() { b"?" } else { cstr(chunkname) };
+        let name: &[u8] = if chunkname.is_null() {
+            b"?"
+        } else {
+            cstr(chunkname)
+        };
         let mode = (!mode.is_null()).then(|| cstr(mode));
         api(L, |vm, th| {
             let r = vm.load_reader(
@@ -1226,7 +1336,9 @@ pub unsafe extern "C-unwind" fn lua_loadx(
                     if p.is_null() || size == 0 {
                         Ok(None)
                     } else {
-                        Ok(Some(std::slice::from_raw_parts(p.cast::<u8>(), size).to_vec()))
+                        Ok(Some(
+                            std::slice::from_raw_parts(p.cast::<u8>(), size).to_vec(),
+                        ))
                     }
                 },
                 name,
@@ -1239,18 +1351,29 @@ pub unsafe extern "C-unwind" fn lua_loadx(
 
 /// `lua_load`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_load(L: *mut lua_State, reader: lua_Reader, data: *mut c_void, chunkname: *const c_char) -> c_int {
+pub unsafe extern "C-unwind" fn lua_load(
+    L: *mut lua_State,
+    reader: lua_Reader,
+    data: *mut c_void,
+    chunkname: *const c_char,
+) -> c_int {
     // SAFETY: forwarded contract.
     unsafe { lua_loadx(L, reader, data, chunkname, std::ptr::null()) }
 }
 
 /// `lua_dump`: dump the Lua function at the top (FR2 format, not stripped).
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_dump(L: *mut lua_State, writer: lua_Writer, data: *mut c_void) -> c_int {
+pub unsafe extern "C-unwind" fn lua_dump(
+    L: *mut lua_State,
+    writer: lua_Writer,
+    data: *mut c_void,
+) -> c_int {
     // SAFETY: `L` is a live state.
     unsafe {
         api(L, |vm, th| {
-            let Value::Func(f) = th.get(th.top() - 1) else { return Ok(1) };
+            let Value::Func(f) = th.get(th.top() - 1) else {
+                return Ok(1);
+            };
             let Some(pt) = f.proto() else { return Ok(1) };
             let b = crate::bcdump::write(vm, pt, false);
             let L = state_of(vm, th);
@@ -1346,7 +1469,11 @@ pub unsafe extern "C-unwind" fn lua_resume(L: *mut lua_State, narg: c_int) -> c_
             }
             co.set_top(ctop + n);
             prev.set_top(ptop - n);
-            if co.status() == ThreadStatus::Suspended { crate::error::LUA_YIELD } else { 0 }
+            if co.status() == ThreadStatus::Suspended {
+                crate::error::LUA_YIELD
+            } else {
+                0
+            }
         }
         Ok(Err(v)) => {
             co.push(v);
@@ -1395,7 +1522,10 @@ pub unsafe extern "C-unwind" fn lua_gc(L: *mut lua_State, what: c_int, data: c_i
 
 /// `lua_getallocf`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_getallocf(L: *mut lua_State, ud: *mut *mut c_void) -> lua_Alloc {
+pub unsafe extern "C-unwind" fn lua_getallocf(
+    L: *mut lua_State,
+    ud: *mut *mut c_void,
+) -> lua_Alloc {
     // SAFETY: `L` is a live state.
     let (vm, _) = unsafe { ctx(L) };
     if !ud.is_null() {
@@ -1434,12 +1564,19 @@ pub unsafe extern "C-unwind" fn lua_error(L: *mut lua_State) -> c_int {
 fn frame_of(th: Gc<Thread>, ar: *const lua_Debug) -> Option<FrameRef> {
     // SAFETY: `ar` is a valid lua_Debug.
     let i = unsafe { (*ar).i_ci };
-    (i >= 0 && (i as usize) < th.frame_count()).then_some(FrameRef { thread: th, idx: i as usize })
+    (i >= 0 && (i as usize) < th.frame_count()).then_some(FrameRef {
+        thread: th,
+        idx: i as usize,
+    })
 }
 
 /// `lua_getstack`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_getstack(L: *mut lua_State, level: c_int, ar: *mut lua_Debug) -> c_int {
+pub unsafe extern "C-unwind" fn lua_getstack(
+    L: *mut lua_State,
+    level: c_int,
+    ar: *mut lua_Debug,
+) -> c_int {
     // SAFETY: `L` is a live state; `ar` is valid.
     let (vm, th) = unsafe { ctx(L) };
     match vm.get_stack(th, level) {
@@ -1458,14 +1595,20 @@ pub unsafe extern "C-unwind" fn lua_getstack(L: *mut lua_State, level: c_int, ar
 
 /// `lua_getinfo`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_getinfo(L: *mut lua_State, what: *const c_char, ar: *mut lua_Debug) -> c_int {
+pub unsafe extern "C-unwind" fn lua_getinfo(
+    L: *mut lua_State,
+    what: *const c_char,
+    ar: *mut lua_Debug,
+) -> c_int {
     // SAFETY: `L` is a live state; `what` is a C string; `ar` is valid.
     unsafe {
         api(L, |vm, th| {
             let what = cstr(what);
             let (target, opts) = if what.first() == Some(&b'>') {
                 let top = th.top() - 1;
-                let Value::Func(f) = th.get(top) else { panic!("C API: function expected for lua_getinfo('>')") };
+                let Value::Func(f) = th.get(top) else {
+                    panic!("C API: function expected for lua_getinfo('>')")
+                };
                 th.set_top(top);
                 (InfoTarget::Func(f), &what[1..])
             } else {
@@ -1474,7 +1617,9 @@ pub unsafe extern "C-unwind" fn lua_getinfo(L: *mut lua_State, what: *const c_ch
                     None => return Ok(0),
                 }
             };
-            let Some(info) = vm.get_info(target, opts) else { return Ok(0) };
+            let Some(info) = vm.get_info(target, opts) else {
+                return Ok(0);
+            };
             let a = &mut *ar;
             for &c in opts {
                 match c {
@@ -1523,18 +1668,26 @@ pub unsafe extern "C-unwind" fn lua_getinfo(L: *mut lua_State, what: *const c_ch
 
 /// `lua_getlocal`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_getlocal(L: *mut lua_State, ar: *const lua_Debug, n: c_int) -> *const c_char {
+pub unsafe extern "C-unwind" fn lua_getlocal(
+    L: *mut lua_State,
+    ar: *const lua_Debug,
+    n: c_int,
+) -> *const c_char {
     // SAFETY: `L` is a live state; `ar` is NULL or valid.
     unsafe {
         api(L, |vm, th| {
             if ar.is_null() {
-                let Value::Func(f) = th.get(th.top() - 1) else { return Ok(std::ptr::null()) };
+                let Value::Func(f) = th.get(th.top() - 1) else {
+                    return Ok(std::ptr::null());
+                };
                 return Ok(match vm.local_name_of(f, n) {
                     Some(name) => name_ptr(vm, &name),
                     None => std::ptr::null(),
                 });
             }
-            let Some(fr) = frame_of(th, ar) else { return Ok(std::ptr::null()) };
+            let Some(fr) = frame_of(th, ar) else {
+                return Ok(std::ptr::null());
+            };
             match vm.get_local(fr, n) {
                 Some((name, v)) => {
                     vm.push(v);
@@ -1548,7 +1701,11 @@ pub unsafe extern "C-unwind" fn lua_getlocal(L: *mut lua_State, ar: *const lua_D
 
 /// `lua_setlocal`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_setlocal(L: *mut lua_State, ar: *const lua_Debug, n: c_int) -> *const c_char {
+pub unsafe extern "C-unwind" fn lua_setlocal(
+    L: *mut lua_State,
+    ar: *const lua_Debug,
+    n: c_int,
+) -> *const c_char {
     // SAFETY: `L` is a live state; `ar` is valid.
     unsafe {
         api(L, |vm, th| {
@@ -1566,7 +1723,12 @@ pub unsafe extern "C-unwind" fn lua_setlocal(L: *mut lua_State, ar: *const lua_D
 
 /// `lua_sethook`.
 #[unsafe(no_mangle)]
-pub unsafe extern "C-unwind" fn lua_sethook(L: *mut lua_State, func: Option<lua_Hook>, mask: c_int, count: c_int) -> c_int {
+pub unsafe extern "C-unwind" fn lua_sethook(
+    L: *mut lua_State,
+    func: Option<lua_Hook>,
+    mask: c_int,
+    count: c_int,
+) -> c_int {
     // SAFETY: `L` is a live state.
     let (vm, _) = unsafe { ctx(L) };
     let mask = (mask & 0x0f) as u8;

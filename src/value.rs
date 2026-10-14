@@ -87,7 +87,11 @@ pub fn num2int(n: f64) -> i32 {
     }
     #[cfg(not(target_arch = "x86_64"))]
     {
-        if n > -2147483649.0 && n < 2147483648.0 { n as i32 } else { i32::MIN }
+        if n > -2147483649.0 && n < 2147483648.0 {
+            n as i32
+        } else {
+            i32::MIN
+        }
     }
 }
 
@@ -148,7 +152,10 @@ impl Value {
     /// True for values referencing a GC object.
     #[inline]
     pub fn is_gc(self) -> bool {
-        !matches!(self, Value::Nil | Value::Bool(_) | Value::Num(_) | Value::LightUd(_))
+        !matches!(
+            self,
+            Value::Nil | Value::Bool(_) | Value::Num(_) | Value::LightUd(_)
+        )
     }
 
     /// Canonical form of a table key: `-0` becomes `+0` (upstream `lj_tab_newkey`). Integer-valued
@@ -180,39 +187,75 @@ impl Value {
 
     #[inline]
     pub fn as_num(self) -> Option<f64> {
-        if let Value::Num(n) = self { Some(n) } else { None }
+        if let Value::Num(n) = self {
+            Some(n)
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn as_bool(self) -> Option<bool> {
-        if let Value::Bool(b) = self { Some(b) } else { None }
+        if let Value::Bool(b) = self {
+            Some(b)
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn as_str(self) -> Option<Gc<LuaStr>> {
-        if let Value::Str(s) = self { Some(s) } else { None }
+        if let Value::Str(s) = self {
+            Some(s)
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn as_table(self) -> Option<Gc<Table>> {
-        if let Value::Table(t) = self { Some(t) } else { None }
+        if let Value::Table(t) = self {
+            Some(t)
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn as_func(self) -> Option<Gc<Function>> {
-        if let Value::Func(f) = self { Some(f) } else { None }
+        if let Value::Func(f) = self {
+            Some(f)
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn as_thread(self) -> Option<Gc<Thread>> {
-        if let Value::Thread(t) = self { Some(t) } else { None }
+        if let Value::Thread(t) = self {
+            Some(t)
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn as_udata(self) -> Option<Gc<Userdata>> {
-        if let Value::Udata(u) = self { Some(u) } else { None }
+        if let Value::Udata(u) = self {
+            Some(u)
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn as_cdata(self) -> Option<Gc<CData>> {
-        if let Value::CData(c) = self { Some(c) } else { None }
+        if let Value::CData(c) = self {
+            Some(c)
+        } else {
+            None
+        }
     }
     #[inline]
     pub fn as_lightud(self) -> Option<usize> {
-        if let Value::LightUd(p) = self { Some(p) } else { None }
+        if let Value::LightUd(p) = self {
+            Some(p)
+        } else {
+            None
+        }
     }
 }
 
@@ -295,7 +338,13 @@ mod tests {
     fn raw_equality_and_keys() {
         assert_eq!(Value::Num(-0.0), Value::Num(0.0));
         assert_ne!(Value::Num(f64::NAN), Value::Num(f64::NAN));
-        assert!(Value::Num(-0.0).normalize_key().as_num().unwrap().is_sign_positive());
+        assert!(
+            Value::Num(-0.0)
+                .normalize_key()
+                .as_num()
+                .unwrap()
+                .is_sign_positive()
+        );
         assert_eq!(num2int_check(-0.0), Some(0));
         assert_eq!(num2int_check(-2147483648.0), Some(i32::MIN));
         assert_eq!(num2int_check(2147483648.0), None);

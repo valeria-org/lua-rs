@@ -5,7 +5,7 @@
 //! `<case>.expected` holds stdout, then `--- stderr` plus stderr if non-empty, then
 //! `--- exit <status>`, with every `0x<hex>` normalized to `0x?`. Optional `<case>.env`
 //! (`KEY=VALUE` lines) and `<case>.stdin` provide the environment and standard input. The
-//! expectations were generated the same way with `~/projects/luajit-ref/luajit/src/luajit`
+//! expectations were generated the same way with the upstream reference binary
 //! (with `LUA_PATH` pointing at its `jit/*.lua` for cases using `jit.*` modules, which this
 //! binary embeds).
 //!

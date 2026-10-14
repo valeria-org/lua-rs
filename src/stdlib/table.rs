@@ -107,7 +107,11 @@ fn table_concat(vm: &mut Vm) -> LuaResult<usize> {
     let t = vm.check_tab(1)?;
     let sep = vm.opt_str(2)?;
     let i = vm.opt_int(3, 1)?;
-    let e = if vm.nargs() >= 4 && !vm.arg(4).is_nil() { vm.check_int(4)? } else { t.len() as i32 };
+    let e = if vm.nargs() >= 4 && !vm.arg(4).is_nil() {
+        vm.check_int(4)?
+    } else {
+        t.len() as i32
+    };
     let mut out = Vec::new();
     let sepb: &[u8] = sep.as_ref().map_or(&[], |s| s.as_bytes());
     if let Err(idx) = buf_puttab(&mut out, t, sepb, i, e) {

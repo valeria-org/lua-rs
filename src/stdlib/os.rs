@@ -3,12 +3,12 @@
 use libc::{c_char, c_int, time_t};
 
 use crate::error::LuaResult;
+use crate::gc::Gc;
 use crate::state::Vm;
 use crate::table::Table;
-use crate::gc::Gc;
 use crate::value::Value;
-use crate::vm::{ErrMsg, fmt_msg};
 use crate::vm::ffid::*;
+use crate::vm::{ErrMsg, fmt_msg};
 
 use super::io::{cstring, errno, fileresult, set_errno};
 use super::{LibFn, register_lib};
@@ -28,7 +28,9 @@ fn num2time(n: f64) -> time_t {
 
 fn os_execute(vm: &mut Vm) -> LuaResult<usize> {
     let cmd = vm.opt_str(1)?.map(|s| cstring(s.as_bytes()));
-    let p = cmd.as_ref().map_or(std::ptr::null(), |c| c.as_ptr() as *const c_char);
+    let p = cmd
+        .as_ref()
+        .map_or(std::ptr::null(), |c| c.as_ptr() as *const c_char);
     // SAFETY: NULL or a NUL-terminated command.
     let stat = unsafe { libc::system(p) };
     vm.ret1(Value::Num(stat as f64))
@@ -48,7 +50,8 @@ fn os_rename(vm: &mut Vm) -> LuaResult<usize> {
     let to = vm.check_str(2)?;
     let (cf, ct) = (cstring(from.as_bytes()), cstring(to.as_bytes()));
     // SAFETY: NUL-terminated paths.
-    let ok = unsafe { libc::rename(cf.as_ptr() as *const c_char, ct.as_ptr() as *const c_char) } == 0;
+    let ok =
+        unsafe { libc::rename(cf.as_ptr() as *const c_char, ct.as_ptr() as *const c_char) } == 0;
     let en = errno();
     Ok(fileresult(vm, ok, Some(from.as_bytes()), en))
 }
@@ -107,7 +110,8 @@ fn os_clock(vm: &mut Vm) -> LuaResult<usize> {
 
 fn setfield(vm: &mut Vm, t: Gc<Table>, key: &[u8], value: c_int) -> LuaResult<()> {
     let k = vm.new_str(key);
-    t.set_str(k, Value::Num(value as f64)).map_err(|e| vm.tab_error(e))
+    t.set_str(k, Value::Num(value as f64))
+        .map_err(|e| vm.tab_error(e))
 }
 
 fn setboolfield(vm: &mut Vm, t: Gc<Table>, key: &[u8], value: c_int) -> LuaResult<()> {
@@ -115,7 +119,8 @@ fn setboolfield(vm: &mut Vm, t: Gc<Table>, key: &[u8], value: c_int) -> LuaResul
         return Ok(());
     }
     let k = vm.new_str(key);
-    t.set_str(k, Value::Bool(value != 0)).map_err(|e| vm.tab_error(e))
+    t.set_str(k, Value::Bool(value != 0))
+        .map_err(|e| vm.tab_error(e))
 }
 
 fn os_date(vm: &mut Vm) -> LuaResult<usize> {
@@ -164,7 +169,8 @@ fn os_date(vm: &mut Vm) -> LuaResult<usize> {
             // Limit growth for invalid format or empty result.
             buf.resize(sz as usize, 0);
             // SAFETY: `buf` has `buf.len()` writable bytes; format is NUL-terminated.
-            let len = unsafe { libc::strftime(buf.as_mut_ptr() as *mut c_char, buf.len(), sp, &rtm) };
+            let len =
+                unsafe { libc::strftime(buf.as_mut_ptr() as *mut c_char, buf.len(), sp, &rtm) };
             if len != 0 {
                 vm.push_str(&buf[..len]);
                 vm.gc_safe();
@@ -199,7 +205,11 @@ fn getfield(vm: &mut Vm, t: Value, key: &[u8], d: c_int) -> LuaResult<c_int> {
 fn getboolfield(vm: &mut Vm, t: Value, key: &[u8]) -> LuaResult<c_int> {
     let k = vm.new_str(key);
     let v = vm.index(t, Value::Str(k))?;
-    Ok(if v.is_nil() { -1 } else { v.is_truthy() as c_int })
+    Ok(if v.is_nil() {
+        -1
+    } else {
+        v.is_truthy() as c_int
+    })
 }
 
 fn os_time(vm: &mut Vm) -> LuaResult<usize> {
@@ -243,7 +253,15 @@ fn os_difftime(vm: &mut Vm) -> LuaResult<usize> {
 fn os_setlocale(vm: &mut Vm) -> LuaResult<usize> {
     let s = vm.opt_str(1)?.map(|s| cstring(s.as_bytes()));
     // lj_lib_checkopt(L, 2, 6, "\5ctype\7numeric\4time\7collate\10monetary\1\377\3all").
-    const OPTS: [&[u8]; 7] = [b"ctype", b"numeric", b"time", b"collate", b"monetary", b"\xff", b"all"];
+    const OPTS: [&[u8]; 7] = [
+        b"ctype",
+        b"numeric",
+        b"time",
+        b"collate",
+        b"monetary",
+        b"\xff",
+        b"all",
+    ];
     let opt = match vm.opt_str(2)? {
         None => 6,
         Some(o) => match OPTS.iter().position(|&x| x == o.as_bytes()) {
@@ -263,7 +281,9 @@ fn os_setlocale(vm: &mut Vm) -> LuaResult<usize> {
         6 => libc::LC_ALL,
         n => n as c_int,
     };
-    let p = s.as_ref().map_or(std::ptr::null(), |c| c.as_ptr() as *const c_char);
+    let p = s
+        .as_ref()
+        .map_or(std::ptr::null(), |c| c.as_ptr() as *const c_char);
     // SAFETY: NULL or NUL-terminated locale name.
     let r = unsafe { libc::setlocale(cat, p) };
     if r.is_null() {

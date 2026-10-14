@@ -8,7 +8,7 @@
 #   -p     pin the benchmarked process to CPU number CPU (`taskset`), e.g. a performance core
 #   BIN    binaries to time (default: ref=reference, rs=target/release/luajit)
 #   BENCH  benchmark names without .lua (default: all bench/*.lua)
-# Env: LUAJIT_REF (default ~/projects/luajit-ref/luajit/src/luajit),
+# Env: LUAJIT_REF (absolute path to a reference binary, required),
 #      CARGO_TARGET_DIR (to locate the release binary).
 # Each benchmark's output must equal the reference's; mismatches are flagged with '!'.
 set -euo pipefail
@@ -24,7 +24,7 @@ while [[ ${1-} == -[ncp] ]]; do
         -p) pin=(taskset -c "$2"); shift 2 ;;
     esac
 done
-ref=${LUAJIT_REF:-$HOME/projects/luajit-ref/luajit/src/luajit}
+ref=${LUAJIT_REF:?Set LUAJIT_REF to the absolute path of a reference LuaJIT binary}
 bins=()
 while [[ $# -gt 0 && $1 != -- ]]; do bins+=("$1"); shift; done
 [[ ${1-} == -- ]] && shift

@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 license = "MIT"
 description = "A re-implementation of LuaJIT 2.1 (interpreter, standard library and FFI) in Rust"
+repository = "https://github.com/valeria-org/lua-rs"
+readme = "README.md"
 
 [lib]
 name = "luajit"

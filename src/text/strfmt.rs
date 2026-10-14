@@ -310,7 +310,13 @@ pub fn put_ptr(out: &mut Vec<u8>, x: usize) {
     let x = x as u64;
     let hi = (x >> 32) as u32;
     // Shorten output for 64 bit pointers.
-    let n = 2 + 2 * 4 + if hi != 0 { 2 + 2 * ((31 - hi.leading_zeros()) >> 3) as usize } else { 0 };
+    let n = 2
+        + 2 * 4
+        + if hi != 0 {
+            2 + 2 * ((31 - hi.leading_zeros()) >> 3) as usize
+        } else {
+            0
+        };
     let mut buf = [0u8; MAXBUF_PTR];
     buf[0] = b'0';
     buf[1] = b'x';
@@ -441,8 +447,11 @@ pub fn put_fxint(out: &mut Vec<u8>, sf: SFormat, mut k: u64) {
             }
         }
     } else if sf & T_HEX != 0 {
-        let hexdig: &[u8; 16] =
-            if sf & F_UPPER != 0 { b"0123456789ABCDEF" } else { b"0123456789abcdef" };
+        let hexdig: &[u8; 16] = if sf & F_UPPER != 0 {
+            b"0123456789ABCDEF"
+        } else {
+            b"0123456789abcdef"
+        };
         loop {
             q -= 1;
             buf[q] = hexdig[(k & 15) as usize];
@@ -594,12 +603,16 @@ mod tests {
                     out.extend_from_slice(s);
                     continue;
                 }
-                FmtItem::Err(s) => return Err(String::from_utf8(invalid_option_message(s)).unwrap()),
+                FmtItem::Err(s) => {
+                    return Err(String::from_utf8(invalid_option_message(s)).unwrap());
+                }
                 FmtItem::Spec(sf) => sf,
             };
             let arg = *args.next().expect("missing arg");
             match (sf.ty(), arg) {
-                (FormatType::Int | FormatType::Uint, A::I64(k)) => put_fxint(&mut out, sf, k as u64),
+                (FormatType::Int | FormatType::Uint, A::I64(k)) => {
+                    put_fxint(&mut out, sf, k as u64)
+                }
                 (FormatType::Int | FormatType::Uint, A::U64(k)) => put_fxint(&mut out, sf, k),
                 (FormatType::Int, A::N(n)) => put_fnum_int(&mut out, sf, n),
                 (FormatType::Uint, A::N(n)) => put_fnum_uint(&mut out, sf, n),
@@ -649,23 +662,62 @@ mod tests {
     #[test]
     fn float_directives() {
         assert_eq!(
-            f("[%5.2f][%a][%A][%.3a][%a][%a]", &[A::N(1.23456), A::N(1.0), A::N(0.1), A::N(1.0 / 3.0), A::N(1e-310), A::N(0.0)]),
+            f(
+                "[%5.2f][%a][%A][%.3a][%a][%a]",
+                &[
+                    A::N(1.23456),
+                    A::N(1.0),
+                    A::N(0.1),
+                    A::N(1.0 / 3.0),
+                    A::N(1e-310),
+                    A::N(0.0)
+                ]
+            ),
             "[ 1.23][0x1p+0][0X1.999999999999AP-4][0x1.555p-2][0x1.2688b70e62bp-1030][0x0p+0]"
         );
         assert_eq!(
             f(
                 "[%e][%.0e][%#.0f][%g][%g][%g][%.3g][%10.3f][%-10.2e]",
-                &[A::N(12345.6789), A::N(5e10), A::N(3.0), A::N(1e-5), A::N(1e20), A::N(100000.0), A::N(0.0001234), A::N(-2.5), A::N(1234.5)]
+                &[
+                    A::N(12345.6789),
+                    A::N(5e10),
+                    A::N(3.0),
+                    A::N(1e-5),
+                    A::N(1e20),
+                    A::N(100000.0),
+                    A::N(0.0001234),
+                    A::N(-2.5),
+                    A::N(1234.5)
+                ]
             ),
             "[1.234568e+04][5e+10][3.][1e-05][1e+20][100000][0.000123][    -2.500][1.23e+03  ]"
         );
         // Round half to even on the exact binary value.
         assert_eq!(
-            f("%.3f %.2f %.1f %.0f %.0f %.0f", &[A::N(2.0005), A::N(0.125), A::N(0.25), A::N(0.5), A::N(1.5), A::N(2.5)]),
+            f(
+                "%.3f %.2f %.1f %.0f %.0f %.0f",
+                &[
+                    A::N(2.0005),
+                    A::N(0.125),
+                    A::N(0.25),
+                    A::N(0.5),
+                    A::N(1.5),
+                    A::N(2.5)
+                ]
+            ),
             "2.001 0.12 0.2 0 2 2"
         );
         assert_eq!(
-            f("[%f][%F][%E][%G][%e]", &[A::N(f64::INFINITY), A::N(f64::NEG_INFINITY), A::N(f64::NAN), A::N(f64::INFINITY), A::N(-0.0)]),
+            f(
+                "[%f][%F][%E][%G][%e]",
+                &[
+                    A::N(f64::INFINITY),
+                    A::N(f64::NEG_INFINITY),
+                    A::N(f64::NAN),
+                    A::N(f64::INFINITY),
+                    A::N(-0.0)
+                ]
+            ),
             "[inf][-INF][NAN][INF][-0.000000e+00]"
         );
         let big = f("%f", &[A::N(1e300)]);
@@ -679,25 +731,69 @@ mod tests {
         assert_eq!(
             f(
                 "[%+d][% d][%05d][%x][%X][%#x][%o][%#o][%u][%c][%5c][%-3c]",
-                &[A::N(5.0), A::N(5.0), A::N(-42.0), A::N(255.0), A::N(255.0), A::N(255.0), A::N(8.0), A::N(8.0), A::N(-1.0), A::N(65.0), A::N(66.0), A::N(67.0)]
+                &[
+                    A::N(5.0),
+                    A::N(5.0),
+                    A::N(-42.0),
+                    A::N(255.0),
+                    A::N(255.0),
+                    A::N(255.0),
+                    A::N(8.0),
+                    A::N(8.0),
+                    A::N(-1.0),
+                    A::N(65.0),
+                    A::N(66.0),
+                    A::N(67.0)
+                ]
             ),
             "[+5][ 5][-0042][ff][FF][0xff][10][010][18446744073709551615][A][    B][C  ]"
         );
         assert_eq!(
-            f("[%.3d][%8.3x][%-8d][%d][%x][%d][%.0d]", &[A::N(7.0), A::N(10.0), A::N(3.0), A::N(2f64.powi(53)), A::N(-1.0), A::N(1e100), A::N(0.0)]),
+            f(
+                "[%.3d][%8.3x][%-8d][%d][%x][%d][%.0d]",
+                &[
+                    A::N(7.0),
+                    A::N(10.0),
+                    A::N(3.0),
+                    A::N(2f64.powi(53)),
+                    A::N(-1.0),
+                    A::N(1e100),
+                    A::N(0.0)
+                ]
+            ),
             "[007][     00a][3       ][9007199254740992][ffffffffffffffff][-9223372036854775808][]"
         );
         // int64_t / uint64_t cdata.
-        assert_eq!(f("%d %x %d", &[A::I64(i64::MIN), A::I64(-1), A::U64(u64::MAX)]), "-9223372036854775808 ffffffffffffffff -1");
+        assert_eq!(
+            f(
+                "%d %x %d",
+                &[A::I64(i64::MIN), A::I64(-1), A::U64(u64::MAX)]
+            ),
+            "-9223372036854775808 ffffffffffffffff -1"
+        );
     }
 
     #[test]
     fn string_directives() {
         assert_eq!(
-            f("[%5s][%.2s][%s][%s][%%][%5.1s][%-10s][%5.3s]", &[A::S("abc"), A::S("abc"), A::N(1.5), A::N(10.0), A::S("xyz"), A::S("ab"), A::S("hello")]),
+            f(
+                "[%5s][%.2s][%s][%s][%%][%5.1s][%-10s][%5.3s]",
+                &[
+                    A::S("abc"),
+                    A::S("abc"),
+                    A::N(1.5),
+                    A::N(10.0),
+                    A::S("xyz"),
+                    A::S("ab"),
+                    A::S("hello")
+                ]
+            ),
             "[  abc][ab][1.5][10][%][    x][ab        ][  hel]"
         );
-        assert_eq!(f("%q", &[A::S("a\0b\r\n\"\\\x7f2\0")]), "\"a\\0b\\13\\\n\\\"\\\\\\1272\\0\"");
+        assert_eq!(
+            f("%q", &[A::S("a\0b\r\n\"\\\x7f2\0")]),
+            "\"a\\0b\\13\\\n\\\"\\\\\\1272\\0\""
+        );
         assert_eq!(f("%q", &[A::S("\x011\x01x\x1f")]), "\"\\0011\\1x\\31\"");
     }
 
@@ -721,8 +817,13 @@ mod tests {
         let items: Vec<_> = FormatParser::new(b"a%%b%-5.2fc").collect();
         assert_eq!(items[0], FmtItem::Lit(b"a%"));
         assert_eq!(items[1], FmtItem::Lit(b"b"));
-        let FmtItem::Spec(sf) = items[2] else { panic!() };
-        assert_eq!((sf.ty(), sf.width(), sf.prec(), sf.has(F_LEFT), sf.fp()), (FormatType::Num, 5, Some(2), true, 2));
+        let FmtItem::Spec(sf) = items[2] else {
+            panic!()
+        };
+        assert_eq!(
+            (sf.ty(), sf.width(), sf.prec(), sf.has(F_LEFT), sf.fp()),
+            (FormatType::Num, 5, Some(2), true, 2)
+        );
         assert_eq!(items[3], FmtItem::Lit(b"c"));
         assert_eq!(items.len(), 4);
     }
@@ -742,7 +843,16 @@ mod tests {
         put_uleb128(&mut v, 300);
         assert_eq!(v, [0xac, 0x02]);
         assert_eq!(
-            format_internal(b"%s:%d: %s %c %f%%", &[FmtArg::Str(Some(b"x.lua")), FmtArg::Int(-3), FmtArg::Str(None), FmtArg::Char(b'!'), FmtArg::Num(0.5)]),
+            format_internal(
+                b"%s:%d: %s %c %f%%",
+                &[
+                    FmtArg::Str(Some(b"x.lua")),
+                    FmtArg::Int(-3),
+                    FmtArg::Str(None),
+                    FmtArg::Char(b'!'),
+                    FmtArg::Num(0.5)
+                ]
+            ),
             b"x.lua:-3: (null) ! 0.5%"
         );
     }

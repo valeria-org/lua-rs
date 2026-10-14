@@ -41,14 +41,22 @@ impl Vm {
         self.rt.load_anchors.push(v);
     }
 
-    fn load_input(&mut self, input: Input<'_>, chunkname: &[u8], mode: Option<&[u8]>) -> LuaResult<Value> {
+    fn load_input(
+        &mut self,
+        input: Input<'_>,
+        chunkname: &[u8],
+        mode: Option<&[u8]>,
+    ) -> LuaResult<Value> {
         let mark = self.rt.load_anchors.len();
         let r = self.cpparser(input, chunkname, mode);
         self.rt.load_anchors.truncate(mark);
         match r {
             // The error handler is inherited (`cframe_errfunc = -1`): runtime errors raised
             // while loading (by the reader or the bytecode reader) get it applied once.
-            Err(e) if e.kind == ErrorKind::Run && self.rt.thrown.is_none_or(|t| !t.raw_equal(e.value)) => {
+            Err(e)
+                if e.kind == ErrorKind::Run
+                    && self.rt.thrown.is_none_or(|t| !t.raw_equal(e.value)) =>
+            {
                 let th = self.cur_thread;
                 let e = self.apply_errfunc(th, e);
                 self.rt.thrown = Some(e.value);
@@ -59,7 +67,12 @@ impl Vm {
     }
 
     /// `cpparser`.
-    fn cpparser(&mut self, input: Input<'_>, chunkname: &[u8], mode: Option<&[u8]>) -> LuaResult<Value> {
+    fn cpparser(
+        &mut self,
+        input: Input<'_>,
+        chunkname: &[u8],
+        mode: Option<&[u8]>,
+    ) -> LuaResult<Value> {
         let chunkarg = lex::cstr(chunkname);
         lex::init_reserved(self);
         let name = self.new_str(chunkarg);
@@ -120,7 +133,8 @@ impl Vm {
         use std::io::Read;
         let (data, chunkname) = match filename {
             Some(name) => {
-                let path = std::ffi::OsStr::from_encoded_bytes_checked(crate::parse::lex::cstr(name));
+                let path =
+                    std::ffi::OsStr::from_encoded_bytes_checked(crate::parse::lex::cstr(name));
                 let mut cn = b"@".to_vec();
                 cn.extend_from_slice(crate::parse::lex::cstr(name));
                 let r = std::fs::File::open(path).and_then(|mut f| {
@@ -130,7 +144,9 @@ impl Vm {
                 match r {
                     Ok(v) => (v, cn),
                     Err(e) => {
-                        let what = if std::fs::metadata(path).is_ok() && e.kind() != std::io::ErrorKind::NotFound {
+                        let what = if std::fs::metadata(path).is_ok()
+                            && e.kind() != std::io::ErrorKind::NotFound
+                        {
                             "read"
                         } else {
                             "open"
@@ -179,7 +195,9 @@ pub fn strerror(e: &std::io::Error) -> String {
                 return e.to_string();
             }
             // SAFETY: p is a valid C string as above.
-            unsafe { std::ffi::CStr::from_ptr(p) }.to_string_lossy().into_owned()
+            unsafe { std::ffi::CStr::from_ptr(p) }
+                .to_string_lossy()
+                .into_owned()
         }
         None => e.to_string(),
     }
