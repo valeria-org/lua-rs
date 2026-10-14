@@ -54,7 +54,7 @@ fn have_string_lib() -> bool {
     .is_ok_and(|s| s.success())
 }
 
-/// Replace every `0x<hex digits>` by `0x?`.
+/// Normalize pointer addresses and distro-dependent libm loader diagnostics.
 fn normalize(s: &str) -> String {
     let mut r = String::with_capacity(s.len());
     let mut rest = s;
@@ -69,7 +69,12 @@ fn normalize(s: &str) -> String {
         rest = t;
     }
     r.push_str(rest);
-    r
+    // On merged-/usr systems, the loader may report either alias of the same library.
+    // Keep the requested paths in package searcher messages intact.
+    r.replace(
+        "\t/lib/x86_64-linux-gnu/libm.so.6: undefined symbol:",
+        "\t/usr/lib/x86_64-linux-gnu/libm.so.6: undefined symbol:",
+    )
 }
 
 fn run(case: &str, dir: &str, args: &[&str]) -> String {
