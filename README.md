@@ -4,6 +4,9 @@ A Rust port of [LuaJIT](https://github.com/LuaJIT/LuaJIT), originally created by
 The interpreter, compatibility work, and bundled LuaJIT modules build on the upstream project's
 design and implementation. The Rust crate and executable are named `luajit`.
 
+For tooling, the crate also exposes owned, lossless ASTs for **Lua 5.4 and Luau**, with byte
+spans on nodes, tokens, and syntax diagnostics.
+
 LuaJIT 2.1 rewritten in Rust: the interpreter, every standard library, `string.buffer`, the `ffi`
 library (x86-64 System V), LuaJIT bytecode dump/load, the Lua 5.1 C API, and the `luajit` command-line
 program. It aims to behave exactly like upstream LuaJIT v2.1 built with `-DLUAJIT_DISABLE_JIT`
@@ -29,7 +32,45 @@ The build also produces `target/release/libluajit.so`. It exports the same 148
 modules loaded through `require` / `package.loadlib` (for example lua-cjson) work.
 
 Only x86-64 Linux is supported. Install the current stable Rust toolchain and a system linker
-to build. The only Rust dependency is `libc`.
+to build. The runtime uses `libc`; syntax analysis uses `full_moon`.
+
+## Syntax trees and byte spans
+
+`syntax::parse_ast` parses UTF-8 source with an explicit dialect and returns a typed AST
+that owns its data. It needs no VM. Comments, whitespace, and literal spelling are preserved,
+so `ast.to_string()` reproduces accepted input exactly. `parse::parse_ast` is an alias.
+
+```rust
+use luajit::syntax::{Dialect, Spanned, parse_ast};
+
+let source = "local score: number = if ready then 42 else 0";
+let ast = parse_ast(source, Dialect::Luau)?;
+for statement in ast.nodes().stmts() {
+    let span = statement.byte_span().unwrap();
+    println!("{}..{}: {}", span.start, span.end, &source[span.range()]);
+}
+```
+
+| Dialect | Syntax coverage |
+|---|---|
+| `Dialect::Lua54` | Lua statements and expressions, `<const>`/`<close>` locals, integer division, bitwise operators, labels and `goto` |
+| `Dialect::Luau` | Type annotations and assertions, aliases, generics and type packs, type functions, const bindings, function attributes, compound assignments, `continue`, if expressions and interpolated strings |
+
+The node types are available in `syntax::ast`, including `ast::luau` and `ast::lua54`.
+`syntax::visitors` provides recursive visitors; `syntax::Node` exposes token iteration.
+`Spanned::byte_span()` returns a zero-based, half-open `start..end` byte range in the original
+source, excluding surrounding trivia. Empty blocks have no node span; EOF has an empty span.
+Use `ByteSpan::of_token` on leading or trailing trivia to locate comments and whitespace.
+Offsets count UTF-8 bytes, including multibyte text and CRLF line endings.
+
+Malformed input returns `ParseError` with a list of `SyntaxDiagnostic { span, message }` values.
+Each dialect is selected separately, so Lua 5.4 mode rejects Luau extensions and Luau mode
+rejects Lua 5.4 local attributes and bitwise operators. Parsing checks grammar; semantic
+validation and Luau type checking are outside this API. After modifying an AST, update its
+positions before using spans against rewritten source.
+
+The VM, CLI, and bytecode compiler continue to execute LuaJIT-compatible source. Lua 5.4
+and Luau runtime compatibility are future work.
 
 ## Layout
 
@@ -38,6 +79,7 @@ to build. The only Rust dependency is `libc`.
 | `src/gc.rs`, `value.rs`, `lstr.rs`, `table.rs`, `func.rs`, `udata.rs`, `cdata.rs`, `thread.rs`, `state.rs` | object model, stop-the-world mark & sweep GC, interned strings, tables, VM state | lj_gc, lj_obj, lj_str, lj_tab, lj_func, lj_state |
 | `src/bc.rs` | bytecode definitions | lj_bc.h |
 | `src/parse/` | lexer and single-pass compiler (incl. the v2.1 syntax extensions) | lj_lex, lj_parse |
+| `src/syntax.rs` | owned Lua 5.4/Luau ASTs, byte spans, syntax diagnostics and visitor exports | Full Moon |
 | `src/vm/` | interpreter, calls/errors/coroutines, metamethods, hooks, debug info, loading, native API | vm_x64.dasc, lj_meta, lj_err, lj_debug, lj_dispatch, lj_load |
 | `src/bcdump/` | `\x1bLJ` bytecode writer/reader | lj_bcwrite, lj_bcread |
 | `src/text/` | number scanning/formatting, `string.format`, Lua patterns, PRNG | lj_strscan, lj_strfmt*, lib_string, lj_prng |
@@ -117,3 +159,5 @@ This project is released under the [MIT license](LICENSE).
   tests; the vendored C API test sources are recorded in `tests/capi/upstream/UPSTREAM`.
 - [lua-cjson](https://github.com/mpx/lua-cjson) is vendored only for C API integration tests. Its
   original MIT license and source revision are retained in `tests/capi/lua-cjson/`.
+- [Full Moon](https://github.com/Kampfkarren/full-moon) provides the Lua 5.4 and Luau syntax
+  trees. It is a dependency under its own [MPL-2.0 license](https://github.com/Kampfkarren/full-moon/blob/main/LICENSE.md).

@@ -8,7 +8,7 @@
 //! |----------------------|------------------------------------------------------------------|
 //! | `FormatType::Int`    | int64/uint64 cdata → [`put_fxint`] with the raw 64 bits, else [`put_fnum_int`] |
 //! | `FormatType::Uint`   | int64/uint64 cdata → [`put_fxint`], else [`put_fnum_uint`]       |
-//! | `FormatType::Num`    | [`put_fnum`](super::strfmt::put_fnum)                            |
+//! | `FormatType::Num`    | [`put_fnum`]                                                   |
 //! | `FormatType::Str`    | `spec.is_quoted()` ? [`put_quoted`] : [`put_fstr`]               |
 //! | `FormatType::Char`   | [`put_fchar`] with the checked integer                           |
 //! | `FormatType::Ptr`    | [`put_ptr`] (no formatting)                                      |

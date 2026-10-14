@@ -48,7 +48,7 @@ impl<'a> Input<'a> {
     }
 
     /// True if more input comes from a reader, which may run Lua code (and so the collector):
-    /// GC objects created while loading must then be anchored ([`Vm::anchor_load`]).
+    /// GC objects created while loading must then be anchored with `Vm::anchor_load`.
     pub fn streaming(&self) -> bool {
         self.reader.is_some()
     }

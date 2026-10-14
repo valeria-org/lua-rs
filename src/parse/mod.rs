@@ -12,6 +12,7 @@ use crate::func::Proto;
 use crate::gc::Gc;
 use crate::state::Vm;
 
+pub use crate::syntax::{ByteSpan, Dialect, ParseError, Spanned, SyntaxDiagnostic, parse_ast};
 pub use lex::debug_shortname;
 pub use listing::bclist;
 

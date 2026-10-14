@@ -24,5 +24,9 @@ jobs:
         run: cargo clippy --all-targets --locked -- -D warnings
       - name: Test
         run: cargo test --locked
+      - name: Check API documentation
+        env:
+          RUSTDOCFLAGS: -D warnings
+        run: cargo doc --locked --no-deps --lib
       - name: Build release
         run: cargo build --release --locked
